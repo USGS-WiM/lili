@@ -6,6 +6,10 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { StudiesPage } from '../pages/studies/studies'
+import { SamplesPage } from '../pages/samples/samples'
+import { AnalysisBatchesPage } from '../pages/analysisbatches/analysisbatches';
+import { ResultsPage } from '../pages/results/results'
+import { ReportsPage } from '../pages/reports/reports'
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -15,7 +19,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     MyApp,
     HomePage,
     ListPage,
-    StudiesPage
+    StudiesPage,
+    SamplesPage,
+    AnalysisBatchesPage,
+    ResultsPage,
+    ReportsPage
   ],
   imports: [
     BrowserModule,
@@ -26,7 +34,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     MyApp,
     HomePage,
     ListPage,
-    StudiesPage
+    StudiesPage, 
+    SamplesPage,
+    AnalysisBatchesPage,
+    ResultsPage,
+    ReportsPage
   ],
   providers: [
     StatusBar,
