@@ -1,14 +1,17 @@
-import { LideLimsPage } from './app.po';
+import {ClaritySeedAppHome} from './app.po';
 
-describe('lide-lims App', () => {
-  let page: LideLimsPage;
+fdescribe('clarity-seed app', function () {
+
+  let expectedMsg: string = 'This is a Clarity seed application. This is the default page that loads for the application.';
+
+  let page: ClaritySeedAppHome;
 
   beforeEach(() => {
-    page = new LideLimsPage();
+    page = new ClaritySeedAppHome();
   });
 
-  it('should display message saying app works', () => {
+  it('should display: ' + expectedMsg, () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getParagraphText()).toEqual(expectedMsg)
   });
 });

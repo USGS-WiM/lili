@@ -1,17 +1,72 @@
-<md-sidenav-container >
-    <md-sidenav #sidenav mode="side" class="app-sidenav">
-    <md-nav-list>
-        <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>
-    </md-nav-list>
-        </md-sidenav>
-        <md-toolbar color="primary">
-            <button md-icon-button (click)="sidenav.toggle()">
-                <md-icon class="md-24" >menu</md-icon>
-            </button>
-        </md-toolbar>
-    <div class="app-content">
-        Example Content area<br><br><br><br><br><br><br>
+<clr-main-container>
+  <clr-header>
+    <div class="branding">
+      <a href="#" class="nav-link">
+        <span class="clr-icon ars-logo"></span>
+        <span class="title">Laboratory for Infectious Disease and Environment LIMS</span>
+      </a>
     </div>
-</md-sidenav-container>
+    <div class="header-actions">
+    </div>
+  </clr-header>
+
+  <div class="content-container">
+        <div class="content-area">
+            <router-outlet></router-outlet>
+        </div>
+        <nav class="sidenav" [clr-nav-level]="1">
+            <section class="sidenav-content">
+
+                <a class="nav-link " href="#" [routerLink]="['/home']" routerLinkActive="active" >
+                     <clr-icon shape="home"></clr-icon> Home
+                </a>
+
+                 <a class="nav-link" href="#" [routerLink]="['/studies']" routerLinkActive="active">
+                    <clr-icon shape="view-list"></clr-icon> Studies
+                </a>
+
+                <a class="nav-link" href="#" [routerLink]="['/samples']" routerLinkActive="active">
+                     <clr-icon shape="view-list"></clr-icon> Samples
+                </a>
+
+                <a class="nav-link" href="#" [routerLink]="['/analysisbatches']" routerLinkActive="active">
+                     <clr-icon shape="view-list"></clr-icon> Analysis Batches
+                </a>
+
+                <a class="nav-link" href="#" [routerLink]="['/results']" routerLinkActive="active">
+                    <clr-icon shape="line-chart"></clr-icon> Results
+                </a>
+
+                <a class="nav-link" href="#" [routerLink]="['/reports']" routerLinkActive="active">
+                    <clr-icon shape="document"></clr-icon> Reports
+                </a>
+
+               
+                <!--<section class="nav-group">
+                    <input id="tabexample2" type="checkbox">
+                    <label for="tabexample2">Default Nav Element</label>
+                    <ul class="nav-list">
+                        <li><a class="nav-link">Link 1</a></li>
+                        <li><a class="nav-link">Link 2</a></li>
+                        <li><a class="nav-link active">Link 3</a></li>
+                        <li><a class="nav-link">Link 4</a></li>
+                        <li><a class="nav-link">Link 5</a></li>
+                        <li><a class="nav-link">Link 6</a></li>
+                    </ul>
+                </section>
+
+                 <section class="nav-group collapsible">
+                    <input id="tabexample1" type="checkbox">
+                    <label for="tabexample1">Collapsible Nav Element</label>
+                    <ul class="nav-list">
+                        <li><a class="nav-link">Settings</a></li>
+                        <li><a class="nav-link">Admin</a></li>
+                    </ul>
+                </section>-->
+
+            </section>
+            
+        </nav>
+    </div>
+
+</clr-main-container>

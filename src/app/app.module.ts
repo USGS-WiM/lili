@@ -1,38 +1,38 @@
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule, MdSidenavModule, MdListModule, MdIconModule} from '@angular/material';
-
+import { ClarityModule } from 'clarity-angular';
 import { AppComponent } from './app.component';
+import { ROUTING } from "./app.routing";
+import { HomeComponent } from "./home/home.component";
 import { StudiesComponent } from './studies/studies.component';
 import { SamplesComponent } from './samples/samples.component';
-import { ReportsComponent } from './reports/reports.component';
-import { ResultsComponent } from './results/results.component';
 import { AnalysisBatchesComponent } from './analysis-batches/analysis-batches.component';
+import { ResultsComponent } from './results/results.component';
+import { ReportsComponent } from './reports/reports.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    StudiesComponent,
-    SamplesComponent,
-    ReportsComponent,
-    ResultsComponent,
-    AnalysisBatchesComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    MdSidenavModule,
-    MdListModule,
-    MdIconModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        StudiesComponent,
+        SamplesComponent,
+        AnalysisBatchesComponent,
+        ResultsComponent,
+        ReportsComponent
+    ],
+    imports: [
+        BrowserAnimationsModule,
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        ClarityModule.forRoot(),
+        ROUTING
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
