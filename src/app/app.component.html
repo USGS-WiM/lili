@@ -1,0 +1,17 @@
+<md-sidenav-container >
+    <md-sidenav #sidenav mode="side" class="app-sidenav">
+    <md-nav-list>
+        <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        {{p.title}}
+      </button>
+    </md-nav-list>
+        </md-sidenav>
+        <md-toolbar color="primary">
+            <button md-icon-button (click)="sidenav.toggle()">
+                <md-icon class="md-24" >menu</md-icon>
+            </button>
+        </md-toolbar>
+    <div class="app-content">
+        Example Content area<br><br><br><br><br><br><br>
+    </div>
+</md-sidenav-container>
