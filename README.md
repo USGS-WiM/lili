@@ -1,3 +1,4 @@
+
 ![WiM](wimlogo.png)
 
 LIDE LIMS
@@ -34,4 +35,7 @@ ng build
 # prod build
 ng build --prod
 ```
-
+=======
+# lide-lims
+v2 LIMS for LIDE
+>>>>>>> 23c8f5749e2e9ac3ec47b97195e5ddd61406fa3b
