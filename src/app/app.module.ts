@@ -13,6 +13,7 @@ import { SamplesComponent } from './samples/samples.component';
 import { AnalysisBatchesComponent } from './analysis-batches/analysis-batches.component';
 import { ResultsComponent } from './results/results.component';
 import { ReportsComponent } from './reports/reports.component';
+import { StudiesFormComponent } from './studies/studies-form/studies-form.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { ReportsComponent } from './reports/reports.component';
         SamplesComponent,
         AnalysisBatchesComponent,
         ResultsComponent,
-        ReportsComponent
+        ReportsComponent,
+        StudiesFormComponent
     ],
     imports: [
         BrowserAnimationsModule,

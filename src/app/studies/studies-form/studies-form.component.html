@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="card-block">
+        <div class="card-title">
+            Studies
+        </div>
+        <div class="card-text">
+        <form class="form" [formGroup]="studyForm" (ngSubmit)="onSubmit()" [hidden]="submitted" >
+          <section class="form-block">
+            <label>Add Study</label>
+            <div class="form-group">
+              <label>Name</label>
+              <!--<input id="name" type="text" formControlName="name">-->
+              <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="studyForm.get('name').invalid && (studyForm.get('name').dirty || studyForm.get('name').touched)">
+                <input id="name" type="text" formControlName="name">
+                <span class="tooltip-content">Name is required.</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <label for="description" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="studyForm.get('description').invalid && (studyForm.get('description').dirty || studyForm.get('description').touched)">
+                <input id="description" type="text" formControlName="description">
+                <span class="tooltip-content">Description is required.</span>
+              </label>
+            </div>
+            <button class="btn btn-primary" type="submit" [disabled]="studyForm.invalid">Add</button>
+          </section>
+        </form>
+        <p>Form value: {{ studyForm.value | json }}</p>
+        <p>Form status: {{ studyForm.status | json }}</p> 
+        </div> 
+    </div>
+</div>
