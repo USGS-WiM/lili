@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-//import { IStudy } from '../study';
+import { IStudy } from '../study';
 import { StudyService } from '../study.service';
 
 @Component({
@@ -9,15 +9,18 @@ import { StudyService } from '../study.service';
   styleUrls: ['./studies-table.component.scss']
 })
 export class StudiesTableComponent implements OnInit {
-  allStudies;
+  allStudies: IStudy[];
+  errorMessage: string;
 
 
   constructor(private _studyService: StudyService) { 
 
   }
 
-  ngOnInit() {
-    this.allStudies = this._studyService.getStudies;
+  ngOnInit():void {
+      this._studyService.getStudies()
+        .subscribe(studies => this.allStudies = studies,
+                    error => this.errorMessage = <any>error);
   }
 
 }
