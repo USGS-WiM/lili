@@ -14,6 +14,7 @@ import { AnalysisBatchesComponent } from './analysis-batches/analysis-batches.co
 import { ResultsComponent } from './results/results.component';
 import { ReportsComponent } from './reports/reports.component';
 import { StudiesFormComponent } from './studies/studies-form/studies-form.component';
+import { StudiesTableComponent } from './studies/studies-table/studies-table.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { StudiesFormComponent } from './studies/studies-form/studies-form.compon
         AnalysisBatchesComponent,
         ResultsComponent,
         ReportsComponent,
-        StudiesFormComponent
+        StudiesFormComponent,
+        StudiesTableComponent
     ],
     imports: [
         BrowserAnimationsModule,
