@@ -12,6 +12,9 @@ import { StudiesTableComponent } from './studies-table/studies-table.component';
 })
 export class StudiesComponent implements OnInit { 
 
+  showHide: false;
+  showHideButton: true;
+
   constructor() { }
 
 

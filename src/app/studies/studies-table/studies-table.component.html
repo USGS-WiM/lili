@@ -1,3 +1,20 @@
-<p>
-  studies-table works!
-</p>
+<div class="card">
+    <div class="card-block">
+        <div class="card-title">
+            All Studies
+        </div>
+        <div class="card-text">
+          <p-dataTable [value]="allStudies" [editable]="editable ? 'true': false" selectionMode="multiple" [(selection)]="selectedStudies" (onRowSelect)="onRowSelect($event)">
+            <p-column field="study_name" header="Name"  [sortable]="true" [filter]="true" filterPlaceholder="Search" [editable]="true"></p-column>
+            <p-column field="study_desc" header="Description" [editable]="true"></p-column>
+            <p-column field="insert_user" header="Added by"  [sortable]="true"></p-column>
+            <p-column field="insert_date" header="Date added"  [sortable]="true"></p-column>
+             <p-footer>
+                <ul>
+                    <li *ngFor="let study of selectedStudies" style="text-align: left">{{study.study_name}}</li>
+                </ul>
+            </p-footer>
+          </p-dataTable>
+        </div> 
+    </div>
+</div>
