@@ -19,7 +19,10 @@ import { SamplesComponent } from './samples/samples.component';
 import { AnalysisBatchesComponent } from './analysis-batches/analysis-batches.component';
 import { ResultsComponent } from './results/results.component';
 import { ReportsComponent } from './reports/reports.component';
+
+//to be removed
 import { StudiesFormComponent } from './studies/studies-form/studies-form.component';
+//to be removed
 import { StudiesTableComponent } from './studies/studies-table/studies-table.component';
 
 @NgModule({
@@ -31,7 +34,9 @@ import { StudiesTableComponent } from './studies/studies-table/studies-table.com
         AnalysisBatchesComponent,
         ResultsComponent,
         ReportsComponent,
+        //to be removed
         StudiesFormComponent,
+        //to be removed
         StudiesTableComponent
     ],
     imports: [
