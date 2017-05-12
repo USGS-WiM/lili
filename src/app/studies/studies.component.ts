@@ -4,6 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IStudy } from './study';
 import { StudyService } from './study.service';
 
+import { StudiesTableComponent } from './studies-table/studies-table.component'
+
 
 @Component({
   selector: 'app-studies',
@@ -15,7 +17,7 @@ export class StudiesComponent implements OnInit {
   errorMessage: string;
   // selectedStudies: IStudy[];
   selectedStudy: IStudy;
-  showHideAdd;
+  showHideAdd: boolean = false;
   showHideEdit;
   studySelected: boolean;
 
@@ -55,7 +57,7 @@ export class StudiesComponent implements OnInit {
 //add study form
   addStudyForm = new FormGroup({
         name: new FormControl('', Validators.required),
-        description: new FormControl('', Validators.required)
+        description: new FormControl('')
   });
 
   ///split these out
@@ -71,7 +73,7 @@ export class StudiesComponent implements OnInit {
   //edit study form
   editStudyForm = new FormGroup({
         name: new FormControl('', Validators.required),
-        description: new FormControl('', Validators.required)
+        description: new FormControl('')
   });
   
 
