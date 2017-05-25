@@ -1,0 +1,56 @@
+[
+{
+  "matrix_id": 1,
+  "matrix": "Water",
+  "matrix_cd": "W",
+  "insert_date": null,
+  "insert_user": "null",
+  "update_date": null,
+  "update_user": "null"
+},
+{
+  "matrix_id": 2,
+  "matrix": "Wastewater",
+  "matrix_cd": "WW",
+  "insert_date": null,
+  "insert_user": "null",
+  "update_date": null,
+  "update_user": "null"
+},
+{
+  "matrix_id": 3,
+  "matrix": "Solid Manure",
+  "matrix_cd": "SM",
+  "insert_date": null,
+  "insert_user": "null",
+  "update_date": null,
+  "update_user": "null"
+},
+{
+  "matrix_id": 4,
+  "matrix": "Forage or sediment",
+  "matrix_cd": "F",
+  "insert_date": null,
+  "insert_user": "null",
+  "update_date": null,
+  "update_user": "null"
+},
+{
+  "matrix_id": 5,
+  "matrix": "Liquid Manure",
+  "matrix_cd": "LM",
+  "insert_date": null,
+  "insert_user": "null",
+  "update_date": null,
+  "update_user": "null"
+},
+{
+  "matrix_id": 6,
+  "matrix": "Air",
+  "matrix_cd": "A",
+  "insert_date": null,
+  "insert_user": "null",
+  "update_date": null,
+  "update_user": "null"
+}
+]
