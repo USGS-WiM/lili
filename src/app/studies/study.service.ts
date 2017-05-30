@@ -7,10 +7,9 @@ import 'rxjs/add/operator/catch';
 
 import { IStudy } from './study';
 
-
 @Injectable()
 export class StudyService {
-  private _studiesUrl = 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/sample-data-studies.json';
+  private _studiesUrl = 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/demo-services/studies.json';
 
   constructor(private _http: Http) {}
 
@@ -26,8 +25,6 @@ export class StudyService {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
   }
-
-
-  
+ 
 
 }

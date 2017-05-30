@@ -9,16 +9,16 @@ import { ISample } from './sample';
 
 @Injectable()
 export class SampleService {
-    private _studiesUrl = 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/sample-data-samples.json';
+    private _samplesUrl = 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/demo-services/samples.json';
 
 
   constructor(private _http: Http) { }
 
   //check return from server - may need to adjust response.json below with further dot notation
   getSamples(): Observable<ISample[]> {
-    return this._http.get(this._studiesUrl)
+    return this._http.get(this._samplesUrl)
                 .map((response: Response) => <ISample[]>response.json())
-                .do(data => console.log('Studies data: ' + JSON.stringify(data)))
+                //.do(data => console.log('Samples data: ' + JSON.stringify(data)))
                 .catch(this.handleError);
   }
 

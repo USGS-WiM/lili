@@ -4,9 +4,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IStudy } from './study';
 import { StudyService } from './study.service';
 
-import { StudiesTableComponent } from './studies-table/studies-table.component'
-
-
 @Component({
   selector: 'app-studies',
   templateUrl: './studies.component.html',
@@ -15,17 +12,15 @@ import { StudiesTableComponent } from './studies-table/studies-table.component'
 export class StudiesComponent implements OnInit { 
   allStudies: IStudy[];
   errorMessage: string;
-  // selectedStudies: IStudy[];
   selectedStudy: IStudy;
   showHideAdd: boolean = false;
-  showHideEdit;
+  showHideEdit: boolean = false;
   studySelected: boolean;
 
-  constructor(private _studyService: StudyService) { 
-
-  }
+  constructor(private _studyService: StudyService) { }
 
   ngOnInit():void {
+      //on init, call getStudies function which subscribes to the StudyService, set results to the allStudies var
       this._studyService.getStudies()
         .subscribe(studies => this.allStudies = studies,
                     error => this.errorMessage = <any>error);
@@ -33,7 +28,8 @@ export class StudiesComponent implements OnInit {
       console.log("studySelected var = " + this.studySelected)
   }
 
-//study table
+  //studies table
+  //set the values of the edit study form on select of study in the table
   onRowSelect(event) {
         this.studySelected = true;
         console.log(event.data.study_name)
@@ -44,6 +40,7 @@ export class StudiesComponent implements OnInit {
           description: event.data.study_desc
         })
   }
+  //clear the edit form values when study unselected from table
   onRowUnselect(event){
     console.log("study unselected")
     this.studySelected = false;
@@ -52,9 +49,8 @@ export class StudiesComponent implements OnInit {
           description:''
         })
   }
-
   
-//add study form
+  //add study form - declare a reactive form with appropriate study fields
   addStudyForm = new FormGroup({
         name: new FormControl('', Validators.required),
         description: new FormControl('')
@@ -70,7 +66,7 @@ export class StudiesComponent implements OnInit {
         this.submitted = false;
   }
 
-  //edit study form
+  //edit study form - decalre a reactive form
   editStudyForm = new FormGroup({
         name: new FormControl('', Validators.required),
         description: new FormControl('')
