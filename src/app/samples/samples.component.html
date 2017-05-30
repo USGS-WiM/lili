@@ -11,52 +11,121 @@
 <!--Add sample card --> 
 <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" *ngIf="showHideAdd" >
+        <!-- begin card-->
         <div class="card">
             <div class="card-block">
                 <div class="card-title">Add Sample</div>
+
                 <div class="card-text">
-                <form id="addStudyForm" class="compact" [formGroup]="addStudyForm" (ngSubmit)="onSubmit()" [hidden]="submitted" >
-                <section class="form-block">
-                    <!--<label>Add Study</label>-->
+                    <!-- begin form -->
+                    <form class="form compact" [formGroup]="addSampleForm" (ngSubmit)="onSubmit()" [hidden]="submitted" >
+                        <section class="form-block">
 
-                    <div class="form-group">
-                    <label>Study name</label>
-                    <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addStudyForm.get('name').invalid && (addStudyForm.get('name').dirty || addStudyForm.get('name').touched)">
-                        <input id="name" type="text" formControlName="name" size="40">
-                        <span class="tooltip-content">Name is required.</span>
-                    </label>
-                    </div>
+                            <!-- sample type select form, without Clarity UI validation -->
+                            <!--<div class="form-group" >
+                                <label for="sampleTypeSelect">Sample type</label>
+                                <div class="select">
+                                    <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
+                                        <option value="Default">Select Sample Type...</option>
+                                        <option *ngFor="let type of sampleTypes" [value]="type.sample_type_id">{{type.sample_type}}</option>
+                                    </select>
+                                </div>
+                            </div>-->
 
-                    <div class="form-group">
-                    <label for="sampleType">Sample type</label>
-                    <div class="select">
-                        <select id="sampleType"
-                            name="employeeType"
-                            [(ngModel)]="model.employeeType">
-                            <option value="Default">Select Employee Type...</option>
-                            <option *ngFor="let type of employeeType" [value]="type">{{type}}</option>
-                        </select>
-                    </div>
-                    </div>
+                             <div class="form-group">
+                                <label>Study</label>
+                                <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study_name').invalid && (addSampleForm.get('study_name').dirty || addSampleForm.get('study_name').touched)">
+                                <div class="select">
+                                    <select id="studySelect" name="study_name" formControlName="study_name">
+                                        <!-- line below is for adding a default value -->
+                                        <!--<option value="Default">Select Study...</option>-->
+                                        <option *ngFor="let study of allStudies" [value]="study.study_id">{{study.study_name}}</option>
+                                    </select>
+                                </div>
+                                </label>
+                            </div>
 
-                    <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" type="text" formControlName="description" rows="3"></textarea>
-                    <!--<label for="description" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addStudyForm.get('description').invalid && (addStudyForm.get('description').dirty || addStudyForm.get('description').touched)">
-                        <input id="description" type="text" formControlName="description">
-                        <span class="tooltip-content">Description is required.</span>
-                    </label>-->
-                    </div>
+                             <div class="form-group">
+                                <label>Sample type</label>
+                                <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sample_type').invalid && (addSampleForm.get('sample_type').dirty || addSampleForm.get('sample_type').touched)">
+                                <div class="select">
+                                    <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
+                                        <!-- line below is for adding a default value -->
+                                        <!--<option value="Default">Select Sample Type...</option>-->
+                                        <option *ngFor="let type of sampleTypes" [value]="type.sample_type_id">{{type.sample_type}}</option>
+                                    </select>
+                                </div>
+                                </label>
+                            </div>
 
-                    <button class="btn btn-primary" type="submit" [disabled]="addStudyForm.invalid">Add</button>
-                    <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
-                </section>
-                <p>Form value: {{ addStudyForm.value | json }}</p>
-                <p>Form status: {{ addStudyForm.status | json }}</p> 
-                </form>
+                            <div class="form-group">
+                                <label>Collaborator Sample ID</label>
+                                <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collab_sample_id').invalid && (addSampleForm.get('collab_sample_id').dirty || addSampleForm.get('collab_sample_id').touched)">
+                                    <input id="collabSampleIdInput" type="text" formControlName="collab_sample_id" size="40">
+                                    <span class="tooltip-content">Collaborator ID is required.</span>
+                                </label>
+                            </div>
+
+                             <div class="form-group">
+                                <label>Matrix</label>
+                                <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
+                                    <div class="select">
+                                        <select id="matrixSelect" name="matrix" formControlName="matrix">
+                                            <option *ngFor="let matrix of matrices" [value]="matrix.matrix_id">{{matrix.matrix}}</option>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Filtered</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="filteredToggle" formControlName="filter_flag">
+                                    <label for="filteredToggle"></label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Secondary Concentration</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_conc_flag">
+                                    <label for="secondaryConcToggle"></label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="studySiteNameInput">Study Site Name</label>
+                                <input id="studySiteNameInput" type="text" formControlName="study_site_name" size="40">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="studySiteIdInput">Study Site ID</label>
+                                <input id="studySiteIdInput" type="text" formControlName="study_site_id" size="40">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sampleDescInput">Sample Description</label>
+                                <textarea id="sampleDescInput" rows="3" formControlName="samp_desc" ></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="samplerNameInput">Sampler Name</label>
+                                <input id="samplerNameInput" type="text" formControlName="sampler_name" size="40">
+                            </div>
+                      
+
+                            <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid">Add</button>
+                            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
+                        </section>
+                        <p>Form value: {{ addSampleForm.value | json }}</p>
+                        <p>Form status: {{ addSampleForm.status | json }}</p> 
+                    </form>
+                    <!-- end form -->
                 </div> 
             </div>
-        </div>
+        <!-- end card -->
+        </div>   
     </div>
+</div>
 
 
