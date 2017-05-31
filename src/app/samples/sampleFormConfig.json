@@ -1,4 +1,3 @@
-//boolean: disabled status of each FormControl
 [
     {"A": {
         "collect_start_time": false,

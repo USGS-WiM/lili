@@ -10,7 +10,7 @@ import { ISample } from './sample';
 @Injectable()
 export class SampleService {
     private _samplesUrl = 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/demo-services/samples.json';
-    private _sampleFormConfigUrl = './app/samples/sampleFormConfig.json';
+    private _sampleFormConfigUrl = 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/samples/sampleFormConfig.json';
 
   constructor(private _http: Http) { }
 
@@ -22,16 +22,17 @@ export class SampleService {
                 .catch(this.handleError);
   }
 
-  private handleError (error: Response) {
-    console.error(error);
-    return Observable.throw(error.json().error || 'Server error');
-  }
-
   getSampleFormConfig(selectedMatrix): Observable<any[]> {
     return this._http.get(this._sampleFormConfigUrl)
                 .map((response: Response) => <any[]>response.json())
                 //.do(data => console.log('Samples data: ' + JSON.stringify(data)))
                 .catch(this.handleError);
+  }
+
+
+   private handleError (error: Response) {
+    console.error(error);
+    return Observable.throw(error.json().error || 'Server error');
   }
 
 
