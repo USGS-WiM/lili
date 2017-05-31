@@ -26,6 +26,7 @@ export class SamplesComponent implements OnInit {
   showHideAdd: boolean = false;
   showHideEdit: boolean = false;
   sampleSelected: boolean;
+  displayConfig:Object = {};
 
   //var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
@@ -79,30 +80,20 @@ export class SamplesComponent implements OnInit {
         })
   }
 
-//   getSampleFormConfig(selectedMatrix) {
-//     return this.http.get('./sampleFormConfig.json').map(res => {
-//         this.result = res.json();
-//         return this.result[key];
-//     });
-// }
-
   onMatrixSelect(selectedMatrix) {
     //value stored in dropdown is matrix_cd, i.e. abbreviation
     console.log("Matrix selected:" + selectedMatrix);
     console.log("init vol formcontrol disabled:" + this.addSampleForm.controls.imr.disabled)
 
-    var displayConfig;
-
     this._sampleService.getSampleFormConfig(selectedMatrix)
-        .subscribe(config => displayConfig = config,
+        .subscribe(displayConfig => this.displayConfig = displayConfig,
                     error => this.errorMessage = <any>error);
 
-      console.log("display config: " + displayConfig);
-
     //if (selectedMatrix == 'A' || selectedMatrix == 'WW' || selectedMatrix == "W")
-
     switch(selectedMatrix) { 
       case (selectedMatrix == 'A'): { 
+
+        //compare this.displayConfig
 
           // this.addSampleForm.controls.imr.disabled == true;
           // this.addSampleForm.controls.fmr.disabled == true;
