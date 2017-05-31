@@ -56,6 +56,11 @@ export class SamplesComponent implements OnInit {
       this._studyService.getStudies()
         .subscribe(studies => this.allStudies = studies,
                     error => this.errorMessage = <any>error);
+
+      this._sampleService.getSampleFormConfig()
+        .subscribe(displayConfig => this.displayConfig = displayConfig,
+                    error => this.errorMessage = <any>error);
+
   }
 
 //sample table
@@ -83,38 +88,29 @@ export class SamplesComponent implements OnInit {
   onMatrixSelect(selectedMatrix) {
     //value stored in dropdown is matrix_cd, i.e. abbreviation
     console.log("Matrix selected:" + selectedMatrix);
-    console.log("init vol formcontrol disabled:" + this.addSampleForm.controls.imr.disabled)
+        //loop through displayConfig variables for the selected matrix, from the config JSON file (all boolean)
+        for (var property in this.displayConfig[selectedMatrix]) {
 
-    this._sampleService.getSampleFormConfig(selectedMatrix)
-        .subscribe(displayConfig => this.displayConfig = displayConfig,
-                    error => this.errorMessage = <any>error);
-
-    //if (selectedMatrix == 'A' || selectedMatrix == 'WW' || selectedMatrix == "W")
-    switch(selectedMatrix) { 
-      case (selectedMatrix == 'A'): { 
-
-        //compare this.displayConfig
-
-          // this.addSampleForm.controls.imr.disabled == true;
-          // this.addSampleForm.controls.fmr.disabled == true;
-          // this.addSampleForm.controls.vol_post_dilution_ul.disabled == true;
-          // this.addSampleForm.controls.filt_bornon_date.disabled == true;
-          // this.addSampleForm.controls.elute_date.disabled == true;
-          // this.addSampleForm.controls.elute_notes.disabled == true;
-          // this.addSampleForm.controls.tech_init.disabled == true;
-          // this.addSampleForm.controls.init_vol.disabled == true;
-          break; 
-      } 
-      case (selectedMatrix == 'F'): { 
-          //statements; 
-          break; 
-      } 
-      default: { 
-          //statements; 
-          break; 
-      } 
-    } 
-
+            switch(this.displayConfig[selectedMatrix][property]) { 
+            case (true): { 
+              //if disabled == true, disable corresponding control
+              this.addSampleForm.controls[property].disable();
+                  break; 
+              } 
+              case (false): { 
+                //if disabled == false, enable corresponding control
+                  this.addSampleForm.controls[property].enable();
+                  break; 
+              } 
+              default: { 
+                  //default to enabled
+                  this.addSampleForm.controls[property].enable();
+                  break; 
+              } 
+            } 
+            //the line below doesn't work, but spent a few hours trying to figure out what was wrong with it. this method, however elegant, is just not supported by angular
+            //this.addSampleForm.controls[property].disabled === this.displayConfig[selectedMatrix][property];
+        }    
   }
 
   //add sample form - declare reactive form with appropriate sample fields
@@ -128,7 +124,7 @@ export class SamplesComponent implements OnInit {
         samp_desc: new FormControl(''),
         samp_vol_filt: new FormControl(''),
         filter_type: new FormControl('', Validators.required),
-        collect_start_time: new FormControl({value:'', disabled:true }),
+        collect_start_time: new FormControl(''),
         collect_end_time: new FormControl(''),
         filt_bornon_date: new FormControl(''),
         study_site_name: new FormControl('', ),
