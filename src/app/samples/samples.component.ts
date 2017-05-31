@@ -27,6 +27,9 @@ export class SamplesComponent implements OnInit {
   showHideEdit: boolean = false;
   sampleSelected: boolean;
 
+  //var to hold the currently selected matrix; used to determine which inputs to show
+  matrixSelected: IMatrix;
+
   constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _matrixService: MatrixService ) { }
 
   ngOnInit():void {
@@ -76,6 +79,53 @@ export class SamplesComponent implements OnInit {
         })
   }
 
+//   getSampleFormConfig(selectedMatrix) {
+//     return this.http.get('./sampleFormConfig.json').map(res => {
+//         this.result = res.json();
+//         return this.result[key];
+//     });
+// }
+
+  onMatrixSelect(selectedMatrix) {
+    //value stored in dropdown is matrix_cd, i.e. abbreviation
+    console.log("Matrix selected:" + selectedMatrix);
+    console.log("init vol formcontrol disabled:" + this.addSampleForm.controls.imr.disabled)
+
+    var displayConfig;
+
+    this._sampleService.getSampleFormConfig(selectedMatrix)
+        .subscribe(config => displayConfig = config,
+                    error => this.errorMessage = <any>error);
+
+      console.log("display config: " + displayConfig);
+
+    //if (selectedMatrix == 'A' || selectedMatrix == 'WW' || selectedMatrix == "W")
+
+    switch(selectedMatrix) { 
+      case (selectedMatrix == 'A'): { 
+
+          // this.addSampleForm.controls.imr.disabled == true;
+          // this.addSampleForm.controls.fmr.disabled == true;
+          // this.addSampleForm.controls.vol_post_dilution_ul.disabled == true;
+          // this.addSampleForm.controls.filt_bornon_date.disabled == true;
+          // this.addSampleForm.controls.elute_date.disabled == true;
+          // this.addSampleForm.controls.elute_notes.disabled == true;
+          // this.addSampleForm.controls.tech_init.disabled == true;
+          // this.addSampleForm.controls.init_vol.disabled == true;
+          break; 
+      } 
+      case (selectedMatrix == 'F'): { 
+          //statements; 
+          break; 
+      } 
+      default: { 
+          //statements; 
+          break; 
+      } 
+    } 
+
+  }
+
   //add sample form - declare reactive form with appropriate sample fields
   addSampleForm = new FormGroup({
         //name: new FormControl('', Validators.required), //naw
@@ -87,15 +137,15 @@ export class SamplesComponent implements OnInit {
         samp_desc: new FormControl(''),
         samp_vol_filt: new FormControl(''),
         filter_type: new FormControl('', Validators.required),
-        collect_start_time: new FormControl(''),
+        collect_start_time: new FormControl({value:'', disabled:true }),
         collect_end_time: new FormControl(''),
         filt_bornon_date: new FormControl(''),
         study_site_name: new FormControl('', ),
         study_site_id:new FormControl(''),
         sampler_name:  new FormControl(''),
         sample_notes: new FormControl(''),
-        imr: new FormControl(''),
-        fmr: new FormControl(''),
+        imr: new FormControl({value:'', disabled:false }),
+        fmr: new FormControl({value:'', disabled:false }),
         units: new FormControl(''),
         sample_type: new FormControl('', Validators.required),
         sample_loc_type: new FormControl(''),
