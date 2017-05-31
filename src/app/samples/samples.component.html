@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <label>Collaborator Sample ID</label>
                                 <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collab_sample_id').invalid && (addSampleForm.get('collab_sample_id').dirty || addSampleForm.get('collab_sample_id').touched)">
-                                    <input id="collabSampleIdInput" type="text" formControlName="collab_sample_id" size="40">
+                                    <input id="collabSampleIdInput" type="text" formControlName="collab_sample_id" >
                                     <span class="tooltip-content">Collaborator ID is required.</span>
                                 </label>
                             </div>
@@ -70,8 +70,8 @@
                                 <label>Matrix</label>
                                 <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
                                     <div class="select">
-                                        <select id="matrixSelect" name="matrix" formControlName="matrix">
-                                            <option *ngFor="let matrix of matrices" [value]="matrix.matrix_id">{{matrix.matrix}}</option>
+                                        <select id="matrixSelect" name="matrix" formControlName="matrix" (change)="onMatrixSelect($event.target.value)">
+                                            <option *ngFor="let matrix of matrices" [value]="matrix.matrix_cd">{{matrix.matrix}}</option>
                                         </select>
                                     </div>
                                 </label>
@@ -105,12 +105,24 @@
 
                             <div class="form-group">
                                 <label for="sampleDescInput">Sample Description</label>
-                                <textarea id="sampleDescInput" rows="3" formControlName="samp_desc" ></textarea>
+                                <textarea id="sampleDescInput" rows="2" formControlName="samp_desc" ></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="samplerNameInput">Sampler Name</label>
                                 <input id="samplerNameInput" type="text" formControlName="sampler_name" size="40">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="collectStartDateInput">Collection Start Date</label>
+                                <input type="date" id="collectStartDateInput" formControlName="collect_start_date" >
+                            </div>
+
+                            <!--begin variable section-->
+
+                            <div class="form-group">
+                                <label for="collectStartTime" aria-disabled="true">Collection Start Time (HHmm)</label>
+                                <input id="collectStartTime" type="text" formControlName="collect_start_time">
                             </div>
                       
 
