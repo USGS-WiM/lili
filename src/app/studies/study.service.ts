@@ -17,7 +17,7 @@ export class StudyService {
   getStudies(): Observable<IStudy[]> {
     return this._http.get(this._studiesUrl)
                 .map((response: Response) => <IStudy[]>response.json())
-                .do(data => console.log('Studies data: ' + JSON.stringify(data)))
+                //.do(data => console.log('Studies data: ' + JSON.stringify(data)))
                 .catch(this.handleError);
   }
 

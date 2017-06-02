@@ -110,7 +110,10 @@ export class SamplesComponent implements OnInit {
             } 
             //the line below doesn't work, but spent a few hours trying to figure out what was wrong with it. this method, however elegant, is just not supported by angular
             //this.addSampleForm.controls[property].disabled === this.displayConfig[selectedMatrix][property];
-        }    
+        }   
+
+
+        //this.addSampleForm.controls.samp_desc.disable();
   }
 
   //add sample form - declare reactive form with appropriate sample fields
@@ -121,7 +124,7 @@ export class SamplesComponent implements OnInit {
         orig_collab_samp_id: new FormControl(''),
         collect_start_date: new FormControl('',Validators.required),
         collect_end_date: new FormControl(''),
-        samp_desc: new FormControl(''),
+        samp_desc: new FormControl({value:'', disabled:false }),
         samp_vol_filt: new FormControl(''),
         filter_type: new FormControl('', Validators.required),
         collect_start_time: new FormControl(''),

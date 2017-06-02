@@ -25,7 +25,7 @@ export class SampleService {
   getSampleFormConfig(): Observable<any[]> {
     return this._http.get(this._sampleFormConfigUrl)
                 .map((response: Response) => <any>response.json())
-                .do(data => console.log('Display config data: ' + JSON.stringify(data)))
+                //.do(data => console.log('Display config data: ' + JSON.stringify(data)))
                 .catch(this.handleError);
   }
 
