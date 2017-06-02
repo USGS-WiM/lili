@@ -16,7 +16,7 @@ export class MatrixService {
    getMatrices(): Observable<IMatrix[]> {
     return this._http.get(this._matricesUrl)
                 .map((response: Response) => <IMatrix[]>response.json())
-                .do(data => console.log('Matricies data: ' + JSON.stringify(data)))
+                //.do(data => console.log('Matricies data: ' + JSON.stringify(data)))
                 .catch(this.handleError);
   }
 

@@ -16,7 +16,7 @@ export class SampleTypeService {
    getSampleTypes(): Observable<ISampleType[]> {
     return this._http.get(this._sampleTypeUrl)
                 .map((response: Response) => <ISampleType[]>response.json())
-                .do(data => console.log('Sample types data: ' + JSON.stringify(data)))
+                //.do(data => console.log('Sample types data: ' + JSON.stringify(data)))
                 .catch(this.handleError);
   }
 
