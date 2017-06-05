@@ -81,7 +81,7 @@
                                 <label class="required">Filtered</label>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="filteredToggle" formControlName="filter_flag">
-                                    <label for="filteredToggle"></label>
+                                    <label for="filteredToggle">{{this.addSampleForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
                                 </div>
                             </div>
 
@@ -89,7 +89,7 @@
                                 <label class="required">Secondary Concentration</label>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_conc_flag">
-                                    <label for="secondaryConcToggle"></label>
+                                    <label for="secondaryConcToggle">{{this.addSampleForm.controls.secondary_conc_flag.value ? "Yes" : "No"}}</label>
                                 </div>
                             </div>
 
