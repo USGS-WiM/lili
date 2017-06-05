@@ -117,48 +117,55 @@ export class SamplesComponent implements OnInit {
   }
 
   //add sample form - declare reactive form with appropriate sample fields
+  //try: split the common formcontrols and the variable ones into two form groups with their own distinct statuses, nested under a parent formgroup.
+  //set the disabled state of the variable controls after matrix is selected
   addSampleForm = new FormGroup({
-        //name: new FormControl('', Validators.required), //naw
+        //the following controls apply to every sample record, regardless of matrix selected
         study_name: new FormControl('', Validators.required),  //study name, maps to study id
+        sample_type: new FormControl('', Validators.required),
         collab_sample_id: new FormControl('', Validators.required),
-        orig_collab_samp_id: new FormControl(''),
-        collect_start_date: new FormControl('',Validators.required),
-        collect_end_date: new FormControl(''),
-        samp_desc: new FormControl({value:'', disabled:false }),
-        samp_vol_filt: new FormControl(''),
-        filter_type: new FormControl('', Validators.required),
-        collect_start_time: new FormControl(''),
-        collect_end_time: new FormControl(''),
-        filt_bornon_date: new FormControl(''),
+        //orig_collab_samp_id: new FormControl(''),
+        matrix: new FormControl('', Validators.required), 
+        filter_flag: new FormControl(false, Validators.required), //radio button
+        secondary_conc_flag: new FormControl(false, Validators.required), //radio button
         study_site_name: new FormControl('', ),
         study_site_id:new FormControl(''),
+        samp_desc: new FormControl(''),
         sampler_name:  new FormControl(''),
         sample_notes: new FormControl(''),
-        imr: new FormControl({value:'', disabled:false }),
-        fmr: new FormControl({value:'', disabled:false }),
-        units: new FormControl(''),
-        sample_type: new FormControl('', Validators.required),
-        sample_loc_type: new FormControl(''),
-        samp_env_type: new FormControl(''),
-        water_type: new FormControl(''),
-        init_vol: new FormControl(''),
-        tvs_units: new FormControl(''),
-        tvs_stage: new FormControl(''),
-        tvs: new FormControl(''),
-        tvs_liters: new FormControl(''),
-        tvs_calc: new FormControl(''),
-        tvs_stage_calc: new FormControl(''),
-        matrix: new FormControl('', Validators.required), 
-        filter_flag: new FormControl('', Validators.required), //radio button
-        secondary_conc_flag: new FormControl('', Validators.required), //radio button
         arrive_date: new FormControl(''),
         arrive_notes: new FormControl(''),
+        collect_start_date: new FormControl('',Validators.required),
+
+        //the following controls have variable display needs based on the matrix selected
+        collect_start_time: new FormControl(''),
+        collect_end_date: new FormControl(''),
+        collect_end_time: new FormControl(''),
+        pump_rate: new FormControl(''),
+        imr: new FormControl(''),
+        fmr: new FormControl(''),
+        tvs: new FormControl(''),
+        vol_post_dilution_ul: new FormControl(''), //required when not disabled
+        filter_type: new FormControl(''), //required when not disabled
+        filt_bornon_date: new FormControl(''),
+        air_subsample_vol_ml: new FormControl(''), //required when not disabled
         elute_date: new FormControl(''),
         elute_notes: new FormControl(''),
         tech_init: new FormControl(''),
-        air_subsample_vol_ml: new FormControl('', Validators.required),
-        vol_post_dilution_ul: new FormControl('', Validators.required),
-        pump_rate: new FormControl('')
+        init_vol: new FormControl(''),
+       
+       //the following controls arre for fields/inputs that do not appear in the current LIMS
+       //they may be missing, or may be better only for displaynin table, not for the form
+        samp_vol_filt: new FormControl(''),
+        units: new FormControl(''), 
+        sample_loc_type: new FormControl(''),
+        samp_env_type: new FormControl(''),
+        water_type: new FormControl(''),
+        tvs_units: new FormControl(''),
+        tvs_stage: new FormControl(''),
+        tvs_liters: new FormControl(''),
+        tvs_calc: new FormControl(''),
+        tvs_stage_calc: new FormControl(''),      
   });
 
   ///split these out
