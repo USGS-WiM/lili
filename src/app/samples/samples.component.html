@@ -10,7 +10,7 @@
 
 <!--Add sample card --> 
 <div class="row">
-    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" *ngIf="showHideAdd" >
+    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" *ngIf="showHideAdd" >
         <!-- begin card-->
         <div class="card">
             <div class="card-block">
@@ -95,22 +95,22 @@
 
                             <div class="form-group">
                                 <label for="studySiteNameInput">Study Site Name</label>
-                                <input id="studySiteNameInput" type="text" formControlName="study_site_name" size="40">
+                                <input id="studySiteNameInput" type="text" formControlName="study_site_name" >
                             </div>
 
                             <div class="form-group">
                                 <label for="studySiteIdInput">Study Site ID</label>
-                                <input id="studySiteIdInput" type="text" formControlName="study_site_id" size="40">
+                                <input id="studySiteIdInput" type="text" formControlName="study_site_id" >
                             </div>
 
                             <div class="form-group">
                                 <label for="sampleDescInput">Sample Description</label>
-                                <textarea id="sampleDescInput" rows="2" formControlName="samp_desc" ></textarea>
+                                <textarea id="sampleDescInput" rows="2" formControlName="samp_desc" style="max-width:25em" ></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="samplerNameInput">Sampler Name</label>
-                                <input id="samplerNameInput" type="text" formControlName="sampler_name" size="40">
+                                <input id="samplerNameInput" type="text" formControlName="sampler_name">
                             </div>
 
                             <div class="form-group">
@@ -137,7 +137,7 @@
 
                             <div class="form-group">
                                 <label for="pumpRateInput">Pump Flow rate</label>
-                                <input id="pumpRateInput" type="text" formControlName="pump_rate" size="40">
+                                <input id="pumpRateInput" type="text" formControlName="pump_rate">
                             </div>
 
                             <div class="form-group">
@@ -198,7 +198,7 @@
 
                             <div class="form-group">
                                 <label for="eluteNotesInput">Elution Notes</label>
-                                <textarea id="eluteNotesInput" rows="2" formControlName="elute_notes" ></textarea>
+                                <textarea id="eluteNotesInput" rows="2" formControlName="elute_notes" style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
@@ -222,6 +222,50 @@
             </div>
         <!-- end card -->
         </div>   
+    </div>
+</div>
+
+<div class="row"> 
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="card-block">
+                <div class="card-title">
+                    All Samples
+                </div>
+                <div class="card-text">
+                <p-dataTable [value]="allSamples" selectionMode="single" [(selection)]="selectedSample" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+                    <p-column field="sample_id" header="Sample ID" [editable]="true"></p-column>
+                    <p-column field="study_name" header="Name"  [sortable]="true" [filter]="true" filterPlaceholder="Search" [editable]="true"></p-column>
+                    <p-column field="collab_sample_id" header="Collaborator Sample ID" [editable]="true"></p-column>
+                    <p-column field="sample_type" header="Sample Type" [editable]="true"></p-column>
+                    <p-column field="samp_desc" header="Sample Description" [editable]="true"></p-column>
+                    <p-column field="matrix" header="Matrix" [editable]="true"></p-column>
+                    <p-column field="filter_flag" header="Filtered" [editable]="true"></p-column>
+                    <p-column field="secondary_conc_flag" header="Secondary Concentration" [editable]="true"></p-column>
+                    <p-column field="samp_vol_filt" header="Sample Volume Filtered" [editable]="true"></p-column>
+                    <p-column field="tvs_units" header="Units" [editable]="true"></p-column>
+                    <p-column field="imr" header="IMR" [editable]="true"></p-column>
+                    <p-column field="fmr" header="FMR" [editable]="true"></p-column>
+                    <p-column field="units" header="Meter Units" [editable]="true"></p-column>
+                    
+                    <p-column field="air_subsample_vol_ml" header="Air Subsample Volume (mL)" [editable]="true"></p-column>
+                    <p-column field="vol_post_dilution_ul" header="Volume After Dilution (uL)" [editable]="true"></p-column>
+                    <p-column field="filter_type" header="Filter Type" [editable]="true"></p-column>
+                    <p-column field="filt_bornon_date" header="Filter Born On Date" [editable]="true"></p-column>
+
+
+                    <p-column field="insert_user" header="Added by"  [sortable]="true"></p-column>
+                    <p-column field="insert_date" header="Date added"  [sortable]="true"></p-column>
+                    <!--<p-footer>
+                        <ul>
+                            <li *ngFor="let study of selectedStudies" style="text-align: left">{{study.study_name}}</li>
+                        </ul>
+                    </p-footer>-->
+                    <p-footer><div style="text-align: left">Selected Study: {{selectedStudy ? selectedStudy.study_name: 'none'}}</div></p-footer>
+                </p-dataTable>
+                </div> 
+            </div>
+        </div>
     </div>
 </div>
 
