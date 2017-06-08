@@ -233,29 +233,38 @@
                     All Samples
                 </div>
                 <div class="card-text">
-                <p-dataTable [value]="allSamples" selectionMode="single" [(selection)]="selectedSample" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
-                    <p-column field="sample_id" header="Sample ID" [editable]="true"></p-column>
-                    <p-column field="study_name" header="Name"  [sortable]="true" [filter]="true" filterPlaceholder="Search" [editable]="true"></p-column>
-                    <p-column field="collab_sample_id" header="Collaborator Sample ID" [editable]="true"></p-column>
-                    <p-column field="sample_type" header="Sample Type" [editable]="true"></p-column>
-                    <p-column field="samp_desc" header="Sample Description" [editable]="true"></p-column>
-                    <p-column field="matrix" header="Matrix" [editable]="true"></p-column>
-                    <p-column field="filter_flag" header="Filtered" [editable]="true"></p-column>
-                    <p-column field="secondary_conc_flag" header="Secondary Concentration" [editable]="true"></p-column>
-                    <p-column field="samp_vol_filt" header="Sample Volume Filtered" [editable]="true"></p-column>
-                    <p-column field="tvs_units" header="Units" [editable]="true"></p-column>
-                    <p-column field="imr" header="IMR" [editable]="true"></p-column>
-                    <p-column field="fmr" header="FMR" [editable]="true"></p-column>
-                    <p-column field="units" header="Meter Units" [editable]="true"></p-column>
+                <p-dataTable [value]="allSamples"  [scrollable]="true" scrollWidth="100%" [style]="{'margin-top':'30px'}" selectionMode="single" [(selection)]="selectedSample" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+                    <p-column field="sample_id" header="Sample ID" [editable]="true" [style]="{'width':'5em'}" ></p-column>
+                    <p-column field="study_name" header="Name"  [sortable]="true" [filter]="true" filterPlaceholder="Search" [editable]="true" [style]="{'width':'10em'}"></p-column>
+                    <p-column field="collab_sample_id" header="Collaborator Sample ID" [editable]="true" [style]="{'width':'8em'}"></p-column>
+                    <p-column field="sample_type" header="Sample Type" [editable]="true" [style]="{'width':'8em'}"></p-column>
+                    <p-column field="samp_desc" header="Sample Description" [editable]="true" [style]="{'width':'8em'}"></p-column>
+                    <p-column field="matrix" header="Matrix" [editable]="true" [style]="{'width':'5em'}"></p-column>
+                    <p-column field="filter_flag" header="Filtered" [editable]="true" [style]="{'width':'5em'}"></p-column>
+                    <p-column field="secondary_conc_flag" header="Secondary Concentration" [editable]="true"  [style]="{'width':'8em'}"></p-column>
+                    <p-column field="samp_vol_filt" header="Sample Volume Filtered" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="tvs_units" header="Units" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="imr" header="IMR" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="fmr" header="FMR" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="units" header="Meter Units" [editable]="true"  [style]="{'width':'5em'}"></p-column>
                     
-                    <p-column field="air_subsample_vol_ml" header="Air Subsample Volume (mL)" [editable]="true"></p-column>
-                    <p-column field="vol_post_dilution_ul" header="Volume After Dilution (uL)" [editable]="true"></p-column>
-                    <p-column field="filter_type" header="Filter Type" [editable]="true"></p-column>
-                    <p-column field="filt_bornon_date" header="Filter Born On Date" [editable]="true"></p-column>
-
-
-                    <p-column field="insert_user" header="Added by"  [sortable]="true"></p-column>
-                    <p-column field="insert_date" header="Date added"  [sortable]="true"></p-column>
+                    <p-column field="air_subsample_vol_ml" header="Air Subsample Volume (mL)" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="vol_post_dilution_ul" header="Volume After Dilution (uL)" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="filter_type" header="Filter Type" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="filt_bornon_date" header="Filter Born On Date" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="collect_start_date" header="Collect Start Date" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="collect_end_date" header="Collect End Date" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <!-- insert a calculated filter time field ?-->
+                    <p-column field="study_site_name" header="Study Site Name" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="study_site_id" header="Study Site ID" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="sampler_name" header="Sampler Nae" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="sample_notes" header="Sample Notes" [editable]="true"  [style]="{'width':'10em'}"></p-column>
+                    <p-column field="study_site_name" header="Study Site Name" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="study_site_id" header="Study Site ID" [editable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="insert_user" header="Added by"  [sortable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="insert_date" header="Date added"  [sortable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="update_user" header="Updated by"  [sortable]="true"  [style]="{'width':'5em'}"></p-column>
+                    <p-column field="update_date" header="Date updated"  [sortable]="true"  [style]="{'width':'5em'}"></p-column>
                     <!--<p-footer>
                         <ul>
                             <li *ngFor="let study of selectedStudies" style="text-align: left">{{study.study_name}}</li>
