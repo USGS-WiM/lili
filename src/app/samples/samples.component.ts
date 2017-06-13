@@ -85,11 +85,15 @@ export class SamplesComponent implements OnInit {
   
   editSample(selectedSample) {
 
-    console.log("secondary conc flag:" + selectedSample.secondary_conc_flag)
-    //show the edit sample form. needs updating
-    this.showHideEdit = !this.showHideEdit
+    //show the edit sample form if not showing already
+    if (this.showHideEdit === false) {
+        this.showHideEdit = true;
+    }
+    //TODO: assign value to dropdowns so they change with editSample function call 
+    //TODO: link the units dropdowns
 
     this.editSampleForm.setValue({
+      ///study_name: this.lookupDropdownValue('study_name', selectedSample.study_name),
       study_name: selectedSample.study_name,
       sample_type: selectedSample.sample_type,
       collab_sample_id: selectedSample.collab_sample_id,
@@ -133,6 +137,13 @@ export class SamplesComponent implements OnInit {
       tvs_stage_calc: '' 
     })
 
+  }
+
+  lookupDropdownValue (control, displayValue) {
+    //TODO:get the value looked up here to display in the dropdowns
+    console.log("lookupdropdown function reached. finding " + displayValue + " for the " + control + " formControl");
+
+    return;
   }
 
   onMatrixSelect(selectedMatrix) {
