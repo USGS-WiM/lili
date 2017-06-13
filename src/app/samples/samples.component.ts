@@ -27,6 +27,7 @@ export class SamplesComponent implements OnInit {
   showHideEdit: boolean = false;
   sampleSelected: boolean;
   displayConfig:Object = {};
+  cols: any[];
 
   //var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
@@ -61,6 +62,14 @@ export class SamplesComponent implements OnInit {
         .subscribe(displayConfig => this.displayConfig = displayConfig,
                     error => this.errorMessage = <any>error);
 
+      this.cols = [
+        {},
+        {},
+        {},
+        {}
+
+      ]
+
   }
 
 //sample table
@@ -70,10 +79,10 @@ export class SamplesComponent implements OnInit {
         console.log(event.data.study_name)
         console.log(this.selectedSample)
         console.log("samplesSelected var = " + this.sampleSelected)
-        this.editSampleForm.setValue({
-          name: event.data.study_name,
-          description: event.data.study_desc
-        })
+        // this.editSampleForm.setValue({
+        //   name: event.data.study_name,
+        //   description: event.data.study_desc
+        // })
   }
   //clear the edit form values when study unselected from table
   onRowUnselect(event){
