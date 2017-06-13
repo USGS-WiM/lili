@@ -429,7 +429,7 @@
     </div>
 </div>
 
-
+<!--
 <div class="row"> 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
@@ -443,7 +443,6 @@
                          <ng-template let-col let-sample="rowData" pTemplate="body">
                                  <div class="btn-group">
                                     <button class="btn btn-sm btn-link" (click)="showHideEdit = !showHideEdit" ><clr-icon shape="note-edit" size="16"></clr-icon></button>
-                                    <!-- pass the sample.sample_id to a function -->
                                 </div>
                         </ng-template>
                     </p-column>
@@ -460,7 +459,7 @@
                             <span >  {{sample[col.field]}} {{sample.tvs_units}}</span>
                         </ng-template>
                     </p-column>
-                    <!--<p-column field="tvs_units" header="Units"  [style]="{'width':'5em'}"></p-column>-->
+
                     <p-column field="imr" header="IMR"  [style]="{'width':'5em'}">
                           <ng-template let-col let-sample="rowData" pTemplate="body">
                             <span >  {{sample[col.field]}} {{sample.units}}</span>
@@ -471,7 +470,7 @@
                             <span >  {{sample[col.field]}} {{sample.units}}</span>
                         </ng-template>
                     </p-column>
-                    <!--<p-column field="units" header="M Units"  [style]="{'width':'8em'}"></p-column>-->
+      
                     <p-column field="air_subsample_vol_ml" header="Air Subsample Volume (mL)"  [style]="{'width':'8em'}"></p-column>
                     <p-column field="vol_post_dilution_ul" header="Volume After Dilution (uL)"   [style]="{'width':'5em'}"></p-column>
                     <p-column field="filter_type" header="Filter Type"  [style]="{'width':'10em'}"></p-column>
@@ -479,7 +478,7 @@
                     <p-column field="filt_bornon_date" header="Filter Born On Date"  [style]="{'width':'8em'}"></p-column>
                     <p-column field="collect_start_date" header="Collect Start Date"  [style]="{'width':'8em'}"></p-column>
                     <p-column field="collect_end_date" header="Collect End Date"  [style]="{'width':'8em'}"></p-column>
-                    <!-- insert a calculated filter time field ?-->
+           
                     <p-column field="study_site_name" header="Study Site Name"  [style]="{'width':'5em'}"></p-column>
                     <p-column field="study_site_id" header="Study Site ID"  [style]="{'width':'5em'}"></p-column>
                     <p-column field="sampler_name" header="Sampler Name"  [style]="{'width':'5em'}"></p-column>
@@ -488,25 +487,21 @@
                     <p-column field="insert_date" header="Date added"  [sortable]="true"  [style]="{'width':'8em'}"></p-column>
                     <p-column field="update_user" header="Updated by"  [sortable]="true"  [style]="{'width':'8em'}"></p-column>
                     <p-column field="update_date" header="Date updated"  [sortable]="true"  [style]="{'width':'8em'}"></p-column>
-                    <!--<p-footer>
-                        <ul>
-                            <li *ngFor="let study of selectedStudies" style="text-align: left">{{study.study_name}}</li>
-                        </ul>
-                    </p-footer>-->
+                
                     <p-footer><div style="text-align: left"></div></p-footer>
                 </p-dataTable>
                 </div> 
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 <div class="row"> 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="card-block">
                 <div class="card-title">
-                    All Samples (Clarity UI)
+                    All Samples
                 </div>
                 <div class="card-text">
                     <clr-datagrid>
@@ -517,151 +512,151 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'sample_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Sample ID
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'study_name'">
                              <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Study Name
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'collab_sample_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                  Collaborator Sample ID
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'sample_type'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Sample Type
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column  style="width:20em" >
+                        <clr-dg-column  style="width:20em" [clrDgField]="'samp_desc'" >
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Sample Description
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'matrix'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Matrix
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'filter_flag'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Filtered
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'secondary_conc_flag'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                2° Conc
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'samp_vol_filt'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Vol filtered
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'imr'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                IMR
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'fmr'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                FMR
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'air_subsample_vol_ml'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Air Subsample Volume (mL)
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'vol_post_dilution_ul'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Volume After Dilution (uL)
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'filter_type'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Filter Type
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'filt_bornon_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Filter Born On Date
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'collect_start_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Collect Start Date
                             </ng-container>
                         </clr-dg-column>
                         
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'collect_end_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Collect End Date
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'study_site_name'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Study Site Name
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'study_site_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Study Site ID
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'sampler_name'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Sampler Name
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column style="width:20em">
+                        <clr-dg-column style="width:20em" [clrDgField]="'sample_notes'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Sample Notes
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'insert_user'">
                              <ng-container *clrDgHideableColumn="{hidden: false}">
                                    Added by
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'insert_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                  Date added
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'update_user'">
                              <ng-container *clrDgHideableColumn="{hidden: false}">
                                  Updated by
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'update_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                  Date updated
                             </ng-container>
@@ -670,7 +665,8 @@
                         <clr-dg-row *clrDgItems="let sample of allSamples" >
                             <clr-dg-cell>
                                  <div class="btn-group">
-                                    <button class="btn btn-sm btn-link" (click)="showHideEdit = !showHideEdit" ><clr-icon shape="note-edit" size="16"></clr-icon></button>
+                                    <!--<button class="btn btn-sm btn-link" (click)="showHideEdit = !showHideEdit" ><clr-icon shape="note-edit" size="16"></clr-icon></button>-->
+                                    <button class="btn btn-sm btn-link" (click)="editSample(sample)"><clr-icon shape="note-edit" size="16"></clr-icon></button>
                                 </div>
                             </clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_id}}</clr-dg-cell>
@@ -688,16 +684,16 @@
                             <clr-dg-cell>{{sample.vol_post_dilution_ul}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_type}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filt_bornon_date}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.collect_start_date}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.collect_end_date}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.collect_start_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.collect_end_date | date:'shortDate'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.study_site_id}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sampler_name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_notes}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.insert_user}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.insert_date}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.update_user}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.update_date}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.insert_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.update_user }}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.update_date | date:'shortDate'}}</clr-dg-cell>
                         </clr-dg-row>
 
                         <clr-dg-footer>
