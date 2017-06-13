@@ -66,7 +66,7 @@ export class StudiesComponent implements OnInit {
         this.submitted = false;
   }
 
-  //edit study form - decalre a reactive form
+  //edit study form - declare a reactive form
   editStudyForm = new FormGroup({
         name: new FormControl('', Validators.required),
         description: new FormControl('')

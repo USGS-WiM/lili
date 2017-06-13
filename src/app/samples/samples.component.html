@@ -225,7 +225,7 @@
     </div>
 </div>
 
-
+<!-- Edit sample card -->
 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" *ngIf="showHideEdit" >
     <div class="card">
         <div class="card-block">
@@ -237,184 +237,184 @@
                 <label>Selected Sample: {{selectedSample ? selectedSample.sample_id: 'none'}}</label>
 
 
-               <div class="form-group">
-                                <label class="required">Matrix</label>
-                                <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
-                                    <div class="select">
-                                        <select id="matrixSelect" name="matrix" formControlName="matrix" (change)="onMatrixSelect($event.target.value)">
-                                            <option *ngFor="let matrix of matrices" [value]="matrix.matrix_cd">{{matrix.matrix}}</option>
-                                        </select>
-                                    </div>
-                                </label>
-                            </div>
+                <div class="form-group">
+                    <label class="required">Matrix</label>
+                    <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
+                        <div class="select">
+                            <select id="matrixSelect" name="matrix" formControlName="matrix" (change)="onMatrixSelect($event.target.value)">
+                                <option *ngFor="let matrix of matrices" [value]="matrix.matrix_cd">{{matrix.matrix}}</option>
+                            </select>
+                        </div>
+                    </label>
+                </div>
 
-                             <div class="form-group">
-                                <label class="required">Study</label>
-                                <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study_name').invalid && (addSampleForm.get('study_name').dirty || addSampleForm.get('study_name').touched)">
-                                <div class="select">
-                                    <select id="studySelect" name="study_name" formControlName="study_name">
-                                        <!-- line below is for adding a default value -->
-                                        <!--<option value="Default">Select Study...</option>-->
-                                        <option *ngFor="let study of allStudies" [value]="study.study_id">{{study.study_name}}</option>
-                                    </select>
-                                </div>
-                                </label>
-                            </div>
+                    <div class="form-group">
+                    <label class="required">Study</label>
+                    <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study_name').invalid && (addSampleForm.get('study_name').dirty || addSampleForm.get('study_name').touched)">
+                    <div class="select">
+                        <select id="studySelect" name="study_name" formControlName="study_name">
+                            <!-- line below is for adding a default value -->
+                            <!--<option value="Default">Select Study...</option>-->
+                            <option *ngFor="let study of allStudies" [value]="study.study_id">{{study.study_name}}</option>
+                        </select>
+                    </div>
+                    </label>
+                </div>
 
-                             <div class="form-group">
-                                <label class="required">Sample type</label>
-                                <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sample_type').invalid && (addSampleForm.get('sample_type').dirty || addSampleForm.get('sample_type').touched)">
-                                <div class="select">
-                                    <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
-                                        <!-- line below is for adding a default value -->
-                                        <!--<option value="Default">Select Sample Type...</option>-->
-                                        <option *ngFor="let type of sampleTypes" [value]="type.sample_type_id">{{type.sample_type}}</option>
-                                    </select>
-                                </div>
-                                </label>
-                            </div>
+                    <div class="form-group">
+                    <label class="required">Sample type</label>
+                    <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sample_type').invalid && (addSampleForm.get('sample_type').dirty || addSampleForm.get('sample_type').touched)">
+                    <div class="select">
+                        <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
+                            <!-- line below is for adding a default value -->
+                            <!--<option value="Default">Select Sample Type...</option>-->
+                            <option *ngFor="let type of sampleTypes" [value]="type.sample_type_id">{{type.sample_type}}</option>
+                        </select>
+                    </div>
+                    </label>
+                </div>
 
-                            <div class="form-group">
-                                <label class="required">Collaborator Sample ID</label>
-                                <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collab_sample_id').invalid && (addSampleForm.get('collab_sample_id').dirty || addSampleForm.get('collab_sample_id').touched)">
-                                    <input id="collabSampleIdInput" type="text" formControlName="collab_sample_id" >
-                                    <span class="tooltip-content">Collaborator ID is required.</span>
-                                </label>
-                            </div>
+                <div class="form-group">
+                    <label class="required">Collaborator Sample ID</label>
+                    <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collab_sample_id').invalid && (addSampleForm.get('collab_sample_id').dirty || addSampleForm.get('collab_sample_id').touched)">
+                        <input id="collabSampleIdInput" type="text" formControlName="collab_sample_id" >
+                        <span class="tooltip-content">Collaborator ID is required.</span>
+                    </label>
+                </div>
 
-                            <div class="form-group">
-                                <label class="required">Filtered</label>
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="filteredToggle" formControlName="filter_flag">
-                                    <label for="filteredToggle">{{this.addSampleForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
-                                </div>
-                            </div>
+                <div class="form-group">
+                    <label class="required">Filtered</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="filteredToggle" formControlName="filter_flag">
+                        <label for="filteredToggle">{{this.editSampleForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
+                    </div>
+                </div>
 
-                            <div class="form-group">
-                                <label class="required">Secondary Concentration</label>
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_conc_flag">
-                                    <label for="secondaryConcToggle">{{this.addSampleForm.controls.secondary_conc_flag.value ? "Yes" : "No"}}</label>
-                                </div>
-                            </div>
+                <div class="form-group">
+                    <label class="required">Secondary Concentration</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_conc_flag">
+                        <label for="secondaryConcToggle">{{this.editSampleForm.controls.secondary_conc_flag.value ? "Yes" : "No"}}</label>
+                    </div>
+                </div>
 
-                            <div class="form-group">
-                                <label for="studySiteNameInput">Study Site Name</label>
-                                <input id="studySiteNameInput" type="text" formControlName="study_site_name" >
-                            </div>
+                <div class="form-group">
+                    <label for="studySiteNameInput">Study Site Name</label>
+                    <input id="studySiteNameInput" type="text" formControlName="study_site_name" >
+                </div>
 
-                            <div class="form-group">
-                                <label for="studySiteIdInput">Study Site ID</label>
-                                <input id="studySiteIdInput" type="text" formControlName="study_site_id" >
-                            </div>
+                <div class="form-group">
+                    <label for="studySiteIdInput">Study Site ID</label>
+                    <input id="studySiteIdInput" type="text" formControlName="study_site_id" >
+                </div>
 
-                            <div class="form-group">
-                                <label for="sampleDescInput">Sample Description</label>
-                                <textarea id="sampleDescInput" rows="2" formControlName="samp_desc" style="max-width:25em" ></textarea>
-                            </div>
+                <div class="form-group">
+                    <label for="sampleDescInput">Sample Description</label>
+                    <textarea id="sampleDescInput" rows="2" formControlName="samp_desc" style="max-width:25em" ></textarea>
+                </div>
 
-                            <div class="form-group">
-                                <label for="samplerNameInput">Sampler Name</label>
-                                <input id="samplerNameInput" type="text" formControlName="sampler_name">
-                            </div>
+                <div class="form-group">
+                    <label for="samplerNameInput">Sampler Name</label>
+                    <input id="samplerNameInput" type="text" formControlName="sampler_name">
+                </div>
 
-                            <div class="form-group">
-                                <label for="collectStartDateInput" class="required">Collection Start Date</label>
-                                <input type="date" id="collectStartDateInput" formControlName="collect_start_date" >
-                            </div>
+                <div class="form-group">
+                    <label for="collectStartDateInput" class="required">Collection Start Date</label>
+                    <input type="date" id="collectStartDateInput" formControlName="collect_start_date" >
+                </div>
 
-                            <!--begin variable display section-->
+                <!--begin variable display section-->
 
-                            <div class="form-group">
-                                <label for="collectStartTime">Collection Start Time (HHmm)</label>
-                                <input id="collectStartTime" type="text" formControlName="collect_start_time">
-                            </div>
+                <div class="form-group">
+                    <label for="collectStartTime">Collection Start Time (HHmm)</label>
+                    <input id="collectStartTime" type="text" formControlName="collect_start_time">
+                </div>
 
-                            <div class="form-group">
-                                <label for="collectEndDateInput">Collection End Date</label>
-                                <input type="date" id="collectEndDateInput" formControlName="collect_end_date" >
-                            </div>
+                <div class="form-group">
+                    <label for="collectEndDateInput">Collection End Date</label>
+                    <input type="date" id="collectEndDateInput" formControlName="collect_end_date" >
+                </div>
 
-                            <div class="form-group">
-                                <label for="collectEndTime">Collection End Time (HHmm)</label>
-                                <input id="collectEndTime" type="text" formControlName="collect_end_time">
-                            </div>
+                <div class="form-group">
+                    <label for="collectEndTime">Collection End Time (HHmm)</label>
+                    <input id="collectEndTime" type="text" formControlName="collect_end_time">
+                </div>
 
-                            <div class="form-group">
-                                <label for="pumpRateInput">Pump Flow rate</label>
-                                <input id="pumpRateInput" type="text" formControlName="pump_rate">
-                            </div>
+                <div class="form-group">
+                    <label for="pumpRateInput">Pump Flow rate</label>
+                    <input id="pumpRateInput" type="text" formControlName="pump_rate">
+                </div>
 
-                            <div class="form-group">
-                                <label for="imrInput" >Initial Meter Reading</label>
-                                 <input type="text" id="imrInput" formControlName="imr">
-                                <div class="select">
-                                    <select id="imrUnitSelect" formControlName="tvs_units">
-                                        <option>Gal</option>
-                                        <option>L</option>
-                                        <option>g</option>
-                                    </select>
-                                </div>
-                            </div>
+                <div class="form-group">
+                    <label for="imrInput" >Initial Meter Reading</label>
+                        <input type="text" id="imrInput" formControlName="imr">
+                    <div class="select">
+                        <select id="imrUnitSelect" formControlName="tvs_units">
+                            <option>Gal</option>
+                            <option>L</option>
+                            <option>g</option>
+                        </select>
+                    </div>
+                </div>
 
-                            <div class="form-group">
-                                <label for="fmrInput">Final Meter Reading</label>
-                                 <input type="text" id="fmrInput" formControlName="fmr">
-                                 <label>{{addSampleForm.controls.tvs_units.value}}</label>
-                            </div>
+                <div class="form-group">
+                    <label for="fmrInput">Final Meter Reading</label>
+                        <input type="text" id="fmrInput" formControlName="fmr">
+                        <label>{{addSampleForm.controls.tvs_units.value}}</label>
+                </div>
 
-                            <div class="form-group">
-                                <label for="tvsInput">Total Volume Sampled</label>
-                                 <input type="text" id="tvsInput" formControlName="tvs">
-                                <div class="select">
-                                    <select id="tvsUnitSelect">
-                                        <option>Gal</option>
-                                        <option>L</option>
-                                        <option>g</option>
-                                    </select>
-                                </div>
-                            </div>
+                <div class="form-group">
+                    <label for="tvsInput">Total Volume Sampled</label>
+                        <input type="text" id="tvsInput" formControlName="tvs">
+                    <div class="select">
+                        <select id="tvsUnitSelect">
+                            <option>Gal</option>
+                            <option>L</option>
+                            <option>g</option>
+                        </select>
+                    </div>
+                </div>
 
-                            <div class="form-group">
-                                <label for="volPostDiluteInput">Volume After Dilution</label>
-                                <input id="volPostDiluteInput" type="text" formControlName="vol_post_dilution_ul">
-                            </div>
+                <div class="form-group">
+                    <label for="volPostDiluteInput">Volume After Dilution</label>
+                    <input id="volPostDiluteInput" type="text" formControlName="vol_post_dilution_ul">
+                </div>
 
-                            <!--come back and make this a dropdown -->
-                            <div class="form-group">
-                                <label for="filterTypeInput">Filter Type</label>
-                                <input id="filterTypeInput" type="text" formControlName="filter_type">
-                            </div>
+                <!--come back and make this a dropdown -->
+                <div class="form-group">
+                    <label for="filterTypeInput">Filter Type</label>
+                    <input id="filterTypeInput" type="text" formControlName="filter_type">
+                </div>
 
-                            <div class="form-group">
-                                <label for="filterBornOnDateInput">Collection Start Date</label>
-                                <input type="date" id="filterBornOnDateInput" formControlName="filt_bornon_date" >
-                            </div>
+                <div class="form-group">
+                    <label for="filterBornOnDateInput">Collection Start Date</label>
+                    <input type="date" id="filterBornOnDateInput" formControlName="filt_bornon_date" >
+                </div>
 
-                            <div class="form-group">
-                                <label for="dissVolInput">Dissolution Volume (mL)</label>
-                                <input id="dissVolInput" type="text" formControlName="air_subsample_vol_ml">
-                            </div>
+                <div class="form-group">
+                    <label for="dissVolInput">Dissolution Volume (mL)</label>
+                    <input id="dissVolInput" type="text" formControlName="air_subsample_vol_ml">
+                </div>
 
-                            <div class="form-group">
-                                <label for="eluteDateInput">Elution Date</label>
-                                <input type="date" id="eluteDateInput" formControlName="elute_date" >
-                            </div>
+                <div class="form-group">
+                    <label for="eluteDateInput">Elution Date</label>
+                    <input type="date" id="eluteDateInput" formControlName="elute_date" >
+                </div>
 
-                            <div class="form-group">
-                                <label for="eluteNotesInput">Elution Notes</label>
-                                <textarea id="eluteNotesInput" rows="2" formControlName="elute_notes" style="max-width:25em"></textarea>
-                            </div>
+                <div class="form-group">
+                    <label for="eluteNotesInput">Elution Notes</label>
+                    <textarea id="eluteNotesInput" rows="2" formControlName="elute_notes" style="max-width:25em"></textarea>
+                </div>
 
-                            <div class="form-group">
-                                <label for="techInitInput">Tech Intials</label>
-                                <input id="techInitInput" type="text" formControlName="tech_init">
-                            </div>
+                <div class="form-group">
+                    <label for="techInitInput">Tech Intials</label>
+                    <input id="techInitInput" type="text" formControlName="tech_init">
+                </div>
 
-                            <div class="form-group">
-                                <label for="eluteVolInput">Eluent/Backflish Volume Used</label>
-                                <input id="eluteVolInput" type="text" formControlName="init_vol">
-                            </div>
+                <div class="form-group">
+                    <label for="eluteVolInput">Eluent/Backflish Volume Used</label>
+                    <input id="eluteVolInput" type="text" formControlName="init_vol">
+                </div>
 
 
 
