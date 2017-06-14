@@ -20,13 +20,17 @@ export class SamplesComponent implements OnInit {
   allSamples: ISample[];
   sampleTypes: ISampleType[];
   matrices: IMatrix[];
-  allStudies: IStudy[];
+  studies: IStudy[];
   errorMessage: string;
   selectedSample: ISample;
   showHideAdd: boolean = false;
   showHideEdit: boolean = false;
   sampleSelected: boolean;
   displayConfig:Object = {};
+
+  matrixStoredValue: String;
+  sampleTypeStoredValue: number;
+  studyStoredValue;
 
   //var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
@@ -52,9 +56,9 @@ export class SamplesComponent implements OnInit {
         .subscribe(matrices => this.matrices = matrices,
                     error => this.errorMessage = <any>error);
 
-      //on init, call getStudies function of the StudyService, set results to the allStudies var
+      //on init, call getStudies function of the StudyService, set results to the studies var
       this._studyService.getStudies()
-        .subscribe(studies => this.allStudies = studies,
+        .subscribe(studies => this.studies = studies,
                     error => this.errorMessage = <any>error);
 
       this._sampleService.getSampleFormConfig()
@@ -64,40 +68,70 @@ export class SamplesComponent implements OnInit {
 
   }
 
-//sample table
-//set the values of the edit sample form on select of sample in the table
-  onRowSelect(event) {
-        this.sampleSelected = true;
-        console.log(event.data.study_name)
-        console.log(this.selectedSample)
-        console.log("samplesSelected var = " + this.sampleSelected)
+
+  lookupDropdownValue (control, displayValue) {
+    switch (control){
+      case ('study_name') : {
+        for (var i = 0; i < this.studies.length; i++) {
+            if (this.studies[i].study_name === displayValue) {
+              console.log("inside switch case for study_name. study id:" + this.studies[i].study_id)
+              return this.studies[i].study_id;
+            }
+        }
+      }
+      case ('matrix') : {
+        for (var i = 0; i < this.matrices.length; i++) {
+            if (this.matrices[i].matrix === displayValue) {
+              console.log("inside switch case for matrix. matrix cd" + this.matrices[i].matrix_cd)
+              return this.matrices[i].matrix_cd;
+            }
+        }
+      }
+      case ('sample_type') : {
+        for (var i = 0; i < this.sampleTypes.length; i++) {
+            if (this.sampleTypes[i].sample_type === displayValue) {
+              console.log("inside switch case for sample type. sample type id" + this.sampleTypes[i].sample_type_id);
+              return this.sampleTypes[i].sample_type_id;
+            }
+        }
+      }
+    }
+  }
+
+  //sample table
+  //set the values of the edit sample form on select of sample in the table
+  //all below is for PrimeNG tables
+  // onRowSelect(event) {
+  //       this.sampleSelected = true;
+  //       console.log(event.data.study_name)
+  //       console.log(this.selectedSample)
+  //       console.log("samplesSelected var = " + this.sampleSelected)
         
-  }
-  //clear the edit form values when study unselected from table
-  onRowUnselect(event){
-    console.log("sample unselected")
-    this.sampleSelected = false;
-    this.editSampleForm.setValue({
-          name: '',
-          description:''
-        })
-  }
+  // }
+  // //clear the edit form values when study unselected from table
+  // onRowUnselect(event){
+  //   console.log("sample unselected")
+  //   this.sampleSelected = false;
+  //   this.editSampleForm.setValue({
+  //         name: '',
+  //         description:''
+  //       })
+  // }
   
   editSample(selectedSample) {
 
     //show the edit sample form if not showing already
     if (this.showHideEdit === false) {
         this.showHideEdit = true;
-    }
-    //TODO: assign value to dropdowns so they change with editSample function call 
-    //TODO: link the units dropdowns
 
+    }
+
+    //TODO: link the units dropdowns
     this.editSampleForm.setValue({
-      ///study_name: this.lookupDropdownValue('study_name', selectedSample.study_name),
-      study_name: selectedSample.study_name,
-      sample_type: selectedSample.sample_type,
+      matrix: this.lookupDropdownValue('matrix', selectedSample.matrix),
+      study_name: this.lookupDropdownValue('study_name', selectedSample.study_name),
+      sample_type: this.lookupDropdownValue('sample_type', selectedSample.sample_type),
       collab_sample_id: selectedSample.collab_sample_id,
-      matrix: selectedSample.matrix, 
       filter_flag: selectedSample.filter_flag, 
       secondary_conc_flag: selectedSample.secondary_conc_flag, 
       study_site_name: selectedSample.study_site_name,
@@ -139,12 +173,6 @@ export class SamplesComponent implements OnInit {
 
   }
 
-  lookupDropdownValue (control, displayValue) {
-    //TODO:get the value looked up here to display in the dropdowns
-    console.log("lookupdropdown function reached. finding " + displayValue + " for the " + control + " formControl");
-
-    return;
-  }
 
   onMatrixSelect(selectedMatrix) {
     //value stored in dropdown is matrix_cd, i.e. abbreviation
@@ -172,61 +200,56 @@ export class SamplesComponent implements OnInit {
             //the line below doesn't work, but spent a few hours trying to figure out what was wrong with it. this method, however elegant, is just not supported by angular
             //this.addSampleForm.controls[property].disabled === this.displayConfig[selectedMatrix][property];
         }   
-
-
-        //this.addSampleForm.controls.samp_desc.disable();
   }
 
   //add sample form - declare reactive form with appropriate sample fields
-  //try: split the common formcontrols and the variable ones into two form groups with their own distinct statuses, nested under a parent formgroup.
-  //set the disabled state of the variable controls after matrix is selected
   addSampleForm = new FormGroup({
-        //the following controls apply to every sample record, regardless of matrix selected
-        study_name: new FormControl('', Validators.required),  //study name, maps to study id
-        sample_type: new FormControl('', Validators.required),
-        collab_sample_id: new FormControl('', Validators.required),
-        //orig_collab_samp_id: new FormControl(''),
-        matrix: new FormControl('', Validators.required), 
-        filter_flag: new FormControl(false, Validators.required), //radio button
-        secondary_conc_flag: new FormControl(false, Validators.required), //radio button
-        study_site_name: new FormControl('', ),
-        study_site_id:new FormControl(''),
-        samp_desc: new FormControl(''),
-        sampler_name:  new FormControl(''),
-        sample_notes: new FormControl(''),
-        arrive_date: new FormControl(''),
-        arrive_notes: new FormControl(''),
-        collect_start_date: new FormControl('',Validators.required),
+    //the following controls apply to every sample record, regardless of matrix selected
+    study_name: new FormControl('', Validators.required),  //study name, maps to study id
+    sample_type: new FormControl('', Validators.required),
+    collab_sample_id: new FormControl('', Validators.required),
+    //orig_collab_samp_id: new FormControl(''),
+    matrix: new FormControl('', Validators.required), 
+    filter_flag: new FormControl(false, Validators.required), //radio button
+    secondary_conc_flag: new FormControl(false, Validators.required), //radio button
+    study_site_name: new FormControl('', ),
+    study_site_id:new FormControl(''),
+    samp_desc: new FormControl(''),
+    sampler_name:  new FormControl(''),
+    sample_notes: new FormControl(''),
+    arrive_date: new FormControl(''),
+    arrive_notes: new FormControl(''),
+    collect_start_date: new FormControl('',Validators.required),
 
-        //the following controls have variable display needs based on the matrix selected
-        collect_start_time: new FormControl(''),
-        collect_end_date: new FormControl(''),
-        collect_end_time: new FormControl(''),
-        pump_rate: new FormControl(''),
-        imr: new FormControl(''),
-        fmr: new FormControl(''),
-        tvs: new FormControl(''),
-        vol_post_dilution_ul: new FormControl(''), //required when not disabled
-        filter_type: new FormControl(''), //required when not disabled
-        filt_bornon_date: new FormControl(''),
-        air_subsample_vol_ml: new FormControl(''), //required when not disabled
-        elute_date: new FormControl(''),
-        elute_notes: new FormControl(''),
-        tech_init: new FormControl(''),
-        init_vol: new FormControl(''),
-       
-       //the following controls arre for fields/inputs that do not appear in the current LIMS
-       //they may be missing, or may be better only for displaynin table, not for the form
-        samp_vol_filt: new FormControl(''),
-        units: new FormControl(''), 
-        sample_loc_type: new FormControl(''),
-        samp_env_type: new FormControl(''),
-        water_type: new FormControl(''),
-        tvs_units: new FormControl(''),
-        tvs_stage: new FormControl(''),
-        tvs_liters: new FormControl(''),
-        tvs_calc: new FormControl(''),
-        tvs_stage_calc: new FormControl('') 
+    //the following controls have variable display needs based on the matrix selected
+    collect_start_time: new FormControl(''),
+    collect_end_date: new FormControl(''),
+    collect_end_time: new FormControl(''),
+    pump_rate: new FormControl(''),
+    imr: new FormControl(''),
+    fmr: new FormControl(''),
+    tvs: new FormControl(''),
+    vol_post_dilution_ul: new FormControl(''), //required when not disabled
+    filter_type: new FormControl(''), //required when not disabled
+    filt_bornon_date: new FormControl(''),
+    air_subsample_vol_ml: new FormControl(''), //required when not disabled
+    elute_date: new FormControl(''),
+    elute_notes: new FormControl(''),
+    tech_init: new FormControl(''),
+    init_vol: new FormControl(''),
+    
+    //the following controls arre for fields/inputs that do not appear in the current LIMS
+    //they may be missing, or may be better only for displaynin table, not for the form
+    samp_vol_filt: new FormControl(''),
+    units: new FormControl(''), 
+    sample_loc_type: new FormControl(''),
+    samp_env_type: new FormControl(''),
+    water_type: new FormControl(''),
+    tvs_units: new FormControl(''),
+    tvs_stage: new FormControl(''),
+    tvs_liters: new FormControl(''),
+    tvs_calc: new FormControl(''),
+    tvs_stage_calc: new FormControl('') 
   });
 
   ///split these out
