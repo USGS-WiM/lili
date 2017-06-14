@@ -50,7 +50,7 @@
                                     <select id="studySelect" name="study_name" formControlName="study_name">
                                         <!-- line below is for adding a default value -->
                                         <!--<option value="Default">Select Study...</option>-->
-                                        <option *ngFor="let study of allStudies" [value]="study.study_id">{{study.study_name}}</option>
+                                        <option *ngFor="let study of studies" [value]="study.study_id">{{study.study_name}}</option>
                                     </select>
                                 </div>
                                 </label>
@@ -255,7 +255,7 @@
                         <select id="studySelect" name="study_name" formControlName="study_name">
                             <!-- line below is for adding a default value -->
                             <!--<option value="Default">Select Study...</option>-->
-                            <option *ngFor="let study of allStudies" [value]="study.study_id">{{study.study_name}}</option>
+                            <option *ngFor="let study of studies" [value]="study.study_id">{{study.study_name}}</option>
                         </select>
                     </div>
                     </label>
@@ -684,7 +684,7 @@
                             <clr-dg-cell>{{sample.vol_post_dilution_ul}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_type}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filt_bornon_date}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.collect_start_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.collect_start_date | date:'yyyy-MM-dd'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collect_end_date | date:'shortDate'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.study_site_id}}</clr-dg-cell>
