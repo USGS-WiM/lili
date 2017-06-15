@@ -89,35 +89,15 @@ export class SamplesComponent implements OnInit {
       }
       case ('sample_type') : {
         for (var i = 0; i < this.sampleTypes.length; i++) {
-            if (this.sampleTypes[i].sample_type === displayValue) {
-              console.log("inside switch case for sample type. sample type id" + this.sampleTypes[i].sample_type_id);
-              return this.sampleTypes[i].sample_type_id;
+            if (this.sampleTypes[i].name === displayValue) {
+              console.log("inside switch case for sample type. sample type id" + this.sampleTypes[i].id);
+              return this.sampleTypes[i].id;
             }
         }
       }
     }
   }
 
-  //sample table
-  //set the values of the edit sample form on select of sample in the table
-  //all below is for PrimeNG tables
-  // onRowSelect(event) {
-  //       this.sampleSelected = true;
-  //       console.log(event.data.study_name)
-  //       console.log(this.selectedSample)
-  //       console.log("samplesSelected var = " + this.sampleSelected)
-        
-  // }
-  // //clear the edit form values when study unselected from table
-  // onRowUnselect(event){
-  //   console.log("sample unselected")
-  //   this.sampleSelected = false;
-  //   this.editSampleForm.setValue({
-  //         name: '',
-  //         description:''
-  //       })
-  // }
-  
   editSample(selectedSample) {
 
     //show the edit sample form if not showing already
