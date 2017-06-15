@@ -144,10 +144,8 @@
                                 <label for="imrInput" >Initial Meter Reading</label>
                                  <input type="text" id="imrInput" formControlName="imr">
                                 <div class="select">
-                                    <select id="imrUnitSelect" formControlName="tvs_units">
-                                        <option>Gal</option>
-                                        <option>L</option>
-                                        <option>g</option>
+                                    <select id="imrUnitSelect" formControlName="units">
+                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -155,17 +153,15 @@
                             <div class="form-group">
                                 <label for="fmrInput">Final Meter Reading</label>
                                  <input type="text" id="fmrInput" formControlName="fmr">
-                                 <label>{{addSampleForm.controls.tvs_units.value}}</label>
+                                 <label>{{addSampleForm.controls.tvs_units.name}}</label>
                             </div>
 
                             <div class="form-group">
                                 <label for="tvsInput">Total Volume Sampled</label>
                                  <input type="text" id="tvsInput" formControlName="tvs">
                                 <div class="select">
-                                    <select id="tvsUnitSelect">
-                                        <option>Gal</option>
-                                        <option>L</option>
-                                        <option>g</option>
+                                    <select id="tvsUnitSelect" formControlName="tvs_units">
+                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -346,10 +342,8 @@
                     <label for="imrInput" >Initial Meter Reading</label>
                         <input type="text" id="imrInput" formControlName="imr">
                     <div class="select">
-                        <select id="imrUnitSelect" formControlName="tvs_units">
-                            <option>Gal</option>
-                            <option>L</option>
-                            <option>g</option>
+                        <select id="imrUnitSelect" formControlName="units">
+                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -357,17 +351,15 @@
                 <div class="form-group">
                     <label for="fmrInput">Final Meter Reading</label>
                         <input type="text" id="fmrInput" formControlName="fmr">
-                        <label>{{addSampleForm.controls.tvs_units.value}}</label>
+                        <label>{{addSampleForm.controls.units.value}}</label>
                 </div>
 
                 <div class="form-group">
                     <label for="tvsInput">Total Volume Sampled</label>
                         <input type="text" id="tvsInput" formControlName="tvs">
                     <div class="select">
-                        <select id="tvsUnitSelect">
-                            <option>Gal</option>
-                            <option>L</option>
-                            <option>g</option>
+                        <select id="tvsUnitSelect" formControlName="tvs_units">
+                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                         </select>
                     </div>
                 </div>

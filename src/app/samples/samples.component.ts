@@ -5,11 +5,13 @@ import { ISample } from './sample'
 import { ISampleType } from './sample-type';
 import { IMatrix } from './matrix';
 import { IStudy } from '../studies/study';
+import { IUnit } from './unit';
 
 import { SampleService } from './sample.service';
 import { SampleTypeService } from './sample-type.service';
 import { MatrixService } from './matrix.service';
 import { StudyService } from '../studies/study.service'
+import { UnitService } from './unit.service';
 
 @Component({
   selector: 'app-samples',
@@ -21,6 +23,7 @@ export class SamplesComponent implements OnInit {
   sampleTypes: ISampleType[];
   matrices: IMatrix[];
   studies: IStudy[];
+  units: IUnit[];
   errorMessage: string;
   selectedSample: ISample;
   showHideAdd: boolean = false;
@@ -35,7 +38,7 @@ export class SamplesComponent implements OnInit {
   //var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
 
-  constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _matrixService: MatrixService ) { }
+  constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _matrixService: MatrixService, private _unitService: UnitService ) { }
 
   ngOnInit():void {
       //on init, call getSamples function of the SampleService, set results to the allSamples var
@@ -43,9 +46,7 @@ export class SamplesComponent implements OnInit {
         .subscribe(samples => this.allSamples = samples,
                     error => this.errorMessage = <any>error);
       this.sampleSelected = false;
-      //temporary console log statement
-      console.log("sampleSelected var = " + this.sampleSelected)
-
+  
       //on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
       this._sampleTypeService.getSampleTypes()
         .subscribe(sampleTypes => this.sampleTypes = sampleTypes,
@@ -59,6 +60,11 @@ export class SamplesComponent implements OnInit {
       //on init, call getStudies function of the StudyService, set results to the studies var
       this._studyService.getStudies()
         .subscribe(studies => this.studies = studies,
+                    error => this.errorMessage = <any>error);
+
+      //on init, call getUnits function of the UnitService, set results to the units var
+      this._unitService.getUnits()
+        .subscribe(units => this.units = units,
                     error => this.errorMessage = <any>error);
 
       this._sampleService.getSampleFormConfig()
@@ -95,6 +101,22 @@ export class SamplesComponent implements OnInit {
             }
         }
       }
+      case ('units') : {
+        for (var i = 0; i < this.units.length; i++) {
+            if (this.units[i].name === displayValue) {
+              console.log("inside switch case for units. unit id" + this.units[i].id);
+              return this.units[i].id;
+            }
+        }
+      }
+      case ('tvs_units') : {
+        for (var i = 0; i < this.units.length; i++) {
+            if (this.units[i].name === displayValue) {
+              console.log("inside switch case for units. unit id" + this.units[i].id);
+              return this.units[i].id;
+            }
+        }
+      }
     }
   }
 
@@ -106,7 +128,6 @@ export class SamplesComponent implements OnInit {
 
     }
 
-    //TODO: link the units dropdowns
     this.editSampleForm.setValue({
       matrix: this.lookupDropdownValue('matrix', selectedSample.matrix),
       study_name: this.lookupDropdownValue('study_name', selectedSample.study_name),
@@ -138,13 +159,13 @@ export class SamplesComponent implements OnInit {
       elute_notes: selectedSample.elute_notes,
       tech_init: selectedSample.tech_init,
       init_vol: selectedSample.init_vol,
+      units: this.lookupDropdownValue('units', selectedSample.units),
+      tvs_units: this.lookupDropdownValue('tvs_units', selectedSample.tvs_units),
 
       samp_vol_filt: '',
-      units: '', 
       sample_loc_type: '',
       samp_env_type: '',
       water_type: '',
-      tvs_units: '',
       tvs_stage: '',
       tvs_liters: '',
       tvs_calc: '',
