@@ -1,9 +1,16 @@
 
 ![WiM](wimlogo.png)
 
-LIDE LIMS
+Lili 
 ============
 This is the Laboratory Information Management System for the Laboratory for Infectious Disease and Environment.
+
+Laboratory for Infectious Disease and Environment = **LIDE**  | Laboratory Information Management System = **LIMS**
+
+
+**LI** DE  **LI** MS  = Lili 
+
+This codebase is the front-end client/web application built in Angular (2+)
 
 
 #### Installation
