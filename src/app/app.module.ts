@@ -24,6 +24,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { StudiesFormComponent } from './studies/studies-form/studies-form.component';
 //to be removed
 import { StudiesTableComponent } from './studies/studies-table/studies-table.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import { StudiesTableComponent } from './studies/studies-table/studies-table.com
         //to be removed
         StudiesFormComponent,
         //to be removed
-        StudiesTableComponent
+        StudiesTableComponent,
+        AdminComponent
     ],
     imports: [
         BrowserAnimationsModule,

@@ -15,7 +15,10 @@ export class StudiesComponent implements OnInit {
   selectedStudy: IStudy;
   showHideAdd: boolean = false;
   showHideEdit: boolean = false;
-  studySelected: boolean;
+ 
+ selectedStudyName;
+
+
 
   constructor(private _studyService: StudyService) { }
 
@@ -24,34 +27,55 @@ export class StudiesComponent implements OnInit {
       this._studyService.getStudies()
         .subscribe(studies => this.allStudies = studies,
                     error => this.errorMessage = <any>error);
-      this.studySelected = false;
-      console.log("studySelected var = " + this.studySelected)
   }
 
   //studies table
   //set the values of the edit study form on select of study in the table
-  onRowSelect(event) {
-        this.studySelected = true;
-        console.log(event.data.study_name)
-        console.log(this.selectedStudy)
-        console.log("studySelected var = " + this.studySelected)
-        this.editStudyForm.setValue({
-          name: event.data.study_name,
-          description: event.data.study_desc
-        })
-  }
-  //clear the edit form values when study unselected from table
-  onRowUnselect(event){
-    console.log("study unselected")
-    this.studySelected = false;
+//   onRowSelect(event) {
+//         this.studySelected = true;
+//         console.log(event.data.study_name)
+//         console.log(this.selectedStudy)
+//         console.log("studySelected var = " + this.studySelected)
+//         this.editStudyForm.setValue({
+//           name: event.data.study_name,
+//           description: event.data.study_desc
+//         })
+//   }
+//   //clear the edit form values when study unselected from table
+//   onRowUnselect(event){
+//     console.log("study unselected")
+//     this.studySelected = false;
+//     this.editStudyForm.setValue({
+//           name: '',
+//           description:''
+//         })
+//   }
+
+editStudy(selectedStudy) {
+
+      //show the edit study form if not showing already
+    if (this.showHideEdit === false) {
+        this.showHideEdit = true;
+
+    }
+
+    this.selectedStudyName = selectedStudy.study_name;
+
     this.editStudyForm.setValue({
-          name: '',
-          description:''
-        })
-  }
+          name: selectedStudy.study_name,
+          description: selectedStudy.study_desc
+    })
+
+}
+
   
   //add study form - declare a reactive form with appropriate study fields
   addStudyForm = new FormGroup({
+        name: new FormControl('', Validators.required),
+        description: new FormControl('')
+  });
+  //edit study form - declare a reactive form
+  editStudyForm = new FormGroup({
         name: new FormControl('', Validators.required),
         description: new FormControl('')
   });
@@ -66,11 +90,7 @@ export class StudiesComponent implements OnInit {
         this.submitted = false;
   }
 
-  //edit study form - declare a reactive form
-  editStudyForm = new FormGroup({
-        name: new FormControl('', Validators.required),
-        description: new FormControl('')
-  });
+  
   
 
 }

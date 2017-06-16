@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ISample } from './sample'
-import { ISampleType } from './sample-type';
-import { IMatrix } from './matrix';
+import { ISampleType } from '../SHARED/sample-type';
+import { IMatrix } from '../SHARED/matrix';
 import { IStudy } from '../studies/study';
-import { IUnit } from './unit';
+import { IUnit } from '../SHARED/unit';
 
 import { SampleService } from './sample.service';
-import { SampleTypeService } from './sample-type.service';
-import { MatrixService } from './matrix.service';
+import { SampleTypeService } from '../SHARED/sample-type.service';
+import { MatrixService } from '../SHARED/matrix.service';
 import { StudyService } from '../studies/study.service'
-import { UnitService } from './unit.service';
+import { UnitService } from '../SHARED/unit.service';
 
 @Component({
   selector: 'app-samples',
@@ -30,6 +30,8 @@ export class SamplesComponent implements OnInit {
   showHideEdit: boolean = false;
   sampleSelected: boolean;
   displayConfig:Object = {};
+
+  selectedSampleId;
 
   matrixStoredValue: String;
   sampleTypeStoredValue: number;
@@ -128,6 +130,8 @@ export class SamplesComponent implements OnInit {
 
     }
 
+    this.selectedSampleId = selectedSample.sample_id;
+
     this.editSampleForm.setValue({
       matrix: this.lookupDropdownValue('matrix', selectedSample.matrix),
       study_name: this.lookupDropdownValue('study_name', selectedSample.study_name),
@@ -161,8 +165,8 @@ export class SamplesComponent implements OnInit {
       init_vol: selectedSample.init_vol,
       units: this.lookupDropdownValue('units', selectedSample.units),
       tvs_units: this.lookupDropdownValue('tvs_units', selectedSample.tvs_units),
+      samp_vol_filt: selectedSample.samp_vol_filt,
 
-      samp_vol_filt: '',
       sample_loc_type: '',
       samp_env_type: '',
       water_type: '',
