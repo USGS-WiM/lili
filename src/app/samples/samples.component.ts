@@ -30,13 +30,11 @@ export class SamplesComponent implements OnInit {
   showHideEdit: boolean = false;
   sampleSelected: boolean;
   displayConfig:Object = {};
-
   selectedSampleId;
-
+  //following 3 vars hold the 'value' property for the corresponding html select dropdowns - needed to update dropdown for editSample form
   matrixStoredValue: String;
   sampleTypeStoredValue: number;
   studyStoredValue;
-
   //var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
 
@@ -72,7 +70,6 @@ export class SamplesComponent implements OnInit {
       this._sampleService.getSampleFormConfig()
         .subscribe(displayConfig => this.displayConfig = displayConfig,
                     error => this.errorMessage = <any>error);
-
 
   }
 
@@ -127,9 +124,8 @@ export class SamplesComponent implements OnInit {
     //show the edit sample form if not showing already
     if (this.showHideEdit === false) {
         this.showHideEdit = true;
-
     }
-
+    //sets the var selectedSampleId used for label display
     this.selectedSampleId = selectedSample.sample_id;
 
     this.editSampleForm.setValue({
@@ -178,13 +174,11 @@ export class SamplesComponent implements OnInit {
 
   }
 
-
   onMatrixSelect(selectedMatrix) {
     //value stored in dropdown is matrix_cd, i.e. abbreviation
     console.log("Matrix selected:" + selectedMatrix);
         //loop through displayConfig variables for the selected matrix, from the config JSON file (all boolean)
         for (var property in this.displayConfig[selectedMatrix]) {
-
             switch(this.displayConfig[selectedMatrix][property]) { 
             case (true): { 
               //if disabled == true, disable corresponding control
@@ -202,8 +196,6 @@ export class SamplesComponent implements OnInit {
                   break; 
               } 
             } 
-            //the line below doesn't work, but spent a few hours trying to figure out what was wrong with it. this method, however elegant, is just not supported by angular
-            //this.addSampleForm.controls[property].disabled === this.displayConfig[selectedMatrix][property];
         }   
   }
 
@@ -257,17 +249,7 @@ export class SamplesComponent implements OnInit {
     tvs_stage_calc: new FormControl('') 
   });
 
-  ///split these out
-  submitted = false;
-  onSubmit () {
-
-  }
-  addNewStudy() {
-        this.addSampleForm.reset();
-        this.submitted = false;
-  }
-
-  //edit study form
+   //edit sample form
   editSampleForm = new FormGroup({
          //the following controls apply to every sample record, regardless of matrix selected
         study_name: new FormControl('', Validators.required),  //study name, maps to study id
@@ -316,6 +298,23 @@ export class SamplesComponent implements OnInit {
         tvs_calc: new FormControl(''),
         tvs_stage_calc: new FormControl('') 
   });
+
+
+  ///split these out
+  submitted = false;
+  onSubmit (formId, formValue) {
+    //this.submitted = true;
+
+    alert("onsubmit clicked for " + formId + ". Form value: " + JSON.stringify(formValue));
+
+  }
+
+  createNewSample() {
+        this.addSampleForm.reset();
+        this.submitted = false;
+  }
+
+ 
 
 
 }

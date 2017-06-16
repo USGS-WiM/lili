@@ -207,7 +207,7 @@
                                 <input id="eluteVolInput" type="text" formControlName="init_vol">
                             </div>
 
-                            <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid">Add</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid"  (click)="createNewSample(addSampleForm.value)">Add</button>
                             <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
                         </section>
                         <p>Form value: {{ addSampleForm.value | json }}</p>
@@ -228,7 +228,7 @@
 
         <div class="row">
             <div class="col-lg-6">
-                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmit()" [hidden]="submitted" >
+                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmit('editSampleForm', editSampleForm.value)" [hidden]="submitted" >
                     <section class="form-block">
 
                         <!--<label>Selected Sample: {{this.selectedSampleId ? this.selectedSampleId: 'none'}}</label>-->
@@ -410,15 +410,15 @@
                         </div>
 
 
-                        <!--<button class="btn btn-primary" type="submit" [disabled]="editSampleForm.invalid">Save Edits</button>
-                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>-->
+                        <button class="btn btn-primary" type="submit" [disabled]="editSampleForm.invalid">Save Edits</button>
+                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
                     </section>
                     <!--<p>Form value: {{ editSampleForm.value | json }}</p>
                     <p>Form status: {{ editSampleForm.status | json }}</p> -->
                     </form>
             </div>
             <div class="col-lg-6">
-                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmit()" [hidden]="submitted" >
+                <form id="editPegnegForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmit()" [hidden]="submitted" >
                     <section class="form-block">
                         <label>Peg Neg Control</label>
                     </section>
@@ -427,10 +427,10 @@
 
         </div>
     </div>
-    <div class="modal-footer">
+    <!--<div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
-        <button type="button" class="btn btn-primary" type="submit" [disabled]="editSampleForm.invalid">Save Edits</button>
-    </div>
+        <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
+    </div>-->
 </clr-modal>
 <!-- end edit sample modal -->
 
