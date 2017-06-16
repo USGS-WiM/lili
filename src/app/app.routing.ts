@@ -12,6 +12,7 @@ import { SamplesComponent } from './samples/samples.component';
 import { AnalysisBatchesComponent} from './analysis-batches/analysis-batches.component'
 import { ResultsComponent } from './results/results.component';
 import { ReportsComponent } from './reports/reports.component';
+import { AdminComponent } from './admin/admin.component';
 
 
 export const ROUTES: Routes = [
@@ -21,7 +22,8 @@ export const ROUTES: Routes = [
     {path: 'samples', component: SamplesComponent},
     {path: 'analysisbatches', component: AnalysisBatchesComponent},
     {path: 'results', component: ResultsComponent},
-    {path: 'reports', component: ReportsComponent}
+    {path: 'reports', component: ReportsComponent},
+    {path: 'admin', component: AdminComponent}
 ];
 
 export const ROUTING: ModuleWithProviders = RouterModule.forRoot(ROUTES);
