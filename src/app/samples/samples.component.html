@@ -469,6 +469,12 @@
                             </ng-container>
                         </clr-dg-column>
 
+                         <clr-dg-column [clrDgField]="'collab_sample_id'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                 Original Collaborator Sample ID
+                            </ng-container>
+                        </clr-dg-column>
+
                         <clr-dg-column [clrDgField]="'sample_type'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Sample Type
@@ -611,6 +617,7 @@
                             <clr-dg-cell>{{sample.sample_id}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.study_name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collab_sample_id}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.orig_collab_sample_id}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_type}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.samp_desc}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.matrix}}</clr-dg-cell>
