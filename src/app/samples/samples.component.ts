@@ -235,18 +235,12 @@ export class SamplesComponent implements OnInit {
     tech_init: new FormControl(''),
     init_vol: new FormControl(''),
     
-    //the following controls arre for fields/inputs that do not appear in the current LIMS
-    //they may be missing, or may be better only for displaynin table, not for the form
+    //the following controls arre for fields/inputs that do not appear in the current LIMS sample page form
+    //they may be missing, or may be better only for display in table, not for the form
     samp_vol_filt: new FormControl(''),
     units: new FormControl(''), 
-    sample_loc_type: new FormControl(''),
-    samp_env_type: new FormControl(''),
-    water_type: new FormControl(''),
     tvs_units: new FormControl(''),
-    tvs_stage: new FormControl(''),
     tvs_liters: new FormControl(''),
-    tvs_calc: new FormControl(''),
-    tvs_stage_calc: new FormControl('') 
   });
 
    //edit sample form
