@@ -34,10 +34,10 @@
 
                             <div class="form-group">
                                 <label class="required">Matrix</label>
-                                <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
+                                <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix_type').invalid && (addSampleForm.get('matrix_type').dirty || addSampleForm.get('matrix_type').touched)">
                                     <div class="select">
-                                        <select id="matrixSelect" name="matrix" formControlName="matrix" (change)="onMatrixSelect($event.target.value)">
-                                            <option *ngFor="let matrix of matrices" [value]="matrix.matrix_cd">{{matrix.matrix}}</option>
+                                        <select id="matrixSelect" name="matrix_type" formControlName="matrix_type" (change)="onMatrixSelect($event.target.value)">
+                                            <option *ngFor="let matrix of matrices" [value]="matrix.matrix_cd">{{matrix.matrix_type}}</option>
                                         </select>
                                     </div>
                                 </label>
@@ -45,12 +45,12 @@
 
                              <div class="form-group">
                                 <label class="required">Study</label>
-                                <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study_name').invalid && (addSampleForm.get('study_name').dirty || addSampleForm.get('study_name').touched)">
+                                <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
                                 <div class="select">
-                                    <select id="studySelect" name="study_name" formControlName="study_name">
+                                    <select id="studySelect" name="study" formControlName="study">
                                         <!-- line below is for adding a default value -->
                                         <!--<option value="Default">Select Study...</option>-->
-                                        <option *ngFor="let study of studies" [value]="study.study_id">{{study.study_name}}</option>
+                                        <option *ngFor="let study of studies" [value]="study.study_id">{{study.study}}</option>
                                     </select>
                                 </div>
                                 </label>
@@ -71,8 +71,8 @@
 
                             <div class="form-group">
                                 <label class="required">Collaborator Sample ID</label>
-                                <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collab_sample_id').invalid && (addSampleForm.get('collab_sample_id').dirty || addSampleForm.get('collab_sample_id').touched)">
-                                    <input id="collabSampleIdInput" type="text" formControlName="collab_sample_id" >
+                                <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collaborator_sample_id').invalid && (addSampleForm.get('collaborator_sample_id').dirty || addSampleForm.get('collaborator_sample_id').touched)">
+                                    <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id" >
                                     <span class="tooltip-content">Collaborator ID is required.</span>
                                 </label>
                             </div>
@@ -88,8 +88,8 @@
                             <div class="form-group">
                                 <label class="required">Secondary Concentration</label>
                                 <div class="toggle-switch">
-                                    <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_conc_flag">
-                                    <label for="secondaryConcToggle">{{this.addSampleForm.controls.secondary_conc_flag.value ? "Yes" : "No"}}</label>
+                                    <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
+                                    <label for="secondaryConcToggle">{{this.addSampleForm.controls.secondary_concentration_flag.value ? "Yes" : "No"}}</label>
                                 </div>
                             </div>
 
@@ -98,14 +98,10 @@
                                 <input id="studySiteNameInput" type="text" formControlName="study_site_name" >
                             </div>
 
-                            <div class="form-group">
-                                <label for="studySiteIdInput">Study Site ID</label>
-                                <input id="studySiteIdInput" type="text" formControlName="study_site_id" >
-                            </div>
 
                             <div class="form-group">
                                 <label for="sampleDescInput">Sample Description</label>
-                                <textarea id="sampleDescInput" rows="2" formControlName="samp_desc" style="max-width:25em" ></textarea>
+                                <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em" ></textarea>
                             </div>
 
                             <div class="form-group">
@@ -115,36 +111,36 @@
 
                             <div class="form-group">
                                 <label for="collectStartDateInput" class="required">Collection Start Date</label>
-                                <input type="date" id="collectStartDateInput" formControlName="collect_start_date" >
+                                <input type="date" id="collectStartDateInput" formControlName="collection_start_date" >
                             </div>
 
                             <!--begin variable display section-->
 
                             <div class="form-group">
                                 <label for="collectStartTime">Collection Start Time (HHmm)</label>
-                                <input id="collectStartTime" type="text" formControlName="collect_start_time">
+                                <input id="collectStartTime" type="text" formControlName="collection_start_time">
                             </div>
 
                             <div class="form-group">
                                 <label for="collectEndDateInput">Collection End Date</label>
-                                <input type="date" id="collectEndDateInput" formControlName="collect_end_date" >
+                                <input type="date" id="collectEndDateInput" formControlName="collection_end_date" >
                             </div>
 
                             <div class="form-group">
                                 <label for="collectEndTime">Collection End Time (HHmm)</label>
-                                <input id="collectEndTime" type="text" formControlName="collect_end_time">
+                                <input id="collectEndTime" type="text" formControlName="collection_end_time">
                             </div>
 
                             <div class="form-group">
                                 <label for="pumpRateInput">Pump Flow rate</label>
-                                <input id="pumpRateInput" type="text" formControlName="pump_rate">
+                                <input id="pumpRateInput" type="text" formControlName="pump_flow_rate">
                             </div>
 
                             <div class="form-group">
-                                <label for="imrInput" >Initial Meter Reading</label>
-                                 <input type="text" id="imrInput" formControlName="imr">
+                                <label for="meter_reading_initialInput" >Initial Meter Reading</label>
+                                 <input type="text" id="meter_reading_initialInput" formControlName="meter_reading_initial">
                                 <div class="select">
-                                    <select id="imrUnitSelect" formControlName="units">
+                                    <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit">
                                          <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                     </select>
                                 </div>
@@ -152,15 +148,15 @@
 
                             <div class="form-group">
                                 <label for="fmrInput">Final Meter Reading</label>
-                                 <input type="text" id="fmrInput" formControlName="fmr">
-                                 <label>{{addSampleForm.controls.tvs_units.name}}</label>
+                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
+                                 <label>{{addSampleForm.controls.total_volume_sampled_unit_initial.name}}</label>
                             </div>
 
                             <div class="form-group">
                                 <label for="tvsInput">Total Volume Sampled</label>
                                  <input type="text" id="tvsInput" formControlName="tvs">
                                 <div class="select">
-                                    <select id="tvsUnitSelect" formControlName="tvs_units">
+                                    <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                     </select>
                                 </div>
@@ -168,7 +164,7 @@
 
                             <div class="form-group">
                                 <label for="volPostDiluteInput">Volume After Dilution</label>
-                                <input id="volPostDiluteInput" type="text" formControlName="vol_post_dilution_ul">
+                                <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
                             </div>
 
                             <!--come back and make this a dropdown -->
@@ -179,32 +175,32 @@
 
                             <div class="form-group">
                                 <label for="filterBornOnDateInput">Collection Start Date</label>
-                                <input type="date" id="filterBornOnDateInput" formControlName="filt_bornon_date" >
+                                <input type="date" id="filterBornOnDateInput" formControlName="filter_born_on_date" >
                             </div>
 
                             <div class="form-group">
                                 <label for="dissVolInput">Dissolution Volume (mL)</label>
-                                <input id="dissVolInput" type="text" formControlName="air_subsample_vol_ml">
+                                <input id="dissVolInput" type="text" formControlName="air_subsample_volume">
                             </div>
 
                             <div class="form-group">
                                 <label for="eluteDateInput">Elution Date</label>
-                                <input type="date" id="eluteDateInput" formControlName="elute_date" >
+                                <input type="date" id="eluteDateInput" formControlName="elution_date" >
                             </div>
 
                             <div class="form-group">
                                 <label for="eluteNotesInput">Elution Notes</label>
-                                <textarea id="eluteNotesInput" rows="2" formControlName="elute_notes" style="max-width:25em"></textarea>
+                                <textarea id="eluteNotesInput" rows="2" formControlName="elution_notes" style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="techInitInput">Tech Intials</label>
-                                <input id="techInitInput" type="text" formControlName="tech_init">
+                                <input id="techInitInput" type="text" formControlName="technician_initials">
                             </div>
 
                             <div class="form-group">
                                 <label for="eluteVolInput">Eluent/Backflish Volume Used</label>
-                                <input id="eluteVolInput" type="text" formControlName="init_vol">
+                                <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                             </div>
 
                             <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid"  (click)="createNewSample(addSampleForm.value)">Add</button>
@@ -236,10 +232,10 @@
 
                         <div class="form-group">
                             <label class="required">Matrix</label>
-                            <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('matrix').invalid && (editSampleForm.get('matrix').dirty || editSampleForm.get('matrix').touched)">
+                            <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('matrix_type').invalid && (editSampleForm.get('matrix_type').dirty || editSampleForm.get('matrix_type').touched)">
                                 <div class="select">
-                                    <select id="matrixSelect" name="matrix" formControlName="matrix" (change)="onMatrixSelect($event.target.value)">
-                                        <option *ngFor="let matrix of matrices" [value]="matrix.matrix_cd">{{matrix.matrix}}</option>
+                                    <select id="matrixSelect" name="matrix" formControlName="matrix_type" (change)="onMatrixSelect($event.target.value)">
+                                        <option *ngFor="let matrix of matrices" [value]="matrix.matrix_cd">{{matrix.matrix_type}}</option>
                                     </select>
                                 </div>
                             </label>
@@ -247,12 +243,12 @@
 
                             <div class="form-group">
                             <label class="required">Study</label>
-                            <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('study_name').invalid && (editSampleForm.get('study_name').dirty || editSampleForm.get('study_name').touched)">
+                            <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('study').invalid && (editSampleForm.get('study').dirty || editSampleForm.get('study').touched)">
                             <div class="select">
-                                <select id="studySelect" name="study_name" formControlName="study_name">
+                                <select id="studySelect" name="study" formControlName="study">
                                     <!-- line below is for adding a default value -->
                                     <!--<option value="Default">Select Study...</option>-->
-                                    <option *ngFor="let study of studies" [value]="study.study_id">{{study.study_name}}</option>
+                                    <option *ngFor="let study of studies" [value]="study.study_id">{{study.study}}</option>
                                 </select>
                             </div>
                             </label>
@@ -273,8 +269,8 @@
 
                         <div class="form-group">
                             <label class="required">Collaborator Sample ID</label>
-                            <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('collab_sample_id').invalid && (editSampleForm.get('collab_sample_id').dirty || editSampleForm.get('collab_sample_id').touched)">
-                                <input id="collabSampleIdInput" type="text" formControlName="collab_sample_id" >
+                            <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('collaborator_sample_id').invalid && (editSampleForm.get('collaborator_sample_id').dirty || editSampleForm.get('collaborator_sample_id').touched)">
+                                <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id" >
                                 <span class="tooltip-content">Collaborator ID is required.</span>
                             </label>
                         </div>
@@ -290,8 +286,8 @@
                         <div class="form-group">
                             <label class="required">Secondary Concentration</label>
                             <div class="toggle-switch">
-                                <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_conc_flag">
-                                <label for="secondaryConcToggle">{{this.editSampleForm.controls.secondary_conc_flag.value ? "Yes" : "No"}}</label>
+                                <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
+                                <label for="secondaryConcToggle">{{this.editSampleForm.controls.secondary_concentration_flag.value ? "Yes" : "No"}}</label>
                             </div>
                         </div>
 
@@ -300,14 +296,10 @@
                             <input id="studySiteNameInput" type="text" formControlName="study_site_name" >
                         </div>
 
-                        <div class="form-group">
-                            <label for="studySiteIdInput">Study Site ID</label>
-                            <input id="studySiteIdInput" type="text" formControlName="study_site_id" >
-                        </div>
 
                         <div class="form-group">
                             <label for="sampleDescInput">Sample Description</label>
-                            <textarea id="sampleDescInput" rows="2" formControlName="samp_desc" style="max-width:25em" ></textarea>
+                            <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em" ></textarea>
                         </div>
 
                         <div class="form-group">
@@ -317,36 +309,36 @@
 
                         <div class="form-group">
                             <label for="collectStartDateInput" class="required">Collection Start Date</label>
-                            <input type="date" id="collectStartDateInput" formControlName="collect_start_date" >
+                            <input type="date" id="collectStartDateInput" formControlName="collection_start_date" >
                         </div>
 
                         <!--begin variable display section-->
 
                         <div class="form-group">
                             <label for="collectStartTime">Collection Start Time (HHmm)</label>
-                            <input id="collectStartTime" type="text" formControlName="collect_start_time">
+                            <input id="collectStartTime" type="text" formControlName="collection_start_time">
                         </div>
 
                         <div class="form-group">
                             <label for="collectEndDateInput">Collection End Date</label>
-                            <input type="date" id="collectEndDateInput" formControlName="collect_end_date" >
+                            <input type="date" id="collectEndDateInput" formControlName="collection_end_date" >
                         </div>
 
                         <div class="form-group">
                             <label for="collectEndTime">Collection End Time (HHmm)</label>
-                            <input id="collectEndTime" type="text" formControlName="collect_end_time">
+                            <input id="collectEndTime" type="text" formControlName="collection_end_time">
                         </div>
 
                         <div class="form-group">
                             <label for="pumpRateInput">Pump Flow rate</label>
-                            <input id="pumpRateInput" type="text" formControlName="pump_rate">
+                            <input id="pumpRateInput" type="text" formControlName="pump_flow_rate">
                         </div>
 
                         <div class="form-group">
-                            <label for="imrInput" >Initial Meter Reading</label>
-                                <input type="text" id="imrInput" formControlName="imr">
+                            <label for="meter_reading_initialInput" >Initial Meter Reading</label>
+                                <input type="text" id="meter_reading_initialInput" formControlName="meter_reading_initial">
                             <div class="select">
-                                <select id="imrUnitSelect" formControlName="units">
+                                <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit">
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                 </select>
                             </div>
@@ -354,15 +346,15 @@
 
                         <div class="form-group">
                             <label for="fmrInput">Final Meter Reading</label>
-                                <input type="text" id="fmrInput" formControlName="fmr">
-                                <label>{{addSampleForm.controls.units.value}}</label>
+                                <input type="text" id="fmrInput" formControlName="meter_reading_final">
+                                <label>{{addSampleForm.controls.meter_reading_unit.value}}</label>
                         </div>
 
                         <div class="form-group">
                             <label for="tvsInput">Total Volume Sampled</label>
                                 <input type="text" id="tvsInput" formControlName="tvs">
                             <div class="select">
-                                <select id="tvsUnitSelect" formControlName="tvs_units">
+                                <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                 </select>
                             </div>
@@ -370,7 +362,7 @@
 
                         <div class="form-group">
                             <label for="volPostDiluteInput">Volume After Dilution</label>
-                            <input id="volPostDiluteInput" type="text" formControlName="vol_post_dilution_ul">
+                            <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
                         </div>
 
                         <!--come back and make this a dropdown -->
@@ -381,32 +373,32 @@
 
                         <div class="form-group">
                             <label for="filterBornOnDateInput">Collection Start Date</label>
-                            <input type="date" id="filterBornOnDateInput" formControlName="filt_bornon_date" >
+                            <input type="date" id="filterBornOnDateInput" formControlName="filter_born_on_date" >
                         </div>
 
                         <div class="form-group">
                             <label for="dissVolInput">Dissolution Volume (mL)</label>
-                            <input id="dissVolInput" type="text" formControlName="air_subsample_vol_ml">
+                            <input id="dissVolInput" type="text" formControlName="air_subsample_volume">
                         </div>
 
                         <div class="form-group">
                             <label for="eluteDateInput">Elution Date</label>
-                            <input type="date" id="eluteDateInput" formControlName="elute_date" >
+                            <input type="date" id="eluteDateInput" formControlName="elution_date" >
                         </div>
 
                         <div class="form-group">
                             <label for="eluteNotesInput">Elution Notes</label>
-                            <textarea id="eluteNotesInput" rows="2" formControlName="elute_notes" style="max-width:25em"></textarea>
+                            <textarea id="eluteNotesInput" rows="2" formControlName="elution_notes" style="max-width:25em"></textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="techInitInput">Tech Intials</label>
-                            <input id="techInitInput" type="text" formControlName="tech_init">
+                            <input id="techInitInput" type="text" formControlName="technician_initials">
                         </div>
 
                         <div class="form-group">
                             <label for="eluteVolInput">Eluent/Backflush Volume Used</label>
-                            <input id="eluteVolInput" type="text" formControlName="init_vol">
+                            <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                         </div>
 
 
@@ -457,19 +449,19 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'study_name'">
+                        <clr-dg-column [clrDgField]="'study'">
                              <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Study Name
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'collab_sample_id'">
+                        <clr-dg-column [clrDgField]="'collaborator_sample_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                  Collaborator Sample ID
                             </ng-container>
                         </clr-dg-column>
 
-                         <clr-dg-column [clrDgField]="'collab_sample_id'">
+                         <clr-dg-column [clrDgField]="'collaborator_sample_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                  Original Collaborator Sample ID
                             </ng-container>
@@ -481,13 +473,13 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column  style="width:20em" [clrDgField]="'samp_desc'" >
+                        <clr-dg-column  style="width:20em" [clrDgField]="'sample_description'" >
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Sample Description
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'matrix'">
+                        <clr-dg-column [clrDgField]="'matrix_type'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Matrix
                             </ng-container>
@@ -499,37 +491,37 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'secondary_conc_flag'">
+                        <clr-dg-column [clrDgField]="'secondary_concentration_flag'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                2° Conc
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'samp_vol_filt'">
+                        <clr-dg-column [clrDgField]="'sample_volume_filtered'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Vol filtered
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'imr'">
+                        <clr-dg-column [clrDgField]="'meter_reading_initial'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                IMR
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'fmr'">
+                        <clr-dg-column [clrDgField]="'meter_reading_final'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                FMR
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'air_subsample_vol_ml'">
+                        <clr-dg-column [clrDgField]="'air_subsample_volume'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Air Subsample Volume (mL)
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'vol_post_dilution_ul'">
+                        <clr-dg-column [clrDgField]="'post_dilution_volume'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Volume After Dilution (uL)
                             </ng-container>
@@ -541,19 +533,19 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'filt_bornon_date'">
+                        <clr-dg-column [clrDgField]="'filter_born_on_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Filter Born On Date
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'collect_start_date'">
+                        <clr-dg-column [clrDgField]="'collection_start_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Collect Start Date
                             </ng-container>
                         </clr-dg-column>
                         
-                        <clr-dg-column [clrDgField]="'collect_end_date'">
+                        <clr-dg-column [clrDgField]="'collection_end_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Collect End Date
                             </ng-container>
@@ -562,12 +554,6 @@
                         <clr-dg-column [clrDgField]="'study_site_name'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Study Site Name
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'study_site_id'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Study Site ID
                             </ng-container>
                         </clr-dg-column>
 
@@ -615,25 +601,23 @@
                                 </div>
                             </clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_id}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.study_name}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.collab_sample_id}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.orig_collab_sample_id}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.study}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_type}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.samp_desc}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.matrix}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.matrix_type}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.secondary_conc_flag ? "Yes" : "No"}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.samp_vol_filt}} {{sample.tvs_units}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.imr}}  {{sample.units}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.fmr}}  {{sample.units}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.air_subsample_vol_ml}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.vol_post_dilution_ul}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.samp_vol_filt}} {{sample.total_volume_sampled_unit_initial}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.meter_reading_initial}}  {{sample.meter_reading_unit}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.meter_reading_final}}  {{sample.meter_reading_unit}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.air_subsample_volume}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_type}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.filt_bornon_date}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.collect_start_date | date:'yyyy-MM-dd'}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.collect_end_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.filter_born_on_date}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.collection_start_date | date:'yyyy-MM-dd'}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.study_site_id}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sampler_name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_notes}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.insert_user}}</clr-dg-cell>
