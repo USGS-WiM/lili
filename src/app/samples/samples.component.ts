@@ -74,6 +74,7 @@ export class SamplesComponent implements OnInit {
   }
 
 
+
   lookupDropdownValue (control, displayValue) {
     switch (control){
       case ('study') : {

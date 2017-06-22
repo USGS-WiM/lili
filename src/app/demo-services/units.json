@@ -1,14 +1,17 @@
 [
     {
         "id": 1,
-        "name": "Gal" 
+        "name": "Gal" ,
+        "description": "Gallon"
     },
     {
         "id": 2,
-        "name": "L"
+        "name": "L",
+        "description": "Liter"
     },
     {
         "id": 3,
-        "name": "g"
+        "name": "g",
+        "description": "gram"
     }
 ]
