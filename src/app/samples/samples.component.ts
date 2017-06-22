@@ -76,15 +76,15 @@ export class SamplesComponent implements OnInit {
 
   lookupDropdownValue (control, displayValue) {
     switch (control){
-      case ('study_name') : {
+      case ('study') : {
         for (var i = 0; i < this.studies.length; i++) {
             if (this.studies[i].study_name === displayValue) {
-              console.log("inside switch case for study_name. study id:" + this.studies[i].study_id)
+              console.log("inside switch case for study. study id:" + this.studies[i].study_id)
               return this.studies[i].study_id;
             }
         }
       }
-      case ('matrix') : {
+      case ('matrix_type') : {
         for (var i = 0; i < this.matrices.length; i++) {
             if (this.matrices[i].matrix === displayValue) {
               console.log("inside switch case for matrix. matrix cd" + this.matrices[i].matrix_cd)
@@ -100,7 +100,7 @@ export class SamplesComponent implements OnInit {
             }
         }
       }
-      case ('units') : {
+      case ('meter_reading_unit') : {
         for (var i = 0; i < this.units.length; i++) {
             if (this.units[i].name === displayValue) {
               console.log("inside switch case for units. unit id" + this.units[i].id);
@@ -108,7 +108,7 @@ export class SamplesComponent implements OnInit {
             }
         }
       }
-      case ('tvs_units') : {
+      case ('total_volume_sampled_unit_initial') : {
         for (var i = 0; i < this.units.length; i++) {
             if (this.units[i].name === displayValue) {
               console.log("inside switch case for units. unit id" + this.units[i].id);
@@ -129,39 +129,37 @@ export class SamplesComponent implements OnInit {
     this.selectedSampleId = selectedSample.sample_id;
 
     this.editSampleForm.setValue({
-      matrix: this.lookupDropdownValue('matrix', selectedSample.matrix),
-      study_name: this.lookupDropdownValue('study_name', selectedSample.study_name),
+      matrix_type: this.lookupDropdownValue('matrix_type', selectedSample.matrix_type),
+      study: this.lookupDropdownValue('study', selectedSample.study),
       sample_type: this.lookupDropdownValue('sample_type', selectedSample.sample_type),
-      collab_sample_id: selectedSample.collab_sample_id,
+      collaborator_sample_id: selectedSample.collaborator_sample_id,
       filter_flag: selectedSample.filter_flag, 
-      secondary_conc_flag: selectedSample.secondary_conc_flag, 
+      secondary_concentration_flag: selectedSample.secondary_concentration_flag, 
       study_site_name: selectedSample.study_site_name,
-      study_site_id: selectedSample.study_site_id,
-      samp_desc: selectedSample.samp_desc,
+      sample_description: selectedSample.sample_description,
       sampler_name:  selectedSample.sampler_name,
       sample_notes: selectedSample.sample_notes,
-      arrive_date: selectedSample.arrive_date,
-      arrive_notes: selectedSample.arrive_notes,
-      collect_start_date: selectedSample.collect_start_date,
-
-      collect_start_time: selectedSample.collect_start_time,
-      collect_end_date: selectedSample.collect_end_date,
-      collect_end_time: selectedSample.collect_end_date,
-      pump_rate: selectedSample.pump_rate,
-      imr: selectedSample.imr,
-      fmr: selectedSample.fmr,
-      tvs:selectedSample.tvs,
-      vol_post_dilution_ul: selectedSample.vol_post_dilution_ul,
+      arrival_date: selectedSample.arrival_date,
+      arrival_notes: selectedSample.arrival_notes,
+      collection_start_date: selectedSample.collection_start_date,
+      collection_start_time: selectedSample.collection_start_time,
+      collection_end_date: selectedSample.collection_end_date,
+      collection_end_time: selectedSample.collection_end_date,
+      sample_volume_filtered: selectedSample.sample_volume_filtered,
+      pump_flow_rate: selectedSample.pump_flow_rate,
+      meter_reading_initial: selectedSample.meter_reading_initial,
+      meter_reading_final: selectedSample.meter_reading_final,
+      meter_reading_unit: this.lookupDropdownValue('meter_reading_unit', selectedSample.meter_reading_unit),
+      total_volume_sampled_initial:selectedSample.total_volume_sampled_initial,
+      total_volume_sampled_unit_initial: this.lookupDropdownValue('total_volume_sampled_unit_initial', selectedSample.total_volume_sampled_unit_initial),
+      post_dilution_volume: selectedSample.post_dilution_volume,
       filter_type: selectedSample.filter_type,
-      filt_bornon_date: selectedSample.filt_bornon_date,
-      air_subsample_vol_ml: selectedSample.air_subsample_vol_ml,
-      elute_date: selectedSample.elute_date,
-      elute_notes: selectedSample.elute_notes,
-      tech_init: selectedSample.tech_init,
-      init_vol: selectedSample.init_vol,
-      units: this.lookupDropdownValue('units', selectedSample.units),
-      tvs_units: this.lookupDropdownValue('tvs_units', selectedSample.tvs_units),
-      samp_vol_filt: selectedSample.samp_vol_filt,
+      filter_born_on_date: selectedSample.filter_born_on_date,
+      air_subsample_volume: selectedSample.air_subsample_volume,
+      elution_date: selectedSample.elution_date,
+      elution_notes: selectedSample.elution_notes,
+      technician_initials: selectedSample.technician_initials,
+      sample_volume_initial: selectedSample.sample_volume_initial
     })
 
   }
@@ -195,89 +193,85 @@ export class SamplesComponent implements OnInit {
   //add sample form - declare reactive form with appropriate sample fields
   addSampleForm = new FormGroup({
     //the following controls apply to every sample record, regardless of matrix selected
-    study_name: new FormControl('', Validators.required),  //study name, maps to study id
+    matrix_type: new FormControl('', Validators.required), 
+    study: new FormControl('', Validators.required),  //study name, maps to study id
     sample_type: new FormControl('', Validators.required),
-    collab_sample_id: new FormControl('', Validators.required),
-    //orig_collab_samp_id: new FormControl(''),
-    matrix: new FormControl('', Validators.required), 
+    collaborator_sample_id: new FormControl('', Validators.required),
     filter_flag: new FormControl(false, Validators.required), //radio button
-    secondary_conc_flag: new FormControl(false, Validators.required), //radio button
+    secondary_concentration_flag: new FormControl(false, Validators.required), //radio button
     study_site_name: new FormControl('', ),
-    study_site_id:new FormControl(''),
-    samp_desc: new FormControl(''),
+    sample_description: new FormControl(''),
     sampler_name:  new FormControl(''),
     sample_notes: new FormControl(''),
-    arrive_date: new FormControl(''),
-    arrive_notes: new FormControl(''),
-    collect_start_date: new FormControl('',Validators.required),
+    arrival_date: new FormControl(''),
+    arrival_notes: new FormControl(''),
+    collection_start_date: new FormControl('',Validators.required),
 
     //the following controls have variable display needs based on the matrix selected
-    collect_start_time: new FormControl(''),
-    collect_end_date: new FormControl(''),
-    collect_end_time: new FormControl(''),
-    pump_rate: new FormControl(''),
-    imr: new FormControl(''),
-    fmr: new FormControl(''),
-    units: new FormControl(''), 
-    tvs: new FormControl(''),
-    tvs_units: new FormControl(''),
-    vol_post_dilution_ul: new FormControl(''), //required when not disabled
+    collection_start_time: new FormControl(''),
+    collection_end_date: new FormControl(''),
+    collection_end_time: new FormControl(''),
+    pump_flow_rate: new FormControl(''),
+    meter_reading_initial: new FormControl(''),
+    meter_reading_final: new FormControl(''),
+    meter_reading_unit: new FormControl(''), 
+    total_volume_sampled_initial: new FormControl(''),
+    total_volume_sampled_unit_initial: new FormControl(''),
+    post_dilution_volume: new FormControl(''), //required when not disabled
     filter_type: new FormControl(''), //required when not disabled
-    filt_bornon_date: new FormControl(''),
-    air_subsample_vol_ml: new FormControl(''), //required when not disabled
-    elute_date: new FormControl(''),
-    elute_notes: new FormControl(''),
-    tech_init: new FormControl(''),
-    init_vol: new FormControl(''),
+    filter_born_on_date: new FormControl(''),
+    air_subsample_volume: new FormControl(''), //required when not disabled
+    elution_date: new FormControl(''),
+    elution_notes: new FormControl(''),
+    technician_initials: new FormControl(''),
+    sample_volume_initial: new FormControl(''),
     
     //the following controls are for fields/inputs that do not appear in the current LIMS
     //they may be missing, or may be intended only for display in table, not for the form
-    samp_vol_filt: new FormControl(''),
-    tvs_liters: new FormControl(''),
+    sample_volume_filtered: new FormControl(''),
+    total_volume_sampled: new FormControl(''),
   });
 
    //edit sample form
   editSampleForm = new FormGroup({
-    //the following controls apply to every sample record, regardless of matrix selected
-    study_name: new FormControl('', Validators.required),  //study name, maps to study id
+    //the following controls apply to every sample record, regardless of matrix_type selected
+    matrix_type: new FormControl('', Validators.required), 
+    study: new FormControl('', Validators.required),  //study name, maps to study id
     sample_type: new FormControl('', Validators.required),
-    collab_sample_id: new FormControl('', Validators.required),
-    //orig_collab_samp_id: new FormControl(''),
-    matrix: new FormControl('', Validators.required), 
+    collaborator_sample_id: new FormControl('', Validators.required),
     filter_flag: new FormControl(false, Validators.required), //radio button
-    secondary_conc_flag: new FormControl(false, Validators.required), //radio button
+    secondary_concentration_flag: new FormControl(false, Validators.required), //radio button
     study_site_name: new FormControl('', ),
-    study_site_id:new FormControl(''),
-    samp_desc: new FormControl(''),
+    sample_description: new FormControl(''),
     sampler_name:  new FormControl(''),
     sample_notes: new FormControl(''),
-    arrive_date: new FormControl(''),
-    arrive_notes: new FormControl(''),
-    collect_start_date: new FormControl('',Validators.required),
+    arrival_date: new FormControl(''),
+    arrival_notes: new FormControl(''),
+    collection_start_date: new FormControl('',Validators.required),
 
     //the following controls have variable display needs based on the matrix selected
-    collect_start_time: new FormControl(''),
-    collect_end_date: new FormControl(''),
-    collect_end_time: new FormControl(''),
-    pump_rate: new FormControl(''),
-    imr: new FormControl(''),
-    fmr: new FormControl(''),
-    units: new FormControl(''), 
+    collection_start_time: new FormControl(''),
+    collection_end_date: new FormControl(''),
+    collection_end_time: new FormControl(''),
+    pump_flow_rate: new FormControl(''),
+    meter_reading_initial: new FormControl(''),
+    meter_reading_final: new FormControl(''),
+    meter_reading_unit: new FormControl(''), 
     tvs: new FormControl(''),
-    tvs_units: new FormControl(''),
-    vol_post_dilution_ul: new FormControl(''), //required when not disabled
+    total_volume_sampled_unit_initial: new FormControl(''),
+    post_dilution_volume: new FormControl(''), //required when not disabled
     filter_type: new FormControl(''), //required when not disabled
-    filt_bornon_date: new FormControl(''),
-    air_subsample_vol_ml: new FormControl(''), //required when not disabled
-    elute_date: new FormControl(''),
-    elute_notes: new FormControl(''),
-    tech_init: new FormControl(''),
-    init_vol: new FormControl(''),
+    filter_born_on_date: new FormControl(''),
+    air_subsample_volume: new FormControl(''), //required when not disabled
+    elution_date: new FormControl(''),
+    elution_notes: new FormControl(''),
+    technician_initials: new FormControl(''),
+    sample_volume_initial: new FormControl(''),
     
     //the following controls are for fields/inputs that do not appear in the current LIMS
     //they may be missing, or may be intended only for display in table, not for the form
-    samp_vol_filt: new FormControl(''),
-    tvs_liters: new FormControl(''),   
+    sample_volume_filtered: new FormControl(''),
+    total_volume_sampled: new FormControl(''),
   });
 
   ///split these out
