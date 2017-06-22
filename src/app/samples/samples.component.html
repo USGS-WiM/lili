@@ -596,11 +596,13 @@
                                 </div>
                             </clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_id}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.study | displayValue:name:this.studies}}</clr-dg-cell>
+                            <!--<clr-dg-cell>{{sample.study | displayValue:'name':this.studies}}</clr-dg-cell>-->
+                            <clr-dg-cell>{{sample.study }}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.sample_type}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.sample_type | displayValue:'name':this.sampleTypes}}</clr-dg-cell>
+                            <!--<clr-dg-cell>{{sample.sample_type}}</clr-dg-cell>-->
                             <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.matrix_type}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.matrix_type | displayValue:''}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.samp_vol_filt}} {{sample.total_volume_sampled_unit_initial}}</clr-dg-cell>
