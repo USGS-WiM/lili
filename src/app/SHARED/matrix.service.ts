@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response,  RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
+
+import { APP_SETTINGS } from '../app.settings'
 
 import { IMatrix } from './matrix'
 
@@ -14,7 +16,11 @@ export class MatrixService {
   constructor(private _http: Http) { }
 
    getMatrices(): Observable<IMatrix[]> {
-    return this._http.get(this._matricesUrl)
+
+    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
+
+    return this._http.get(APP_SETTINGS.MATRIX_TYPES_URL, options)
+    //return this._http.get(this._matricesUrl)
                 .map((response: Response) => <IMatrix[]>response.json())
                 //.do(data => console.log('Matricies data: ' + JSON.stringify(data)))
                 .catch(this.handleError);

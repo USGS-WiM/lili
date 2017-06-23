@@ -7,27 +7,26 @@ import 'rxjs/add/operator/catch';
 
 import { APP_SETTINGS } from '../app.settings'
 
-import { IUnit } from './unit';
+import { IFilterType } from './filter-type'
 
 @Injectable()
-export class UnitService {
-   private _unitsUrl = 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/demo-services/units.json';
+export class FilterTypeService {
 
   constructor(private _http: Http) { }
 
-  getUnits(): Observable<IUnit[]> {
+    getFilterTypes(): Observable<IFilterType[]> {
+
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
-    return this._http.get(APP_SETTINGS.UNITS_URL, options)
-    //return this._http.get(this._unitsUrl)
-                .map((response: Response) => <IUnit[]>response.json())
-                //.do(data => console.log('Units data: ' + JSON.stringify(data)))
+    return this._http.get(APP_SETTINGS.FILTER_TYPES_URL, options)
+                .map((response: Response) => <IFilterType[]>response.json())
+                //.do(data => console.log('Sample types data: ' + JSON.stringify(data)))
                 .catch(this.handleError);
-  }
+    }
 
-  private handleError (error: Response) {
+    private handleError (error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
-  }
+    }
 
 }
