@@ -2,46 +2,26 @@
   {
   "id": 1,
   "name": "Sample",
-  "code": "SAMP",
-  "insert_date": "2012-10-11T00:00:00.000Z",
-  "insert_user": "null",
-  "update_date": null,
-  "update_user": "null"
+  "code": "SAMP"
   },
   {
   "id": 2,
   "name": "Matrix Recovery Control",
-  "code": "MR",
-  "insert_date": "2012-10-11T00:00:00.000Z",
-  "insert_user": "null",
-  "update_date": null,
-  "update_user": "null"
+  "code": "MR"
   },
   {
   "id": 3,
   "name": "Performance Evaluation",
-  "code": "PE",
-  "insert_date": "2012-10-11T00:00:00.000Z",
-  "insert_user": "null",
-  "update_date": null,
-  "update_user": "null"
+  "code": "PE"
   },
   {
   "id": 4,
   "name": "Quality Control",
-  "code": "QC",
-  "insert_date": "2012-10-11T00:00:00.000Z",
-  "insert_user": "null",
-  "update_date": null,
-  "update_user": "null"
+  "code": "QC"
   },
   {
   "id": 5,
   "name": "Equipment blank",
-  "code": "EB",
-  "insert_date": "2012-10-11T00:00:00.000Z",
-  "insert_user": "null",
-  "update_date": null,
-  "update_user": "null"
+  "code": "EB"
   }
 ]
