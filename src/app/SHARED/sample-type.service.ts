@@ -9,6 +9,8 @@ import { APP_SETTINGS } from '../app.settings'
 
 import { ISampleType } from './sample-type';
 
+import {Headers}           from '@angular/http';
+
 @Injectable()
 export class SampleTypeService {
   private _sampleTypeUrl = 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/demo-services/sample-type.json';
@@ -16,10 +18,11 @@ export class SampleTypeService {
   constructor(private _http: Http) { }
 
    getSampleTypes(): Observable<ISampleType[]> {
+    
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
-    //return this._http.get(APP_SETTINGS.SAMP_TYPES_URL, options)
-    return this._http.get(this._sampleTypeUrl)
+    return this._http.get(APP_SETTINGS.SAMP_TYPES_URL, options)
+    //return this._http.get(this._sampleTypeUrl)
                 .map((response: Response) => <ISampleType[]>response.json())
                 //.do(data => console.log('Sample types data: ' + JSON.stringify(data)))
                 .catch(this.handleError);
