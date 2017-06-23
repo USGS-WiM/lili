@@ -41,6 +41,9 @@ export class SamplesComponent implements OnInit {
   constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _matrixService: MatrixService, private _unitService: UnitService ) { }
 
   ngOnInit():void {
+
+    let self = this;
+
       //on init, call getSamples function of the SampleService, set results to the allSamples var
       this._sampleService.getSamples()
         .subscribe(samples => this.allSamples = samples,
@@ -49,7 +52,7 @@ export class SamplesComponent implements OnInit {
   
       //on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
       this._sampleTypeService.getSampleTypes()
-        .subscribe(sampleTypes => this.sampleTypes = sampleTypes,
+        .subscribe(sampleTypes => self.sampleTypes = sampleTypes,
                     error => this.errorMessage = <any>error);
 
        //on init, call getMatrices function of the MatrixService, set results to the matrices var
@@ -71,9 +74,9 @@ export class SamplesComponent implements OnInit {
         .subscribe(displayConfig => this.displayConfig = displayConfig,
                     error => this.errorMessage = <any>error);
 
+      
+
   }
-
-
 
   lookupDropdownValue (control, displayValue) {
     switch (control){

@@ -36,9 +36,8 @@ export class APP_SETTINGS {
   //line below is for headers stored in local storage. todo: revisit and implement this
   //public static get AUTH_HEADERS() { return new Headers({ 'Authorization': 'Basic ' + btoa(sessionStorage.getItem('username') + ':' + sessionStorage.getItem('password'))}) };
   public static get AUTH_HEADERS() { return new Headers({ 'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD)})  };
-  public static get MIN_AUTH_JSON_HEADERS() { return new Headers({
-      'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD),
-      'Accept': 'application/json' }
+  public static get MIN_AUTH_JSON_HEADERS() { return new Headers({'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD),
+      'Accept': 'application/json'}
   )};
   public static get AUTH_JSON_HEADERS() { return new Headers({
       'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD),
