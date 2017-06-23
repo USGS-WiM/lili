@@ -1,4 +1,5 @@
 export interface ISampleType {
     id: number,
-    name: string
+    name: string,
+    code: string
 }

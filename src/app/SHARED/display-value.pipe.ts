@@ -17,7 +17,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DisplayValuePipe implements PipeTransform {
 
   transform(value: any, displayProperty: string, sourceArray: Array<any>): any {
-    console.log("break here")
     let displayValue;
     for (var i = 0; i < sourceArray.length; i++) {
       if (sourceArray[i].id === value) {

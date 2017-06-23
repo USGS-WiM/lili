@@ -9,8 +9,6 @@ import { APP_SETTINGS } from '../app.settings'
 
 import { ISampleType } from './sample-type';
 
-import {Headers}           from '@angular/http';
-
 @Injectable()
 export class SampleTypeService {
   private _sampleTypeUrl = 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/demo-services/sample-type.json';
