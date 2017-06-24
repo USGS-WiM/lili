@@ -40,6 +40,7 @@ export class SamplesComponent implements OnInit {
   studyStoredValue;
   //var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
+  unitValue:number;
 
   constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _filterTypeService: FilterTypeService, private _matrixService: MatrixService, private _unitService: UnitService ) { }
 
@@ -85,6 +86,11 @@ export class SamplesComponent implements OnInit {
 
   }
 
+  onUnitChange (unitValue) {
+    //sets the var unitValue used for meter reading unit display
+    this.unitValue = unitValue;
+    alert(this.unitValue);
+  }
 
   editSample(selectedSample) {
 
@@ -94,6 +100,9 @@ export class SamplesComponent implements OnInit {
     }
     //sets the var selectedSampleId used for label display
     this.selectedSampleId = selectedSample.sample_id;
+
+    //sets the var unitValue used for meter reading unit display
+    this.unitValue = selectedSample.meter_reading_unit;
 
     this.editSampleForm.setValue({
       matrix_type:  selectedSample.matrix_type,
