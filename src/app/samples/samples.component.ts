@@ -90,9 +90,9 @@ export class SamplesComponent implements OnInit {
       }
       case ('matrix_type') : {
         for (var i = 0; i < this.matrices.length; i++) {
-            if (this.matrices[i].matrix === displayValue) {
-              console.log("inside switch case for matrix. matrix cd" + this.matrices[i].matrix_cd)
-              return this.matrices[i].matrix_cd;
+            if (this.matrices[i].name === displayValue) {
+              console.log("inside switch case for matrix. matrix cd" + this.matrices[i].code)
+              return this.matrices[i].code;
             }
         }
       }
