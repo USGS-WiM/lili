@@ -37,7 +37,7 @@
                                 <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix_type').invalid && (addSampleForm.get('matrix_type').dirty || addSampleForm.get('matrix_type').touched)">
                                     <div class="select">
                                         <select id="matrixSelect" name="matrix_type" formControlName="matrix_type" (change)="onMatrixSelect($event.target.value)">
-                                            <option *ngFor="let matrix of matrices" [value]="matrix.matrix_cd">{{matrix.matrix_type}}</option>
+                                            <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}</option>
                                         </select>
                                     </div>
                                 </label>
@@ -48,9 +48,7 @@
                                 <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
                                 <div class="select">
                                     <select id="studySelect" name="study" formControlName="study">
-                                        <!-- line below is for adding a default value -->
-                                        <!--<option value="Default">Select Study...</option>-->
-                                        <option *ngFor="let study of studies" [value]="study.study_id">{{study.study}}</option>
+                                        <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
                                     </select>
                                 </div>
                                 </label>
@@ -61,8 +59,6 @@
                                 <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sample_type').invalid && (addSampleForm.get('sample_type').dirty || addSampleForm.get('sample_type').touched)">
                                 <div class="select">
                                     <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
-                                        <!-- line below is for adding a default value -->
-                                        <!--<option value="Default">Select Sample Type...</option>-->
                                         <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
                                     </select>
                                 </div>
@@ -154,7 +150,7 @@
 
                             <div class="form-group">
                                 <label for="tvsInput">Total Volume Sampled</label>
-                                 <input type="text" id="tvsInput" formControlName="tvs">
+                                 <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
@@ -167,10 +163,15 @@
                                 <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
                             </div>
 
-                            <!--come back and make this a dropdown -->
                             <div class="form-group">
-                                <label for="filterTypeInput">Filter Type</label>
-                                <input id="filterTypeInput" type="text" formControlName="filter_type">
+                                <label class="required">Filter</label>
+                                <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('filter_type').invalid && (editSampleForm.get('filter_type').dirty || editSampleForm.get('filter_type').touched)">
+                                    <div class="select">
+                                        <select id="filterSelect" name="filterType" formControlName="filter_type">
+                                            <option *ngFor="let filterType of filterTypes" [value]="filterType.id">{{filterType.name}}</option>
+                                        </select>
+                                    </div>
+                                </label>
                             </div>
 
                             <div class="form-group">
@@ -235,7 +236,7 @@
                             <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('matrix_type').invalid && (editSampleForm.get('matrix_type').dirty || editSampleForm.get('matrix_type').touched)">
                                 <div class="select">
                                     <select id="matrixSelect" name="matrix" formControlName="matrix_type" (change)="onMatrixSelect($event.target.value)">
-                                        <option *ngFor="let matrix of matrices" [value]="matrix.matrix_cd">{{matrix.matrix_type}}</option>
+                                        <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}</option>
                                     </select>
                                 </div>
                             </label>
@@ -246,9 +247,7 @@
                             <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('study').invalid && (editSampleForm.get('study').dirty || editSampleForm.get('study').touched)">
                             <div class="select">
                                 <select id="studySelect" name="study" formControlName="study">
-                                    <!-- line below is for adding a default value -->
-                                    <!--<option value="Default">Select Study...</option>-->
-                                    <option *ngFor="let study of studies" [value]="study.study_id">{{study.study}}</option>
+                                    <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
                                 </select>
                             </div>
                             </label>
@@ -259,9 +258,7 @@
                             <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
                             <div class="select">
                                 <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
-                                    <!-- line below is for adding a default value -->
-                                    <!--<option value="Default">Select Sample Type...</option>-->
-                                    <option *ngFor="let type of sampleTypes" [value]="type.sample_type_id">{{type.sample_type}}</option>
+                                    <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
                                 </select>
                             </div>
                             </label>
@@ -352,7 +349,7 @@
 
                         <div class="form-group">
                             <label for="tvsInput">Total Volume Sampled</label>
-                                <input type="text" id="tvsInput" formControlName="tvs">
+                                <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                             <div class="select">
                                 <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
@@ -365,10 +362,15 @@
                             <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
                         </div>
 
-                        <!--come back and make this a dropdown -->
                         <div class="form-group">
-                            <label for="filterTypeInput">Filter Type</label>
-                            <input id="filterTypeInput" type="text" formControlName="filter_type">
+                            <label class="required">Filter</label>
+                            <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('filter_type').invalid && (editSampleForm.get('filter_type').dirty || editSampleForm.get('filter_type').touched)">
+                                <div class="select">
+                                    <select id="filterSelect" name="filterType" formControlName="filter_type">
+                                        <option *ngFor="let filterType of filterTypes" [value]="filterType.id">{{filterType.name}}</option>
+                                    </select>
+                                </div>
+                            </label>
                         </div>
 
                         <div class="form-group">
@@ -596,22 +598,19 @@
                                 </div>
                             </clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_id}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.study | displayValue:'name':this.studies}}</clr-dg-cell>
-                            <!--<clr-dg-cell>{{sample.study }}</clr-dg-cell>-->
+                            <clr-dg-cell *ngIf="this.studies">{{sample.study | displayValue:'name':this.studies}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.sample_type | displayValue:'name':this.sampleTypes}}</clr-dg-cell>
-                            <!--<clr-dg-cell>{{this.sampleTypes | json}}</clr-dg-cell>-->
+                            <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type | displayValue:'name':this.sampleTypes}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.matrix_type | displayValue:'name':this.matrices}}</clr-dg-cell>
-                            <!--<clr-dg-cell>{{sample.matrix_type}}</clr-dg-cell>-->
+                            <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type | displayValue:'name':this.matrices}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.samp_vol_filt}} {{sample.total_volume_sampled_unit_initial}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.meter_reading_initial}}  {{sample.meter_reading_unit}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.meter_reading_final}}  {{sample.meter_reading_unit}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.air_subsample_volume}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.filter_type}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_born_on_date}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collection_start_date | date:'yyyy-MM-dd'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>

@@ -15,9 +15,10 @@ export class APP_SETTINGS {
   public static get SAMPLES_URL(): string { return this._API_ENDPOINT+'samples/' };
   public static get SAMP_TYPES_URL(): string { return this._API_ENDPOINT+'sampletypes/' };
   public static get SAMPLE_ENV_URL(): string { return this._API_ENDPOINT+'sampleenvironments/' };
-  public static get UNITS_URL(): string { return 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/demo-services/units.json' };
+  public static get UNITS_URL(): string { return this._API_ENDPOINT+'unittypes/' };
   public static get SAMP_LOC_URL(): string { return this._API_ENDPOINT+'samplelocations/' };
   public static get FILTER_TYPES_URL(): string { return this._API_ENDPOINT+'filtertypes/' };
+  public static get MATRIX_TYPES_URL(): string { return this._API_ENDPOINT+'matrixtypes/' };
   public static get WATER_TYPES_URL(): string { return this._API_ENDPOINT+'watertypes/' };
   public static get ANALYSIS_BATCHES_URL(): string { return this._API_ENDPOINT+'analysisbatches/' };
   public static get EXTRACTIONS_URL(): string { return this._API_ENDPOINT+'extractions/' };
