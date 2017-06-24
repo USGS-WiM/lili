@@ -3,12 +3,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ISample } from './sample'
 import { ISampleType } from '../SHARED/sample-type';
+import { IFilterType } from '../SHARED/filter-type'
 import { IMatrix } from '../SHARED/matrix';
 import { IStudy } from '../studies/study';
 import { IUnit } from '../SHARED/unit';
 
 import { SampleService } from './sample.service';
 import { SampleTypeService } from '../SHARED/sample-type.service';
+import { FilterTypeService } from '../SHARED/filter-type.service'
 import { MatrixService } from '../SHARED/matrix.service';
 import { StudyService } from '../studies/study.service'
 import { UnitService } from '../SHARED/unit.service';
@@ -21,6 +23,7 @@ import { UnitService } from '../SHARED/unit.service';
 export class SamplesComponent implements OnInit {
   allSamples: ISample[];
   sampleTypes: ISampleType[];
+  filterTypes: IFilterType[];
   matrices: IMatrix[];
   studies: IStudy[];
   units: IUnit[];
@@ -38,11 +41,10 @@ export class SamplesComponent implements OnInit {
   //var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
 
-  constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _matrixService: MatrixService, private _unitService: UnitService ) { }
+  constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _filterTypeService: FilterTypeService, private _matrixService: MatrixService, private _unitService: UnitService ) { }
 
   ngOnInit():void {
 
-    let self = this;
 
       //on init, call getSamples function of the SampleService, set results to the allSamples var
       this._sampleService.getSamples()
@@ -52,7 +54,12 @@ export class SamplesComponent implements OnInit {
   
       //on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
       this._sampleTypeService.getSampleTypes()
-        .subscribe(sampleTypes => self.sampleTypes = sampleTypes,
+        .subscribe(sampleTypes => this.sampleTypes = sampleTypes,
+                    error => this.errorMessage = <any>error);
+
+       //on init, call getFilterTypes function of the SampleTypeService, set results to the sampleTypes var
+      this._filterTypeService.getFilterTypes()
+        .subscribe(filterTypes => this.filterTypes = filterTypes,
                     error => this.errorMessage = <any>error);
 
        //on init, call getMatrices function of the MatrixService, set results to the matrices var
@@ -78,50 +85,6 @@ export class SamplesComponent implements OnInit {
 
   }
 
-  lookupDropdownValue (control, displayValue) {
-    switch (control){
-      case ('study') : {
-        for (var i = 0; i < this.studies.length; i++) {
-            if (this.studies[i].study_name === displayValue) {
-              console.log("inside switch case for study. study id:" + this.studies[i].study_id)
-              return this.studies[i].study_id;
-            }
-        }
-      }
-      case ('matrix_type') : {
-        for (var i = 0; i < this.matrices.length; i++) {
-            if (this.matrices[i].name === displayValue) {
-              console.log("inside switch case for matrix. matrix cd" + this.matrices[i].code)
-              return this.matrices[i].code;
-            }
-        }
-      }
-      case ('sample_type') : {
-        for (var i = 0; i < this.sampleTypes.length; i++) {
-            if (this.sampleTypes[i].name === displayValue) {
-              console.log("inside switch case for sample type. sample type id" + this.sampleTypes[i].id);
-              return this.sampleTypes[i].id;
-            }
-        }
-      }
-      case ('meter_reading_unit') : {
-        for (var i = 0; i < this.units.length; i++) {
-            if (this.units[i].name === displayValue) {
-              console.log("inside switch case for units. unit id" + this.units[i].id);
-              return this.units[i].id;
-            }
-        }
-      }
-      case ('total_volume_sampled_unit_initial') : {
-        for (var i = 0; i < this.units.length; i++) {
-            if (this.units[i].name === displayValue) {
-              console.log("inside switch case for units. unit id" + this.units[i].id);
-              return this.units[i].id;
-            }
-        }
-      }
-    }
-  }
 
   editSample(selectedSample) {
 
@@ -133,9 +96,9 @@ export class SamplesComponent implements OnInit {
     this.selectedSampleId = selectedSample.sample_id;
 
     this.editSampleForm.setValue({
-      matrix_type: this.lookupDropdownValue('matrix_type', selectedSample.matrix_type),
-      study: this.lookupDropdownValue('study', selectedSample.study),
-      sample_type: this.lookupDropdownValue('sample_type', selectedSample.sample_type),
+      matrix_type:  selectedSample.matrix_type,
+      study: selectedSample.study,
+      sample_type: selectedSample.sample_type,
       collaborator_sample_id: selectedSample.collaborator_sample_id,
       filter_flag: selectedSample.filter_flag, 
       secondary_concentration_flag: selectedSample.secondary_concentration_flag, 
@@ -148,14 +111,14 @@ export class SamplesComponent implements OnInit {
       collection_start_date: selectedSample.collection_start_date,
       collection_start_time: selectedSample.collection_start_time,
       collection_end_date: selectedSample.collection_end_date,
-      collection_end_time: selectedSample.collection_end_date,
+      collection_end_time: selectedSample.collection_end_time,
       sample_volume_filtered: selectedSample.sample_volume_filtered,
       pump_flow_rate: selectedSample.pump_flow_rate,
       meter_reading_initial: selectedSample.meter_reading_initial,
       meter_reading_final: selectedSample.meter_reading_final,
-      meter_reading_unit: this.lookupDropdownValue('meter_reading_unit', selectedSample.meter_reading_unit),
+      meter_reading_unit: selectedSample.meter_reading_unit,
       total_volume_sampled_initial:selectedSample.total_volume_sampled_initial,
-      total_volume_sampled_unit_initial: this.lookupDropdownValue('total_volume_sampled_unit_initial', selectedSample.total_volume_sampled_unit_initial),
+      total_volume_sampled_unit_initial: selectedSample.total_volume_sampled_unit_initial,
       post_dilution_volume: selectedSample.post_dilution_volume,
       filter_type: selectedSample.filter_type,
       filter_born_on_date: selectedSample.filter_born_on_date,
@@ -261,7 +224,7 @@ export class SamplesComponent implements OnInit {
     meter_reading_initial: new FormControl(''),
     meter_reading_final: new FormControl(''),
     meter_reading_unit: new FormControl(''), 
-    tvs: new FormControl(''),
+    total_volume_sampled_initial: new FormControl(''),
     total_volume_sampled_unit_initial: new FormControl(''),
     post_dilution_volume: new FormControl(''), //required when not disabled
     filter_type: new FormControl(''), //required when not disabled
