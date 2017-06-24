@@ -119,6 +119,7 @@ export class SamplesComponent implements OnInit {
       meter_reading_unit: selectedSample.meter_reading_unit,
       total_volume_sampled_initial:selectedSample.total_volume_sampled_initial,
       total_volume_sampled_unit_initial: selectedSample.total_volume_sampled_unit_initial,
+      total_volume_sampled: selectedSample.total_volume_sampled,
       post_dilution_volume: selectedSample.post_dilution_volume,
       filter_type: selectedSample.filter_type,
       filter_born_on_date: selectedSample.filter_born_on_date,

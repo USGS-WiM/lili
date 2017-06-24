@@ -332,8 +332,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="meter_reading_initialInput" >Initial Meter Reading</label>
-                                <input type="text" id="meter_reading_initialInput" formControlName="meter_reading_initial">
+                            <label for="imrInput" >Initial Meter Reading</label>
+                                <input type="text" id="imrInput" formControlName="meter_reading_initial">
                             <div class="select">
                                 <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit">
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
@@ -344,7 +344,7 @@
                         <div class="form-group">
                             <label for="fmrInput">Final Meter Reading</label>
                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                                <label>{{addSampleForm.controls.meter_reading_unit.value}}</label>
+                                <label>{{addSampleForm.controls.meter_reading_unit}}</label>
                         </div>
 
                         <div class="form-group">
