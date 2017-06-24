@@ -14,6 +14,7 @@ export class APP_SETTINGS {
   public static get STUDIES_URL(): string { return this._API_ENDPOINT+'studies/' };
   public static get SAMPLES_URL(): string { return this._API_ENDPOINT+'samples/' };
   public static get SAMP_TYPES_URL(): string { return this._API_ENDPOINT+'sampletypes/' };
+  public static get MATRIX_TYPES_URL(): string { return this._API_ENDPOINT+'matrixtypes/' };
   public static get SAMPLE_ENV_URL(): string { return this._API_ENDPOINT+'sampleenvironments/' };
   public static get UNITS_URL(): string { return this._API_ENDPOINT+'unittypes/' };
   public static get SAMP_LOC_URL(): string { return this._API_ENDPOINT+'samplelocations/' };

@@ -86,7 +86,6 @@ export class SamplesComponent implements OnInit {
   }
 
 
-
   editSample(selectedSample) {
 
     //show the edit sample form if not showing already
