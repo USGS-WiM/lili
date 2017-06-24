@@ -133,19 +133,19 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="meter_reading_initialInput" >Initial Meter Reading</label>
-                                 <input type="text" id="meter_reading_initialInput" formControlName="meter_reading_initial">
+                                <label for="imrInput" >Initial Meter Reading</label>
+                                    <input type="text" id="imrInput" formControlName="meter_reading_initial">
                                 <div class="select">
-                                    <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit">
-                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                    <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
+                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="fmrInput">Final Meter Reading</label>
-                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                                 <label>{{addSampleForm.controls.total_volume_sampled_unit_initial.name}}</label>
+                                    <label for="fmrInput">Final Meter Reading</label>
+                                    <input type="text" id="fmrInput" formControlName="meter_reading_final">
+                                    <label *ngIf="this.units">{{this.unitValue | displayValue:'name':this.units}}</label>
                             </div>
 
                             <div class="form-group">
@@ -335,16 +335,16 @@
                             <label for="imrInput" >Initial Meter Reading</label>
                                 <input type="text" id="imrInput" formControlName="meter_reading_initial">
                             <div class="select">
-                                <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit">
+                                <select id="imrSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="fmrInput">Final Meter Reading</label>
-                                <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                                <label>{{addSampleForm.controls.meter_reading_unit}}</label>
+                                <label for="fmrInput">Final Meter Reading</label>
+                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
+                                 <label *ngIf="this.units">{{this.unitValue | displayValue:'name':this.units}}</label>
                         </div>
 
                         <div class="form-group">
@@ -605,12 +605,12 @@
                             <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type | displayValue:'name':this.matrices}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.meter_reading_initial}}  {{sample.meter_reading_unit}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.meter_reading_final}}  {{sample.meter_reading_unit}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'name':this.units}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}}  {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}}  {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.air_subsample_volume}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type | displayValue:'name':this.filterTypes}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_born_on_date}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collection_start_date | date:'yyyy-MM-dd'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>
