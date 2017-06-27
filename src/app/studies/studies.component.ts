@@ -91,7 +91,7 @@ export class StudiesComponent implements OnInit {
                 this.addStudyForm.reset();
                 break;
             default:
-                //do something
+                //do something defaulty
         }
 
 

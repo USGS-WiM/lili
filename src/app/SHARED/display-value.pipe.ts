@@ -5,9 +5,9 @@ import { Pipe, PipeTransform } from '@angular/core';
  * Accepts the field name and the field id
  * returns the appropriate display value for UI display
  * Usage:
- *  value | id:displayValue:sourceArray
+ *  value | displayValue:sourceArray
  * Example:
- *  {{sample.sample_type | displayValue:sample_type}}
+ *  {{sample.sample_type | displayValue:'name':this.sampleTypes}}
  * formats to: "Performance Evaluation"
  */
 

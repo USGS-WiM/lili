@@ -18,7 +18,7 @@
 
                 <div class="card-text">
                     <!-- begin form -->
-                    <form class="form compact" [formGroup]="addSampleForm" (ngSubmit)="onSubmit()" [hidden]="submitted" >
+                    <form class="form compact" [formGroup]="addSampleForm" (ngSubmit)="onSubmit('add', addSampleForm.value)" [hidden]="submitted" >
                         <section class="form-block">
 
                             <!-- sample type select form, without Clarity UI validation -->
@@ -101,8 +101,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="samplerNameInput">Sampler Name</label>
-                                <input id="samplerNameInput" type="text" formControlName="sampler_name">
+                                <label>Sampler Name</label>
+                                <label for="samplerNameSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sampler_name').invalid && (addSampleForm.get('sampler_name').dirty || addSampleForm.get('sampler_name').touched)">
+                                    <div class="select">
+                                        <select id="samplerNameSelect" name="samplerName" formControlName="sampler_name">
+                                            <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
+                                        </select>
+                                    </div>
+                                </label>
                             </div>
 
                             <div class="form-group">
@@ -164,7 +170,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="required">Filter</label>
+                                <label>Filter</label>
                                 <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('filter_type').invalid && (editSampleForm.get('filter_type').dirty || editSampleForm.get('filter_type').touched)">
                                     <div class="select">
                                         <select id="filterSelect" name="filterType" formControlName="filter_type">
@@ -204,7 +210,7 @@
                                 <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                             </div>
 
-                            <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid"  (click)="createNewSample(addSampleForm.value)">Add</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid">Add</button>
                             <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
                         </section>
                         <p>Form value: {{ addSampleForm.value | json }}</p>
@@ -299,9 +305,21 @@
                             <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em" ></textarea>
                         </div>
 
-                        <div class="form-group">
+
+                        <!--<div class="form-group">
                             <label for="samplerNameInput">Sampler Name</label>
                             <input id="samplerNameInput" type="text" formControlName="sampler_name">
+                        </div>-->
+
+                        <div class="form-group">
+                            <label>Sampler Name</label>
+                            <label for="samplerNameSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sampler_name').invalid && (editSampleForm.get('sampler_name').dirty || editSampleForm.get('sampler_name').touched)">
+                                <div class="select">
+                                    <select id="samplerNameSelect" name="samplerName" formControlName="sampler_name">
+                                        <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
+                                    </select>
+                                </div>
+                            </label>
                         </div>
 
                         <div class="form-group">
@@ -615,7 +633,7 @@
                             <clr-dg-cell>{{sample.collection_start_date | date:'yyyy-MM-dd'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.sampler_name}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.users">{{sample.sampler_name | displayValue:'username':this.users}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_notes}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.insert_user}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.insert_date | date:'shortDate'}}</clr-dg-cell>

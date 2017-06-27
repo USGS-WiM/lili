@@ -7,6 +7,7 @@ import { IFilterType } from '../SHARED/filter-type'
 import { IMatrix } from '../SHARED/matrix';
 import { IStudy } from '../studies/study';
 import { IUnit } from '../SHARED/unit';
+import { IUser } from '../SHARED/user';
 
 import { SampleService } from './sample.service';
 import { SampleTypeService } from '../SHARED/sample-type.service';
@@ -14,6 +15,7 @@ import { FilterTypeService } from '../SHARED/filter-type.service'
 import { MatrixService } from '../SHARED/matrix.service';
 import { StudyService } from '../studies/study.service'
 import { UnitService } from '../SHARED/unit.service';
+import { UserService } from '../SHARED/user.service';
 
 @Component({
   selector: 'app-samples',
@@ -27,6 +29,7 @@ export class SamplesComponent implements OnInit {
   matrices: IMatrix[];
   studies: IStudy[];
   units: IUnit[];
+  users: IUser[];
   errorMessage: string;
   selectedSample: ISample;
   showHideAdd: boolean = false;
@@ -42,10 +45,9 @@ export class SamplesComponent implements OnInit {
   matrixSelected: IMatrix;
   unitValue:number;
 
-  constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _filterTypeService: FilterTypeService, private _matrixService: MatrixService, private _unitService: UnitService ) { }
+  constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _filterTypeService: FilterTypeService, private _matrixService: MatrixService, private _unitService: UnitService, private _userService: UserService ) { }
 
   ngOnInit():void {
-
 
       //on init, call getSamples function of the SampleService, set results to the allSamples var
       this._sampleService.getSamples()
@@ -78,11 +80,14 @@ export class SamplesComponent implements OnInit {
         .subscribe(units => this.units = units,
                     error => this.errorMessage = <any>error);
 
+      //on init, call getUsers function of the UserService, set results to the units var
+      this._userService.getUsers()
+        .subscribe(users => this.users = users,
+                    error => this.errorMessage = <any>error);
+
       this._sampleService.getSampleFormConfig()
         .subscribe(displayConfig => this.displayConfig = displayConfig,
                     error => this.errorMessage = <any>error);
-
-      
 
   }
 
@@ -164,6 +169,18 @@ export class SamplesComponent implements OnInit {
               } 
             } 
         }   
+  }
+
+  private updateSamplesArray(newItem) {
+        let updateItem = this.allSamples.find(this.findIndexToUpdate, newItem.id);
+
+        let index = this.allSamples.indexOf(updateItem);
+
+        this.allSamples[index] = newItem;
+  }
+
+  private findIndexToUpdate(newItem) {
+      return newItem.id === this;
   }
 
 
@@ -254,18 +271,25 @@ export class SamplesComponent implements OnInit {
   ///split these out
   submitted = false;
   onSubmit (formId, formValue) {
-    //this.submitted = true;
-
-    alert("onsubmit clicked for " + formId + ". Form value: " + JSON.stringify(formValue));
-
+    switch (formId) {
+        case 'edit':
+            //update a record
+            this._sampleService.update(formValue)
+            .subscribe(sample => sample,
+              error => this.errorMessage= <any> error);
+            this.editSampleForm.reset();
+            this.updateSamplesArray(formValue);
+            this.showHideEdit = false;
+            break;
+        case 'add':
+            //add a record
+            this._sampleService.create(formValue)
+              .subscribe(sample => this.allSamples.push(formValue),
+              error => this.errorMessage = <any> error);
+            this.addSampleForm.reset();
+            break;
+        default:
+          //do something defaulty
+    }
   }
-
-  createNewSample() {
-        this.addSampleForm.reset();
-        this.submitted = false;
-  }
-
- 
-
-
 }
