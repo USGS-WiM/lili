@@ -16,9 +16,20 @@ export class SampleService {
 
   constructor(private _http: Http) { }
 
+  private extractData(res: Response) {
+        let body = res.json();
+        return body.data || {};
+  }
+
   //get services from demo services on github
-  getSamples(): Observable<ISample[]> {
-    return this._http.get(this._samplesUrl)
+  public getSamples(): Observable<ISample[]> {
+
+    let options = new RequestOptions({
+        headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.SAMPLES_URL, options)
+    //return this._http.get(this._samplesUrl)
                 .map((response: Response) => <ISample[]>response.json())
                 //.do(data => console.log('Samples data: ' + JSON.stringify(data)))
                 .catch(this.handleError);
@@ -35,17 +46,31 @@ export class SampleService {
   // }
 
 
-  createSample(sample: ISample): Observable<ISample[]> {
-    let requestBody = JSON.stringify(sample);
-    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
+  public create(formValue: ISample): Observable<ISample[]> {
 
-    return this._http.post (APP_SETTINGS.SAMPLES_URL, requestBody, options)
-      .map((response: Response) => <ISample[]>response.json())
+    let options = new RequestOptions({
+        headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.post (APP_SETTINGS.SAMPLES_URL, formValue, options)
+      .map(this.extractData)
       .catch(this.handleError)
 
   }
 
-  getSampleFormConfig(): Observable<any[]> {
+  public update(formValue: ISample): Observable<ISample> {
+
+    let options = new RequestOptions({
+            headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+        return this._http.put(APP_SETTINGS.SAMPLES_URL + formValue.id + '/', formValue, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+
+  }
+
+  public getSampleFormConfig(): Observable<any[]> {
     return this._http.get(this._sampleFormConfigUrl)
                 .map((response: Response) => <any>response.json())
                 //.do(data => console.log('Display config data: ' + JSON.stringify(data)))

@@ -33,7 +33,7 @@ export class StudyService {
             .catch(this.handleError);
     }
 
-    public create(formValue: Object): Observable < IStudy > {
+    public create(formValue: IStudy): Observable < IStudy > {
 
         let options = new RequestOptions({
             headers: APP_SETTINGS.AUTH_JSON_HEADERS
