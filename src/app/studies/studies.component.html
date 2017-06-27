@@ -15,7 +15,7 @@
             <div class="card-block">
                 <div class="card-title">Add Study</div>
                 <div class="card-text">
-                <form id="addStudyForm" class="compact" [formGroup]="addStudyForm" (ngSubmit)="onSubmit()" [hidden]="submitted" >
+                <form id="addStudyForm" class="compact" [formGroup]="addStudyForm" (ngSubmit)="onSubmit('add', addStudyForm.value)" [hidden]="submitted" >
                 <section class="form-block">
                     <!--<label>Add Study</label>-->
                     <div class="form-group">
@@ -27,11 +27,7 @@
                     </div>
                     <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea id="description" type="text" formControlName="description" rows="3"></textarea>
-                    <!--<label for="description" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addStudyForm.get('description').invalid && (addStudyForm.get('description').dirty || addStudyForm.get('description').touched)">
-                        <input id="description" type="text" formControlName="description">
-                        <span class="tooltip-content">Description is required.</span>
-                    </label>-->
+                    <textarea id="description" type="text" formControlName="description" rows="2" style="max-width:25em"></textarea>
                     </div>
                     <button class="btn btn-primary" type="submit" [disabled]="addStudyForm.invalid">Add</button>
                     <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
@@ -43,43 +39,54 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="row">
 
     <clr-modal [(clrModalOpen)]="showHideEdit" >
-    <h3 class="modal-title">Edit Study</h3>
-    <div class="modal-body">
+        <h3 class="modal-title">Edit Study</h3>
+        <div class="modal-body">
 
-        <div class="row">
-            <div class="col-lg-12">
-                <form id="editStudyForm" class="compact" [formGroup]="editStudyForm" (ngSubmit)="onSubmit()" [hidden]="submitted" >
-                    <section class="form-block">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form id="editStudyForm" class="compact" [formGroup]="editStudyForm" (ngSubmit)="onSubmit('edit', editStudyForm.value)" [hidden]="submitted" >
+                        <section class="form-block">
 
-                        <label>Selected Study: {{selectedStudyName}}</label>
-                        <div class="form-group">
-                            <label>Name</label>
-                            <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editStudyForm.get('name').invalid && (editStudyForm.get('name').dirty || editStudyForm.get('name').touched)">
-                                <input id="name" type="text" formControlName="name" size="40">
-                                <span class="tooltip-content">Name is required.</span>
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea id="description" type="text" formControlName="description" rows="3"></textarea>
-                        </div>
-                    </section>
-                    <!--<p>Form value: {{ editStudyForm.value | json }}</p>
-                    <p>Form status: {{ editStudyForm.status | json }}</p> -->
-                </form>
+                            <label>Selected Study: {{selectedStudyName}}</label>
+
+                            <div class="form-group">
+                                <label for="studyId">Study ID</label>
+                                <input type="text" id="studyId" size="35" formControlName="id" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Name</label>
+                                <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editStudyForm.get('name').invalid && (editStudyForm.get('name').dirty || editStudyForm.get('name').touched)">
+                                    <input id="name" type="text" formControlName="name" size="40">
+                                    <span class="tooltip-content">Name is required.</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea id="description" type="text" formControlName="description" rows="2" style="max-width:25em"></textarea>
+                            </div>
+                            <button class="btn btn-primary" type="submit" [disabled]="editStudyForm.invalid">Save Edits</button>
+                            <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+                        </section>
+                        <p>Form value: {{ editStudyForm.value | json }}</p>
+                        <p>Form status: {{ editStudyForm.status | json }}</p> 
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
-        <button type="button" class="btn btn-primary" type="submit" [disabled]="editStudyForm.invalid">Save Edits</button>
-    </div>
-</clr-modal>
+        <!--<div class="modal-footer">
+            <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
+            <button type="button" class="btn btn-primary" type="submit" [disabled]="editStudyForm.invalid">Save Edits</button>
+        </div>-->
+    </clr-modal>
 
    
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="card">
             <div class="card-block">
                 <div class="card-title">
@@ -93,41 +100,25 @@
                             </ng-container>
                         </clr-dg-column>
 
-                         <clr-dg-column [clrDgField]="'study_name'">
+                         <clr-dg-column [clrDgField]="'id'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Study ID
+                            </ng-container>
+                        </clr-dg-column>
+
+                         <clr-dg-column [clrDgField]="'name'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Study Name
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'study_desc'">
+                        <clr-dg-column [clrDgField]="'description'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Study Description
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'insert_user'">
-                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Added by
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'insert_date'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                 Date added
-                            </ng-container>
-                        </clr-dg-column>
-
-                         <clr-dg-column [clrDgField]="'update_user'">
-                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                 Updated by
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'update_date'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                 Date updated
-                            </ng-container>
-                        </clr-dg-column>
+                        
 
                         <clr-dg-row *clrDgItems="let study of allStudies">
                             <clr-dg-cell>
@@ -136,12 +127,9 @@
                                     <button class="btn btn-sm btn-link" (click)="editStudy(study)"><clr-icon shape="note-edit" size="16"></clr-icon></button>
                                 </div>
                             </clr-dg-cell>
-                            <clr-dg-cell>{{study.study_name}}</clr-dg-cell>
-                            <clr-dg-cell>{{study.study_desc}}</clr-dg-cell>
-                            <clr-dg-cell>{{study.insert_user}}</clr-dg-cell>
-                            <clr-dg-cell>{{study.insert_date | date:'shortDate'}}</clr-dg-cell>
-                            <clr-dg-cell>{{study.update_user }}</clr-dg-cell>
-                            <clr-dg-cell>{{study.update_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{study.id}}</clr-dg-cell>
+                            <clr-dg-cell>{{study.name}}</clr-dg-cell>
+                            <clr-dg-cell>{{study.description}}</clr-dg-cell>
                         </clr-dg-row>
 
 
