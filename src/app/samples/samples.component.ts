@@ -110,6 +110,7 @@ export class SamplesComponent implements OnInit {
     this.unitValue = selectedSample.meter_reading_unit;
 
     this.editSampleForm.setValue({
+      id: selectedSample.id,
       matrix_type:  selectedSample.matrix_type,
       study: selectedSample.study,
       sample_type: selectedSample.sample_type,
@@ -229,13 +230,14 @@ export class SamplesComponent implements OnInit {
    //edit sample form
   editSampleForm = new FormGroup({
     //the following controls apply to every sample record, regardless of matrix_type selected
+    id:new FormControl(''),
     matrix_type: new FormControl('', Validators.required), 
     study: new FormControl('', Validators.required),  //study name, maps to study id
     sample_type: new FormControl('', Validators.required),
     collaborator_sample_id: new FormControl('', Validators.required),
     filter_flag: new FormControl(false, Validators.required), //radio button
     secondary_concentration_flag: new FormControl(false, Validators.required), //radio button
-    study_site_name: new FormControl('', ),
+    study_site_name: new FormControl(''),
     sample_description: new FormControl(''),
     sampler_name:  new FormControl(''),
     sample_notes: new FormControl(''),
