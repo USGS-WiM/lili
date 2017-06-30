@@ -17,6 +17,8 @@ import { StudyService } from '../studies/study.service'
 import { UnitService } from '../SHARED/unit.service';
 import { UserService } from '../SHARED/user.service';
 
+import { APP_UTILITIES } from '../app.utilities'
+
 @Component({
   selector: 'app-samples',
   templateUrl: './samples.component.html',
@@ -34,7 +36,7 @@ export class SamplesComponent implements OnInit {
   selectedSample: ISample;
   showHideAdd: boolean = false;
   showHideEdit: boolean = false;
-  sampleSelected: boolean;
+  sampleSelected: boolean = false;
   displayConfig:Object = {};
   selectedSampleId;
   //following 3 vars hold the 'value' property for the corresponding html select dropdowns - needed to update dropdown for editSample form
@@ -43,17 +45,19 @@ export class SamplesComponent implements OnInit {
   studyStoredValue;
   //var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
-  unitValue:number;
+  unitValue;
 
   constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _filterTypeService: FilterTypeService, private _matrixService: MatrixService, private _unitService: UnitService, private _userService: UserService ) { }
 
   ngOnInit():void {
 
+      //on init, get sample form config object from App Utilities and se to local displayConfig var
+      this.displayConfig = APP_UTILITIES.SAMPLE_FORM_CONFIG;
+
       //on init, call getSamples function of the SampleService, set results to the allSamples var
       this._sampleService.getSamples()
         .subscribe(samples => this.allSamples = samples,
                     error => this.errorMessage = <any>error);
-      this.sampleSelected = false;
   
       //on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
       this._sampleTypeService.getSampleTypes()
@@ -85,16 +89,11 @@ export class SamplesComponent implements OnInit {
         .subscribe(users => this.users = users,
                     error => this.errorMessage = <any>error);
 
-      this._sampleService.getSampleFormConfig()
-        .subscribe(displayConfig => this.displayConfig = displayConfig,
-                    error => this.errorMessage = <any>error);
-
   }
 
   onUnitChange (unitValue) {
     //sets the var unitValue used for meter reading unit display
-    this.unitValue = unitValue;
-    alert(this.unitValue);
+    this.unitValue = parseInt(unitValue);
   }
 
   editSample(selectedSample) {
@@ -103,9 +102,7 @@ export class SamplesComponent implements OnInit {
     if (this.showHideEdit === false) {
         this.showHideEdit = true;
     }
-    //sets the var selectedSampleId used for label display
-    this.selectedSampleId = selectedSample.sample_id;
-
+  
     //sets the var unitValue used for meter reading unit display
     this.unitValue = selectedSample.meter_reading_unit;
 
@@ -144,6 +141,8 @@ export class SamplesComponent implements OnInit {
       technician_initials: selectedSample.technician_initials,
       sample_volume_initial: selectedSample.sample_volume_initial
     })
+
+    this.sampleSelected = true;
 
   }
 
