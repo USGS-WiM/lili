@@ -40,7 +40,7 @@ ng e2e
 ng build
 
 # prod build
-ng build --prod
+ng build --prod --bh ./
 ```
 =======
 # lide-lims

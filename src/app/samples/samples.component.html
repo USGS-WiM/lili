@@ -206,15 +206,15 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="eluteVolInput">Eluent/Backflish Volume Used</label>
+                                <label for="eluteVolInput">Eluent/Backflush Volume Used</label>
                                 <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                             </div>
 
                             <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid">Add</button>
                             <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
                         </section>
-                        <p>Form value: {{ addSampleForm.value | json }}</p>
-                        <p>Form status: {{ addSampleForm.status | json }}</p> 
+                        <!--<p>Form value: {{ addSampleForm.value | json }}</p>
+                        <p>Form status: {{ addSampleForm.status | json }}</p> -->
                     </form>
                     <!-- end form -->
                 </div> 
@@ -233,9 +233,6 @@
             <div class="col-lg-12">
                 <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmit('edit', editSampleForm.value)" [hidden]="submitted" >
                     <section class="form-block">
-
-                        <!--<label>Selected Sample: {{this.selectedSampleId ? this.selectedSampleId: 'none'}}</label>-->
-                        <label>Selected Sample: {{this.selectedSampleId}}</label>
 
                         <div class="form-group">
                                 <label for="studyId">Sample ID</label>
@@ -310,12 +307,6 @@
                             <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em" ></textarea>
                         </div>
 
-
-                        <!--<div class="form-group">
-                            <label for="samplerNameInput">Sampler Name</label>
-                            <input id="samplerNameInput" type="text" formControlName="sampler_name">
-                        </div>-->
-
                         <div class="form-group">
                             <label>Sampler Name</label>
                             <label for="samplerNameSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sampler_name').invalid && (editSampleForm.get('sampler_name').dirty || editSampleForm.get('sampler_name').touched)">
@@ -367,7 +358,7 @@
                         <div class="form-group">
                                 <label for="fmrInput">Final Meter Reading</label>
                                  <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                                 <label *ngIf="this.units">{{this.unitValue | displayValue:'name':this.units}}</label>
+                                <label *ngIf="sampleSelected"><span>{{this.unitValue | displayValue:'name':this.units }}</span></label>
                         </div>
 
                         <div class="form-group">

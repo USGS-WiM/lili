@@ -2,8 +2,6 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
         <div class="btn-group">
             <button class="btn btn-sm" (click)="showHideAdd = !showHideAdd">Add Study</button>
-            <!--<button class="btn btn-sm" (click)="showHideEdit = !showHideEdit" [disabled]=" studySelected ? null : showHideAdd ? null: 'disabled' ">Edit Study</button>-->
-            <!--<button class="btn btn-sm" [disabled]="studySelected ? null : 'disabled'" (click)="deleteStudyConfirm = true">Delete Study</button>-->
         </div>
     </div>
 </div>
@@ -147,7 +145,7 @@
 
 
 
-<clr-modal [(clrModalOpen)]="deleteStudyConfirm">
+<!--<clr-modal [(clrModalOpen)]="deleteStudyConfirm">
     <h3 class="modal-title"><clr-icon shape="warning" class="is-warning" size="36"></clr-icon> Delete Study</h3>
     <div class="modal-body">
          <p>You have selected the following study to delete:
@@ -158,4 +156,4 @@
        <button class="btn btn-outline" type="button" (click)="deleteStudyConfirm = false">Cancel</button>
         <button class="btn btn-primary" type="button" (click)="deleteStudyConfirm = false">Delete this study</button>
     </div>
-</clr-modal>
+</clr-modal>-->
