@@ -36,6 +36,9 @@ export class SamplesComponent implements OnInit {
   selectedSample: ISample;
   showHideAdd: boolean = false;
   showHideEdit: boolean = false;
+  showHideABModal: boolean = false;
+  showHideFreezeModal: boolean = false;
+  showHidePrintModal: boolean = false;
   sampleSelected: boolean = false;
   displayConfig:Object = {};
   selectedSampleId;
@@ -46,6 +49,8 @@ export class SamplesComponent implements OnInit {
   //var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
   unitValue;
+
+  selected: ISample[] = [];
 
   constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _filterTypeService: FilterTypeService, private _matrixService: MatrixService, private _unitService: UnitService, private _userService: UserService ) { }
 
@@ -96,9 +101,33 @@ export class SamplesComponent implements OnInit {
     this.unitValue = parseInt(unitValue);
   }
 
+  addSampleToAB(selectedSampleArray) {
+    //show the AB modal if not showing already
+    if (this.showHideABModal === false) {
+        this.showHideABModal = true;
+    }
+  
+  }
+
+  freezeSample(selectedSampleArray) {
+    //show the AB modal if not showing already
+    if (this.showHideFreezeModal === false) {
+        this.showHideFreezeModal = true;
+    }
+  
+  }
+
+   printLabel(selectedSampleArray) {
+    //show the AB modal if not showing already
+    if (this.showHidePrintModal === false) {
+        this.showHidePrintModal = true;
+    }
+  
+  }
+
   editSample(selectedSample) {
 
-    //show the edit sample form if not showing already
+    //show the edit sample modal if not showing already
     if (this.showHideEdit === false) {
         this.showHideEdit = true;
     }
