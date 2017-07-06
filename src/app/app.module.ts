@@ -26,6 +26,7 @@ import { StudiesFormComponent } from './studies/studies-form/studies-form.compon
 import { StudiesTableComponent } from './studies/studies-table/studies-table.component';
 import { AdminComponent } from './admin/admin.component';
 import { DisplayValuePipe } from './SHARED/display-value.pipe';
+import { StudyFilterComponent } from './FILTERS/study-filter/study-filter.component';
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import { DisplayValuePipe } from './SHARED/display-value.pipe';
         //to be removed
         StudiesTableComponent,
         AdminComponent,
-        DisplayValuePipe
+        DisplayValuePipe,
+        StudyFilterComponent
     ],
     imports: [
         BrowserAnimationsModule,

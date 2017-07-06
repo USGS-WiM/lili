@@ -1,0 +1,14 @@
+<span>
+  <form>
+    <!--<section class="form-block">-->
+        <label>Select Studies</label>
+        <div class="form-group">
+            <div class="select multiple">
+                <select multiple (change)="onSelect($event.target.value)">
+                   <option *ngFor="let study of allStudies" [value]="study.id">{{study.name}}</option>
+                </select>
+            </div>
+        </div>
+    <!--</section>-->
+  </form>
+</span>

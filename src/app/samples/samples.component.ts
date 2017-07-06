@@ -17,6 +17,8 @@ import { StudyService } from '../studies/study.service'
 import { UnitService } from '../SHARED/unit.service';
 import { UserService } from '../SHARED/user.service';
 
+import { StudyFilterComponent } from '../FILTERS/study-filter/study-filter.component'
+
 import { APP_UTILITIES } from '../app.utilities'
 
 @Component({
@@ -51,6 +53,8 @@ export class SamplesComponent implements OnInit {
   unitValue;
 
   selected: ISample[] = [];
+
+  selectedStudy: number;
 
   constructor(private _sampleService: SampleService,  private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _filterTypeService: FilterTypeService, private _matrixService: MatrixService, private _unitService: UnitService, private _userService: UserService ) { }
 
@@ -114,6 +118,8 @@ export class SamplesComponent implements OnInit {
     if (this.showHideFreezeModal === false) {
         this.showHideFreezeModal = true;
     }
+
+    this.selectedStudy = this.selected[0].study
   
   }
 
@@ -297,6 +303,15 @@ export class SamplesComponent implements OnInit {
     sample_volume_filtered: new FormControl(''),
     total_volume_sampled: new FormControl(''),
   });
+
+  freezeSampleForm = new FormGroup({
+    number_of_aliquots: new FormControl('', Validators.required),
+    rack: new FormControl('', Validators.required),
+    box: new FormControl('', Validators.required),
+    row: new FormControl('', Validators.required),
+    location: new FormControl('', Validators.required),
+    frozen:new FormControl(true, Validators.required) 
+  })
 
   ///split these out
   submitted = false;

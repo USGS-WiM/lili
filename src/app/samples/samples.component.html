@@ -250,7 +250,7 @@
                             </label>
                         </div>
 
-                            <div class="form-group">
+                        <div class="form-group">
                             <label class="required">Study</label>
                             <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('study').invalid && (editSampleForm.get('study').dirty || editSampleForm.get('study').touched)">
                             <div class="select">
@@ -469,6 +469,50 @@
 
         <div class="row">
             <div class="col-lg-12">
+
+                <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmit()" >
+                    <section class="form-block">
+
+                        <div *ngIf="this.selectedStudy">
+                            <label>You have selected the following samples to freeze:</label>
+                            <ul  class="list">
+                                <li *ngFor="let sample of selected">
+                                    Sample {{sample.id}},  {{sample.study | displayValue:'name':this.studies}}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="numberOfAliquots" class="required">Number of Aliquots</label>
+                            <input id="numberOfAliquots" type="text" formControlName="number_of_aliquots">
+                        </div>
+                        <div class="form-group">
+                            <label for="rack">Rack</label>
+                            <input id="rack" type="text" formControlName="rack">
+                        </div>
+                        <div class="form-group">
+                            <label for="box">Box</label>
+                            <input id="box" type="text" formControlName="box">
+                        </div>
+                        <div class="form-group">
+                            <label for="row">Row</label>
+                            <input id="row" type="text" formControlName="row">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input id="location" type="text" formControlName="location">
+                        </div>
+                        <div class="form-group">
+                            <label >Frozen</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="frozenToggle" formControlName="frozen">
+                                <label for="frozenToggle">{{this.freezeSampleForm.controls.frozen.value ? "Yes" : "No"}}</label>
+                            </div>
+                        </div>
+
+
+                    </section>
+                </form>
                 
             </div>
             <!--<div class="col-lg-6">
@@ -536,10 +580,20 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'study'">
+
+                        <!-- regular coluomn header for Study-->
+                        <!--<clr-dg-column [clrDgField]="'study'">
                              <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Study
                             </ng-container>
+                        </clr-dg-column>-->
+                        
+                        <!-- filter column header for study -->
+                         <clr-dg-column [clrDgField]="'study'">
+                             Study
+                             <clr-dg-filter [clrDgFilter]="studyFilterComponent">
+                                <app-study-filter #studyFilterComponent></app-study-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'collaborator_sample_id'">
