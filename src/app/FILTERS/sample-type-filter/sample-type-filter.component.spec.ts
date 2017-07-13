@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StudyFilter } from './study-filter.component';
+import { SampleTypeFilter } from './sample-type-filter.component';
 
-describe('StudyFilter', () => {
-  let component: StudyFilter;
-  let fixture: ComponentFixture<StudyFilter>;
+describe('SampleTypeFilter', () => {
+  let component: SampleTypeFilter;
+  let fixture: ComponentFixture<SampleTypeFilter>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StudyFilter ]
+      declarations: [ SampleTypeFilter ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StudyFilter);
+    fixture = TestBed.createComponent(SampleTypeFilter);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

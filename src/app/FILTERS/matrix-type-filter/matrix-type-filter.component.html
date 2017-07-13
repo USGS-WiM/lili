@@ -1,0 +1,6 @@
+<div class="select">
+    <select [(ngModel)]="selectedMatrix" name="matrix_type" (ngModelChange)="onSelect($event)">
+        <option value="-1"><span class="all">ALL MATRICES</span></option>
+        <option *ngFor="let matrix of allMatrices" [ngValue]="matrix.id">{{matrix.name}}</option>
+    </select>
+</div>

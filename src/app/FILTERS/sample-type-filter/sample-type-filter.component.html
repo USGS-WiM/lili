@@ -1,0 +1,6 @@
+<div class="select">
+    <select [(ngModel)]="selectedSampleType" name="sample_type" (ngModelChange)="onSelect($event)">
+        <option value="-1"><span class="all">ALL SAMPLE TYPES</span></option>
+        <option *ngFor="let sampleType of allSampleTypes" [ngValue]="sampleType.id">{{sampleType.code}}</option>
+    </select>
+</div>
