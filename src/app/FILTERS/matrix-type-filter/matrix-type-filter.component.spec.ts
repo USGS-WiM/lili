@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StudyFilter } from './study-filter.component';
+import { MatrixTypeFilter } from './matrix-type-filter.component';
 
-describe('StudyFilter', () => {
-  let component: StudyFilter;
-  let fixture: ComponentFixture<StudyFilter>;
+describe('MatrixTypeFilter', () => {
+  let component: MatrixTypeFilter;
+  let fixture: ComponentFixture<MatrixTypeFilter>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StudyFilter ]
+      declarations: [ MatrixTypeFilter ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StudyFilter);
+    fixture = TestBed.createComponent(MatrixTypeFilter);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

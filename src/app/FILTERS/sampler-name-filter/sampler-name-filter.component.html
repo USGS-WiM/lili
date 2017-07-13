@@ -1,0 +1,6 @@
+<div class="select">
+    <select [(ngModel)]="selectedUsers" name="sampler_name" (ngModelChange)="onSelect($event)">
+        <option value="-1"><span class="all">ALL USERS</span></option>
+        <option *ngFor="let user of allUsers" [ngValue]="user.id">{{user.username}}</option>
+    </select>
+</div>

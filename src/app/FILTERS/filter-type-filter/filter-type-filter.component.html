@@ -1,0 +1,6 @@
+<div class="select">
+    <select [(ngModel)]="selectedFilterType" name="filter_type" (ngModelChange)="onSelect($event)">
+        <option value="-1"><span class="all">ALL SAMPLE TYPES</span></option>
+        <option *ngFor="let filterType of allFilterTypes" [ngValue]="filterType.id">{{filterType.name}}</option>
+    </select>
+</div>
