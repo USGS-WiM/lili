@@ -17,7 +17,7 @@ import { StudyService } from '../studies/study.service'
 import { UnitService } from '../SHARED/unit.service';
 import { UserService } from '../SHARED/user.service';
 
-import { StudyFilterComponent } from '../FILTERS/study-filter/study-filter.component'
+import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
 
 import { APP_UTILITIES } from '../app.utilities'
 
@@ -240,6 +240,11 @@ export class SamplesComponent implements OnInit {
     collection_start_time: new FormControl(''),
     collection_end_date: new FormControl(''),
     collection_end_time: new FormControl(''),
+
+    final_concentrated_sample_volume: new FormControl(''),
+    final_concentrated_sample_volume_type: new FormControl(''),
+    final_concentrated_sample_volume_notes: new FormControl(''),
+
     pump_flow_rate: new FormControl(''),
     meter_reading_initial: new FormControl(''),
     meter_reading_final: new FormControl(''),
@@ -283,6 +288,11 @@ export class SamplesComponent implements OnInit {
     collection_start_time: new FormControl(''),
     collection_end_date: new FormControl(''),
     collection_end_time: new FormControl(''),
+
+    final_concentrated_sample_volume: new FormControl(''),
+    final_concentrated_sample_volume_type: new FormControl(''),
+    final_concentrated_sample_volume_notes: new FormControl(''),
+
     pump_flow_rate: new FormControl(''),
     meter_reading_initial: new FormControl(''),
     meter_reading_final: new FormControl(''),

@@ -26,7 +26,12 @@ import { StudiesFormComponent } from './studies/studies-form/studies-form.compon
 import { StudiesTableComponent } from './studies/studies-table/studies-table.component';
 import { AdminComponent } from './admin/admin.component';
 import { DisplayValuePipe } from './SHARED/display-value.pipe';
-import { StudyFilterComponent } from './FILTERS/study-filter/study-filter.component';
+import { StudyFilter } from './FILTERS/study-filter/study-filter.component';
+import { SampleTypeFilter } from './FILTERS/sample-type-filter/sample-type-filter.component';
+import { MatrixTypeFilter } from './FILTERS/matrix-type-filter/matrix-type-filter.component';
+import { SamplerNameFilter } from './FILTERS/sampler-name-filter/sampler-name-filter.component';
+import { FilterTypeFilter } from './FILTERS/filter-type-filter/filter-type-filter.component';
+import { RangeFilter } from './FILTERS/range-filter/range-filter.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +48,12 @@ import { StudyFilterComponent } from './FILTERS/study-filter/study-filter.compon
         StudiesTableComponent,
         AdminComponent,
         DisplayValuePipe,
-        StudyFilterComponent
+        StudyFilter,
+        SampleTypeFilter,
+        MatrixTypeFilter,
+        SamplerNameFilter,
+        FilterTypeFilter,
+        RangeFilter
     ],
     imports: [
         BrowserAnimationsModule,
