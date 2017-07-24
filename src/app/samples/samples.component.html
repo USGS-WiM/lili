@@ -620,19 +620,19 @@
                         </clr-dg-column>-->
 
                         <!-- regular column header for Sample ID-->
-                        <!-- <clr-dg-column [clrDgField]="'sample_id'">
+                         <!-- <clr-dg-column [clrDgField]="'sample_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Sample ID
                             </ng-container>
-                        </clr-dg-column> -->
+                        </clr-dg-column>  -->
 
                         <!-- filter column header for Sample ID -->
-                        <clr-dg-column [clrDgField]="'sample_id'">
+                         <clr-dg-column [clrDgField]="'sample_id'">
                              Sample ID
                              <clr-dg-filter [clrDgFilter]="rangeFilter">
                                 <range-filter #rangeFilter></range-filter>
                             </clr-dg-filter>
-                        </clr-dg-column>
+                        </clr-dg-column> 
 
                         <clr-dg-column [clrDgField]="'collaborator_sample_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">

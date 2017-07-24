@@ -7,8 +7,8 @@ import {Filter, DatagridFilter} from "clarity-angular";
   styleUrls: ['./range-filter.component.scss']
 })
 export class RangeFilter implements OnInit, Filter<any> {
-  private lower;
-  private upper;
+  private lower: number= -1;
+  private upper: number = -1;
 
   constructor() { }
 
@@ -17,18 +17,41 @@ export class RangeFilter implements OnInit, Filter<any> {
 
   changes: EventEmitter<any> = new EventEmitter<any>(false);
   
-  accepts(sampleID: any){
-      return (this.lower < sampleID < this.upper );
+  accepts(sample: any){
+      return ((sample.id >= Number(this.lower)) && (sample.id<= Number(this.upper)));
+      //return true
   }
 
   isActive():boolean {
-      //return ((this.selectedMatrix > -1) ? true : false);
-      return true;
+      return ((this.lower > -1 && this.upper > -1) ? true : false);
+      //return true;
   }
 
-  //capture the value from the onchange, set it equal to a varable, compare within the accepts() function
-  onChange(value: any){
-    alert("a range value has changed!")
+  //capture the value from the onchange, set it equal to a variable, compare within the accepts() function
+  onLowerChange(value: any){
+    if (value == '') {
+      this.lower = -1
+      console.log("last lower range value was EMPTY ");
+      this.changes.emit(true);
+    }
+    else {
+      this.lower = value
+      console.log("last lower range value was:" + this.upper)
+      this.changes.emit(true);
+    }
+  }
+  onUpperChange(value: any){
+    if (value == '') {
+      this.upper = -1
+      console.log("last upper range value was EMPTY ");
+      this.changes.emit(true);
+    }
+    else {
+      this.upper = value
+      console.log("last upper range value was:" + this.upper)
+      this.changes.emit(true);
+    }
+ 
   }
 
 
