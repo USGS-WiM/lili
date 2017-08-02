@@ -48,6 +48,7 @@
                                 <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
                                 <div class="select">
                                     <select id="studySelect" name="study" formControlName="study">
+                                        <option value=""><span class="all">NO STUDY ASSOCIATION</span></option>
                                         <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
                                     </select>
                                 </div>
@@ -132,6 +133,28 @@
                                 <label for="collectEndTime">Collection End Time (HHmm)</label>
                                 <input id="collectEndTime" type="text" formControlName="collection_end_time">
                             </div>
+
+                            <div class="form-group">
+                                <label for="collectEndTime">FCSV</label>
+                                <input id="collectEndTime" type="text" formControlName="final_concentrated_sample_volume">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="required">FCSV Type</label>
+                                <label for="fcsvTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
+                                <div class="select">
+                                    <select id="fcsvTypeSelect" name="sample_type" formControlName="final_concentrated_sample_volume_type">
+                                        <!-- <option *ngFor="let fcsvType of fcsvTypes" [value]="fscvType.id">{{fcsvType.name}}</option> -->
+                                    </select>
+                                </div>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="collectEndTime">FCSV Notes</label>
+                                <textarea id="eluteNotesInput" rows="2" formControlName="final_concentrated_sample_volume_notes" style="max-width:25em"></textarea>
+                            </div>
+
 
                             <div class="form-group">
                                 <label for="pumpRateInput">Pump Flow rate</label>
@@ -255,13 +278,14 @@
                             <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('study').invalid && (editSampleForm.get('study').dirty || editSampleForm.get('study').touched)">
                             <div class="select">
                                 <select id="studySelect" name="study" formControlName="study">
+                                    <option value=""><span class="all">NO STUDY ASSOCIATION</span></option>
                                     <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
                                 </select>
                             </div>
                             </label>
                         </div>
 
-                            <div class="form-group">
+                        <div class="form-group">
                             <label class="required">Sample type</label>
                             <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
                             <div class="select">
@@ -338,6 +362,27 @@
                         <div class="form-group">
                             <label for="collectEndTime">Collection End Time (HHmm)</label>
                             <input id="collectEndTime" type="text" formControlName="collection_end_time">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="collectEndTime">FCSV</label>
+                            <input id="collectEndTime" type="text" formControlName="final_concentrated_sample_volume">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">FCSV Type</label>
+                            <label for="fcsvTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
+                            <div class="select">
+                                <select id="fcsvTypeSelect" name="sample_type" formControlName="final_concentrated_sample_volume_type">
+                                    <!-- <option *ngFor="let fcsvType of fcsvTypes" [value]="fscvType.id">{{fcsvType.name}}</option> -->
+                                </select>
+                            </div>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="collectEndTime">FCSV Notes</label>
+                            <textarea id="eluteNotesInput" rows="2" formControlName="final_concentrated_sample_volume_notes" style="max-width:25em"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -574,14 +619,29 @@
                             </ng-container>
                         </clr-dg-column>-->
 
-                        <clr-dg-column [clrDgField]="'sample_id'">
+                        <!-- regular column header for Sample ID-->
+                         <!-- <clr-dg-column [clrDgField]="'sample_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Sample ID
+                            </ng-container>
+                        </clr-dg-column>  -->
+
+                        <!-- filter column header for Sample ID -->
+                         <clr-dg-column [clrDgField]="'sample_id'">
+                             Sample ID
+                             <clr-dg-filter [clrDgFilter]="rangeFilter">
+                                <range-filter #rangeFilter></range-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column> 
+
+                        <clr-dg-column [clrDgField]="'collaborator_sample_id'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                 Collaborator Sample ID
                             </ng-container>
                         </clr-dg-column>
 
 
-                        <!-- regular coluomn header for Study-->
+                        <!-- regular column header for Study-->
                         <!--<clr-dg-column [clrDgField]="'study'">
                              <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Study
@@ -591,22 +651,24 @@
                         <!-- filter column header for study -->
                          <clr-dg-column [clrDgField]="'study'">
                              Study
-                             <clr-dg-filter [clrDgFilter]="studyFilterComponent">
-                                <app-study-filter #studyFilterComponent></app-study-filter>
+                             <clr-dg-filter [clrDgFilter]="studyFilter">
+                                <study-filter #studyFilter></study-filter>
                             </clr-dg-filter>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'collaborator_sample_id'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                 Collaborator Sample ID
-                            </ng-container>
-                        </clr-dg-column>
-
-            
-                        <clr-dg-column [clrDgField]="'sample_type'">
+                        <!-- regular column header for Sample Type-->
+                        <!--<clr-dg-column [clrDgField]="'sample_type'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Sample Type
                             </ng-container>
+                        </clr-dg-column>-->
+
+                        <!-- filter column header for sample type -->
+                         <clr-dg-column [clrDgField]="'sample_type'">
+                            Sample Type
+                            <clr-dg-filter [clrDgFilter]="sampleTypeFilter">
+                                <sample-type-filter #sampleTypeFilter></sample-type-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column  style="width:20em" [clrDgField]="'sample_description'" >
@@ -615,10 +677,19 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'matrix_type'">
+                        <!-- regular column header for matrix type-->
+                        <!--<clr-dg-column [clrDgField]="'matrix_type'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Matrix
                             </ng-container>
+                        </clr-dg-column>-->
+
+                         <!-- filter column header for matrix type-->
+                        <clr-dg-column [clrDgField]="'matrix_type'">
+                            Matrix
+                            <clr-dg-filter [clrDgFilter]="matrixTypeFilter">
+                                <matrix-type-filter #matrixTypeFilter></matrix-type-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'filter_flag'">
@@ -663,10 +734,19 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'filter_type'">
+                        <!-- regular column header for Study-->
+                        <!--<clr-dg-column [clrDgField]="'filter_type'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Filter Type
                             </ng-container>
+                        </clr-dg-column>-->
+
+                        <!-- filter column header for study -->
+                        <clr-dg-column [clrDgField]="'filter_type'">
+                            Filter Type
+                            <clr-dg-filter [clrDgFilter]="filterTypeFilter">
+                                <filter-type-filter #filterTypeFilter></filter-type-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'filter_born_on_date'">
@@ -693,10 +773,19 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'sampler_name'">
+                        <!-- regular column header for Sampler name-->
+                        <!--<clr-dg-column [clrDgField]="'sampler_name'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Sampler Name
                             </ng-container>
+                        </clr-dg-column>-->
+
+                        <!-- filter column header for sampler name -->
+                        <clr-dg-column [clrDgField]="'sampler_name'">
+                               Sampler Name
+                               <clr-dg-filter [clrDgFilter]="samplerNameFilter">
+                                <sampler-name-filter #samplerNameFilter></sampler-name-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column style="width:20em" [clrDgField]="'sample_notes'">
@@ -737,8 +826,8 @@
                                 </div>
                             </clr-dg-cell>-->
                             <clr-dg-cell>{{sample.id}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.studies">{{sample.study | displayValue:'name':this.studies}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.studies">{{sample.study | displayValue:'name':this.studies}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type | displayValue:'name':this.sampleTypes}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type | displayValue:'name':this.matrices}}</clr-dg-cell>

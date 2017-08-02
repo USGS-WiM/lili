@@ -1,6 +1,6 @@
 <div class="select">
     <select [(ngModel)]="selectedStudies" name="study" (ngModelChange)="onSelect($event)">
-        <option value="-1"><span class="all">ALL FILTER TYPES</span></option>
+        <option value="-1"><span class="all">ALL STUDIES</span></option>
         <option *ngFor="let study of allStudies" [ngValue]="study.id">{{study.name}}</option>
     </select>
 </div>
