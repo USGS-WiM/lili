@@ -52,6 +52,8 @@ export class SamplesComponent implements OnInit {
   matrixSelected: IMatrix;
   unitValue;
 
+  onlyOneStudySelected: boolean;
+
   selected: ISample[] = [];
 
   selectedStudy: number;
@@ -114,13 +116,24 @@ export class SamplesComponent implements OnInit {
   }
 
   freezeSample(selectedSampleArray) {
-    //show the AB modal if not showing already
+
+    //assign the onlyOneStudySelected var to the output of an Array.prototype.every() function which checks if all the values for study are the same in the selected samples array
+    this.onlyOneStudySelected = selectedSampleArray.every(
+      function(value, _, array){
+        return array[0].study === value.study;
+    });
+
+    //alert user they are attempting to select a set of studies for freezing that belong to more than one study (TODO: improve this)
+    if (this.onlyOneStudySelected == false ) {
+      alert("You have selected samples to freeze from more than one study. Do you wish to continue?")
+    };
+
+    //show the freeze modal if not showing already
     if (this.showHideFreezeModal === false) {
         this.showHideFreezeModal = true;
     }
 
     this.selectedStudy = this.selected[0].study
-  
   }
 
    printLabel(selectedSampleArray) {
