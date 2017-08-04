@@ -41,6 +41,7 @@ export class SamplesComponent implements OnInit {
   showHideABModal: boolean = false;
   showHideFreezeModal: boolean = false;
   showHidePrintModal: boolean = false;
+  showHideFreezeWarningModal: boolean = false;
   sampleSelected: boolean = false;
   displayConfig:Object = {};
   selectedSampleId;
@@ -107,6 +108,7 @@ export class SamplesComponent implements OnInit {
     this.unitValue = parseInt(unitValue);
   }
 
+  //callback for the add sample to analsis batch button
   addSampleToAB(selectedSampleArray) {
     //show the AB modal if not showing already
     if (this.showHideABModal === false) {
@@ -115,29 +117,40 @@ export class SamplesComponent implements OnInit {
   
   }
 
-  freezeSample(selectedSampleArray) {
+  //function to show freeze modal, triggered after check for multiple studies selected or user override  
+  //  showFreezeModal() {
+  //     //hide the freeze warning modal if showing
+  //     if (this.showHideFreezeWarningModal === true) {
+  //         this.showHideFreezeWarningModal = false;
+  //     }
 
+     
+  //   }
+
+  //callback for the freeze samples button
+  freezeSample(selectedSampleArray) {
     //assign the onlyOneStudySelected var to the output of an Array.prototype.every() function which checks if all the values for study are the same in the selected samples array
     this.onlyOneStudySelected = selectedSampleArray.every(
       function(value, _, array){
         return array[0].study === value.study;
     });
 
-    //alert user they are attempting to select a set of studies for freezing that belong to more than one study (TODO: improve this)
+    //alert user they are attempting to select a set of studies for freezing that belong to more than one study
+    //show freeze warning modal if multiple studies, else show the freeze modal 
     if (this.onlyOneStudySelected == false ) {
-      alert("You have selected samples to freeze from more than one study. Do you wish to continue?")
-    };
-
-    //show the freeze modal if not showing already
-    if (this.showHideFreezeModal === false) {
-        this.showHideFreezeModal = true;
+      this.showHideFreezeWarningModal = true
+    } else if (this.onlyOneStudySelected ==true) {
+         //show the freeze modal if not showing already
+        if (this.showHideFreezeModal === false) {
+          this.showHideFreezeModal = true;
+        }
     }
 
     this.selectedStudy = this.selected[0].study
   }
 
    printLabel(selectedSampleArray) {
-    //show the AB modal if not showing already
+    //show the print modal if not showing already
     if (this.showHidePrintModal === false) {
         this.showHidePrintModal = true;
     }
