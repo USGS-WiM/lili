@@ -509,7 +509,7 @@
 
 <!-- begin freeze modal -->
 <clr-modal [(clrModalOpen)]="showHideFreezeModal">
-    <h3 class="modal-title">Freeze Sample</h3>
+    <h3 class="modal-title">Freeze Samples</h3>
     <div class="modal-body">
 
         <div class="row">
@@ -522,14 +522,16 @@
                             <label>You have selected the following samples to freeze:</label>
                             <ul  class="list">
                                 <li *ngFor="let sample of selected">
-                                    Sample {{sample.id}},  {{sample.study | displayValue:'name':this.studies}}
+                                    Sample {{sample.id}}
                                 </li>
                             </ul>
+                        <label>from the study <span class="label"> {{selectedStudy | displayValue:'name':this.studies}} </span></label>
+
                         </div>
 
                         <div class="form-group">
                             <label for="numberOfAliquots" class="required">Number of Aliquots</label>
-                            <input id="numberOfAliquots" type="text" formControlName="number_of_aliquots">
+                            <input id="numberOfAliquots" type="number" formControlName="number_of_aliquots">
                         </div>
                         <div class="form-group">
                             <label for="rack">Rack</label>
@@ -590,6 +592,18 @@
     </div>-->
 </clr-modal>
 <!-- end print modal -->
+
+<!-- begin freeze warning modal -->
+<clr-modal [(clrModalOpen)]="showHideFreezeWarningModal">
+    <h3 class="modal-title"><clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Multiple Studies Error</h3>
+    <div class="modal-body">
+        <p>The selected set of samples is associated with more than one study. Please adjust selection.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showHideFreezeWarningModal = false">Return</button>
+    </div>
+</clr-modal>
+<!-- end freeze warning modal -->
 
 <!-- begin samples table -->
 <div class="row"> 
