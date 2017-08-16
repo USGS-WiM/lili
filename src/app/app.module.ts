@@ -32,6 +32,7 @@ import { MatrixTypeFilter } from './FILTERS/matrix-type-filter/matrix-type-filte
 import { SamplerNameFilter } from './FILTERS/sampler-name-filter/sampler-name-filter.component';
 import { FilterTypeFilter } from './FILTERS/filter-type-filter/filter-type-filter.component';
 import { RangeFilter } from './FILTERS/range-filter/range-filter.component';
+import { DateRangeFilter } from './FILTERS/date-range-filter/date-range-filter.component';
 
 @NgModule({
     declarations: [
@@ -53,7 +54,8 @@ import { RangeFilter } from './FILTERS/range-filter/range-filter.component';
         MatrixTypeFilter,
         SamplerNameFilter,
         FilterTypeFilter,
-        RangeFilter
+        RangeFilter,
+        DateRangeFilter
     ],
     imports: [
         BrowserAnimationsModule,

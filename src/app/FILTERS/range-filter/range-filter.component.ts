@@ -7,7 +7,7 @@ import {Filter, DatagridFilter} from "clarity-angular";
   styleUrls: ['./range-filter.component.scss']
 })
 export class RangeFilter implements OnInit, Filter<any> {
-  private lower: number= -1;
+  private lower: number = -1;
   private upper: number = -1;
 
   constructor() { }

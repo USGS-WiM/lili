@@ -769,16 +769,34 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'collection_start_date'">
+                        <!-- regular column header for collection start date -->
+                        <!-- <clr-dg-column [clrDgField]="'collection_start_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Collect Start Date
                             </ng-container>
+                        </clr-dg-column> -->
+
+                        <!-- filter column header for collection start date -->
+                        <clr-dg-column [clrDgField]="'collection_start_date'">
+                               Collect Start Date
+                               <clr-dg-filter [clrDgFilter]="dateRangeFilter">
+                                    <date-range-filter [dateField]="'collection_start_date'" #dateRangeFilter></date-range-filter>
+                                </clr-dg-filter>
                         </clr-dg-column>
                         
-                        <clr-dg-column [clrDgField]="'collection_end_date'">
+                        <!-- regular column header for collection end date -->
+                        <!-- <clr-dg-column [clrDgField]="'collection_end_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Collect End Date
                             </ng-container>
+                        </clr-dg-column> -->
+
+                        <!-- filter column header for collection end date -->
+                        <clr-dg-column [clrDgField]="'collection_end_date'">
+                            Collect End Date
+                            <clr-dg-filter [clrDgFilter]="dateRangeFilter">
+                                 <date-range-filter [dateField]="'collection_end_date'" #dateRangeFilter></date-range-filter>
+                             </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'study_site_name'">
@@ -799,7 +817,7 @@
                                Sampler Name
                                <clr-dg-filter [clrDgFilter]="samplerNameFilter">
                                 <sampler-name-filter #samplerNameFilter></sampler-name-filter>
-                            </clr-dg-filter>
+                                </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column style="width:20em" [clrDgField]="'sample_notes'">
