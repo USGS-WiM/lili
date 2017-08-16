@@ -18,13 +18,22 @@ export class DateRangeFilter implements OnInit, Filter<any> {
    changes: EventEmitter<any> = new EventEmitter<any>(false);
 
    accepts(sample: any){
-      //return ((sample.collection_start_date >= Date.parse(this.lower)) && (sample.collection_start_date<= Date.parse(this.upper)));
-      return true
+      var startDate = Date.parse(sample.collection_start_date);
+      var lower = Date.parse(this.lower);
+      var upper = Date.parse(this.upper)
+
+      //return ((Date.parse(sample.collection_start_date) >= Date.parse(this.lower)) && (Date.parse(sample.collection_start_date) <= Date.parse(this.upper)));
+      return ((startDate >= lower) && (startDate <= upper));
+      
+      //return true
   }
 
   isActive():boolean {
-      return true;
+      return ((this.lower !== '' && this.upper !== '') ? true : false);
+      //return true;
   }
+
+  //https://stackoverflow.com/questions/14781153/how-to-compare-two-string-dates-in-javascript
 
   onFromChange(value: any){
     if (value == ''){
@@ -32,8 +41,9 @@ export class DateRangeFilter implements OnInit, Filter<any> {
       this.changes.emit(true);
     } else {
       this.lower = value
+      console.log("last from date value was:" + this.lower)
+      this.changes.emit(true);
     }
-    alert("from date updated")
   }
 
   onToChange(value: any){
@@ -41,9 +51,10 @@ export class DateRangeFilter implements OnInit, Filter<any> {
       console.log("last 'to' date value was EMPTY")
       this.changes.emit(true);
     } else {
-      this.lower = value
+      this.upper = value
+      console.log("last to date value was:" + this.upper)
+      this.changes.emit(true);
     }
-    alert("to date updated")
   }
 
 }
