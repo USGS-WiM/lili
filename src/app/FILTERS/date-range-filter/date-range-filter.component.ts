@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Input } from '@angular/core';
 import {Filter, DatagridFilter} from "clarity-angular";
 
 @Component({
@@ -7,24 +7,20 @@ import {Filter, DatagridFilter} from "clarity-angular";
   styleUrls: ['./date-range-filter.component.scss']
 })
 export class DateRangeFilter implements OnInit, Filter<any> {
+  @Input() dateField: string;
   private lower: string = "";
   private upper: string = "";
 
   constructor() { }
 
   ngOnInit() {
+    
   }
 
    changes: EventEmitter<any> = new EventEmitter<any>(false);
 
    accepts(sample: any){
-      var startDate = Date.parse(sample.collection_start_date);
-      var lower = Date.parse(this.lower);
-      var upper = Date.parse(this.upper)
-
-      //return ((Date.parse(sample.collection_start_date) >= Date.parse(this.lower)) && (Date.parse(sample.collection_start_date) <= Date.parse(this.upper)));
-      return ((startDate >= lower) && (startDate <= upper));
-      
+      return ((Date.parse(sample[this.dateField]) >= Date.parse(this.lower)) && (Date.parse(sample[this.dateField]) <= Date.parse(this.upper)));
       //return true
   }
 
@@ -32,8 +28,6 @@ export class DateRangeFilter implements OnInit, Filter<any> {
       return ((this.lower !== '' && this.upper !== '') ? true : false);
       //return true;
   }
-
-  //https://stackoverflow.com/questions/14781153/how-to-compare-two-string-dates-in-javascript
 
   onFromChange(value: any){
     if (value == ''){
