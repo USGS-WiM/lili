@@ -2,11 +2,11 @@ import { Component, EventEmitter, OnInit, Input } from '@angular/core';
 import {Filter, DatagridFilter} from "clarity-angular";
 
 @Component({
-  selector: 'date-range-filter',
-  templateUrl: './date-range-filter.component.html',
-  styleUrls: ['./date-range-filter.component.scss']
+  selector: 'collection-start-date-filter',
+  templateUrl: './collection-start-date-filter.component.html',
+  styleUrls: ['./collection-start-date-filter.component.scss']
 })
-export class DateRangeFilter implements OnInit, Filter<any> {
+export class CollectionStartDateFilter implements OnInit, Filter<any> {
   @Input() dateField: string;
   private lower: string = "";
   private upper: string = "";
@@ -31,6 +31,7 @@ export class DateRangeFilter implements OnInit, Filter<any> {
 
   onFromChange(value: any){
     if (value == ''){
+      this.lower = value
       console.log("last 'from' date value was EMPTY")
       this.changes.emit(true);
     } else {
@@ -42,6 +43,7 @@ export class DateRangeFilter implements OnInit, Filter<any> {
 
   onToChange(value: any){
     if (value == '') {
+      this.lower = value
       console.log("last 'to' date value was EMPTY")
       this.changes.emit(true);
     } else {
