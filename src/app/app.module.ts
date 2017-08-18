@@ -32,7 +32,11 @@ import { MatrixTypeFilter } from './FILTERS/matrix-type-filter/matrix-type-filte
 import { SamplerNameFilter } from './FILTERS/sampler-name-filter/sampler-name-filter.component';
 import { FilterTypeFilter } from './FILTERS/filter-type-filter/filter-type-filter.component';
 import { RangeFilter } from './FILTERS/range-filter/range-filter.component';
-import { DateRangeFilter } from './FILTERS/date-range-filter/date-range-filter.component';
+import { CollectionStartDateFilter } from './FILTERS/collection-start-date-filter/collection-start-date-filter.component';
+import { CollectionEndDateFilter } from './FILTERS/collection-end-date-filter/collection-end-date-filter.component';
+import { FilterBornOnDateFilter } from './FILTERS/filter-born-on-date-filter/filter-born-on-date-filter.component';
+import { DateAddedFilter} from './FILTERS/date-added-filter/date-added-filter.component';
+import { DateUpdatedFilter } from './FILTERS/date-updated-filter/date-updated-filter.component';
 
 @NgModule({
     declarations: [
@@ -55,7 +59,11 @@ import { DateRangeFilter } from './FILTERS/date-range-filter/date-range-filter.c
         SamplerNameFilter,
         FilterTypeFilter,
         RangeFilter,
-        DateRangeFilter
+        CollectionStartDateFilter,
+        CollectionEndDateFilter,
+        FilterBornOnDateFilter,
+        DateAddedFilter,
+        DateUpdatedFilter
     ],
     imports: [
         BrowserAnimationsModule,
