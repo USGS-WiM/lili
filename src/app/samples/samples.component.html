@@ -648,6 +648,12 @@
                             </clr-dg-filter>
                         </clr-dg-column> 
 
+                        <clr-dg-column>
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                 Analysis Batches
+                            </ng-container>
+                        </clr-dg-column>
+
                         <clr-dg-column [clrDgField]="'collaborator_sample_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                  Collaborator Sample ID
@@ -718,6 +724,24 @@
                             </ng-container>
                         </clr-dg-column>
 
+                        <clr-dg-column [clrDgField]="'final_concentrated_sample_volume'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                               FCSV
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_type'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                               FCSV Type
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_notes'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                               FCSV Notes
+                            </ng-container>
+                        </clr-dg-column>
+
                         <clr-dg-column [clrDgField]="'sample_volume_filtered'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Vol filtered
@@ -762,11 +786,20 @@
                                 <filter-type-filter #filterTypeFilter></filter-type-filter>
                             </clr-dg-filter>
                         </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'filter_born_on_date'">
+                        
+                        <!-- regular column header for filter born on date -->
+                        <!-- <clr-dg-column [clrDgField]="'filter_born_on_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                Filter Born On Date
                             </ng-container>
+                        </clr-dg-column> -->
+
+                        <!-- filter column header for filter born on date -->
+                        <clr-dg-column [clrDgField]="'filter_born_on_date'">
+                            Filter Born On Date
+                            <clr-dg-filter [clrDgFilter]="filterBornOnDateFilter">
+                                 <filter-born-on-date-filter [dateField]="'filter_born_on_date'" #filterBornOnDateFilter></filter-born-on-date-filter >
+                             </clr-dg-filter>
                         </clr-dg-column>
 
                         <!-- regular column header for collection start date -->
@@ -779,8 +812,8 @@
                         <!-- filter column header for collection start date -->
                         <clr-dg-column [clrDgField]="'collection_start_date'">
                                Collect Start Date
-                               <clr-dg-filter [clrDgFilter]="dateRangeFilter">
-                                    <date-range-filter [dateField]="'collection_start_date'" #dateRangeFilter></date-range-filter>
+                               <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
+                                    <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
                                 </clr-dg-filter>
                         </clr-dg-column>
                         
@@ -794,8 +827,8 @@
                         <!-- filter column header for collection end date -->
                         <clr-dg-column [clrDgField]="'collection_end_date'">
                             Collect End Date
-                            <clr-dg-filter [clrDgFilter]="dateRangeFilter">
-                                 <date-range-filter [dateField]="'collection_end_date'" #dateRangeFilter></date-range-filter>
+                            <clr-dg-filter [clrDgFilter]="collectionEndDateFilter">
+                                 <collection-end-date-filter [dateField]="'collection_end_date'" #collectionEndDateFilter></collection-end-date-filter>
                              </clr-dg-filter>
                         </clr-dg-column>
 
@@ -832,10 +865,19 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'insert_date'">
+                        <!-- regular column header for date added-->
+                        <!-- <clr-dg-column [clrDgField]="'insert_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                  Date added
                             </ng-container>
+                        </clr-dg-column> -->
+
+                        <!-- filter column header for date added -->
+                        <clr-dg-column [clrDgField]="'insert_date'">
+                           Date Added
+                            <clr-dg-filter [clrDgFilter]="dateAddedFilter">
+                                 <date-added-filter [dateField]="'insert_date'" #dateAddedFilter></date-added-filter>
+                             </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'update_user'">
@@ -844,11 +886,20 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'update_date'">
+                        <!-- regular column header for date updated-->
+                        <!-- <clr-dg-column [clrDgField]="'update_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                  Date updated
                             </ng-container>
-                        </clr-dg-column>
+                        </clr-dg-column> -->
+
+                         <!-- filter column header for date updated -->
+                         <clr-dg-column [clrDgField]="'update_date'">
+                            Date Updated
+                             <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
+                                  <date-updated-filter [dateField]="'update_date'" #dateUpdatedFilter></date-updated-filter>
+                              </clr-dg-filter>
+                         </clr-dg-column>
 
                         <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample" >
 
@@ -858,6 +909,7 @@
                                 </div>
                             </clr-dg-cell>-->
                             <clr-dg-cell>{{sample.id}}</clr-dg-cell>
+                            <clr-dg-cell></clr-dg-cell>
                             <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.studies">{{sample.study | displayValue:'name':this.studies}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type | displayValue:'name':this.sampleTypes}}</clr-dg-cell>
@@ -865,14 +917,19 @@
                             <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type | displayValue:'name':this.matrices}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
+
+                            <clr-dg-cell>X</clr-dg-cell>
+                            <clr-dg-cell>X</clr-dg-cell>
+                            <clr-dg-cell>X</clr-dg-cell>
+
                             <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}}  {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}}  {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.air_subsample_volume}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type | displayValue:'name':this.filterTypes}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.filter_born_on_date}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.collection_start_date | date:'yyyy-MM-dd'}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.filter_born_on_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.users">{{sample.sampler_name | displayValue:'username':this.users}}</clr-dg-cell>
