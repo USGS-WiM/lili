@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="btn-group">
             <button class="btn btn-sm" (click)="showHideAdd = !showHideAdd">Add Sample</button>
             <!--<button class="btn btn-sm" (click)="showHideEdit = !showHideEdit" [disabled]=" studySelected ? null : showHideAdd ? null: 'disabled' ">Edit Study</button>-->
@@ -8,17 +8,26 @@
     </div>
 </div>
 
-<!--Add sample card --> 
+<!--Add sample card -->
 <div class="row">
-    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" *ngIf="showHideAdd" >
+    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" *ngIf="showHideAdd">
         <!-- begin card-->
         <div class="card">
             <div class="card-block">
-                <div class="card-title">Add Sample</div>
+                <div class="card-title">Add Sample
+                    <clr-signpost>
+                        <clr-icon shape="info-standard" clrSignpostTrigger></clr-icon>
+                        <clr-signpost-content *clrIfOpen>
+                            <p>Select a matrix to activate inputs and begin. Invalid inputs for the selected matrix will remain
+                                disabled.
+                            </p>
+                        </clr-signpost-content>
+                    </clr-signpost>
+                </div>
 
                 <div class="card-text">
                     <!-- begin form -->
-                    <form class="form compact" [formGroup]="addSampleForm" (ngSubmit)="onSubmit('add', addSampleForm.value)" [hidden]="submitted" >
+                    <form class="form compact" [formGroup]="addSampleForm" (ngSubmit)="onSubmit('add', addSampleForm.value)" [hidden]="submitted">
                         <section class="form-block">
 
                             <!-- sample type select form, without Clarity UI validation -->
@@ -43,7 +52,7 @@
                                 </label>
                             </div>
 
-                             <div class="form-group">
+                            <div class="form-group">
                                 <label class="required">Study</label>
                                 <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
                                 <div class="select">
@@ -55,7 +64,7 @@
                                 </label>
                             </div>
 
-                             <div class="form-group">
+                            <div class="form-group">
                                 <label class="required">Sample type</label>
                                 <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sample_type').invalid && (addSampleForm.get('sample_type').dirty || addSampleForm.get('sample_type').touched)">
                                 <div class="select">
@@ -92,20 +101,20 @@
 
                             <div class="form-group">
                                 <label for="studySiteNameInput">Study Site Name</label>
-                                <input id="studySiteNameInput" type="text" formControlName="study_site_name" >
+                                <input id="studySiteNameInput" type="text" formControlName="study_site_name">
                             </div>
 
 
                             <div class="form-group">
                                 <label for="sampleDescInput">Sample Description</label>
-                                <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em" ></textarea>
+                                <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label>Sampler Name</label>
                                 <label for="samplerNameSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sampler_name').invalid && (addSampleForm.get('sampler_name').dirty || addSampleForm.get('sampler_name').touched)">
                                     <div class="select">
-                                        <select id="samplerNameSelect" name="samplerName" formControlName="sampler_name">
+                                        <select id="samplerNameSelect" name="samplerName" formControlName="sampler_name" >
                                             <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
                                         </select>
                                     </div>
@@ -114,7 +123,7 @@
 
                             <div class="form-group">
                                 <label for="collectStartDateInput" class="required">Collection Start Date</label>
-                                <input type="date" id="collectStartDateInput" formControlName="collection_start_date" >
+                                <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
                             </div>
 
                             <!--begin variable display section-->
@@ -126,7 +135,7 @@
 
                             <div class="form-group">
                                 <label for="collectEndDateInput">Collection End Date</label>
-                                <input type="date" id="collectEndDateInput" formControlName="collection_end_date" >
+                                <input type="date" id="collectEndDateInput" formControlName="collection_end_date">
                             </div>
 
                             <div class="form-group">
@@ -143,7 +152,7 @@
                                 <label class="required">FCSV Type</label>
                                 <label for="fcsvTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
                                 <div class="select">
-                                    <select id="fcsvTypeSelect" name="sample_type" formControlName="final_concentrated_sample_volume_type">
+                                    <select id="fcsvTypeSelect" name="sample_type" formControlName="final_concentrated_sample_volume_type" >
                                         <!-- <option *ngFor="let fcsvType of fcsvTypes" [value]="fscvType.id">{{fcsvType.name}}</option> -->
                                     </select>
                                 </div>
@@ -162,8 +171,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="imrInput" >Initial Meter Reading</label>
-                                    <input type="text" id="imrInput" formControlName="meter_reading_initial">
+                                <label for="imrInput">Initial Meter Reading</label>
+                                <input type="text" id="imrInput" formControlName="meter_reading_initial">
                                 <div class="select">
                                     <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
@@ -172,14 +181,14 @@
                             </div>
 
                             <div class="form-group">
-                                    <label for="fmrInput">Final Meter Reading</label>
-                                    <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                                    <label *ngIf="this.units">{{this.unitValue | displayValue:'name':this.units}}</label>
+                                <label for="fmrInput">Final Meter Reading</label>
+                                <input type="text" id="fmrInput" formControlName="meter_reading_final">
+                                <label *ngIf="this.units">{{this.unitValue | displayValue:'name':this.units}}</label>
                             </div>
 
                             <div class="form-group">
                                 <label for="tvsInput">Total Volume Sampled</label>
-                                 <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
+                                <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
@@ -196,7 +205,7 @@
                                 <label>Filter</label>
                                 <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('filter_type').invalid && (editSampleForm.get('filter_type').dirty || editSampleForm.get('filter_type').touched)">
                                     <div class="select">
-                                        <select id="filterSelect" name="filterType" formControlName="filter_type">
+                                        <select id="filterSelect" name="filterType" formControlName="filter_type" >
                                             <option *ngFor="let filterType of filterTypes" [value]="filterType.id">{{filterType.name}}</option>
                                         </select>
                                     </div>
@@ -205,7 +214,7 @@
 
                             <div class="form-group">
                                 <label for="filterBornOnDateInput">Collection Start Date</label>
-                                <input type="date" id="filterBornOnDateInput" formControlName="filter_born_on_date" >
+                                <input type="date" id="filterBornOnDateInput" formControlName="filter_born_on_date">
                             </div>
 
                             <div class="form-group">
@@ -215,7 +224,7 @@
 
                             <div class="form-group">
                                 <label for="eluteDateInput">Elution Date</label>
-                                <input type="date" id="eluteDateInput" formControlName="elution_date" >
+                                <input type="date" id="eluteDateInput" formControlName="elution_date">
                             </div>
 
                             <div class="form-group">
@@ -240,26 +249,27 @@
                         <p>Form status: {{ addSampleForm.status | json }}</p> -->
                     </form>
                     <!-- end form -->
-                </div> 
+                </div>
             </div>
-        <!-- end card -->
-        </div>   
+            <!-- end card -->
+        </div>
     </div>
 </div>
 
 <!-- edit sample modal -->
-<clr-modal [(clrModalOpen)]="showHideEdit"  >
+<clr-modal [(clrModalOpen)]="showHideEdit">
     <h3 class="modal-title">Edit Sample</h3>
     <div class="modal-body">
 
         <div class="row">
             <div class="col-lg-12">
-                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmit('edit', editSampleForm.value)" [hidden]="submitted" >
+                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmit('edit', editSampleForm.value)"
+                    [hidden]="submitted">
                     <section class="form-block">
 
                         <div class="form-group">
-                                <label for="studyId">Sample ID</label>
-                                <input type="text" id="studyId" size="35" formControlName="id" readonly>
+                            <label for="studyId">Sample ID</label>
+                            <input type="text" id="studyId" size="35" formControlName="id" readonly>
                         </div>
 
                         <div class="form-group">
@@ -322,13 +332,13 @@
 
                         <div class="form-group">
                             <label for="studySiteNameInput">Study Site Name</label>
-                            <input id="studySiteNameInput" type="text" formControlName="study_site_name" >
+                            <input id="studySiteNameInput" type="text" formControlName="study_site_name">
                         </div>
 
 
                         <div class="form-group">
                             <label for="sampleDescInput">Sample Description</label>
-                            <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em" ></textarea>
+                            <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -344,7 +354,7 @@
 
                         <div class="form-group">
                             <label for="collectStartDateInput" class="required">Collection Start Date</label>
-                            <input type="date" id="collectStartDateInput" formControlName="collection_start_date" >
+                            <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
                         </div>
 
                         <!--begin variable display section-->
@@ -356,7 +366,7 @@
 
                         <div class="form-group">
                             <label for="collectEndDateInput">Collection End Date</label>
-                            <input type="date" id="collectEndDateInput" formControlName="collection_end_date" >
+                            <input type="date" id="collectEndDateInput" formControlName="collection_end_date">
                         </div>
 
                         <div class="form-group">
@@ -391,8 +401,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="imrInput" >Initial Meter Reading</label>
-                                <input type="text" id="imrInput" formControlName="meter_reading_initial">
+                            <label for="imrInput">Initial Meter Reading</label>
+                            <input type="text" id="imrInput" formControlName="meter_reading_initial">
                             <div class="select">
                                 <select id="imrSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
@@ -401,16 +411,16 @@
                         </div>
 
                         <div class="form-group">
-                                <label for="fmrInput">Final Meter Reading</label>
-                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                                <label *ngIf="sampleSelected"><span>{{this.unitValue | displayValue:'name':this.units }}</span></label>
+                            <label for="fmrInput">Final Meter Reading</label>
+                            <input type="text" id="fmrInput" formControlName="meter_reading_final">
+                            <label *ngIf="sampleSelected"><span>{{this.unitValue | displayValue:'name':this.units }}</span></label>
                         </div>
 
                         <div class="form-group">
                             <label for="tvsInput">Total Volume Sampled</label>
-                                <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
+                            <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial" disabled>
                             <div class="select">
-                                <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
+                                <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial" disabled>
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                 </select>
                             </div>
@@ -434,7 +444,7 @@
 
                         <div class="form-group">
                             <label for="filterBornOnDateInput">Collection Start Date</label>
-                            <input type="date" id="filterBornOnDateInput" formControlName="filter_born_on_date" >
+                            <input type="date" id="filterBornOnDateInput" formControlName="filter_born_on_date">
                         </div>
 
                         <div class="form-group">
@@ -444,7 +454,7 @@
 
                         <div class="form-group">
                             <label for="eluteDateInput">Elution Date</label>
-                            <input type="date" id="eluteDateInput" formControlName="elution_date" >
+                            <input type="date" id="eluteDateInput" formControlName="elution_date">
                         </div>
 
                         <div class="form-group">
@@ -488,13 +498,13 @@
 <!-- end edit sample modal -->
 
 <!-- begin analysis batch modal -->
-<clr-modal [(clrModalOpen)]="showHideABModal"  >
+<clr-modal [(clrModalOpen)]="showHideABModal">
     <h3 class="modal-title">Add Sample to Analysis Batch</h3>
     <div class="modal-body">
 
         <div class="row">
             <div class="col-lg-12">
-                
+
             </div>
             <!--<div class="col-lg-6">
             </div>-->
@@ -515,17 +525,17 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmit()" >
+                <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmit()">
                     <section class="form-block">
 
                         <div *ngIf="this.selectedStudy">
                             <label>You have selected the following samples to freeze:</label>
-                            <ul  class="list">
+                            <ul class="list">
                                 <li *ngFor="let sample of selected">
                                     Sample {{sample.id}}
                                 </li>
                             </ul>
-                        <label>from the study <span class="label"> {{selectedStudy | displayValue:'name':this.studies}} </span></label>
+                            <label>from the study <span class="label"> {{selectedStudy | displayValue:'name':this.studies}} </span></label>
 
                         </div>
 
@@ -550,7 +560,7 @@
                             <input id="location" type="text" formControlName="location">
                         </div>
                         <div class="form-group">
-                            <label >Frozen</label>
+                            <label>Frozen</label>
                             <div class="toggle-switch">
                                 <input type="checkbox" id="frozenToggle" formControlName="frozen">
                                 <label for="frozenToggle">{{this.freezeSampleForm.controls.frozen.value ? "Yes" : "No"}}</label>
@@ -560,7 +570,7 @@
 
                     </section>
                 </form>
-                
+
             </div>
             <!--<div class="col-lg-6">
             </div>-->
@@ -580,7 +590,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                
+
             </div>
             <!--<div class="col-lg-6">
             </div>-->
@@ -595,7 +605,8 @@
 
 <!-- begin freeze warning modal -->
 <clr-modal [(clrModalOpen)]="showHideFreezeWarningModal">
-    <h3 class="modal-title"><clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Multiple Studies Error</h3>
+    <h3 class="modal-title">
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Multiple Studies Error</h3>
     <div class="modal-body">
         <p>The selected set of samples is associated with more than one study. Please adjust selection.</p>
     </div>
@@ -606,7 +617,7 @@
 <!-- end freeze warning modal -->
 
 <!-- begin samples table -->
-<div class="row"> 
+<div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="card-block">
@@ -614,14 +625,14 @@
                     All Samples
                 </div>
                 <div class="card-text">
-                    <clr-datagrid  [(clrDgSelected)]="selected">
+                    <clr-datagrid [(clrDgSelected)]="selected">
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="addSampleToAB(selected)"><clr-icon shape="plus"></clr-icon> Add to Analysis Batch</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="freezeSample(selected)"><clr-icon shape="login"></clr-icon> Freeze</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="printLabel(selected)"><clr-icon shape="printer"></clr-icon> Print Labels</button>
-                                <button type="button" class="btn btn-sm btn-secondary"  [disabled]="selected.length == 0 || selected.length > 1" ><clr-icon shape="trash"></clr-icon> Delete Sample</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1"><clr-icon shape="trash"></clr-icon> Delete Sample</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editSample(selected[0])"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Sample</button>
 
                             </div>
@@ -634,29 +645,29 @@
                         </clr-dg-column>-->
 
                         <!-- regular column header for Sample ID-->
-                         <!-- <clr-dg-column [clrDgField]="'sample_id'">
+                        <!-- <clr-dg-column [clrDgField]="'sample_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Sample ID
                             </ng-container>
                         </clr-dg-column>  -->
 
                         <!-- filter column header for Sample ID -->
-                         <clr-dg-column [clrDgField]="'sample_id'">
-                             Sample ID
-                             <clr-dg-filter [clrDgFilter]="rangeFilter">
+                        <clr-dg-column [clrDgField]="'sample_id'">
+                            Sample ID
+                            <clr-dg-filter [clrDgFilter]="rangeFilter">
                                 <range-filter #rangeFilter></range-filter>
                             </clr-dg-filter>
-                        </clr-dg-column> 
+                        </clr-dg-column>
 
                         <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                 Analysis Batches
+                                Analysis Batches
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'collaborator_sample_id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                 Collaborator Sample ID
+                                Collaborator Sample ID
                             </ng-container>
                         </clr-dg-column>
 
@@ -667,11 +678,11 @@
                                 Study
                             </ng-container>
                         </clr-dg-column>-->
-                        
+
                         <!-- filter column header for study -->
-                         <clr-dg-column [clrDgField]="'study'">
-                             Study
-                             <clr-dg-filter [clrDgFilter]="studyFilter">
+                        <clr-dg-column [clrDgField]="'study'">
+                            Study
+                            <clr-dg-filter [clrDgFilter]="studyFilter">
                                 <study-filter #studyFilter></study-filter>
                             </clr-dg-filter>
                         </clr-dg-column>
@@ -684,14 +695,14 @@
                         </clr-dg-column>-->
 
                         <!-- filter column header for sample type -->
-                         <clr-dg-column [clrDgField]="'sample_type'">
+                        <clr-dg-column [clrDgField]="'sample_type'">
                             Sample Type
                             <clr-dg-filter [clrDgFilter]="sampleTypeFilter">
                                 <sample-type-filter #sampleTypeFilter></sample-type-filter>
                             </clr-dg-filter>
                         </clr-dg-column>
 
-                        <clr-dg-column  style="width:20em" [clrDgField]="'sample_description'" >
+                        <clr-dg-column style="width:20em" [clrDgField]="'sample_description'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Sample Description
                             </ng-container>
@@ -704,7 +715,7 @@
                             </ng-container>
                         </clr-dg-column>-->
 
-                         <!-- filter column header for matrix type-->
+                        <!-- filter column header for matrix type-->
                         <clr-dg-column [clrDgField]="'matrix_type'">
                             Matrix
                             <clr-dg-filter [clrDgFilter]="matrixTypeFilter">
@@ -714,61 +725,61 @@
 
                         <clr-dg-column [clrDgField]="'filter_flag'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Filtered
+                                Filtered
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'secondary_concentration_flag'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               2° Conc
+                                2° Conc
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'final_concentrated_sample_volume'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               FCSV
+                                FCSV
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_type'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               FCSV Type
+                                FCSV Type
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_notes'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               FCSV Notes
+                                FCSV Notes
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'sample_volume_filtered'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Vol filtered
+                                Vol filtered
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'meter_reading_initial'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               IMR
+                                IMR
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'meter_reading_final'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               FMR
+                                FMR
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'air_subsample_volume'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Air Subsample Volume (mL)
+                                Air Subsample Volume (mL)
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'post_dilution_volume'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Volume After Dilution (uL)
+                                Volume After Dilution (uL)
                             </ng-container>
                         </clr-dg-column>
 
@@ -786,7 +797,7 @@
                                 <filter-type-filter #filterTypeFilter></filter-type-filter>
                             </clr-dg-filter>
                         </clr-dg-column>
-                        
+
                         <!-- regular column header for filter born on date -->
                         <!-- <clr-dg-column [clrDgField]="'filter_born_on_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
@@ -798,8 +809,8 @@
                         <clr-dg-column [clrDgField]="'filter_born_on_date'">
                             Filter Born On Date
                             <clr-dg-filter [clrDgFilter]="filterBornOnDateFilter">
-                                 <filter-born-on-date-filter [dateField]="'filter_born_on_date'" #filterBornOnDateFilter></filter-born-on-date-filter >
-                             </clr-dg-filter>
+                                <filter-born-on-date-filter [dateField]="'filter_born_on_date'" #filterBornOnDateFilter></filter-born-on-date-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
 
                         <!-- regular column header for collection start date -->
@@ -811,12 +822,12 @@
 
                         <!-- filter column header for collection start date -->
                         <clr-dg-column [clrDgField]="'collection_start_date'">
-                               Collect Start Date
-                               <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
-                                    <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
-                                </clr-dg-filter>
+                            Collect Start Date
+                            <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
+                                <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
-                        
+
                         <!-- regular column header for collection end date -->
                         <!-- <clr-dg-column [clrDgField]="'collection_end_date'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
@@ -828,13 +839,13 @@
                         <clr-dg-column [clrDgField]="'collection_end_date'">
                             Collect End Date
                             <clr-dg-filter [clrDgFilter]="collectionEndDateFilter">
-                                 <collection-end-date-filter [dateField]="'collection_end_date'" #collectionEndDateFilter></collection-end-date-filter>
-                             </clr-dg-filter>
+                                <collection-end-date-filter [dateField]="'collection_end_date'" #collectionEndDateFilter></collection-end-date-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'study_site_name'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Study Site Name
+                                Study Site Name
                             </ng-container>
                         </clr-dg-column>
 
@@ -847,21 +858,21 @@
 
                         <!-- filter column header for sampler name -->
                         <clr-dg-column [clrDgField]="'sampler_name'">
-                               Sampler Name
-                               <clr-dg-filter [clrDgFilter]="samplerNameFilter">
+                            Sampler Name
+                            <clr-dg-filter [clrDgFilter]="samplerNameFilter">
                                 <sampler-name-filter #samplerNameFilter></sampler-name-filter>
-                                </clr-dg-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column style="width:20em" [clrDgField]="'sample_notes'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Sample Notes
+                                Sample Notes
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'insert_user'">
-                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                   Added by
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Added by
                             </ng-container>
                         </clr-dg-column>
 
@@ -874,15 +885,15 @@
 
                         <!-- filter column header for date added -->
                         <clr-dg-column [clrDgField]="'insert_date'">
-                           Date Added
+                            Date Added
                             <clr-dg-filter [clrDgFilter]="dateAddedFilter">
-                                 <date-added-filter [dateField]="'insert_date'" #dateAddedFilter></date-added-filter>
-                             </clr-dg-filter>
+                                <date-added-filter [dateField]="'insert_date'" #dateAddedFilter></date-added-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'update_user'">
-                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                 Updated by
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Updated by
                             </ng-container>
                         </clr-dg-column>
 
@@ -893,15 +904,15 @@
                             </ng-container>
                         </clr-dg-column> -->
 
-                         <!-- filter column header for date updated -->
-                         <clr-dg-column [clrDgField]="'update_date'">
+                        <!-- filter column header for date updated -->
+                        <clr-dg-column [clrDgField]="'update_date'">
                             Date Updated
-                             <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
-                                  <date-updated-filter [dateField]="'update_date'" #dateUpdatedFilter></date-updated-filter>
-                              </clr-dg-filter>
-                         </clr-dg-column>
+                            <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
+                                <date-updated-filter [dateField]="'update_date'" #dateUpdatedFilter></date-updated-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column>
 
-                        <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample" >
+                        <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
 
                             <!--<clr-dg-cell>
                                  <div class="btn-group">
@@ -923,8 +934,8 @@
                             <clr-dg-cell>X</clr-dg-cell>
 
                             <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'name':this.units}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}}  {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}}  {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.air_subsample_volume}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type | displayValue:'name':this.filterTypes}}</clr-dg-cell>
@@ -945,12 +956,9 @@
                             <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
                         </clr-dg-footer>
                     </clr-datagrid>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
 </div>
 <!-- end samples table -->
-
-
-
