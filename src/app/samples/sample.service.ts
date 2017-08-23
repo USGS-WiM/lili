@@ -35,17 +35,6 @@ export class SampleService {
       .catch(this.handleError);
   }
 
-  //getSamples from LIDE services
-  // getSamples(): Observable<ISample[]> {
-  //   let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
-
-  //   return this._http.get(APP_SETTINGS.SAMPLES_URL, options)
-  //               .map((response: Response) => <ISample[]>response.json())
-  //               //.do(data => console.log('Samples data: ' + JSON.stringify(data)))
-  //               .catch(this.handleError);
-  // }
-
-
   public create(formValue: ISample): Observable<ISample[]> {
 
     let options = new RequestOptions({

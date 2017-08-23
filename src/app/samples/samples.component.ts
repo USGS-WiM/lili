@@ -348,7 +348,7 @@ export class SamplesComponent implements OnInit {
     rack: new FormControl('', Validators.required),
     box: new FormControl('', Validators.required),
     row: new FormControl('', Validators.required),
-    location: new FormControl('', Validators.required),
+    spot: new FormControl('', Validators.required),
     frozen: new FormControl(true, Validators.required)
   })
 

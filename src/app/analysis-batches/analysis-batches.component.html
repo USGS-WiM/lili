@@ -1,16 +1,124 @@
 <div class="row">
-    <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="btn-group">
+            <button class="btn btn-sm" (click)="showHideAdd = !showHideAdd">Create New Analysis Batch</button> 
+        </div>
+    </div>
+</div>
+
+<!--Create Analysis Batch card -->
+<div class="row">
+    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" *ngIf="showHideAdd">
+        <!-- begin card-->
+        <div class="card">
+            <div class="card-block">
+                <div class="card-title">Create Analysis Batch
+                    <clr-signpost>
+                        <clr-icon shape="info-standard" clrSignpostTrigger></clr-icon>
+                        <clr-signpost-content *clrIfOpen>
+                            <p>Help content here
+                            </p>
+                        </clr-signpost-content>
+                    </clr-signpost>
+                </div>
+
+                <div class="card-text">
+                    <!-- begin form -->
+                    <form class="form compact" [formGroup]="createABForm" (ngSubmit)="onSubmit('create', createABForm.value)" [hidden]="submitted">
+                        <section class="form-block">
+
+                            <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid">Create</button>
+                            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
+                        </section>
+                        <!--<p>Form value: {{ createABForm.value | json }}</p>
+                        <p>Form status: {{ createABForm.status | json }}</p> -->
+                    </form>
+                    <!-- end form -->
+                </div>
+            </div>
+            <!-- end card -->
+        </div>
+    </div>
+</div>
+
+
+<!-- begin Analysis batches table -->
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="card-block">
                 <div class="card-title">
-                    Analysis Batches
+                    All Analysis Batches
                 </div>
                 <div class="card-text">
-                    Analysis Batches page does not exist yet.
-                    <br><br> (╯°□°)╯︵ ┻━┻
-                    <br> <br>For now, look at this bear.&nbsp;&nbsp;&nbsp;ʕ •ᴥ•ʔ
+                    <clr-datagrid >
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="plus"></clr-icon> Some</button>
+                                <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="login"></clr-icon> Buttons</button>
+                                <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
+                                <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>
+                                <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="note-edit"size="16"></clr-icon> Here</button>
+
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'analysis_batch_id'">
+                            Analysis Batch ID
+                            <clr-dg-filter [clrDgFilter]="rangeFilter">
+                                <range-filter #rangeFilter></range-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'ab_description'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                               AB Description
+                           </ng-container>
+                       </clr-dg-column>
+
+                        <clr-dg-column>
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Samples
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column>
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Peg Negs
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'studies'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Studies
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <!-- begin data table rows -->
+
+                        <clr-dg-row *clrDgItems="let ab of allAnalysisBatches" [clrDgItem]="ab">
+
+                            <clr-dg-cell>{{ab.id}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.analysis_batch_description}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.samples}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.peg_negs}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.studies}}</clr-dg-cell>
+
+                            <clr-dg-row-detail *clrIfExpanded>
+                                Lorem ipsum...
+                            </clr-dg-row-detail>
+            
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} samples
+                            <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- end samples table -->

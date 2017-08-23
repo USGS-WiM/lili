@@ -556,8 +556,8 @@
                             <input id="row" type="text" formControlName="row">
                         </div>
                         <div class="form-group">
-                            <label for="location">Location</label>
-                            <input id="location" type="text" formControlName="location">
+                            <label for="spot">Spot</label>
+                            <input id="spot" type="text" formControlName="spot">
                         </div>
                         <div class="form-group">
                             <label>Frozen</label>
@@ -584,7 +584,7 @@
 <!-- end freeze modal -->
 
 <!-- begin print modal -->
-<clr-modal [(clrModalOpen)]="showHidePrintModal">
+<clr-modal [(clrModalOpen)]="showHidePrintModal" [clrModalSize]="'xl'">
     <h3 class="modal-title">Print Sample Label</h3>
     <div class="modal-body">
 
