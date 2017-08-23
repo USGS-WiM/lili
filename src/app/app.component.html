@@ -1,37 +1,38 @@
 <clr-main-container>
-  <clr-header>
-    <div class="branding">
-      <a href="#" class="nav-link">
-        <!--<span class="clr-icon ars-logo"></span>-->
-        <span class="clr-icon lili-icon"></span>
-        <span class="title"><span style="font-size:xx-large; font-weight: bold;">lili</span>  <span style="font-size:x-large; font-weight: bold;">L</span>aboratory for <span style="font-size:x-large; font-weight: bold;">I</span>nfectious Disease and Environment <span style="font-size:x-large; font-weight:bold;">LI</span>MS</span>
-      </a>
-    </div>
-    <div class="header-actions">
-    </div>
-  </clr-header>
+    <clr-header>
+        <div class="branding">
+            <a href="#" class="nav-link">
+                <!--<span class="clr-icon ars-logo"></span>-->
+                <span class="clr-icon lili-icon"></span>
+                <span class="title"><span style="font-size:xx-large; font-weight: bold;">lili</span> <span style="font-size:x-large; font-weight: bold;">L</span>aboratory
+                for <span style="font-size:x-large; font-weight: bold;">I</span>nfectious Disease and Environment <span style="font-size:x-large; font-weight:bold;">LI</span>MS</span>
+            </a>
+        </div>
+        <div class="header-actions">
+        </div>
+    </clr-header>
 
-  <div class="content-container">
+    <div class="content-container">
         <div class="content-area">
             <router-outlet></router-outlet>
         </div>
         <nav class="sidenav" [clr-nav-level]="1">
             <section class="sidenav-content">
 
-                <a class="nav-link " href="#" [routerLink]="['/home']" routerLinkActive="active" >
-                     <clr-icon shape="home"></clr-icon> Home
+                <a class="nav-link " href="#" [routerLink]="['/home']" routerLinkActive="active">
+                    <clr-icon shape="home"></clr-icon> Home
                 </a>
 
-                 <a class="nav-link" href="#" [routerLink]="['/studies']" routerLinkActive="active">
+                <a class="nav-link" href="#" [routerLink]="['/studies']" routerLinkActive="active">
                     <clr-icon shape="view-list"></clr-icon> Studies
                 </a>
 
                 <a class="nav-link" href="#" [routerLink]="['/samples']" routerLinkActive="active">
-                     <clr-icon shape="view-list"></clr-icon> Samples
+                    <clr-icon shape="view-list"></clr-icon> Samples
                 </a>
 
                 <a class="nav-link" href="#" [routerLink]="['/analysisbatches']" routerLinkActive="active">
-                     <clr-icon shape="view-list"></clr-icon> Analysis Batches
+                    <clr-icon shape="view-list"></clr-icon> Analysis Batches
                 </a>
 
                 <a class="nav-link" href="#" [routerLink]="['/results']" routerLinkActive="active">
@@ -69,7 +70,7 @@
                 </section>-->
 
             </section>
-            
+
         </nav>
     </div>
 
