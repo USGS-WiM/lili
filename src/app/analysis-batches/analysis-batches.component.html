@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="btn-group">
-            <button class="btn btn-sm" (click)="showHideAdd = !showHideAdd">Create New Analysis Batch</button> 
+            <button class="btn btn-sm" (click)="showHideAdd = !showHideAdd">Create New Analysis Batch</button>
         </div>
     </div>
 </div>
@@ -51,15 +51,15 @@
                     All Analysis Batches
                 </div>
                 <div class="card-text">
-                    <clr-datagrid >
+                    <clr-datagrid [(clrDgSelected)]="selected">
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="plus"></clr-icon> Some</button>
-                                <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="login"></clr-icon> Buttons</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1"><clr-icon shape="plus"></clr-icon> Add Samples</button>
+                                <!-- <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="login"></clr-icon> Buttons</button>
                                 <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
                                 <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>
-                                <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="note-edit"size="16"></clr-icon> Here</button>
+                                <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="note-edit"size="16"></clr-icon> Here</button> -->
 
                             </div>
                         </clr-dg-action-bar>
@@ -73,9 +73,15 @@
 
                         <clr-dg-column [clrDgField]="'ab_description'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                               AB Description
-                           </ng-container>
-                       </clr-dg-column>
+                                Analysis Batch Description
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'studies'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Studies
+                            </ng-container>
+                        </clr-dg-column>
 
                         <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
@@ -89,10 +95,32 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'studies'">
+                        <clr-dg-column [clrDgField]="'insert_user'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Studies
+                                Added by
                             </ng-container>
+                        </clr-dg-column>
+
+                        <!-- filter column header for date added -->
+                        <clr-dg-column [clrDgField]="'insert_date'">
+                            Date Added
+                            <clr-dg-filter [clrDgFilter]="dateAddedFilter">
+                                <date-added-filter [dateField]="'insert_date'" #dateAddedFilter></date-added-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'update_user'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Updated by
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <!-- filter column header for date updated -->
+                        <clr-dg-column [clrDgField]="'update_date'">
+                            Date Updated
+                            <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
+                                <date-updated-filter [dateField]="'update_date'" #dateUpdatedFilter></date-updated-filter>
+                            </clr-dg-filter>
                         </clr-dg-column>
 
                         <!-- begin data table rows -->
@@ -101,14 +129,16 @@
 
                             <clr-dg-cell>{{ab.id}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.analysis_batch_description}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.studies}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.samples}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.peg_negs}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.studies}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.insert_user}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.insert_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.update_user }}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.update_date | date:'shortDate'}}</clr-dg-cell>
 
-                            <clr-dg-row-detail *clrIfExpanded>
-                                Lorem ipsum...
-                            </clr-dg-row-detail>
-            
+                            <analysis-batch-detail *clrIfExpanded [selectedAnalysisBatch]="ab" ngProjectAs="clr-dg-row-detail"></analysis-batch-detail>
+
                         </clr-dg-row>
 
                         <clr-dg-footer>

@@ -214,166 +214,206 @@ export class APP_UTILITIES {
 	public static get ANALYSIS_BATCH_SAMPLE_DATA(): IAnalysisBatch[] {
 		return [
 			{
-				"id": 1000,
-				"analysis_batch_description": "Sit elit veniam nisi ad magna proident consequat tempor.",
-				"samples": [
-					8,
-					13,
-					9
-				],
-				"peg_negs": [
-					6
-				],
-				"studies": [
-					7,
-					4
-				]
+			  "id": 1000,
+			  "analysis_batch_description": "Veniam aute non exercitation aute reprehenderit ex Lorem ut.",
+			  "samples": [
+				6,
+				13,
+				4
+			  ],
+			  "peg_negs": [
+				0
+			  ],
+			  "studies": [
+				3,
+				9
+			  ],
+			  "insert_date": "2015-09-27",
+			  "insert_user": "sspencer",
+			  "update_date": "2012-12-04",
+			  "update_user": "jpstokdyk"
 			},
 			{
-				"id": 1001,
-				"analysis_batch_description": "Cillum mollit labore voluptate sit qui sunt nostrud consequat cillum enim irure culpa officia.",
-				"samples": [
-					9,
-					6,
-					10
-				],
-				"peg_negs": [
-					1
-				],
-				"studies": [
-					6,
-					3
-				]
+			  "id": 1001,
+			  "analysis_batch_description": "Excepteur aliquip voluptate et eiusmod nulla nulla officia voluptate tempor nostrud sunt labore.",
+			  "samples": [
+				6,
+				6,
+				13
+			  ],
+			  "peg_negs": [
+				12
+			  ],
+			  "studies": [
+				12,
+				2
+			  ],
+			  "insert_date": "2012-02-16",
+			  "insert_user": "jpstokdyk",
+			  "update_date": "2012-12-16",
+			  "update_user": "jpstokdyk"
 			},
 			{
-				"id": 1002,
-				"analysis_batch_description": "Culpa laboris proident proident aliqua pariatur ipsum.",
-				"samples": [
-					0,
-					5,
-					10
-				],
-				"peg_negs": [
-					10
-				],
-				"studies": [
-					6,
-					11
-				]
+			  "id": 1002,
+			  "analysis_batch_description": "Consectetur adipisicing exercitation est sit aute qui est velit nulla officia.",
+			  "samples": [
+				0,
+				4,
+				5
+			  ],
+			  "peg_negs": [
+				14
+			  ],
+			  "studies": [
+				13,
+				3
+			  ],
+			  "insert_date": "2015-10-07",
+			  "insert_user": "afirnstahl",
+			  "update_date": "2016-05-04",
+			  "update_user": "jpstokdyk"
 			},
 			{
-				"id": 1003,
-				"analysis_batch_description": "Aute qui ad duis adipisicing.",
-				"samples": [
-					14,
-					4,
-					1
-				],
-				"peg_negs": [
-					3
-				],
-				"studies": [
-					13,
-					5
-				]
+			  "id": 1003,
+			  "analysis_batch_description": "Incididunt dolor et ad id ad amet nulla dolore proident aliqua culpa.",
+			  "samples": [
+				3,
+				12,
+				8
+			  ],
+			  "peg_negs": [
+				6
+			  ],
+			  "studies": [
+				6,
+				1
+			  ],
+			  "insert_date": "2014-01-29",
+			  "insert_user": "legacy data upload",
+			  "update_date": "2015-05-02",
+			  "update_user": "sspencer"
 			},
 			{
-				"id": 1004,
-				"analysis_batch_description": "Exercitation aliquip ipsum est ad velit ut incididunt voluptate ipsum occaecat quis culpa ullamco.",
-				"samples": [
-					11,
-					3,
-					1
-				],
-				"peg_negs": [
-					8
-				],
-				"studies": [
-					3,
-					3
-				]
+			  "id": 1004,
+			  "analysis_batch_description": "In velit reprehenderit reprehenderit officia cupidatat eiusmod amet excepteur adipisicing aute cupidatat do.",
+			  "samples": [
+				2,
+				1,
+				3
+			  ],
+			  "peg_negs": [
+				13
+			  ],
+			  "studies": [
+				5,
+				4
+			  ],
+			  "insert_date": "2016-08-14",
+			  "insert_user": "jpstokdyk",
+			  "update_date": "2012-11-21",
+			  "update_user": "afirnstahl"
 			},
 			{
-				"id": 1005,
-				"analysis_batch_description": "Officia aute eu nostrud ex elit consectetur.",
-				"samples": [
-					9,
-					2,
-					11
-				],
-				"peg_negs": [
-					14
-				],
-				"studies": [
-					2,
-					8
-				]
+			  "id": 1005,
+			  "analysis_batch_description": "Commodo incididunt anim reprehenderit eiusmod pariatur eiusmod in pariatur magna cillum non eu.",
+			  "samples": [
+				5,
+				3,
+				5
+			  ],
+			  "peg_negs": [
+				8
+			  ],
+			  "studies": [
+				11,
+				13
+			  ],
+			  "insert_date": "2012-01-09",
+			  "insert_user": "jpstokdyk",
+			  "update_date": "2015-09-24",
+			  "update_user": "sspencer"
 			},
 			{
-				"id": 1006,
-				"analysis_batch_description": "Magna aliqua labore minim laborum nulla anim consectetur aliqua ad proident.",
-				"samples": [
-					8,
-					1,
-					1
-				],
-				"peg_negs": [
-					10
-				],
-				"studies": [
-					13,
-					9
-				]
+			  "id": 1006,
+			  "analysis_batch_description": "Officia voluptate exercitation consequat cupidatat pariatur Lorem occaecat minim tempor pariatur anim cupidatat amet velit.",
+			  "samples": [
+				6,
+				11,
+				4
+			  ],
+			  "peg_negs": [
+				0
+			  ],
+			  "studies": [
+				7,
+				9
+			  ],
+			  "insert_date": "2017-03-20",
+			  "insert_user": "sspencer",
+			  "update_date": "2015-02-26",
+			  "update_user": "jpstokdyk"
 			},
 			{
-				"id": 1007,
-				"analysis_batch_description": "Cupidatat qui magna id aliqua nisi incididunt laboris ullamco cupidatat laborum veniam.",
-				"samples": [
-					9,
-					4,
-					5
-				],
-				"peg_negs": [
-					5
-				],
-				"studies": [
-					8,
-					12
-				]
+			  "id": 1007,
+			  "analysis_batch_description": "Eu eiusmod dolore laborum dolore sit dolore.",
+			  "samples": [
+				3,
+				10,
+				3
+			  ],
+			  "peg_negs": [
+				9
+			  ],
+			  "studies": [
+				11,
+				4
+			  ],
+			  "insert_date": "2016-03-15",
+			  "insert_user": "afirnstahl",
+			  "update_date": "2017-06-07",
+			  "update_user": "sspencer"
 			},
 			{
-				"id": 1008,
-				"analysis_batch_description": "Lorem quis cupidatat aliquip Lorem consequat ea esse dolore et et ex fugiat.",
-				"samples": [
-					5,
-					12,
-					10
-				],
-				"peg_negs": [
-					7
-				],
-				"studies": [
-					11,
-					10
-				]
+			  "id": 1008,
+			  "analysis_batch_description": "Aliqua sit tempor eu voluptate aute.",
+			  "samples": [
+				14,
+				13,
+				8
+			  ],
+			  "peg_negs": [
+				7
+			  ],
+			  "studies": [
+				7,
+				6
+			  ],
+			  "insert_date": "2016-01-31",
+			  "insert_user": "legacy data upload",
+			  "update_date": "2013-08-11",
+			  "update_user": "jpstokdyk"
 			},
 			{
-				"id": 1009,
-				"analysis_batch_description": "Reprehenderit deserunt adipisicing minim ipsum.",
-				"samples": [
-					12,
-					5,
-					13
-				],
-				"peg_negs": [
-					6
-				],
-				"studies": [
-					11,
-					1
-				]
+			  "id": 1009,
+			  "analysis_batch_description": "Exercitation adipisicing ea proident veniam duis ullamco elit qui adipisicing commodo qui tempor.",
+			  "samples": [
+				7,
+				5,
+				5
+			  ],
+			  "peg_negs": [
+				1
+			  ],
+			  "studies": [
+				1,
+				5
+			  ],
+			  "insert_date": "2013-03-29",
+			  "insert_user": "jpstokdyk",
+			  "update_date": "2016-03-21",
+			  "update_user": "sspencer"
 			}
-		]
+		  ]
 
 	}
 

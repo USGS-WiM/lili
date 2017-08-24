@@ -15,6 +15,8 @@ import { APP_UTILITIES } from '../app.utilities'
 export class AnalysisBatchesComponent implements OnInit {
   allAnalysisBatches: IAnalysisBatch[];
 
+  selected: IAnalysisBatch[] = [];
+
   errorMessage: string;
 
   constructor(private _analysisBatchService: AnalysisBatchService) { }
