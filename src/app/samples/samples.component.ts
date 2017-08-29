@@ -108,8 +108,8 @@ export class SamplesComponent implements OnInit {
     this.unitValue = parseInt(unitValue);
   }
 
-  //callback for the add sample to analsis batch button
-  addSampleToAB(selectedSampleArray) {
+  //callback for the create analysis batch button
+  createAB(selectedSampleArray) {
     //show the AB modal if not showing already
     if (this.showHideABModal === false) {
       this.showHideABModal = true;

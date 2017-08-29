@@ -15,6 +15,8 @@ import { APP_UTILITIES } from '../app.utilities'
 export class AnalysisBatchesComponent implements OnInit {
   allAnalysisBatches: IAnalysisBatch[];
 
+  selected: IAnalysisBatch[] = [];
+
   errorMessage: string;
 
   constructor(private _analysisBatchService: AnalysisBatchService) { }
@@ -33,5 +35,10 @@ export class AnalysisBatchesComponent implements OnInit {
   createABForm = new FormGroup({
 
   })
+
+  editAB(selectedAB) {
+    alert("user has chosen to edit selected analysis batch")
+
+  }
 
 }
