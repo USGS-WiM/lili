@@ -1,45 +1,11 @@
-<div class="row">
+<!--may not need a create AB button, creation will be done from samples page -->
+<!-- <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="btn-group">
             <button class="btn btn-sm" (click)="showHideAdd = !showHideAdd">Create New Analysis Batch</button>
         </div>
     </div>
-</div>
-
-<!--Create Analysis Batch card -->
-<div class="row">
-    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" *ngIf="showHideAdd">
-        <!-- begin card-->
-        <div class="card">
-            <div class="card-block">
-                <div class="card-title">Create Analysis Batch
-                    <clr-signpost>
-                        <clr-icon shape="info-standard" clrSignpostTrigger></clr-icon>
-                        <clr-signpost-content *clrIfOpen>
-                            <p>Help content here
-                            </p>
-                        </clr-signpost-content>
-                    </clr-signpost>
-                </div>
-
-                <div class="card-text">
-                    <!-- begin form -->
-                    <form class="form compact" [formGroup]="createABForm" (ngSubmit)="onSubmit('create', createABForm.value)" [hidden]="submitted">
-                        <section class="form-block">
-
-                            <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid">Create</button>
-                            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
-                        </section>
-                        <!--<p>Form value: {{ createABForm.value | json }}</p>
-                        <p>Form status: {{ createABForm.status | json }}</p> -->
-                    </form>
-                    <!-- end form -->
-                </div>
-            </div>
-            <!-- end card -->
-        </div>
-    </div>
-</div>
+</div> -->
 
 
 <!-- begin Analysis batches table -->
@@ -55,9 +21,9 @@
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1"><clr-icon shape="plus"></clr-icon> Add Samples</button>
-                                <!-- <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="login"></clr-icon> Buttons</button>
-                                <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editAB(selected[0])"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Analysis Batch</button>
+                                <button type="button" class="btn btn-sm btn-secondary"><clr-icon shape="login"></clr-icon> Extract</button>
+                                <!--<button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
                                 <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>
                                 <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="note-edit"size="16"></clr-icon> Here</button> -->
 
@@ -83,17 +49,42 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column>
+                        <clr-dg-column [clrDgField]="'extractions'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Samples
+                                Extractions
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'rts'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                RTs
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'inhibitions'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Inhibitions
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'targets'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Targets
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Peg Negs
+                                Analaysis Batch Notes
                             </ng-container>
                         </clr-dg-column>
+
+
+                        <!-- <clr-dg-column>
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Samples
+                            </ng-container>
+                        </clr-dg-column> -->
 
                         <clr-dg-column [clrDgField]="'insert_user'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
@@ -130,8 +121,13 @@
                             <clr-dg-cell>{{ab.id}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.analysis_batch_description}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.studies}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.samples}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.peg_negs}}</clr-dg-cell>
+
+                            <clr-dg-cell>{{ab.extractions}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.rts}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.inhibitions}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.targets}}</clr-dg-cell>
+
+                            <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.insert_user}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.insert_date | date:'shortDate'}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.update_user }}</clr-dg-cell>

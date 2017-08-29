@@ -36,4 +36,9 @@ export class AnalysisBatchesComponent implements OnInit {
 
   })
 
+  editAB(selectedAB) {
+    alert("user has chosen to edit selected analysis batch")
+
+  }
+
 }

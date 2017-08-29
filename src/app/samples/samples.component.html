@@ -629,7 +629,7 @@
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="addSampleToAB(selected)"><clr-icon shape="plus"></clr-icon> Add to Analysis Batch</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createAB(selected)"><clr-icon shape="plus"></clr-icon> Create Analysis Batch</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="freezeSample(selected)"><clr-icon shape="login"></clr-icon> Freeze</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="printLabel(selected)"><clr-icon shape="printer"></clr-icon> Print Labels</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1"><clr-icon shape="trash"></clr-icon> Delete Sample</button>
