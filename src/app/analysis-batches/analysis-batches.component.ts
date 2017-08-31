@@ -14,6 +14,9 @@ import { APP_UTILITIES } from '../app.utilities'
 })
 export class AnalysisBatchesComponent implements OnInit {
   allAnalysisBatches: IAnalysisBatch[];
+  showHideExtractionDetailModal: boolean = false;
+  focusAnalysisBatchID: number;
+  focusDetailObject: Object;
 
   selected: IAnalysisBatch[] = [];
 
@@ -35,6 +38,31 @@ export class AnalysisBatchesComponent implements OnInit {
   createABForm = new FormGroup({
 
   })
+
+  openExtractionDetails(abID, detailObject){
+
+    this.focusAnalysisBatchID = abID;
+    this.focusDetailObject = detailObject;
+    
+    //show the extraction details modal if not showing already
+    if (this.showHideExtractionDetailModal === false) {
+      this.showHideExtractionDetailModal = true;
+    }
+
+
+  }
+
+  openRTDetails() {
+
+  }
+
+  openInhibitionDetails() {
+
+  }
+
+  openTargetDetails(){
+
+  }
 
   editAB(selectedAB) {
     alert("user has chosen to edit selected analysis batch")

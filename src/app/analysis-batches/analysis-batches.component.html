@@ -7,6 +7,46 @@
     </div>
 </div> -->
 
+<!-- begin extraction detail modal -->
+<clr-modal [(clrModalOpen)]="showHideExtractionDetailModal" [clrModalSize]="'m'">
+    <h3 class="modal-title">Extraction Details</h3>
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <clr-stack-view>
+                    <clr-stack-header>Extractions in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
+
+                    <clr-stack-block *ngFor="let item of focusDetailObject">
+                        <clr-stack-label>Extraction {{item.extraction_no}}</clr-stack-label>
+                        <clr-stack-content></clr-stack-content>
+                        <clr-stack-block>
+                            <clr-stack-label>Extraction Volume</clr-stack-label>
+                            <clr-stack-content>{{item.extraction_volume}}</clr-stack-content>
+                        </clr-stack-block>
+                        <clr-stack-block>
+                            <clr-stack-label>Elution Volume</clr-stack-label>
+                            <clr-stack-content>{{item.elution_volume}}</clr-stack-content>
+                        </clr-stack-block>
+                        <clr-stack-block>
+                            <clr-stack-label>Extraction Method</clr-stack-label>
+                            <clr-stack-content>{{item.extraction_method}}</clr-stack-content>
+                        </clr-stack-block>
+                    </clr-stack-block>
+
+                </clr-stack-view>
+
+            </div>
+        </div>
+    </div>
+    <!--<div class="modal-footer">
+            <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
+            <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
+        </div>-->
+</clr-modal>
+<!-- end extraction detail modal -->
+
 
 <!-- begin Analysis batches table -->
 <div class="row">
@@ -22,7 +62,7 @@
                         <clr-dg-action-bar>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editAB(selected[0])"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Analysis Batch</button>
-                                <button type="button" class="btn btn-sm btn-secondary"><clr-icon shape="login"></clr-icon> Extract</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1"><clr-icon shape="login"></clr-icon> Extract</button>
                                 <!--<button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
                                 <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>
                                 <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="note-edit"size="16"></clr-icon> Here</button> -->
@@ -122,10 +162,13 @@
                             <clr-dg-cell>{{ab.analysis_batch_description}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.studies}}</clr-dg-cell>
 
-                            <clr-dg-cell>{{ab.extractions}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.rts}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.inhibitions}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.targets}}</clr-dg-cell>
+                            <clr-dg-cell>
+                                <a (click)="openExtractionDetails(ab.id, ab.extractions)" class="label label-blue clickable">{{ab.extractions.length}}</a>
+                            </clr-dg-cell>
+
+                            <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.reverse_transcriptions.length}}</a></clr-dg-cell>
+                            <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.inhibitions.length}}</a></clr-dg-cell>
+                            <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.targets.length}}</a></clr-dg-cell>
 
                             <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.insert_user}}</clr-dg-cell>
