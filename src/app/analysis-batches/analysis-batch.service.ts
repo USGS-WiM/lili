@@ -47,26 +47,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1195,
                   "vol_in": 0.87,
                   "vol_out": 0.79,
-                  "rt_cq": 1.17
+                  "rt_cq": 1.17,
+                  "insert_date": "2014-10-15",
+                  "insert_user": "sspencer",
+                  "update_date": "2015-12-25",
+                  "update_user": "sspencer"
                 },
                 {
                   "id": 1071,
                   "extraction_id": 1860,
                   "vol_in": 1.44,
                   "vol_out": 0.38,
-                  "rt_cq": 2.42
+                  "rt_cq": 2.42,
+                  "insert_date": "2012-05-25",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2012-12-13",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1042,
                   "dilution": 17,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2017-08-12",
+                  "insert_user": "sspencer",
+                  "update_date": "2012-08-09",
+                  "update_user": "afirnstahl"
                 },
                 {
                   "id": 1008,
                   "dilution": 19,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2017-08-12",
+                  "insert_user": "sspencer",
+                  "update_date": "2012-08-09",
+                  "update_user": "afirnstahl"
                 }
               ],
               "targets": [
@@ -96,26 +112,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1284,
                   "vol_in": 1.07,
                   "vol_out": 0.3,
-                  "rt_cq": 0.95
+                  "rt_cq": 0.95,
+                  "insert_date": "2013-03-05",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2012-03-16",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1040,
                   "extraction_id": 1776,
                   "vol_in": 0.8,
                   "vol_out": 1.31,
-                  "rt_cq": 1.1
+                  "rt_cq": 1.1,
+                  "insert_date": "2013-03-05",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2012-03-16",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1061,
                   "dilution": 46,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2013-03-05",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2012-03-16",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1077,
                   "dilution": 42,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2013-08-02",
+                  "insert_user": "sspencer",
+                  "update_date": "2017-03-28",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -161,26 +193,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1911,
                   "vol_in": 0,
                   "vol_out": 2.54,
-                  "rt_cq": 1.31
+                  "rt_cq": 1.31,
+                  "insert_date": "2014-11-09",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2016-09-12",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1065,
                   "extraction_id": 1559,
                   "vol_in": 0.15,
                   "vol_out": 0.98,
-                  "rt_cq": 1.59
+                  "rt_cq": 1.59,
+                  "insert_date": "2015-10-29",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2016-05-06",
+                  "update_user": "afirnstahl"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1097,
                   "dilution": 23,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2014-06-24",
+                  "insert_user": "sspencer",
+                  "update_date": "2013-05-30",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1029,
                   "dilution": 11,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2014-06-24",
+                  "insert_user": "sspencer",
+                  "update_date": "2013-05-30",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -210,26 +258,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1444,
                   "vol_in": 0.58,
                   "vol_out": 0.25,
-                  "rt_cq": 2.59
+                  "rt_cq": 2.59,
+                  "insert_date": "2016-11-23",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2015-11-26",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1084,
                   "extraction_id": 1537,
                   "vol_in": 1.34,
                   "vol_out": 3,
-                  "rt_cq": 2.78
+                  "rt_cq": 2.78,
+                  "insert_date": "2016-11-23",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2015-11-26",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1098,
                   "dilution": 18,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2014-06-24",
+                  "insert_user": "sspencer",
+                  "update_date": "2013-05-30",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1020,
                   "dilution": 17,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2014-06-24",
+                  "insert_user": "sspencer",
+                  "update_date": "2013-05-30",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -275,26 +339,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1873,
                   "vol_in": 0.32,
                   "vol_out": 2.64,
-                  "rt_cq": 1.72
+                  "rt_cq": 1.72,
+                  "insert_date": "2014-06-24",
+                  "insert_user": "sspencer",
+                  "update_date": "2013-05-30",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1001,
                   "extraction_id": 1989,
                   "vol_in": 0.4,
                   "vol_out": 2.5,
-                  "rt_cq": 2.32
+                  "rt_cq": 2.32,
+                  "insert_date": "2016-11-23",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2015-11-26",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1037,
                   "dilution": 28,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2013-10-30",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2015-04-02",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1089,
                   "dilution": 25,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2013-10-30",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2015-04-02",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -324,26 +404,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1699,
                   "vol_in": 0.36,
                   "vol_out": 2.86,
-                  "rt_cq": 3
+                  "rt_cq": 3,
+                  "insert_date": "2012-10-08",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-07-31",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1013,
                   "extraction_id": 1166,
                   "vol_in": 0.99,
                   "vol_out": 2.58,
-                  "rt_cq": 1.14
+                  "rt_cq": 1.14,
+                  "insert_date": "2012-10-08",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-07-31",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1078,
                   "dilution": 16,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2016-01-17",
+                  "insert_user": "sspencer",
+                  "update_date": "2012-09-17",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1059,
                   "dilution": 46,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2016-01-17",
+                  "insert_user": "sspencer",
+                  "update_date": "2012-09-17",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -389,26 +485,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1249,
                   "vol_in": 0.45,
                   "vol_out": 0.67,
-                  "rt_cq": 2.31
+                  "rt_cq": 2.31,
+                  "insert_date": "2013-07-09",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2012-12-28",
+                  "update_user": "afirnstahl"
                 },
                 {
                   "id": 1009,
                   "extraction_id": 1152,
                   "vol_in": 1.34,
                   "vol_out": 2.41,
-                  "rt_cq": 1.74
+                  "rt_cq": 1.74,
+                  "insert_date": "2016-04-22",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2016-02-03",
+                  "update_user": "sspencer"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1059,
                   "dilution": 17,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2016-07-29",
+                  "insert_user": "sspencer",
+                  "update_date": "2012-11-04",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1091,
                   "dilution": 23,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -438,26 +550,43 @@ export class AnalysisBatchService {
                   "extraction_id": 1654,
                   "vol_in": 0.66,
                   "vol_out": 2.83,
-                  "rt_cq": 1.95
+                  "rt_cq": 1.95,
+                  "insert_date": "2016-07-29",
+                  "insert_user": "sspencer",
+                  "update_date": "2012-11-04",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1079,
                   "extraction_id": 1671,
                   "vol_in": 0.43,
                   "vol_out": 0.88,
-                  "rt_cq": 1.71
+                  "rt_cq": 1.71,
+                  "insert_date": "2016-07-29",
+                  "insert_user": "sspencer",
+                  "update_date": "2012-11-04",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1071,
                   "dilution": 45,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
+                  
                 },
                 {
                   "id": 1089,
                   "dilution": 6,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2016-04-22",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2016-02-03",
+                  "update_user": "sspencer"
                 }
               ],
               "targets": [
@@ -503,26 +632,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1798,
                   "vol_in": 0.49,
                   "vol_out": 1.69,
-                  "rt_cq": 0.06
+                  "rt_cq": 0.06,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1034,
                   "extraction_id": 1365,
                   "vol_in": 1.43,
                   "vol_out": 0.44,
-                  "rt_cq": 0.26
+                  "rt_cq": 0.26,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1044,
                   "dilution": 40,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1062,
                   "dilution": 24,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -552,26 +697,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1894,
                   "vol_in": 0.16,
                   "vol_out": 2.51,
-                  "rt_cq": 1.72
+                  "rt_cq": 1.72,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1095,
                   "extraction_id": 1248,
                   "vol_in": 0.91,
                   "vol_out": 1.34,
-                  "rt_cq": 2.93
+                  "rt_cq": 2.93,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1064,
                   "dilution": 37,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1073,
                   "dilution": 41,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -617,26 +778,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1871,
                   "vol_in": 0.7,
                   "vol_out": 1.88,
-                  "rt_cq": 2.31
+                  "rt_cq": 2.31,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1020,
                   "extraction_id": 1558,
                   "vol_in": 0.72,
                   "vol_out": 0.02,
-                  "rt_cq": 2.64
+                  "rt_cq": 2.64,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1024,
                   "dilution": 30,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1021,
                   "dilution": 13,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -666,26 +843,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1015,
                   "vol_in": 0.71,
                   "vol_out": 0.59,
-                  "rt_cq": 2.76
+                  "rt_cq": 2.76,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1073,
                   "extraction_id": 1842,
                   "vol_in": 0.47,
                   "vol_out": 0.61,
-                  "rt_cq": 2.07
+                  "rt_cq": 2.07,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1100,
                   "dilution": 42,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1065,
                   "dilution": 38,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -731,26 +924,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1138,
                   "vol_in": 0.65,
                   "vol_out": 1.36,
-                  "rt_cq": 2.32
+                  "rt_cq": 2.32,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1068,
                   "extraction_id": 1725,
                   "vol_in": 0.92,
                   "vol_out": 2.51,
-                  "rt_cq": 3
+                  "rt_cq": 3,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1006,
                   "dilution": 23,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1057,
                   "dilution": 28,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -780,26 +989,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1764,
                   "vol_in": 0.89,
                   "vol_out": 2.67,
-                  "rt_cq": 1.52
+                  "rt_cq": 1.52,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1072,
                   "extraction_id": 1660,
                   "vol_in": 0.61,
                   "vol_out": 2.11,
-                  "rt_cq": 1.53
+                  "rt_cq": 1.53,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1012,
                   "dilution": 26,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1012,
                   "dilution": 39,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -845,26 +1070,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1234,
                   "vol_in": 1.1,
                   "vol_out": 0.6,
-                  "rt_cq": 2.48
+                  "rt_cq": 2.48,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1073,
                   "extraction_id": 1045,
                   "vol_in": 0.32,
                   "vol_out": 0.91,
-                  "rt_cq": 1.32
+                  "rt_cq": 1.32,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1071,
                   "dilution": 16,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1046,
                   "dilution": 12,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -894,26 +1135,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1148,
                   "vol_in": 1.47,
                   "vol_out": 2.63,
-                  "rt_cq": 2.15
+                  "rt_cq": 2.15,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1006,
                   "extraction_id": 1176,
                   "vol_in": 0.89,
                   "vol_out": 1.12,
-                  "rt_cq": 1.55
+                  "rt_cq": 1.55,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1073,
                   "dilution": 15,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1097,
                   "dilution": 26,
-                  "type": "RNA"
+                  "type": "RNA",   
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -959,26 +1216,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1867,
                   "vol_in": 0.56,
                   "vol_out": 2.93,
-                  "rt_cq": 1.46
+                  "rt_cq": 1.46,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1019,
                   "extraction_id": 1578,
                   "vol_in": 0.8,
                   "vol_out": 0.92,
-                  "rt_cq": 2.72
+                  "rt_cq": 2.72,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1040,
                   "dilution": 36,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1051,
                   "dilution": 36,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -1008,26 +1281,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1177,
                   "vol_in": 0.45,
                   "vol_out": 2.43,
-                  "rt_cq": 0.58
+                  "rt_cq": 0.58,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1038,
                   "extraction_id": 1531,
                   "vol_in": 0.47,
                   "vol_out": 0.47,
-                  "rt_cq": 0.05
+                  "rt_cq": 0.05,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1097,
                   "dilution": 48,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1037,
                   "dilution": 14,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -1073,26 +1362,42 @@ export class AnalysisBatchService {
                   "extraction_id": 1298,
                   "vol_in": 0.45,
                   "vol_out": 2.69,
-                  "rt_cq": 0.79
+                  "rt_cq": 0.79,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1065,
                   "extraction_id": 1094,
                   "vol_in": 0.37,
                   "vol_out": 0.45,
-                  "rt_cq": 0.32
+                  "rt_cq": 0.32,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1031,
                   "dilution": 11,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1085,
                   "dilution": 14,
-                  "type": "DNA"
+                  "type": "DNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -1122,26 +1427,41 @@ export class AnalysisBatchService {
                   "extraction_id": 1002,
                   "vol_in": 1.17,
                   "vol_out": 1.38,
-                  "rt_cq": 2.61
+                  "rt_cq": 2.61,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1031,
                   "extraction_id": 1242,
                   "vol_in": 0.21,
                   "vol_out": 2.91,
-                  "rt_cq": 2.98
+                  "rt_cq": 2.98,
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "inhibitions": [
                 {
                   "id": 1058,
                   "dilution": 34,
-                  "type": "RNA"
+                  "type": "RNA",   "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 },
                 {
                   "id": 1018,
                   "dilution": 41,
-                  "type": "RNA"
+                  "type": "RNA",
+                  "insert_date": "2012-12-22",
+                  "insert_user": "sspencer",
+                  "update_date": "2016-03-29",
+                  "update_user": "jpstokdyk"
                 }
               ],
               "targets": [

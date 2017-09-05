@@ -47,6 +47,43 @@
 </clr-modal>
 <!-- end extraction detail modal -->
 
+<!-- begin inhibition detail modal -->
+<clr-modal [(clrModalOpen)]="showHideInhibitionDetailModal" [clrModalSize]="'m'">
+    <h3 class="modal-title">Inhibition Details</h3>
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <clr-stack-view>
+                    <clr-stack-header>Inhibitions in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
+
+                    <clr-stack-block *ngFor="let extraction of inhibitionDetailArray">
+                        <clr-stack-label>Inhibition {{extraction.inhibitions.extraction_no}}</clr-stack-label>
+                        <clr-stack-content></clr-stack-content>
+                        <clr-stack-block>
+                            <clr-stack-label>Inhibition Date</clr-stack-label>
+                            <clr-stack-content>{{extraction.inhibitions.insert_date}}</clr-stack-content>
+                        </clr-stack-block>
+                        <clr-stack-block>
+                            <clr-stack-label>Type</clr-stack-label>
+                            <clr-stack-content>{{extraction.inhibitions.type}}</clr-stack-content>
+                        </clr-stack-block>
+                        <clr-stack-block>
+                            <clr-stack-label>Dilution</clr-stack-label>
+                            <clr-stack-content>{{extraction.inhibitions.dilution}}</clr-stack-content>
+                        </clr-stack-block>
+                    </clr-stack-block>
+
+                </clr-stack-view>
+
+            </div>
+        </div>
+    </div>
+    <!--<div class="modal-footer">        </div>-->
+</clr-modal>
+<!-- end inhibition detail modal -->
+
 <!-- begin RT detail modal -->
 <clr-modal [(clrModalOpen)]="showHideRTDetailModal" [clrModalSize]="'m'">
     <h3 class="modal-title">RT Details</h3>
@@ -58,18 +95,18 @@
                 <clr-stack-view>
                     <clr-stack-header>RTs in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
 
-                    <clr-stack-block *ngFor="let item of focusDetailObject">
+                    <clr-stack-block *ngFor="let item of focusDetailObject" [clrSbExpanded]="true" >
                         <clr-stack-label>RT # {{item.extraction_no}}</clr-stack-label>
                         <clr-stack-content></clr-stack-content>
-                        <clr-stack-block>
+                        <clr-stack-block [clrSbExpanded]="true" >
                             <clr-stack-label>Extraction Volume</clr-stack-label>
                             <clr-stack-content>{{item.extraction_volume}}</clr-stack-content>
                         </clr-stack-block>
-                        <clr-stack-block>
+                        <clr-stack-block [clrSbExpanded]="true">
                             <clr-stack-label>Elution Volume</clr-stack-label>
                             <clr-stack-content>{{item.elution_volume}}</clr-stack-content>
                         </clr-stack-block>
-                        <clr-stack-block>
+                        <clr-stack-block [clrSbExpanded]="true">
                             <clr-stack-label>Extraction Method</clr-stack-label>
                             <clr-stack-content>{{item.extraction_method}}</clr-stack-content>
                         </clr-stack-block>
@@ -84,42 +121,7 @@
 </clr-modal>
 <!-- end RTdetail modal -->
 
-<!-- begin inhibition detail modal -->
-<clr-modal [(clrModalOpen)]="showHideInhibitionDetailModal" [clrModalSize]="'m'">
-    <h3 class="modal-title">Extraction Details</h3>
-    <div class="modal-body">
 
-        <div class="row">
-            <div class="col-sm-12">
-
-                <clr-stack-view>
-                    <clr-stack-header>Extractions in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
-
-                    <clr-stack-block *ngFor="let item of focusDetailObject">
-                        <clr-stack-label>Extraction {{item.extraction_no}}</clr-stack-label>
-                        <clr-stack-content></clr-stack-content>
-                        <clr-stack-block>
-                            <clr-stack-label>Extraction Volume</clr-stack-label>
-                            <clr-stack-content>{{item.extraction_volume}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block>
-                            <clr-stack-label>Elution Volume</clr-stack-label>
-                            <clr-stack-content>{{item.elution_volume}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block>
-                            <clr-stack-label>Extraction Method</clr-stack-label>
-                            <clr-stack-content>{{item.extraction_method}}</clr-stack-content>
-                        </clr-stack-block>
-                    </clr-stack-block>
-
-                </clr-stack-view>
-
-            </div>
-        </div>
-    </div>
-    <!--<div class="modal-footer">        </div>-->
-</clr-modal>
-<!-- end inhibition detail modal -->
 
 <!-- begin target detail modal -->
 <clr-modal [(clrModalOpen)]="showHideTargetDetailModal" [clrModalSize]="'m'">
@@ -278,7 +280,9 @@
                             </clr-dg-cell>
 
                             <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.reverse_transcription_count}}</a></clr-dg-cell>
-                            <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.inhibition_count}}</a></clr-dg-cell>
+                            <clr-dg-cell>
+                                <a (click)="openInhibitionDetails(ab.id)" class="label label-blue clickable">{{ab.inhibition_count}}</a>
+                            </clr-dg-cell>
                             <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.target_count}}</a></clr-dg-cell>
 
                             <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>

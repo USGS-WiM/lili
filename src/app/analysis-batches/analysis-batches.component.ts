@@ -81,7 +81,22 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
-  openInhibitionDetails() {
+  openInhibitionDetails(abID) {
+    //check if AB ID matches the current focusAnalysisBatchID. 
+    //This will mean the desired AB data is already stored in the variable and does not need to be retrieved
+    if (abID == this.focusAnalysisBatchID) {
+      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
+    } else {
+      //set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
+      this.focusAnalysisBatchID = abID;
+      //call to retrieve AB detail data
+      this.focusAnalysisBatchData = this.retrieveABData(abID);
+      this.inhibitionDetailArray = this.focusAnalysisBatchData.extractions;
+    }
+    //show the extraction details modal if not showing already
+    if (this.showHideInhibitionDetailModal === false) {
+      this.showHideInhibitionDetailModal = true;
+    }
 
   }
 
