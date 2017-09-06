@@ -28,218 +28,234 @@ export class AnalysisBatchService {
       case 1000:
         return {
           "id": 1000,
-          "analysis_batch_description": "Sunt tempor nulla enim fugiat exercitation nostrud esse Lorem.",
-          "analysis_batch_notes": "Enim nostrud aliqua et et ut.",
+          "analysis_batch_description": "Ullamco et consectetur elit nisi tempor ut.",
+          "analysis_batch_notes": "Lorem occaecat Lorem duis exercitation nulla enim nulla excepteur reprehenderit.",
+          "samples": [
+            1666,
+            1108,
+            1129,
+            1811,
+            1611,
+            1716
+          ],
           "studies": [
-            10,
-            0
+            5,
+            14
           ],
           "extractions": [
             {
-              "id": 1022,
+              "id": 1078,
               "extraction_no": 1,
-              "extraction_volume": 0.93,
-              "elution_volume": 2.84,
+              "extraction_volume": 0.38,
+              "elution_volume": 0.16,
               "extraction_method": 1,
-              "reverse_transcriptions": [
+              "inhibitions": [
                 {
-                  "id": 1085,
-                  "extraction_id": 1195,
-                  "vol_in": 0.87,
-                  "vol_out": 0.79,
-                  "rt_cq": 1.17,
-                  "insert_date": "2014-10-15",
-                  "insert_user": "sspencer",
-                  "update_date": "2015-12-25",
+                  "id": 1021,
+                  "dilution": 10,
+                  "type": "RNA",
+                  "insert_date": "2016-10-04",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2015-05-08",
                   "update_user": "sspencer"
                 },
                 {
-                  "id": 1071,
-                  "extraction_id": 1860,
-                  "vol_in": 1.44,
-                  "vol_out": 0.38,
-                  "rt_cq": 2.42,
-                  "insert_date": "2012-05-25",
+                  "id": 1067,
+                  "dilution": 50,
+                  "type": "RNA",
+                  "insert_date": "2014-06-28",
                   "insert_user": "jpstokdyk",
-                  "update_date": "2012-12-13",
-                  "update_user": "jpstokdyk"
+                  "update_date": "2014-09-24",
+                  "update_user": "sspencer"
                 }
               ],
-              "inhibitions": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1042,
-                  "dilution": 17,
-                  "type": "DNA",
-                  "insert_date": "2017-08-12",
+                  "id": 1007,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.07,
+                  "vol_out": 0.12,
+                  "rt_cq": 0.92,
+                  "insert_date": "2015-08-23",
                   "insert_user": "sspencer",
-                  "update_date": "2012-08-09",
+                  "update_date": "2017-06-26",
                   "update_user": "afirnstahl"
                 },
                 {
-                  "id": 1008,
-                  "dilution": 19,
-                  "type": "DNA",
-                  "insert_date": "2017-08-12",
-                  "insert_user": "sspencer",
-                  "update_date": "2012-08-09",
-                  "update_user": "afirnstahl"
+                  "id": 1085,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 1.09,
+                  "vol_out": 1.36,
+                  "rt_cq": 2.18,
+                  "insert_date": "2014-01-28",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2013-06-13",
+                  "update_user": "sspencer"
                 }
               ],
               "targets": [
                 {
-                  "id": 1901,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "SS",
+                  "id": 1214,
+                  "name": "E.Coli",
+                  "abbreviation": "GB",
                   "type": "RNA"
                 },
                 {
-                  "id": 1065,
+                  "id": 1159,
                   "name": "Bovine Flu",
-                  "abbreviation": "F",
+                  "abbreviation": "E",
                   "type": "RNA"
                 }
               ]
             },
             {
-              "id": 1067,
+              "id": 1074,
               "extraction_no": 2,
-              "extraction_volume": 1,
-              "elution_volume": 1.36,
+              "extraction_volume": 0.7,
+              "elution_volume": 1.58,
               "extraction_method": 1,
-              "reverse_transcriptions": [
-                {
-                  "id": 1022,
-                  "extraction_id": 1284,
-                  "vol_in": 1.07,
-                  "vol_out": 0.3,
-                  "rt_cq": 0.95,
-                  "insert_date": "2013-03-05",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2012-03-16",
-                  "update_user": "jpstokdyk"
-                },
-                {
-                  "id": 1040,
-                  "extraction_id": 1776,
-                  "vol_in": 0.8,
-                  "vol_out": 1.31,
-                  "rt_cq": 1.1,
-                  "insert_date": "2013-03-05",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2012-03-16",
-                  "update_user": "jpstokdyk"
-                }
-              ],
               "inhibitions": [
                 {
-                  "id": 1061,
-                  "dilution": 46,
+                  "id": 1099,
+                  "dilution": 42,
                   "type": "DNA",
-                  "insert_date": "2013-03-05",
+                  "insert_date": "2015-07-04",
                   "insert_user": "jpstokdyk",
-                  "update_date": "2012-03-16",
-                  "update_user": "jpstokdyk"
+                  "update_date": "2017-08-29",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1077,
-                  "dilution": 42,
+                  "id": 1092,
+                  "dilution": 19,
                   "type": "RNA",
-                  "insert_date": "2013-08-02",
-                  "insert_user": "sspencer",
-                  "update_date": "2017-03-28",
-                  "update_user": "jpstokdyk"
+                  "insert_date": "2017-02-14",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2015-01-24",
+                  "update_user": "afirnstahl"
+                }
+              ],
+              "reverse_transcriptions": [
+                {
+                  "id": 1055,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 1.49,
+                  "vol_out": 2.51,
+                  "rt_cq": 2.33,
+                  "insert_date": "2016-06-30",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2015-03-14",
+                  "update_user": "afirnstahl"
+                },
+                {
+                  "id": 1066,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.93,
+                  "vol_out": 1.32,
+                  "rt_cq": 0.03,
+                  "insert_date": "2013-08-11",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2015-11-12",
+                  "update_user": "afirnstahl"
                 }
               ],
               "targets": [
                 {
-                  "id": 1349,
-                  "name": "Bovine Flu",
-                  "abbreviation": "E",
+                  "id": 1256,
+                  "name": "E.Coli",
+                  "abbreviation": "F",
                   "type": "RNA"
                 },
                 {
-                  "id": 1875,
-                  "name": "Salmonella",
-                  "abbreviation": "GB",
-                  "type": "DNA"
+                  "id": 1830,
+                  "name": "E.Coli",
+                  "abbreviation": "SS",
+                  "type": "RNA"
                 }
               ]
             }
           ],
-          "insert_date": "2015-09-17",
-          "insert_user": "jpstokdyk",
-          "update_date": "2014-09-29",
-          "update_user": "sspencer"
+          "insert_date": "2015-02-20",
+          "insert_user": "sspencer",
+          "update_date": "2013-04-02",
+          "update_user": "afirnstahl"
         }
       case 1001:
         return {
           "id": 1001,
-          "analysis_batch_description": "Fugiat eu cupidatat amet deserunt eu magna incididunt eu aute laborum veniam aliqua.",
-          "analysis_batch_notes": "Anim elit dolor eiusmod voluptate nisi elit enim ex dolor.",
+          "analysis_batch_description": "Voluptate magna et incididunt aute reprehenderit officia veniam non eu qui.",
+          "analysis_batch_notes": "Dolore minim voluptate quis elit adipisicing incididunt.",
+          "samples": [
+            1514,
+            1070,
+            1327,
+            1897,
+            1691,
+            1832
+          ],
           "studies": [
-            2,
-            0
+            12,
+            3
           ],
           "extractions": [
             {
-              "id": 1030,
+              "id": 1089,
               "extraction_no": 1,
-              "extraction_volume": 1.35,
-              "elution_volume": 1.72,
+              "extraction_volume": 0.19,
+              "elution_volume": 0.56,
               "extraction_method": 2,
-              "reverse_transcriptions": [
-                {
-                  "id": 1095,
-                  "extraction_id": 1911,
-                  "vol_in": 0,
-                  "vol_out": 2.54,
-                  "rt_cq": 1.31,
-                  "insert_date": "2014-11-09",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2016-09-12",
-                  "update_user": "jpstokdyk"
-                },
-                {
-                  "id": 1065,
-                  "extraction_id": 1559,
-                  "vol_in": 0.15,
-                  "vol_out": 0.98,
-                  "rt_cq": 1.59,
-                  "insert_date": "2015-10-29",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2016-05-06",
-                  "update_user": "afirnstahl"
-                }
-              ],
               "inhibitions": [
                 {
-                  "id": 1097,
-                  "dilution": 23,
-                  "type": "RNA",
-                  "insert_date": "2014-06-24",
+                  "id": 1010,
+                  "dilution": 27,
+                  "type": "DNA",
+                  "insert_date": "2012-07-02",
                   "insert_user": "sspencer",
-                  "update_date": "2013-05-30",
-                  "update_user": "jpstokdyk"
+                  "update_date": "2015-03-15",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1029,
-                  "dilution": 11,
+                  "id": 1054,
+                  "dilution": 47,
                   "type": "DNA",
-                  "insert_date": "2014-06-24",
+                  "insert_date": "2015-12-18",
                   "insert_user": "sspencer",
-                  "update_date": "2013-05-30",
+                  "update_date": "2012-06-18",
                   "update_user": "jpstokdyk"
+                }
+              ],
+              "reverse_transcriptions": [
+                {
+                  "id": 1091,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 1.39,
+                  "vol_out": 0.31,
+                  "rt_cq": 2.47,
+                  "insert_date": "2013-11-07",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2012-04-19",
+                  "update_user": "sspencer"
+                },
+                {
+                  "id": 1030,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.73,
+                  "vol_out": 1.82,
+                  "rt_cq": 0.53,
+                  "insert_date": "2016-02-19",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2016-05-20",
+                  "update_user": "sspencer"
                 }
               ],
               "targets": [
                 {
-                  "id": 1554,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "GB",
-                  "type": "DNA"
+                  "id": 1704,
+                  "name": "Salmonella",
+                  "abbreviation": "F",
+                  "type": "RNA"
                 },
                 {
-                  "id": 1286,
+                  "id": 1978,
                   "name": "Bovine Flu",
                   "abbreviation": "E",
                   "type": "RNA"
@@ -247,438 +263,307 @@ export class AnalysisBatchService {
               ]
             },
             {
-              "id": 1095,
+              "id": 1090,
               "extraction_no": 2,
-              "extraction_volume": 1.33,
-              "elution_volume": 2.92,
+              "extraction_volume": 0.03,
+              "elution_volume": 1.37,
               "extraction_method": 2,
-              "reverse_transcriptions": [
+              "inhibitions": [
                 {
-                  "id": 1024,
-                  "extraction_id": 1444,
-                  "vol_in": 0.58,
-                  "vol_out": 0.25,
-                  "rt_cq": 2.59,
-                  "insert_date": "2016-11-23",
+                  "id": 1026,
+                  "dilution": 18,
+                  "type": "DNA",
+                  "insert_date": "2014-12-19",
                   "insert_user": "afirnstahl",
-                  "update_date": "2015-11-26",
-                  "update_user": "jpstokdyk"
+                  "update_date": "2014-02-08",
+                  "update_user": "afirnstahl"
                 },
                 {
-                  "id": 1084,
-                  "extraction_id": 1537,
-                  "vol_in": 1.34,
-                  "vol_out": 3,
-                  "rt_cq": 2.78,
-                  "insert_date": "2016-11-23",
+                  "id": 1071,
+                  "dilution": 45,
+                  "type": "RNA",
+                  "insert_date": "2013-07-14",
                   "insert_user": "afirnstahl",
-                  "update_date": "2015-11-26",
+                  "update_date": "2014-03-04",
                   "update_user": "jpstokdyk"
                 }
               ],
-              "inhibitions": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1098,
-                  "dilution": 18,
-                  "type": "RNA",
-                  "insert_date": "2014-06-24",
-                  "insert_user": "sspencer",
-                  "update_date": "2013-05-30",
+                  "id": 1043,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 1.23,
+                  "vol_out": 2.77,
+                  "rt_cq": 2.54,
+                  "insert_date": "2015-04-30",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2013-06-09",
                   "update_user": "jpstokdyk"
                 },
                 {
-                  "id": 1020,
-                  "dilution": 17,
-                  "type": "DNA",
-                  "insert_date": "2014-06-24",
-                  "insert_user": "sspencer",
-                  "update_date": "2013-05-30",
-                  "update_user": "jpstokdyk"
+                  "id": 1000,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 1.48,
+                  "vol_out": 2.51,
+                  "rt_cq": 1.28,
+                  "insert_date": "2017-05-26",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2015-05-24",
+                  "update_user": "afirnstahl"
                 }
               ],
               "targets": [
                 {
-                  "id": 1220,
-                  "name": "E.Coli",
-                  "abbreviation": "F",
+                  "id": 1525,
+                  "name": "Salmonella",
+                  "abbreviation": "GB",
                   "type": "DNA"
                 },
                 {
-                  "id": 1321,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "E",
-                  "type": "DNA"
+                  "id": 1759,
+                  "name": "E.Coli",
+                  "abbreviation": "GB",
+                  "type": "RNA"
                 }
               ]
             }
           ],
-          "insert_date": "2017-08-22",
-          "insert_user": "legacy data upload",
-          "update_date": "2016-05-25",
+          "insert_date": "2017-01-13",
+          "insert_user": "jpstokdyk",
+          "update_date": "2015-12-05",
           "update_user": "sspencer"
         }
       case 1002:
         return {
           "id": 1002,
-          "analysis_batch_description": "Cillum minim elit excepteur consequat anim ipsum in ad non anim excepteur pariatur.",
-          "analysis_batch_notes": "Do aute dolore laboris nostrud ex nulla ex.",
+          "analysis_batch_description": "In nisi ex nostrud cillum laborum.",
+          "analysis_batch_notes": "Excepteur veniam eiusmod cillum culpa.",
+          "samples": [
+            1230,
+            1450,
+            1717,
+            1417,
+            1574,
+            1039
+          ],
           "studies": [
-            7,
-            4
+            1,
+            9
           ],
           "extractions": [
             {
-              "id": 1062,
+              "id": 1003,
               "extraction_no": 1,
-              "extraction_volume": 1.2,
-              "elution_volume": 2.28,
+              "extraction_volume": 1.35,
+              "elution_volume": 0.35,
               "extraction_method": 1,
-              "reverse_transcriptions": [
-                {
-                  "id": 1100,
-                  "extraction_id": 1873,
-                  "vol_in": 0.32,
-                  "vol_out": 2.64,
-                  "rt_cq": 1.72,
-                  "insert_date": "2014-06-24",
-                  "insert_user": "sspencer",
-                  "update_date": "2013-05-30",
-                  "update_user": "jpstokdyk"
-                },
-                {
-                  "id": 1001,
-                  "extraction_id": 1989,
-                  "vol_in": 0.4,
-                  "vol_out": 2.5,
-                  "rt_cq": 2.32,
-                  "insert_date": "2016-11-23",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2015-11-26",
-                  "update_user": "jpstokdyk"
-                }
-              ],
               "inhibitions": [
                 {
-                  "id": 1037,
-                  "dilution": 28,
-                  "type": "RNA",
-                  "insert_date": "2013-10-30",
+                  "id": 1078,
+                  "dilution": 22,
+                  "type": "DNA",
+                  "insert_date": "2015-02-05",
                   "insert_user": "jpstokdyk",
-                  "update_date": "2015-04-02",
+                  "update_date": "2016-05-31",
+                  "update_user": "afirnstahl"
+                },
+                {
+                  "id": 1098,
+                  "dilution": 19,
+                  "type": "RNA",
+                  "insert_date": "2013-03-06",
+                  "insert_user": "sspencer",
+                  "update_date": "2015-06-10",
+                  "update_user": "afirnstahl"
+                }
+              ],
+              "reverse_transcriptions": [
+                {
+                  "id": 1088,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.73,
+                  "vol_out": 0.11,
+                  "rt_cq": 2.54,
+                  "insert_date": "2013-09-19",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2017-03-03",
                   "update_user": "jpstokdyk"
                 },
                 {
-                  "id": 1089,
-                  "dilution": 25,
-                  "type": "RNA",
-                  "insert_date": "2013-10-30",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2015-04-02",
+                  "id": 1027,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 1.27,
+                  "vol_out": 0.29,
+                  "rt_cq": 0.42,
+                  "insert_date": "2017-09-05",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2014-11-17",
                   "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
                 {
-                  "id": 1191,
+                  "id": 1659,
                   "name": "E.Coli",
-                  "abbreviation": "SS",
-                  "type": "RNA"
-                },
-                {
-                  "id": 1805,
-                  "name": "Bovine Flu",
                   "abbreviation": "GB",
                   "type": "DNA"
+                },
+                {
+                  "id": 1811,
+                  "name": "Bovine Flu",
+                  "abbreviation": "F",
+                  "type": "RNA"
                 }
               ]
             },
             {
-              "id": 1046,
+              "id": 1071,
               "extraction_no": 2,
-              "extraction_volume": 1.05,
-              "elution_volume": 1.37,
+              "extraction_volume": 0.98,
+              "elution_volume": 1.23,
               "extraction_method": 1,
-              "reverse_transcriptions": [
-                {
-                  "id": 1050,
-                  "extraction_id": 1699,
-                  "vol_in": 0.36,
-                  "vol_out": 2.86,
-                  "rt_cq": 3,
-                  "insert_date": "2012-10-08",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-07-31",
-                  "update_user": "jpstokdyk"
-                },
-                {
-                  "id": 1013,
-                  "extraction_id": 1166,
-                  "vol_in": 0.99,
-                  "vol_out": 2.58,
-                  "rt_cq": 1.14,
-                  "insert_date": "2012-10-08",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-07-31",
-                  "update_user": "jpstokdyk"
-                }
-              ],
               "inhibitions": [
                 {
-                  "id": 1078,
-                  "dilution": 16,
+                  "id": 1056,
+                  "dilution": 25,
                   "type": "RNA",
-                  "insert_date": "2016-01-17",
+                  "insert_date": "2014-06-04",
                   "insert_user": "sspencer",
-                  "update_date": "2012-09-17",
-                  "update_user": "jpstokdyk"
+                  "update_date": "2013-06-28",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1059,
-                  "dilution": 46,
-                  "type": "RNA",
-                  "insert_date": "2016-01-17",
-                  "insert_user": "sspencer",
-                  "update_date": "2012-09-17",
-                  "update_user": "jpstokdyk"
+                  "id": 1076,
+                  "dilution": 43,
+                  "type": "DNA",
+                  "insert_date": "2016-05-04",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2013-03-25",
+                  "update_user": "sspencer"
                 }
               ],
-              "targets": [
-                {
-                  "id": 1634,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "GB",
-                  "type": "DNA"
-                },
-                {
-                  "id": 1477,
-                  "name": "Salmonella",
-                  "abbreviation": "GB",
-                  "type": "RNA"
-                }
-              ]
-            }
-          ],
-          "insert_date": "2013-09-28",
-          "insert_user": "jpstokdyk",
-          "update_date": "2012-06-21",
-          "update_user": "sspencer"
-        }
-      case 1003:
-        return {
-          "id": 1003,
-          "analysis_batch_description": "Exercitation enim exercitation adipisicing adipisicing non duis aliqua magna commodo magna.",
-          "analysis_batch_notes": "Magna ut amet irure fugiat exercitation Lorem aliquip qui amet sit.",
-          "studies": [
-            9,
-            4
-          ],
-          "extractions": [
-            {
-              "id": 1073,
-              "extraction_no": 1,
-              "extraction_volume": 1,
-              "elution_volume": 2.07,
-              "extraction_method": 1,
               "reverse_transcriptions": [
                 {
-                  "id": 1030,
-                  "extraction_id": 1249,
-                  "vol_in": 0.45,
-                  "vol_out": 0.67,
-                  "rt_cq": 2.31,
-                  "insert_date": "2013-07-09",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2012-12-28",
+                  "id": 1034,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.54,
+                  "vol_out": 0.11,
+                  "rt_cq": 2.38,
+                  "insert_date": "2013-04-25",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2013-11-20",
                   "update_user": "afirnstahl"
                 },
                 {
                   "id": 1009,
-                  "extraction_id": 1152,
-                  "vol_in": 1.34,
-                  "vol_out": 2.41,
-                  "rt_cq": 1.74,
-                  "insert_date": "2016-04-22",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2016-02-03",
-                  "update_user": "sspencer"
-                }
-              ],
-              "inhibitions": [
-                {
-                  "id": 1059,
-                  "dilution": 17,
-                  "type": "DNA",
-                  "insert_date": "2016-07-29",
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.33,
+                  "vol_out": 0.77,
+                  "rt_cq": 2.13,
+                  "insert_date": "2015-07-28",
                   "insert_user": "sspencer",
-                  "update_date": "2012-11-04",
-                  "update_user": "jpstokdyk"
-                },
-                {
-                  "id": 1091,
-                  "dilution": 23,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "update_date": "2015-07-08",
                   "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
                 {
-                  "id": 1004,
-                  "name": "Crazy Cow-itis",
+                  "id": 1382,
+                  "name": "E.Coli",
                   "abbreviation": "E",
-                  "type": "RNA"
+                  "type": "DNA"
                 },
                 {
-                  "id": 1581,
+                  "id": 1555,
                   "name": "E.Coli",
                   "abbreviation": "SS",
                   "type": "DNA"
                 }
               ]
-            },
-            {
-              "id": 1042,
-              "extraction_no": 2,
-              "extraction_volume": 0.33,
-              "elution_volume": 2.35,
-              "extraction_method": 2,
-              "reverse_transcriptions": [
-                {
-                  "id": 1033,
-                  "extraction_id": 1654,
-                  "vol_in": 0.66,
-                  "vol_out": 2.83,
-                  "rt_cq": 1.95,
-                  "insert_date": "2016-07-29",
-                  "insert_user": "sspencer",
-                  "update_date": "2012-11-04",
-                  "update_user": "jpstokdyk"
-                },
-                {
-                  "id": 1079,
-                  "extraction_id": 1671,
-                  "vol_in": 0.43,
-                  "vol_out": 0.88,
-                  "rt_cq": 1.71,
-                  "insert_date": "2016-07-29",
-                  "insert_user": "sspencer",
-                  "update_date": "2012-11-04",
-                  "update_user": "jpstokdyk"
-                }
-              ],
-              "inhibitions": [
-                {
-                  "id": 1071,
-                  "dilution": 45,
-                  "type": "RNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
-                  
-                },
-                {
-                  "id": 1089,
-                  "dilution": 6,
-                  "type": "DNA",
-                  "insert_date": "2016-04-22",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2016-02-03",
-                  "update_user": "sspencer"
-                }
-              ],
-              "targets": [
-                {
-                  "id": 1208,
-                  "name": "Salmonella",
-                  "abbreviation": "F",
-                  "type": "DNA"
-                },
-                {
-                  "id": 1511,
-                  "name": "E.Coli",
-                  "abbreviation": "F",
-                  "type": "DNA"
-                }
-              ]
             }
           ],
-          "insert_date": "2015-05-22",
-          "insert_user": "afirnstahl",
-          "update_date": "2014-12-20",
-          "update_user": "jpstokdyk"
-        } 
-      case 1004:
+          "insert_date": "2015-04-12",
+          "insert_user": "legacy data upload",
+          "update_date": "2013-02-12",
+          "update_user": "afirnstahl"
+        }
+      case 1003:
         return {
-          "id": 1004,
-          "analysis_batch_description": "Ipsum sit occaecat laborum qui deserunt amet mollit laborum laboris nostrud ea nostrud.",
-          "analysis_batch_notes": "Ullamco reprehenderit ex commodo et fugiat elit velit minim ad.",
+          "id": 1003,
+          "analysis_batch_description": "Ullamco officia dolor Lorem consectetur nisi ut commodo irure mollit fugiat excepteur ea do.",
+          "analysis_batch_notes": "Sunt nulla mollit ea quis sit esse duis dolore ex nulla cillum ullamco non adipisicing.",
+          "samples": [
+            1696,
+            1680,
+            1152,
+            1468,
+            1291,
+            1639
+          ],
           "studies": [
-            10,
-            7
+            1,
+            9
           ],
           "extractions": [
             {
-              "id": 1025,
+              "id": 1085,
               "extraction_no": 1,
-              "extraction_volume": 0.03,
-              "elution_volume": 1.88,
-              "extraction_method": 1,
-              "reverse_transcriptions": [
-                {
-                  "id": 1047,
-                  "extraction_id": 1798,
-                  "vol_in": 0.49,
-                  "vol_out": 1.69,
-                  "rt_cq": 0.06,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
-                },
-                {
-                  "id": 1034,
-                  "extraction_id": 1365,
-                  "vol_in": 1.43,
-                  "vol_out": 0.44,
-                  "rt_cq": 0.26,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
-                }
-              ],
+              "extraction_volume": 0.84,
+              "elution_volume": 1.44,
+              "extraction_method": 2,
               "inhibitions": [
                 {
-                  "id": 1044,
-                  "dilution": 40,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
+                  "id": 1040,
+                  "dilution": 6,
+                  "type": "RNA",
+                  "insert_date": "2013-03-15",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "update_date": "2012-09-20",
                   "update_user": "jpstokdyk"
                 },
                 {
-                  "id": 1062,
-                  "dilution": 24,
+                  "id": 1076,
+                  "dilution": 45,
                   "type": "RNA",
-                  "insert_date": "2012-12-22",
+                  "insert_date": "2017-02-01",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "update_date": "2012-01-05",
+                  "update_user": "afirnstahl"
+                }
+              ],
+              "reverse_transcriptions": [
+                {
+                  "id": 1015,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 1.03,
+                  "vol_out": 1.77,
+                  "rt_cq": 2.29,
+                  "insert_date": "2016-10-03",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2017-02-02",
+                  "update_user": "afirnstahl"
+                },
+                {
+                  "id": 1022,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 1.5,
+                  "vol_out": 1.23,
+                  "rt_cq": 1.87,
+                  "insert_date": "2013-05-10",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2014-09-11",
+                  "update_user": "afirnstahl"
                 }
               ],
               "targets": [
                 {
-                  "id": 1953,
+                  "id": 1832,
                   "name": "Crazy Cow-itis",
                   "abbreviation": "F",
-                  "type": "DNA"
+                  "type": "RNA"
                 },
                 {
-                  "id": 1713,
+                  "id": 1173,
                   "name": "Crazy Cow-itis",
                   "abbreviation": "GB",
                   "type": "DNA"
@@ -686,803 +571,998 @@ export class AnalysisBatchService {
               ]
             },
             {
-              "id": 1021,
+              "id": 1033,
               "extraction_no": 2,
-              "extraction_volume": 1.38,
-              "elution_volume": 0.46,
+              "extraction_volume": 0.38,
+              "elution_volume": 2.25,
               "extraction_method": 2,
-              "reverse_transcriptions": [
+              "inhibitions": [
                 {
-                  "id": 1038,
-                  "extraction_id": 1894,
-                  "vol_in": 0.16,
-                  "vol_out": 2.51,
-                  "rt_cq": 1.72,
-                  "insert_date": "2012-12-22",
+                  "id": 1058,
+                  "dilution": 49,
+                  "type": "DNA",
+                  "insert_date": "2013-07-22",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "update_date": "2015-05-17",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1095,
-                  "extraction_id": 1248,
-                  "vol_in": 0.91,
-                  "vol_out": 1.34,
-                  "rt_cq": 2.93,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1021,
+                  "dilution": 48,
+                  "type": "DNA",
+                  "insert_date": "2016-08-24",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2017-07-12",
                   "update_user": "jpstokdyk"
                 }
               ],
-              "inhibitions": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1064,
-                  "dilution": 37,
-                  "type": "RNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1048,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.55,
+                  "vol_out": 0.56,
+                  "rt_cq": 0.98,
+                  "insert_date": "2013-09-07",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2013-06-14",
                   "update_user": "jpstokdyk"
                 },
                 {
-                  "id": 1073,
-                  "dilution": 41,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
+                  "id": 1075,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 1.15,
+                  "vol_out": 1.59,
+                  "rt_cq": 0.95,
+                  "insert_date": "2013-12-29",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "update_date": "2015-07-24",
+                  "update_user": "sspencer"
                 }
               ],
               "targets": [
                 {
-                  "id": 1270,
+                  "id": 1389,
                   "name": "Crazy Cow-itis",
-                  "abbreviation": "SS",
+                  "abbreviation": "E",
                   "type": "DNA"
                 },
                 {
-                  "id": 1249,
-                  "name": "Bovine Flu",
-                  "abbreviation": "GB",
+                  "id": 1264,
+                  "name": "E.Coli",
+                  "abbreviation": "E",
                   "type": "DNA"
                 }
               ]
             }
           ],
-          "insert_date": "2015-05-07",
+          "insert_date": "2013-01-01",
           "insert_user": "jpstokdyk",
-          "update_date": "2016-08-02",
+          "update_date": "2017-05-08",
           "update_user": "sspencer"
+        }
+      case 1004:
+        return {
+          "id": 1004,
+          "analysis_batch_description": "Qui sit aliqua mollit incididunt adipisicing.",
+          "analysis_batch_notes": "Aliqua dolore consequat enim quis.",
+          "samples": [
+            1577,
+            1258,
+            1890,
+            1658,
+            1869,
+            1590
+          ],
+          "studies": [
+            8,
+            5
+          ],
+          "extractions": [
+            {
+              "id": 1036,
+              "extraction_no": 1,
+              "extraction_volume": 0.44,
+              "elution_volume": 2.81,
+              "extraction_method": 1,
+              "inhibitions": [
+                {
+                  "id": 1048,
+                  "dilution": 42,
+                  "type": "DNA",
+                  "insert_date": "2013-06-15",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2017-07-25",
+                  "update_user": "sspencer"
+                },
+                {
+                  "id": 1036,
+                  "dilution": 9,
+                  "type": "DNA",
+                  "insert_date": "2015-05-22",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2013-05-04",
+                  "update_user": "afirnstahl"
+                }
+              ],
+              "reverse_transcriptions": [
+                {
+                  "id": 1006,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 1.39,
+                  "vol_out": 0.75,
+                  "rt_cq": 1.79,
+                  "insert_date": "2016-08-17",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2012-10-04",
+                  "update_user": "afirnstahl"
+                },
+                {
+                  "id": 1021,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.18,
+                  "vol_out": 2.6,
+                  "rt_cq": 0.76,
+                  "insert_date": "2013-02-23",
+                  "insert_user": "sspencer",
+                  "update_date": "2015-05-17",
+                  "update_user": "afirnstahl"
+                }
+              ],
+              "targets": [
+                {
+                  "id": 1753,
+                  "name": "Crazy Cow-itis",
+                  "abbreviation": "SS",
+                  "type": "RNA"
+                },
+                {
+                  "id": 1319,
+                  "name": "Crazy Cow-itis",
+                  "abbreviation": "F",
+                  "type": "RNA"
+                }
+              ]
+            },
+            {
+              "id": 1068,
+              "extraction_no": 2,
+              "extraction_volume": 1.42,
+              "elution_volume": 1.39,
+              "extraction_method": 1,
+              "inhibitions": [
+                {
+                  "id": 1070,
+                  "dilution": 34,
+                  "type": "DNA",
+                  "insert_date": "2016-09-03",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2013-10-26",
+                  "update_user": "jpstokdyk"
+                },
+                {
+                  "id": 1081,
+                  "dilution": 13,
+                  "type": "RNA",
+                  "insert_date": "2017-09-06",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2014-12-23",
+                  "update_user": "jpstokdyk"
+                }
+              ],
+              "reverse_transcriptions": [
+                {
+                  "id": 1005,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.22,
+                  "vol_out": 2.36,
+                  "rt_cq": 0.17,
+                  "insert_date": "2012-03-19",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2013-07-16",
+                  "update_user": "afirnstahl"
+                },
+                {
+                  "id": 1056,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.55,
+                  "vol_out": 1.24,
+                  "rt_cq": 0.83,
+                  "insert_date": "2013-01-18",
+                  "insert_user": "sspencer",
+                  "update_date": "2012-01-29",
+                  "update_user": "afirnstahl"
+                }
+              ],
+              "targets": [
+                {
+                  "id": 1734,
+                  "name": "E.Coli",
+                  "abbreviation": "SS",
+                  "type": "RNA"
+                },
+                {
+                  "id": 1026,
+                  "name": "E.Coli",
+                  "abbreviation": "SS",
+                  "type": "RNA"
+                }
+              ]
+            }
+          ],
+          "insert_date": "2014-10-16",
+          "insert_user": "sspencer",
+          "update_date": "2012-05-23",
+          "update_user": "afirnstahl"
         }
       case 1005:
         return {
           "id": 1005,
-          "analysis_batch_description": "Amet commodo occaecat nulla minim in ut irure ullamco.",
-          "analysis_batch_notes": "Commodo incididunt voluptate ipsum reprehenderit amet laboris consequat ad pariatur consectetur sunt exercitation consequat.",
+          "analysis_batch_description": "Labore et adipisicing duis ea Lorem commodo elit ut aliquip cupidatat excepteur.",
+          "analysis_batch_notes": "Commodo id Lorem eiusmod ea anim dolore enim in ad anim irure.",
+          "samples": [
+            1262,
+            1658,
+            1262,
+            1784,
+            1311,
+            1526
+          ],
           "studies": [
-            5,
-            7
+            6,
+            6
           ],
           "extractions": [
             {
-              "id": 1034,
+              "id": 1049,
               "extraction_no": 1,
-              "extraction_volume": 1.35,
-              "elution_volume": 0.21,
+              "extraction_volume": 0.95,
+              "elution_volume": 1.16,
               "extraction_method": 1,
-              "reverse_transcriptions": [
+              "inhibitions": [
                 {
-                  "id": 1089,
-                  "extraction_id": 1871,
-                  "vol_in": 0.7,
-                  "vol_out": 1.88,
-                  "rt_cq": 2.31,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1021,
+                  "dilution": 36,
+                  "type": "DNA",
+                  "insert_date": "2014-06-10",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2015-08-13",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1020,
-                  "extraction_id": 1558,
-                  "vol_in": 0.72,
-                  "vol_out": 0.02,
-                  "rt_cq": 2.64,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1080,
+                  "dilution": 41,
+                  "type": "DNA",
+                  "insert_date": "2016-07-16",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2013-07-04",
+                  "update_user": "afirnstahl"
+                }
+              ],
+              "reverse_transcriptions": [
+                {
+                  "id": 1083,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.44,
+                  "vol_out": 2.26,
+                  "rt_cq": 0.11,
+                  "insert_date": "2012-07-17",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2013-08-10",
+                  "update_user": "sspencer"
+                },
+                {
+                  "id": 1004,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 1.1,
+                  "vol_out": 0.68,
+                  "rt_cq": 1.81,
+                  "insert_date": "2016-10-01",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2015-04-22",
                   "update_user": "jpstokdyk"
                 }
               ],
+              "targets": [
+                {
+                  "id": 1369,
+                  "name": "Crazy Cow-itis",
+                  "abbreviation": "F",
+                  "type": "DNA"
+                },
+                {
+                  "id": 1183,
+                  "name": "Bovine Flu",
+                  "abbreviation": "SS",
+                  "type": "RNA"
+                }
+              ]
+            },
+            {
+              "id": 1091,
+              "extraction_no": 2,
+              "extraction_volume": 0.31,
+              "elution_volume": 2.26,
+              "extraction_method": 2,
               "inhibitions": [
                 {
                   "id": 1024,
                   "dilution": 30,
                   "type": "RNA",
-                  "insert_date": "2012-12-22",
+                  "insert_date": "2013-10-29",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "update_date": "2017-05-07",
                   "update_user": "jpstokdyk"
                 },
                 {
-                  "id": 1021,
-                  "dilution": 13,
+                  "id": 1086,
+                  "dilution": 27,
                   "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "insert_date": "2014-05-19",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2016-07-08",
+                  "update_user": "sspencer"
                 }
               ],
-              "targets": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1839,
-                  "name": "Bovine Flu",
-                  "abbreviation": "GB",
-                  "type": "DNA"
+                  "id": 1045,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.59,
+                  "vol_out": 1.54,
+                  "rt_cq": 0.73,
+                  "insert_date": "2013-01-29",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2014-05-27",
+                  "update_user": "afirnstahl"
                 },
                 {
                   "id": 1085,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "SS",
-                  "type": "DNA"
-                }
-              ]
-            },
-            {
-              "id": 1015,
-              "extraction_no": 2,
-              "extraction_volume": 0.95,
-              "elution_volume": 2.66,
-              "extraction_method": 2,
-              "reverse_transcriptions": [
-                {
-                  "id": 1092,
-                  "extraction_id": 1015,
-                  "vol_in": 0.71,
-                  "vol_out": 0.59,
-                  "rt_cq": 2.76,
-                  "insert_date": "2012-12-22",
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.59,
+                  "vol_out": 2,
+                  "rt_cq": 0.56,
+                  "insert_date": "2015-06-10",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
-                },
-                {
-                  "id": 1073,
-                  "extraction_id": 1842,
-                  "vol_in": 0.47,
-                  "vol_out": 0.61,
-                  "rt_cq": 2.07,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
-                }
-              ],
-              "inhibitions": [
-                {
-                  "id": 1100,
-                  "dilution": 42,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
-                },
-                {
-                  "id": 1065,
-                  "dilution": 38,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "update_date": "2012-11-17",
+                  "update_user": "sspencer"
                 }
               ],
               "targets": [
                 {
-                  "id": 1698,
-                  "name": "Bovine Flu",
-                  "abbreviation": "SS",
-                  "type": "DNA"
+                  "id": 1719,
+                  "name": "E.Coli",
+                  "abbreviation": "F",
+                  "type": "RNA"
                 },
                 {
-                  "id": 1792,
-                  "name": "Bovine Flu",
-                  "abbreviation": "E",
-                  "type": "DNA"
+                  "id": 1340,
+                  "name": "E.Coli",
+                  "abbreviation": "SS",
+                  "type": "RNA"
                 }
               ]
             }
           ],
-          "insert_date": "2015-06-23",
-          "insert_user": "legacy data upload",
-          "update_date": "2017-04-27",
+          "insert_date": "2015-05-10",
+          "insert_user": "afirnstahl",
+          "update_date": "2017-08-06",
           "update_user": "sspencer"
         }
       case 1006:
         return {
           "id": 1006,
-          "analysis_batch_description": "Commodo laboris incididunt magna et proident nisi cillum Lorem ea.",
-          "analysis_batch_notes": "Eu culpa excepteur dolore consequat amet laborum culpa.",
+          "analysis_batch_description": "Est eu laboris qui ea ipsum sunt nostrud.",
+          "analysis_batch_notes": "Anim consectetur esse occaecat nisi id velit dolor nostrud consectetur dolore aute id ut.",
+          "samples": [
+            1620,
+            1234,
+            1926,
+            1641,
+            1302,
+            1124
+          ],
           "studies": [
-            2,
-            1
+            4,
+            0
           ],
           "extractions": [
             {
-              "id": 1040,
+              "id": 1056,
               "extraction_no": 1,
-              "extraction_volume": 0.72,
-              "elution_volume": 1.37,
-              "extraction_method": 2,
-              "reverse_transcriptions": [
+              "extraction_volume": 0.47,
+              "elution_volume": 0.65,
+              "extraction_method": 1,
+              "inhibitions": [
                 {
-                  "id": 1030,
-                  "extraction_id": 1138,
-                  "vol_in": 0.65,
-                  "vol_out": 1.36,
-                  "rt_cq": 2.32,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1080,
+                  "dilution": 13,
+                  "type": "DNA",
+                  "insert_date": "2013-04-19",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2016-09-04",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1068,
-                  "extraction_id": 1725,
-                  "vol_in": 0.92,
-                  "vol_out": 2.51,
-                  "rt_cq": 3,
-                  "insert_date": "2012-12-22",
+                  "id": 1009,
+                  "dilution": 7,
+                  "type": "DNA",
+                  "insert_date": "2015-06-19",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "update_date": "2012-07-24",
                   "update_user": "jpstokdyk"
                 }
               ],
-              "inhibitions": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1006,
-                  "dilution": 23,
-                  "type": "RNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1045,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.28,
+                  "vol_out": 1.12,
+                  "rt_cq": 1.31,
+                  "insert_date": "2015-11-16",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2013-07-05",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1057,
-                  "dilution": 28,
-                  "type": "RNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1052,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.81,
+                  "vol_out": 2.22,
+                  "rt_cq": 2.04,
+                  "insert_date": "2013-08-24",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2013-05-29",
+                  "update_user": "sspencer"
                 }
               ],
               "targets": [
                 {
-                  "id": 1037,
-                  "name": "Salmonella",
-                  "abbreviation": "F",
+                  "id": 1009,
+                  "name": "Crazy Cow-itis",
+                  "abbreviation": "GB",
                   "type": "RNA"
                 },
                 {
-                  "id": 1304,
+                  "id": 1453,
                   "name": "E.Coli",
-                  "abbreviation": "E",
-                  "type": "DNA"
+                  "abbreviation": "SS",
+                  "type": "RNA"
                 }
               ]
             },
             {
-              "id": 1047,
+              "id": 1061,
               "extraction_no": 2,
-              "extraction_volume": 1.26,
-              "elution_volume": 0.47,
-              "extraction_method": 1,
-              "reverse_transcriptions": [
+              "extraction_volume": 1.4,
+              "elution_volume": 2.11,
+              "extraction_method": 2,
+              "inhibitions": [
                 {
-                  "id": 1083,
-                  "extraction_id": 1764,
-                  "vol_in": 0.89,
-                  "vol_out": 2.67,
-                  "rt_cq": 1.52,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1079,
+                  "dilution": 25,
+                  "type": "DNA",
+                  "insert_date": "2017-03-31",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2014-08-19",
+                  "update_user": "afirnstahl"
                 },
                 {
-                  "id": 1072,
-                  "extraction_id": 1660,
-                  "vol_in": 0.61,
-                  "vol_out": 2.11,
-                  "rt_cq": 1.53,
-                  "insert_date": "2012-12-22",
+                  "id": 1088,
+                  "dilution": 41,
+                  "type": "DNA",
+                  "insert_date": "2012-09-10",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "update_date": "2012-11-28",
                   "update_user": "jpstokdyk"
                 }
               ],
-              "inhibitions": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1012,
-                  "dilution": 26,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1016,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 1.02,
+                  "vol_out": 2.02,
+                  "rt_cq": 0.96,
+                  "insert_date": "2012-05-09",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2016-02-26",
+                  "update_user": "afirnstahl"
                 },
                 {
-                  "id": 1012,
-                  "dilution": 39,
-                  "type": "RNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1002,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.93,
+                  "vol_out": 2.84,
+                  "rt_cq": 0.5,
+                  "insert_date": "2017-02-24",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2015-06-05",
                   "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
                 {
-                  "id": 1348,
+                  "id": 1971,
                   "name": "Salmonella",
                   "abbreviation": "F",
-                  "type": "RNA"
+                  "type": "DNA"
                 },
                 {
-                  "id": 1320,
-                  "name": "Salmonella",
-                  "abbreviation": "F",
+                  "id": 1082,
+                  "name": "Crazy Cow-itis",
+                  "abbreviation": "SS",
                   "type": "RNA"
                 }
               ]
             }
           ],
-          "insert_date": "2016-04-12",
+          "insert_date": "2013-10-06",
           "insert_user": "sspencer",
-          "update_date": "2014-04-15",
-          "update_user": "afirnstahl"
+          "update_date": "2014-08-24",
+          "update_user": "jpstokdyk"
         }
       case 1007:
         return {
           "id": 1007,
-          "analysis_batch_description": "Id pariatur dolor ea proident.",
-          "analysis_batch_notes": "Proident aute quis officia cupidatat dolor minim consectetur in adipisicing occaecat reprehenderit.",
+          "analysis_batch_description": "Minim minim veniam culpa aliqua.",
+          "analysis_batch_notes": "Sunt proident do minim ex.",
+          "samples": [
+            1340,
+            1847,
+            1463,
+            1215,
+            1601,
+            1043
+          ],
           "studies": [
-            6,
-            13
+            1,
+            12
           ],
           "extractions": [
             {
-              "id": 1100,
+              "id": 1049,
               "extraction_no": 1,
-              "extraction_volume": 0.62,
-              "elution_volume": 1.59,
-              "extraction_method": 2,
-              "reverse_transcriptions": [
+              "extraction_volume": 0.24,
+              "elution_volume": 2.75,
+              "extraction_method": 1,
+              "inhibitions": [
                 {
-                  "id": 1077,
-                  "extraction_id": 1234,
-                  "vol_in": 1.1,
-                  "vol_out": 0.6,
-                  "rt_cq": 2.48,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1056,
+                  "dilution": 37,
+                  "type": "RNA",
+                  "insert_date": "2012-03-04",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2013-01-06",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1073,
-                  "extraction_id": 1045,
-                  "vol_in": 0.32,
-                  "vol_out": 0.91,
-                  "rt_cq": 1.32,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1081,
+                  "dilution": 19,
+                  "type": "RNA",
+                  "insert_date": "2015-04-15",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2016-09-23",
                   "update_user": "jpstokdyk"
                 }
               ],
-              "inhibitions": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1071,
-                  "dilution": 16,
-                  "type": "RNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1088,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 1.47,
+                  "vol_out": 2.85,
+                  "rt_cq": 2.38,
+                  "insert_date": "2014-03-26",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2016-12-25",
                   "update_user": "jpstokdyk"
                 },
                 {
-                  "id": 1046,
-                  "dilution": 12,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1003,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.87,
+                  "vol_out": 0.28,
+                  "rt_cq": 1.18,
+                  "insert_date": "2013-07-18",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2013-05-16",
+                  "update_user": "afirnstahl"
                 }
               ],
               "targets": [
                 {
-                  "id": 1152,
-                  "name": "Bovine Flu",
-                  "abbreviation": "SS",
+                  "id": 1494,
+                  "name": "Salmonella",
+                  "abbreviation": "GB",
                   "type": "DNA"
                 },
                 {
-                  "id": 1072,
-                  "name": "Bovine Flu",
+                  "id": 1384,
+                  "name": "E.Coli",
                   "abbreviation": "SS",
-                  "type": "DNA"
+                  "type": "RNA"
                 }
               ]
             },
             {
-              "id": 1057,
+              "id": 1049,
               "extraction_no": 2,
-              "extraction_volume": 0.27,
-              "elution_volume": 2.8,
-              "extraction_method": 1,
-              "reverse_transcriptions": [
+              "extraction_volume": 0.02,
+              "elution_volume": 1.2,
+              "extraction_method": 2,
+              "inhibitions": [
                 {
-                  "id": 1054,
-                  "extraction_id": 1148,
-                  "vol_in": 1.47,
-                  "vol_out": 2.63,
-                  "rt_cq": 2.15,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1066,
+                  "dilution": 46,
+                  "type": "RNA",
+                  "insert_date": "2012-07-20",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2013-05-31",
                   "update_user": "jpstokdyk"
                 },
                 {
-                  "id": 1006,
-                  "extraction_id": 1176,
-                  "vol_in": 0.89,
-                  "vol_out": 1.12,
-                  "rt_cq": 1.55,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1092,
+                  "dilution": 34,
+                  "type": "RNA",
+                  "insert_date": "2017-08-15",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2015-04-18",
                   "update_user": "jpstokdyk"
                 }
               ],
-              "inhibitions": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1073,
-                  "dilution": 15,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1003,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.13,
+                  "vol_out": 2.78,
+                  "rt_cq": 1.63,
+                  "insert_date": "2012-11-14",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2016-01-11",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1097,
-                  "dilution": 26,
-                  "type": "RNA",   
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1094,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 1.11,
+                  "vol_out": 0.18,
+                  "rt_cq": 0.41,
+                  "insert_date": "2012-11-16",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2016-03-27",
                   "update_user": "jpstokdyk"
                 }
               ],
               "targets": [
                 {
-                  "id": 1562,
-                  "name": "Crazy Cow-itis",
+                  "id": 1305,
+                  "name": "Bovine Flu",
                   "abbreviation": "E",
-                  "type": "RNA"
+                  "type": "DNA"
                 },
                 {
-                  "id": 1686,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "F",
-                  "type": "DNA"
+                  "id": 1577,
+                  "name": "Salmonella",
+                  "abbreviation": "E",
+                  "type": "RNA"
                 }
               ]
             }
           ],
-          "insert_date": "2014-09-19",
-          "insert_user": "afirnstahl",
-          "update_date": "2016-04-01",
-          "update_user": "afirnstahl"
+          "insert_date": "2013-06-07",
+          "insert_user": "legacy data upload",
+          "update_date": "2013-03-16",
+          "update_user": "jpstokdyk"
         }
       case 1008:
         return {
           "id": 1008,
-          "analysis_batch_description": "Labore pariatur fugiat irure dolore culpa et.",
-          "analysis_batch_notes": "Lorem qui dolore aliquip do incididunt velit pariatur cillum magna.",
+          "analysis_batch_description": "Nulla consequat quis esse adipisicing esse est duis do pariatur quis nostrud.",
+          "analysis_batch_notes": "Tempor adipisicing minim non sunt proident reprehenderit irure Lorem minim exercitation in tempor minim.",
+          "samples": [
+            1102,
+            1553,
+            1604,
+            1220,
+            1433,
+            1090
+          ],
           "studies": [
-            12,
-            11
+            8,
+            2
           ],
           "extractions": [
             {
-              "id": 1051,
+              "id": 1075,
               "extraction_no": 1,
-              "extraction_volume": 0.4,
-              "elution_volume": 0.81,
+              "extraction_volume": 1,
+              "elution_volume": 2.17,
               "extraction_method": 2,
-              "reverse_transcriptions": [
+              "inhibitions": [
                 {
-                  "id": 1010,
-                  "extraction_id": 1867,
-                  "vol_in": 0.56,
-                  "vol_out": 2.93,
-                  "rt_cq": 1.46,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1008,
+                  "dilution": 19,
+                  "type": "RNA",
+                  "insert_date": "2012-10-10",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2013-10-09",
+                  "update_user": "afirnstahl"
                 },
                 {
-                  "id": 1019,
-                  "extraction_id": 1578,
-                  "vol_in": 0.8,
-                  "vol_out": 0.92,
-                  "rt_cq": 2.72,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1094,
+                  "dilution": 32,
+                  "type": "RNA",
+                  "insert_date": "2016-09-01",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2015-03-17",
                   "update_user": "jpstokdyk"
                 }
               ],
-              "inhibitions": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1040,
-                  "dilution": 36,
-                  "type": "RNA",
-                  "insert_date": "2012-12-22",
+                  "id": 1066,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.15,
+                  "vol_out": 2.88,
+                  "rt_cq": 2.72,
+                  "insert_date": "2013-09-16",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "update_date": "2012-02-08",
                   "update_user": "jpstokdyk"
                 },
                 {
-                  "id": 1051,
-                  "dilution": 36,
-                  "type": "RNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1070,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.61,
+                  "vol_out": 0.83,
+                  "rt_cq": 0.86,
+                  "insert_date": "2016-01-01",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2012-08-11",
+                  "update_user": "sspencer"
                 }
               ],
               "targets": [
                 {
-                  "id": 1571,
-                  "name": "Bovine Flu",
-                  "abbreviation": "E",
-                  "type": "RNA"
+                  "id": 1265,
+                  "name": "Salmonella",
+                  "abbreviation": "GB",
+                  "type": "DNA"
                 },
                 {
-                  "id": 1624,
-                  "name": "Salmonella",
+                  "id": 1138,
+                  "name": "Crazy Cow-itis",
                   "abbreviation": "F",
                   "type": "RNA"
                 }
               ]
             },
             {
-              "id": 1012,
+              "id": 1023,
               "extraction_no": 2,
-              "extraction_volume": 1.36,
-              "elution_volume": 0.69,
-              "extraction_method": 1,
-              "reverse_transcriptions": [
+              "extraction_volume": 0.71,
+              "elution_volume": 1.46,
+              "extraction_method": 2,
+              "inhibitions": [
                 {
-                  "id": 1066,
-                  "extraction_id": 1177,
-                  "vol_in": 0.45,
-                  "vol_out": 2.43,
-                  "rt_cq": 0.58,
-                  "insert_date": "2012-12-22",
+                  "id": 1080,
+                  "dilution": 37,
+                  "type": "DNA",
+                  "insert_date": "2017-03-05",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "update_date": "2014-03-30",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1038,
-                  "extraction_id": 1531,
-                  "vol_in": 0.47,
-                  "vol_out": 0.47,
-                  "rt_cq": 0.05,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1039,
+                  "dilution": 26,
+                  "type": "DNA",
+                  "insert_date": "2013-11-10",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2017-02-28",
                   "update_user": "jpstokdyk"
                 }
               ],
-              "inhibitions": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1097,
-                  "dilution": 48,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1041,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.46,
+                  "vol_out": 0.12,
+                  "rt_cq": 2.05,
+                  "insert_date": "2015-05-12",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2012-08-25",
                   "update_user": "jpstokdyk"
                 },
                 {
-                  "id": 1037,
-                  "dilution": 14,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1078,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 0.64,
+                  "vol_out": 0.71,
+                  "rt_cq": 2.67,
+                  "insert_date": "2014-07-23",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2015-01-29",
+                  "update_user": "sspencer"
                 }
               ],
               "targets": [
                 {
-                  "id": 1126,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "GB",
-                  "type": "RNA"
+                  "id": 1770,
+                  "name": "E.Coli",
+                  "abbreviation": "F",
+                  "type": "DNA"
                 },
                 {
-                  "id": 1029,
-                  "name": "Bovine Flu",
-                  "abbreviation": "GB",
+                  "id": 1957,
+                  "name": "Crazy Cow-itis",
+                  "abbreviation": "SS",
                   "type": "DNA"
                 }
               ]
             }
           ],
-          "insert_date": "2015-04-30",
+          "insert_date": "2015-11-10",
           "insert_user": "sspencer",
-          "update_date": "2012-01-23",
-          "update_user": "sspencer"
+          "update_date": "2012-07-29",
+          "update_user": "afirnstahl"
         }
       case 1009:
         return {
           "id": 1009,
-          "analysis_batch_description": "Laborum consequat occaecat Lorem Lorem.",
-          "analysis_batch_notes": "Nulla culpa irure deserunt veniam culpa est ipsum consequat veniam excepteur incididunt nostrud magna.",
+          "analysis_batch_description": "Magna voluptate sunt incididunt laborum nostrud voluptate Lorem esse aliquip enim eu aute velit ad.",
+          "analysis_batch_notes": "Mollit qui do excepteur officia qui amet laborum veniam cillum pariatur dolor ullamco Lorem.",
+          "samples": [
+            1413,
+            1764,
+            1206,
+            1616,
+            1108,
+            1956
+          ],
           "studies": [
-            12,
-            14
+            4,
+            4
           ],
           "extractions": [
             {
-              "id": 1027,
+              "id": 1071,
               "extraction_no": 1,
-              "extraction_volume": 0.63,
-              "elution_volume": 2.78,
+              "extraction_volume": 1.46,
+              "elution_volume": 0.83,
               "extraction_method": 2,
-              "reverse_transcriptions": [
+              "inhibitions": [
                 {
-                  "id": 1024,
-                  "extraction_id": 1298,
-                  "vol_in": 0.45,
-                  "vol_out": 2.69,
-                  "rt_cq": 0.79,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1053,
+                  "dilution": 28,
+                  "type": "DNA",
+                  "insert_date": "2014-04-25",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2014-05-06",
+                  "update_user": "afirnstahl"
                 },
                 {
-                  "id": 1065,
-                  "extraction_id": 1094,
-                  "vol_in": 0.37,
-                  "vol_out": 0.45,
-                  "rt_cq": 0.32,
-                  "insert_date": "2012-12-22",
+                  "id": 1069,
+                  "dilution": 46,
+                  "type": "DNA",
+                  "insert_date": "2014-10-16",
                   "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "update_date": "2014-02-11",
                   "update_user": "jpstokdyk"
                 }
               ],
-              "inhibitions": [
+              "reverse_transcriptions": [
                 {
-                  "id": 1031,
-                  "dilution": 11,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1079,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.24,
+                  "vol_out": 1.31,
+                  "rt_cq": 1.64,
+                  "insert_date": "2015-06-23",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2014-04-20",
+                  "update_user": "sspencer"
                 },
                 {
-                  "id": 1085,
-                  "dilution": 14,
-                  "type": "DNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
+                  "id": 1009,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 1.22,
+                  "vol_out": 1.67,
+                  "rt_cq": 1.29,
+                  "insert_date": "2013-12-01",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2017-07-12",
+                  "update_user": "sspencer"
                 }
               ],
               "targets": [
                 {
-                  "id": 1861,
-                  "name": "Salmonella",
-                  "abbreviation": "SS",
+                  "id": 1700,
+                  "name": "Crazy Cow-itis",
+                  "abbreviation": "GB",
                   "type": "DNA"
                 },
                 {
-                  "id": 1782,
-                  "name": "E.Coli",
-                  "abbreviation": "GB",
+                  "id": 1521,
+                  "name": "Crazy Cow-itis",
+                  "abbreviation": "F",
                   "type": "RNA"
                 }
               ]
             },
             {
-              "id": 1057,
+              "id": 1082,
               "extraction_no": 2,
-              "extraction_volume": 1.01,
-              "elution_volume": 0.38,
+              "extraction_volume": 0.68,
+              "elution_volume": 0.96,
               "extraction_method": 2,
-              "reverse_transcriptions": [
-                {
-                  "id": 1012,
-                  "extraction_id": 1002,
-                  "vol_in": 1.17,
-                  "vol_out": 1.38,
-                  "rt_cq": 2.61,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
-                },
-                {
-                  "id": 1031,
-                  "extraction_id": 1242,
-                  "vol_in": 0.21,
-                  "vol_out": 2.91,
-                  "rt_cq": 2.98,
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
-                  "update_user": "jpstokdyk"
-                }
-              ],
               "inhibitions": [
                 {
-                  "id": 1058,
-                  "dilution": 34,
-                  "type": "RNA",   "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1091,
+                  "dilution": 26,
+                  "type": "DNA",
+                  "insert_date": "2015-04-25",
+                  "insert_user": "legacy data upload",
+                  "update_date": "2017-02-15",
                   "update_user": "jpstokdyk"
                 },
                 {
-                  "id": 1018,
-                  "dilution": 41,
-                  "type": "RNA",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-03-29",
+                  "id": 1025,
+                  "dilution": 22,
+                  "type": "DNA",
+                  "insert_date": "2016-03-26",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2012-08-14",
+                  "update_user": "sspencer"
+                }
+              ],
+              "reverse_transcriptions": [
+                {
+                  "id": 1092,
+                  "reverse_transcription_no": 1,
+                  "vol_in": 0.93,
+                  "vol_out": 2.75,
+                  "rt_cq": 0.51,
+                  "insert_date": "2014-10-28",
+                  "insert_user": "jpstokdyk",
+                  "update_date": "2012-02-06",
                   "update_user": "jpstokdyk"
+                },
+                {
+                  "id": 1055,
+                  "reverse_transcription_no": 2,
+                  "vol_in": 1.45,
+                  "vol_out": 1.91,
+                  "rt_cq": 1.32,
+                  "insert_date": "2012-07-21",
+                  "insert_user": "afirnstahl",
+                  "update_date": "2017-05-18",
+                  "update_user": "sspencer"
                 }
               ],
               "targets": [
                 {
-                  "id": 1784,
-                  "name": "E.Coli",
+                  "id": 1011,
+                  "name": "Crazy Cow-itis",
                   "abbreviation": "E",
                   "type": "DNA"
                 },
                 {
-                  "id": 1746,
+                  "id": 1921,
                   "name": "Crazy Cow-itis",
-                  "abbreviation": "E",
-                  "type": "DNA"
+                  "abbreviation": "F",
+                  "type": "RNA"
                 }
               ]
             }
           ],
-          "insert_date": "2016-08-31",
-          "insert_user": "sspencer",
-          "update_date": "2013-01-21",
+          "insert_date": "2015-03-22",
+          "insert_user": "jpstokdyk",
+          "update_date": "2012-06-23",
           "update_user": "afirnstahl"
         }
       default:

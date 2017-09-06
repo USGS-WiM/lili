@@ -58,20 +58,20 @@
                 <clr-stack-view>
                     <clr-stack-header>Inhibitions in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
 
-                    <clr-stack-block *ngFor="let extraction of inhibitionDetailArray">
-                        <clr-stack-label>Inhibition {{extraction.inhibitions.extraction_no}}</clr-stack-label>
+                    <clr-stack-block *ngFor="let inhibition of inhibitionDetailArray">
+                        <clr-stack-label>Inhibition {{inhibition.id}}</clr-stack-label>
                         <clr-stack-content></clr-stack-content>
                         <clr-stack-block>
                             <clr-stack-label>Inhibition Date</clr-stack-label>
-                            <clr-stack-content>{{extraction.inhibitions.insert_date}}</clr-stack-content>
+                            <clr-stack-content>{{inhibition.insert_date | date:'shortDate'}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block>
                             <clr-stack-label>Type</clr-stack-label>
-                            <clr-stack-content>{{extraction.inhibitions.type}}</clr-stack-content>
+                            <clr-stack-content>{{inhibition.type}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block>
                             <clr-stack-label>Dilution</clr-stack-label>
-                            <clr-stack-content>{{extraction.inhibitions.dilution}}</clr-stack-content>
+                            <clr-stack-content>{{inhibition.dilution}}</clr-stack-content>
                         </clr-stack-block>
                     </clr-stack-block>
 
@@ -95,21 +95,25 @@
                 <clr-stack-view>
                     <clr-stack-header>RTs in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
 
-                    <clr-stack-block *ngFor="let item of focusDetailObject" [clrSbExpanded]="true" >
-                        <clr-stack-label>RT # {{item.extraction_no}}</clr-stack-label>
+                    <clr-stack-block *ngFor="let rt of rtDetailArray" [clrSbExpanded]="true">
+                        <clr-stack-label>RT # {{rt.reverse_transcription_no}}</clr-stack-label>
                         <clr-stack-content></clr-stack-content>
-                        <clr-stack-block [clrSbExpanded]="true" >
-                            <clr-stack-label>Extraction Volume</clr-stack-label>
-                            <clr-stack-content>{{item.extraction_volume}}</clr-stack-content>
+                        <clr-stack-block [clrSbExpanded]="true">
+                            <clr-stack-label>Volume In</clr-stack-label>
+                            <clr-stack-content>{{rt.vol_in}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block [clrSbExpanded]="true">
-                            <clr-stack-label>Elution Volume</clr-stack-label>
-                            <clr-stack-content>{{item.elution_volume}}</clr-stack-content>
+                            <clr-stack-label>Volume Out</clr-stack-label>
+                            <clr-stack-content>{{rt.vol_out}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block [clrSbExpanded]="true">
-                            <clr-stack-label>Extraction Method</clr-stack-label>
-                            <clr-stack-content>{{item.extraction_method}}</clr-stack-content>
+                            <clr-stack-label>Cq Value</clr-stack-label>
+                            <clr-stack-content>{{rt.rt_cq}}</clr-stack-content>
                         </clr-stack-block>
+                        <clr-stack-block [clrSbExpanded]="true">
+                                <clr-stack-label>Date</clr-stack-label>
+                                <clr-stack-content>{{rt.insert_date | date:'shortDate' }}</clr-stack-content>
+                            </clr-stack-block>
                     </clr-stack-block>
 
                 </clr-stack-view>
@@ -208,15 +212,15 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'rts'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                RTs
-                            </ng-container>
-                        </clr-dg-column>
-
                         <clr-dg-column [clrDgField]="'inhibitions'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Inhibitions
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'rts'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                RTs
                             </ng-container>
                         </clr-dg-column>
 
@@ -279,10 +283,14 @@
                                 <a (click)="openExtractionDetails(ab.id)" class="label label-blue clickable">{{ab.extraction_count}}</a>
                             </clr-dg-cell>
 
-                            <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.reverse_transcription_count}}</a></clr-dg-cell>
                             <clr-dg-cell>
                                 <a (click)="openInhibitionDetails(ab.id)" class="label label-blue clickable">{{ab.inhibition_count}}</a>
                             </clr-dg-cell>
+
+                            <clr-dg-cell>
+                                <a (click)="openRTDetails(ab.id)"class="label label-blue clickable">{{ab.reverse_transcription_count}}</a>
+                            </clr-dg-cell>
+
                             <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.target_count}}</a></clr-dg-cell>
 
                             <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
