@@ -218,8 +218,7 @@ export class APP_UTILITIES {
 			  "analysis_batch_description": "Velit irure Lorem et reprehenderit.",
 			  "analysis_batch_notes": "Ipsum laboris reprehenderit eu laboris veniam.",
 			  "studies": [
-				10,
-				0
+				10
 			  ],
 			  "extraction_count": 2,
 			  "inhibition_count": 4,

@@ -7,6 +7,25 @@
     </div>
 </div> -->
 
+<!-- edit analysis batch modal -->
+<clr-modal [(clrModalOpen)]="showHideEdit">
+    <h3 class="modal-title">Edit Analysis Batch</h3>
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('edit', editABForm.value)" [hidden]="submitted">
+                    <section class="form-block">
+                    </section>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</clr-modal>
+
 <!-- begin extraction detail modal -->
 <clr-modal [(clrModalOpen)]="showHideExtractionDetailModal" [clrModalSize]="'m'">
     <h3 class="modal-title">Extraction Details</h3>
@@ -111,9 +130,9 @@
                             <clr-stack-content>{{rt.rt_cq}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block [clrSbExpanded]="true">
-                                <clr-stack-label>Date</clr-stack-label>
-                                <clr-stack-content>{{rt.insert_date | date:'shortDate' }}</clr-stack-content>
-                            </clr-stack-block>
+                            <clr-stack-label>Date</clr-stack-label>
+                            <clr-stack-content>{{rt.insert_date | date:'shortDate' }}</clr-stack-content>
+                        </clr-stack-block>
                     </clr-stack-block>
 
                 </clr-stack-view>
@@ -288,7 +307,7 @@
                             </clr-dg-cell>
 
                             <clr-dg-cell>
-                                <a (click)="openRTDetails(ab.id)"class="label label-blue clickable">{{ab.reverse_transcription_count}}</a>
+                                <a (click)="openRTDetails(ab.id)" class="label label-blue clickable">{{ab.reverse_transcription_count}}</a>
                             </clr-dg-cell>
 
                             <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.target_count}}</a></clr-dg-cell>

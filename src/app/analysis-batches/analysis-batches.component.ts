@@ -4,10 +4,12 @@ import { FormControl, FormGroup, Validators } from "@angular/forms/";
 import { IAnalysisBatchSummary } from './analysis-batch-summary';
 import { IAnalysisBatch } from './analysis-batch';
 
+import { IStudy } from '../studies/study';
 import { IExtraction } from '../SHARED/extraction';
 import { IInhibition } from '../SHARED/inhibition';
 import { IReverseTranscription } from '../SHARED/reverse-transcription';
 
+import { StudyService } from '../studies/study.service';
 import { AnalysisBatchService } from './analysis-batch.service';
 
 import { APP_UTILITIES } from '../app.utilities'
@@ -21,6 +23,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   allAnalysisBatchSummaries: IAnalysisBatchSummary[];
 
+  studies: IStudy[];
+
   focusAnalysisBatchID: number;
   focusAnalysisBatchData: IAnalysisBatch;
 
@@ -29,9 +33,9 @@ export class AnalysisBatchesComponent implements OnInit {
   showHideInhibitionDetailModal: boolean = false;
   showHideTargetDetailModal: boolean = false;
 
-  extractionDetailArray: IExtraction[]= [];
-  inhibitionDetailArray: IInhibition[] =[];
-  rtDetailArray: IReverseTranscription[] =[];
+  extractionDetailArray: IExtraction[] = [];
+  inhibitionDetailArray: IInhibition[] = [];
+  rtDetailArray: IReverseTranscription[] = [];
   targetDetailArray;
 
   selected: IAnalysisBatch[] = [];
@@ -40,7 +44,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   errorMessage: string;
 
-  constructor(private _analysisBatchService: AnalysisBatchService) { }
+  constructor(private _studyService: StudyService, private _analysisBatchService: AnalysisBatchService) { }
 
   ngOnInit() {
 
@@ -51,6 +55,12 @@ export class AnalysisBatchesComponent implements OnInit {
     // this._analysisBatchService.getAnalysisBatches()
     //   .subscribe(analysisBatches => this.allAnalysisBatches = analysisBatches,
     //   error => this.errorMessage = <any>error);
+
+
+    //on init, call getStudies function of the StudyService, set results to the studies var
+    this._studyService.getStudies()
+      .subscribe(studies => this.studies = studies,
+      error => this.errorMessage = <any>error);
   }
 
   createABForm = new FormGroup({
@@ -101,7 +111,7 @@ export class AnalysisBatchesComponent implements OnInit {
     for (let extraction of this.extractionDetailArray) {
       for (let inhibition of extraction.inhibitions) {
         this.inhibitionDetailArray.push(inhibition)
-      }  
+      }
     }
     //show the inhibition details modal if not showing already
     if (this.showHideInhibitionDetailModal === false) {
@@ -130,7 +140,7 @@ export class AnalysisBatchesComponent implements OnInit {
     for (let extraction of this.extractionDetailArray) {
       for (let rt of extraction.reverse_transcriptions) {
         this.rtDetailArray.push(rt)
-      }  
+      }
     }
     //show the inhibition details modal if not showing already
     if (this.showHideRTDetailModal === false) {
