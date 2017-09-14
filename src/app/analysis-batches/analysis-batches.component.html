@@ -17,6 +17,27 @@
 
                 <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('edit', editABForm.value)" [hidden]="submitted">
                     <section class="form-block">
+
+                        <div class="form-group">
+                            <label for="studyId">Analysis Batch ID</label>
+                            <input type="text" id="studyId" size="35" formControlName="id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="abDescInput">Analysis Batch Description</label>
+                            <textarea id="abDescInput" rows="2" formControlName="analysis_batch_description" style="max-width:25em"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="abNotesInput">Analysis Batch Notes</label>
+                            <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid">Save Edits</button>
+                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+
+
+
                     </section>
                 </form>
             </div>
@@ -318,7 +339,7 @@
                             <clr-dg-cell>{{ab.update_user }}</clr-dg-cell>
                             <clr-dg-cell>{{ab.update_date | date:'shortDate'}}</clr-dg-cell>
 
-                            <analysis-batch-detail *clrIfExpanded [selectedAnalysisBatch]="ab" ngProjectAs="clr-dg-row-detail"></analysis-batch-detail>
+                            <analysis-batch-detail *clrIfExpanded [selectedABSummary]="ab" ngProjectAs="clr-dg-row-detail"></analysis-batch-detail>
 
                         </clr-dg-row>
 

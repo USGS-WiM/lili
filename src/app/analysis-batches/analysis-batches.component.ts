@@ -28,10 +28,13 @@ export class AnalysisBatchesComponent implements OnInit {
   focusAnalysisBatchID: number;
   focusAnalysisBatchData: IAnalysisBatch;
 
+  showHideEdit: boolean = false;
   showHideExtractionDetailModal: boolean = false;
   showHideRTDetailModal: boolean = false;
   showHideInhibitionDetailModal: boolean = false;
   showHideTargetDetailModal: boolean = false;
+
+
 
   extractionDetailArray: IExtraction[] = [];
   inhibitionDetailArray: IInhibition[] = [];
@@ -154,8 +157,28 @@ export class AnalysisBatchesComponent implements OnInit {
   }
 
   editAB(selectedAB) {
-    alert("user has chosen to edit selected analysis batch")
+    
+    //show the edit analysis batch modal if not showing already
+    if (this.showHideEdit === false) {
+      this.showHideEdit = true;
+    }
+
+    this.editABForm.setValue({
+      id: selectedAB.id,
+      analysis_batch_description: selectedAB.analysis_batch_description,
+      analysis_batch_notes: selectedAB.analysis_batch_notes,
+      update_user: "genericUser"
+    })
 
   }
+
+  //edit AB form
+  editABForm = new FormGroup({
+    id: new FormControl(''),
+    analysis_batch_description: new FormControl(''),
+    analysis_batch_notes: new FormControl (''),
+    update_user: new FormControl('genericUser', Validators.required)
+
+  })
 
 }

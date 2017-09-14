@@ -1,66 +1,221 @@
+<div [clrLoading]="loading">
+  <div class="row">
+    <div class="col-sm-12 ">
+      <hr>
+      <span class="card-title">Analysis Batch 1000 Details</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="card-block">
+          <h3 class="card-title">Samples</h3>
+          <p class="card-text">
+            <clr-stack-view>
+              <clr-stack-block>
+                <clr-stack-label>Sample 1000</clr-stack-label>
+                <clr-stack-content></clr-stack-content>
+                <clr-stack-block>
+                  <clr-stack-label>Collaborator ID</clr-stack-label>
+                  <clr-stack-content>5667-jkih</clr-stack-content>
+                </clr-stack-block>
+                <clr-stack-block>
+                  <clr-stack-label>Study</clr-stack-label>
+
+                  <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
+                </clr-stack-block>
+              </clr-stack-block>
+
+              <clr-stack-block>
+                <clr-stack-label>Sample 1001 </clr-stack-label>
+                <clr-stack-content></clr-stack-content>
+                <clr-stack-block>
+                  <clr-stack-label>Collaborator ID</clr-stack-label>
+                  <clr-stack-content>5667-jkih</clr-stack-content>
+                </clr-stack-block>
+                <clr-stack-block>
+                  <clr-stack-label>Study</clr-stack-label>
+                  <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
+                </clr-stack-block>
+              </clr-stack-block>
+
+              <clr-stack-block>
+                <clr-stack-label>Sample 1002 </clr-stack-label>
+                <clr-stack-block>
+                  <clr-stack-label>Collaborator ID</clr-stack-label>
+                  <clr-stack-content>5667-jkih</clr-stack-content>
+                </clr-stack-block>
+                <clr-stack-block>
+                  <clr-stack-label>Study</clr-stack-label>
+                  <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
+                </clr-stack-block>
+              </clr-stack-block>
+
+              <clr-stack-block>
+                <clr-stack-label>Sample 1003 </clr-stack-label>
+                <clr-stack-block>
+                  <clr-stack-label>Collaborator ID</clr-stack-label>
+                  <clr-stack-content>5667-jkih</clr-stack-content>
+                </clr-stack-block>
+                <clr-stack-block>
+                  <clr-stack-label>Study</clr-stack-label>
+                  <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
+                </clr-stack-block>
+              </clr-stack-block>
+            </clr-stack-view>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="card-block">
+          <h3 class="card-title">Extractions</h3>
+          <p class="card-text">
+            ...
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="card-block">
+          <h3 class="card-title">Inhibitions</h3>
+          <p class="card-text">
+            ...
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="card-block">
+          <h3 class="card-title">RTs</h3>
+          <p class="card-text">
+            ...
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="card-block">
+          <h3 class="card-title">Targets</h3>
+          <p class="card-text">
+            ...
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="row">
+  <div class="col-sm-12 "> <span class="card-title">Details</span></div>
+
+</div>
 <div class="row">
 
 
-  <div class="col-sm-4">
+  <div class="col-sm-6">
 
     <hr>
-    <clr-stack-view>
-      <clr-stack-header>Samples in this analysis batch </clr-stack-header>
-      <clr-stack-block>
-        <clr-stack-label>Sample 1000</clr-stack-label>
-        <clr-stack-content></clr-stack-content>
-        <clr-stack-block>
-          <clr-stack-label>Collaborator ID</clr-stack-label>
-          <clr-stack-content>5667-jkih</clr-stack-content>
-        </clr-stack-block>
-        <clr-stack-block>
-          <clr-stack-label>Study</clr-stack-label>
 
-          <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
-        </clr-stack-block>
-      </clr-stack-block>
 
-      <clr-stack-block>
-        <clr-stack-label>Sample 1001 </clr-stack-label>
-        <clr-stack-content></clr-stack-content>
-        <clr-stack-block>
-          <clr-stack-label>Collaborator ID</clr-stack-label>
-          <clr-stack-content>5667-jkih</clr-stack-content>
-        </clr-stack-block>
-        <clr-stack-block>
-          <clr-stack-label>Study</clr-stack-label>
-          <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
-        </clr-stack-block>
-      </clr-stack-block>
+    <clr-tabs>
+      <clr-tab>
+        <button clrTabLink id="link1">Studies</button>
+        <clr-tab-content id="content1" *clrIfActive>
+          <clr-stack-view>
+            <clr-stack-header>Samples in this analysis batch </clr-stack-header>
+            <clr-stack-block>
+              <clr-stack-label>Sample 1000</clr-stack-label>
+              <clr-stack-content></clr-stack-content>
+              <clr-stack-block>
+                <clr-stack-label>Collaborator ID</clr-stack-label>
+                <clr-stack-content>5667-jkih</clr-stack-content>
+              </clr-stack-block>
+              <clr-stack-block>
+                <clr-stack-label>Study</clr-stack-label>
 
-      <clr-stack-block>
-        <clr-stack-label>Sample 1002 </clr-stack-label>
-        <clr-stack-block>
-          <clr-stack-label>Collaborator ID</clr-stack-label>
-          <clr-stack-content>5667-jkih</clr-stack-content>
-        </clr-stack-block>
-        <clr-stack-block>
-          <clr-stack-label>Study</clr-stack-label>
-          <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
-        </clr-stack-block>
-      </clr-stack-block>
+                <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
+              </clr-stack-block>
+            </clr-stack-block>
 
-      <clr-stack-block>
-        <clr-stack-label>Sample 1003 </clr-stack-label>
-        <clr-stack-block>
-          <clr-stack-label>Collaborator ID</clr-stack-label>
-          <clr-stack-content>5667-jkih</clr-stack-content>
-        </clr-stack-block>
-        <clr-stack-block>
-          <clr-stack-label>Study</clr-stack-label>
-          <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
-        </clr-stack-block>
-      </clr-stack-block>
-    </clr-stack-view>
+            <clr-stack-block>
+              <clr-stack-label>Sample 1001 </clr-stack-label>
+              <clr-stack-content></clr-stack-content>
+              <clr-stack-block>
+                <clr-stack-label>Collaborator ID</clr-stack-label>
+                <clr-stack-content>5667-jkih</clr-stack-content>
+              </clr-stack-block>
+              <clr-stack-block>
+                <clr-stack-label>Study</clr-stack-label>
+                <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
+              </clr-stack-block>
+            </clr-stack-block>
+
+            <clr-stack-block>
+              <clr-stack-label>Sample 1002 </clr-stack-label>
+              <clr-stack-block>
+                <clr-stack-label>Collaborator ID</clr-stack-label>
+                <clr-stack-content>5667-jkih</clr-stack-content>
+              </clr-stack-block>
+              <clr-stack-block>
+                <clr-stack-label>Study</clr-stack-label>
+                <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
+              </clr-stack-block>
+            </clr-stack-block>
+
+            <clr-stack-block>
+              <clr-stack-label>Sample 1003 </clr-stack-label>
+              <clr-stack-block>
+                <clr-stack-label>Collaborator ID</clr-stack-label>
+                <clr-stack-content>5667-jkih</clr-stack-content>
+              </clr-stack-block>
+              <clr-stack-block>
+                <clr-stack-label>Study</clr-stack-label>
+                <clr-stack-content>MDH Storm Water Irrigation</clr-stack-content>
+              </clr-stack-block>
+            </clr-stack-block>
+          </clr-stack-view>
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink>Extractions</button>
+        <clr-tab-content *clrIfActive="true">
+          ...
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink>Inhibitions</button>
+        <clr-tab-content *clrIfActive="true">
+          ...
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink>RTs</button>
+        <clr-tab-content *clrIfActive="true">
+          ...
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink>Targets</button>
+        <clr-tab-content *clrIfActive="true">
+          ...
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
+
+
 
   </div>
-  <div class="col-sm-8">
-    <hr>
+  <div class="col-sm-6">
+    
     <div></div>
   </div>
-</div>
+</div> -->

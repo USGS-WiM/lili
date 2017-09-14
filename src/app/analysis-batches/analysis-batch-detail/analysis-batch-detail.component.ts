@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import { IAnalysisBatchSummary } from '../analysis-batch-summary';
 import { IAnalysisBatch } from '../analysis-batch';
 
 import { AnalysisBatchService } from '../analysis-batch.service';
@@ -10,14 +11,19 @@ import { AnalysisBatchService } from '../analysis-batch.service';
   styleUrls: ['./analysis-batch-detail.component.scss']
 })
 export class AnalysisBatchDetailComponent implements OnInit {
-  @Input() selectedAnalysisBatch: IAnalysisBatch;
+  @Input() selectedABSummary: IAnalysisBatchSummary;
   
       loading: boolean;
+      selectedABDetail: IAnalysisBatch;
 
-  constructor() { }
+  constructor(private _analysisBatchService: AnalysisBatchService) { }
 
   ngOnInit() {
-    this.loading = false;
+    this.loading = true;
+
+      this.selectedABDetail = this._analysisBatchService.getAnalysisBatchData(this.selectedABSummary.id);
+      console.log(this.selectedABDetail);
+
   }
 
 }
