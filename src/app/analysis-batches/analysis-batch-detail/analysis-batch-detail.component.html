@@ -1,78 +1,151 @@
-<div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-block">
-        <!-- <div class="card-title">Summary</div> -->
-        <div class="card-text">
-
-
-          <clr-stack-view>
-            <clr-stack-header>Summary</clr-stack-header>
-
-            <clr-stack-block >
-              <clr-stack-label>Extractions <span class="badge badge-blue">3</span></clr-stack-label>
-              <clr-stack-content></clr-stack-content>
-              <clr-stack-block>
-                <clr-stack-label>Sub-label 1</clr-stack-label>
-                <clr-stack-content>Sub-content 1</clr-stack-content>
-              </clr-stack-block>
-              <clr-stack-block>
-                <clr-stack-label>Sub-label 2</clr-stack-label>
-                <clr-stack-content>Sub-content 2</clr-stack-content>
-              </clr-stack-block>
-              <clr-stack-block>
-                <clr-stack-label>Sub-label 3</clr-stack-label>
-                <clr-stack-content>Sub-content 3</clr-stack-content>
-              </clr-stack-block>
-            </clr-stack-block>
-
-            <clr-stack-block>
-              <clr-stack-label>RTs <span class="badge badge-blue">1</span></clr-stack-label>
-              <clr-stack-content></clr-stack-content>
-              <clr-stack-block>
-                <clr-stack-label>Sub-label 4</clr-stack-label>
-                <clr-stack-content>Sub-content 4</clr-stack-content>
-              </clr-stack-block>
-              <clr-stack-block>
-                <clr-stack-label>Sub-label 5</clr-stack-label>
-                <clr-stack-content>Sub-content 5</clr-stack-content>
-              </clr-stack-block>
-            </clr-stack-block>
-
-            <clr-stack-block>
-              <clr-stack-label>Inhibitions <span class="badge badge-blue">3</span></clr-stack-label>
-              <clr-stack-content></clr-stack-content>
-              <clr-stack-block>
-                <clr-stack-label>Sub-label 4</clr-stack-label>
-                <clr-stack-content>Sub-content 4</clr-stack-content>
-              </clr-stack-block>
-              <clr-stack-block>
-                <clr-stack-label>Sub-label 5</clr-stack-label>
-                <clr-stack-content>Sub-content 5</clr-stack-content>
-              </clr-stack-block>
-            </clr-stack-block>
-
-            <clr-stack-block>
-              <clr-stack-label>Targets <span class="badge badge-blue">5</span></clr-stack-label>
-              <clr-stack-content></clr-stack-content>
-              <clr-stack-block>
-                <clr-stack-label>Sub-label 4</clr-stack-label>
-                <clr-stack-content>Sub-content 4</clr-stack-content>
-              </clr-stack-block>
-              <clr-stack-block>
-                <clr-stack-label>Sub-label 5</clr-stack-label>
-                <clr-stack-content>Sub-content 5</clr-stack-content>
-              </clr-stack-block>
-            </clr-stack-block>
-          </clr-stack-view>
-
-        </div>
-      </div>
-
-
+<div [clrLoading]="loading">
+  <div class="row">
+    <div class="col-sm-12 ">
+      <!-- <hr class="ab-detail-header"> -->
+      <!-- <span class="card-title ab-detail-header">Analysis Batch 1000 Details</span> -->
     </div>
   </div>
-  <div class="col-sm-6">
-    <div>Right side</div>
+  <div class="row">
+    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+      <div class="card ab-detail-card">
+        <div class="card-block">
+          <h3 class="card-title">Extractions</h3>
+          <p class="card-text">
+            <clr-tree-node>
+              Analysis Batch {{selectedABDetail.id}}
+              <ng-template [clrIfExpanded]="true">
+
+                <clr-tree-node *ngFor="let extraction of extractionDetailArray">
+                  Extraction # {{extraction.extraction_no}}
+                  <ng-template clrIfExpanded>
+                    <clr-tree-node>
+                      <table class="table table-vertical table-compact">
+                        <tbody>
+                          <tr>
+                            <th>Extraction Volume</th>
+                            <td>{{extraction.extraction_volume}}</td>
+                          </tr>
+                          <tr>
+                            <th>Elution Volume</th>
+                            <td>{{extraction.elution_volume}}</td>
+                          </tr>
+                          <tr>
+                            <th>Extraction Method</th>
+                            <td>{{extraction.extraction_method}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </clr-tree-node>
+
+                    <clr-tree-node>
+                      Inhibitions
+                      <ng-template clrIfExpanded>
+                        <clr-tree-node *ngFor="let inhibition of extraction.inhibitions">
+                          Inhibition {{inhibition.id}}
+                          <ng-template clrIfExpanded>
+                            <clr-tree-node>
+                              <table class="table table-vertical table-compact">
+                                <tbody>
+                                  <tr>
+                                    <th>Inhibition Date</th>
+                                    <td>{{inhibition.insert_date}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th>Type</th>
+                                    <td>{{inhibition.type}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th>Dilution</th>
+                                    <td>{{inhibition.dilution}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </clr-tree-node>
+                          </ng-template>
+                        </clr-tree-node>
+                      </ng-template>
+                    </clr-tree-node>
+
+                    <clr-tree-node>
+                      Reverse Transcriptions
+                      <ng-template clrIfExpanded>
+                        <clr-tree-node *ngFor="let rt of extraction.reverse_transcriptions">
+                          RT # {{rt.reverse_transcription_no}}
+                          <ng-template clrIfExpanded>
+                            <clr-tree-node>
+                              <table class="table table-vertical table-compact">
+                                <tbody>
+                                  <tr>
+                                    <th>Volume In</th>
+                                    <td>{{rt.vol_in}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th>Volume Out</th>
+                                    <td>{{rt.vol_out}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th>Cq Value</th>
+                                    <td>{{rt.rt_cq}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th>Date</th>
+                                    <td>{{rt.insert_date}}</td>
+                                  </tr>
+
+                                </tbody>
+                              </table>
+                            </clr-tree-node>
+                          </ng-template>
+                        </clr-tree-node>
+                      </ng-template>
+                    </clr-tree-node>
+
+                    <clr-tree-node>
+                      Targets
+                      <ng-template clrIfExpanded>
+                        <ul class="list compact">
+                          <li *ngFor="let target of extraction.targets">{{target.name}} ({{target.type}})</li>
+                        </ul>
+                      </ng-template>
+                    </clr-tree-node>
+                  </ng-template>
+                </clr-tree-node>
+              </ng-template>
+            </clr-tree-node>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+      <div class="card ab-detail-card">
+        <div class="card-block">
+          <h3 class="card-title">Samples</h3>
+          <p class="card-text">
+
+
+            <clr-tree-node *ngFor="let extraction of extractionDetailArray">
+              Sample {{extraction.extraction_no}}
+              <ng-template clrIfExpanded>
+                <clr-tree-node>
+                  <table class="table table-vertical table-compact">
+                    <tbody>
+                      <tr>
+                        <th>Collaborator ID</th>
+                        <td>{{extraction.extraction_volume}}</td>
+                      </tr>
+                      <tr>
+                        <th>Study</th>
+                        <td>{{extraction.elution_volume}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </clr-tree-node>
+              </ng-template>
+            </clr-tree-node>
+
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

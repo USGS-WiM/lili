@@ -13,7 +13,7 @@ import { SampleService } from './sample.service';
 import { SampleTypeService } from '../SHARED/sample-type.service';
 import { FilterTypeService } from '../SHARED/filter-type.service'
 import { MatrixService } from '../SHARED/matrix.service';
-import { StudyService } from '../studies/study.service'
+import { StudyService } from '../studies/study.service';
 import { UnitService } from '../SHARED/unit.service';
 import { UserService } from '../SHARED/user.service';
 

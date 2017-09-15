@@ -17,11 +17,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DisplayValuePipe implements PipeTransform {
 
   transform(value: any, displayProperty: string, sourceArray: Array<any>): any {
+
     let displayValue;
     for (var i = 0; i < sourceArray.length; i++) {
-      if (sourceArray[i].id === value) {
-        displayValue = sourceArray[i][displayProperty];
-      }
+        if (sourceArray[i].id === value) {
+          displayValue = sourceArray[i][displayProperty];
+        }  
     }
     return displayValue;
   }
