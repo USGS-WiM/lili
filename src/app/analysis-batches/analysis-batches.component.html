@@ -9,7 +9,7 @@
 
 <!-- edit analysis batch modal -->
 <clr-modal [(clrModalOpen)]="showHideEdit">
-    <h3 class="modal-title">Edit Analysis Batch</h3>
+    <h3 class="modal-title">Edit Analysis Batch Details</h3>
     <div class="modal-body">
 
         <div class="row">
@@ -36,10 +36,9 @@
                         <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid">Save Edits</button>
                         <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
 
-
-
                     </section>
                 </form>
+
             </div>
         </div>
 
@@ -218,8 +217,8 @@
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editAB(selected[0])"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Analysis Batch</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1"><clr-icon shape="login"></clr-icon> Extract</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editAB(selected[0])"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Analysis Batch Details</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="extractAB()"><clr-icon shape="login"></clr-icon> Extract</button>
                                 <!--<button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
                                 <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>
                                 <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="note-edit"size="16"></clr-icon> Here</button> -->
@@ -246,25 +245,25 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'extractions'">
+                        <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Extractions
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'inhibitions'">
+                        <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Inhibitions
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'rts'">
+                        <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 RTs
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'targets'">
+                        <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Targets
                             </ng-container>
@@ -298,7 +297,7 @@
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'update_user'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                            <ng-container *clrDgHideableColumn="{hidden: true}">
                                 Updated by
                             </ng-container>
                         </clr-dg-column>

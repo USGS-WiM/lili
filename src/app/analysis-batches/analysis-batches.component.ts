@@ -74,6 +74,10 @@ export class AnalysisBatchesComponent implements OnInit {
     return this._analysisBatchService.getAnalysisBatchData(abID);
   }
 
+  extractAB(){
+    //open extract wizard and begin
+  }
+
   openExtractionDetails(abID) {
 
     //check if AB ID matches the current focusAnalysisBatchID. 
