@@ -6,23 +6,28 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
       <div class="card ab-detail-card">
         <div class="card-block">
           <h3 class="card-title">Extractions</h3>
           <p class="card-text">
-            <clr-tree-node>
+            <!-- <clr-tree-node>
               Analysis Batch {{selectedABDetail.id}}
-              <ng-template [clrIfExpanded]="true">
+              <ng-template [clrIfExpanded]="true"> -->
 
                 <clr-tree-node *ngFor="let extraction of extractionDetailArray">
-                  Extraction # {{extraction.extraction_no}}
+                  Extraction # {{extraction.extraction_no}} 
                   <ng-template clrIfExpanded>
                     <clr-tree-node>
                       <table class="table table-vertical table-compact">
                         <tbody>
+                          <!-- <tr>
+                            <th>Extraction ID</th>
+                            <td>{{extraction.id}}</td>
+                          </tr> -->
                           <tr>
-                            <th>Extraction Volume</th>
+                            <th>Extraction Volume <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editExtraction(extraction)"
+                                type="button">Edit</button></th>
                             <td>{{extraction.extraction_volume}}</td>
                           </tr>
                           <tr>
@@ -76,7 +81,8 @@
                               <table class="table table-vertical table-compact">
                                 <tbody>
                                   <tr>
-                                    <th>Volume In</th>
+                                    <th>Volume In <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editRT(rt)"
+                                      type="button">Edit</button></th>
                                     <td>{{rt.vol_in}}</td>
                                   </tr>
                                   <tr>
@@ -110,13 +116,13 @@
                     </clr-tree-node>
                   </ng-template>
                 </clr-tree-node>
-              </ng-template>
-            </clr-tree-node>
+              <!-- </ng-template>
+            </clr-tree-node> -->
           </p>
         </div>
       </div>
     </div>
-    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
       <div class="card ab-detail-card">
         <div class="card-block">
           <h3 class="card-title">Samples</h3>
@@ -149,3 +155,47 @@
     </div>
   </div>
 </div>
+
+
+
+<clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditExtractionDetail">
+  <h3 class="modal-title">Edit extraction volume</h3>
+  <div class="modal-body">
+      <span>Analysis Batch {{selectedABDetail.id}}</span>
+      <form id="editExtractionForm" class="compact" [formGroup]="editExtractionForm" (ngSubmit)="onSubmit('edit', editExtractionForm.value)" [hidden]="submitted">
+          <section class="form-block">
+              <div class="form-group">
+                  <label for="extractionNo">Extraction No.</label>
+                  <input type="text" id="extractionNo" size="10" formControlName="extraction_no" readonly>
+              </div>
+              <div class="form-group">
+                  <label for="extractionVol">Extraction Volume</label>
+                  <input type="text" id="extractionVol" size="10" formControlName="extraction_volume">
+              </div>
+              <button class="btn btn-primary" type="submit" [disabled]="editExtractionForm.invalid">Save Edit</button>
+              <button class="btn btn-info" (click)="showHideEditExtractionDetail = !showHideEditExtractionDetail">Cancel</button>
+          </section>
+      </form>
+  </div>
+</clr-modal>
+
+<clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditRTDetail">
+    <h3 class="modal-title">Edit RT volume</h3>
+    <div class="modal-body">
+        <span>Analysis Batch {{selectedABDetail.id}}</span>
+        <form id="editRTForm" class="compact" [formGroup]="editRTForm" (ngSubmit)="onSubmit('edit', editRTForm.value)" [hidden]="submitted">
+            <section class="form-block">
+                <div class="form-group">
+                    <label for="rtNo">RT No.</label>
+                    <input type="text" id="rtNo" size="10" formControlName="reverse_transcription_no" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="rtVol">RT Volume</label>
+                    <input type="text" id="rtVol" size="10" formControlName="vol_in">
+                </div>
+                <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid">Save Edit</button>
+                <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail">Cancel</button>
+            </section>
+        </form>
+    </div>
+  </clr-modal>

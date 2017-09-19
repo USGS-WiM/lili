@@ -5,7 +5,7 @@ import { Headers } from '@angular/http';
 export class APP_SETTINGS {
 
     private static _environment: string = 'development';
-    private static _API_ENDPOINT: string = APP_SETTINGS._environment == 'production' ? 'http://lidedev.wim.usgs.gov/lideservices/' : 'http://lidedev.wim.usgs.gov/lideservices/';
+    private static _API_ENDPOINT: string = APP_SETTINGS._environment == 'production' ? 'https://lidedev.wim.usgs.gov/lideservices/' : 'https://lidedev.wim.usgs.gov/lideservices/';
     public static set environment(env: string) { this._environment = env };
     public static get API_USERNAME(): string { return 'admin' };
     public static get API_PASSWORD(): string { return 'lideadmin' };
