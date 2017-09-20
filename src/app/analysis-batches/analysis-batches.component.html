@@ -203,6 +203,32 @@
 </clr-modal>
 <!-- end target detail modal -->
 
+<!-- begin extract wizard -->
+<clr-wizard #wizardextract [(clrWizardOpen)]="extractOpen" clrWizardSize="lg">
+    <clr-wizard-title>Extract Samples in Analysis Batch {{selectedAnalysisBatchID}}</clr-wizard-title>
+
+    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Extraction Data</ng-template>
+        ...
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Select Targets</ng-template>
+        ...
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Page 3</ng-template>
+        ...
+    </clr-wizard-page>
+</clr-wizard>
+<!-- end extract wizard -->
+
 
 <!-- begin Analysis batches table -->
 <div class="row">
@@ -218,7 +244,7 @@
                         <clr-dg-action-bar>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editAB(selected[0])"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Analysis Batch Details</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="extractAB()"><clr-icon shape="login"></clr-icon> Extract</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="extractAB(selected[0])"><clr-icon shape="login"></clr-icon> Extract</button>
                                 <!--<button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
                                 <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>
                                 <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="note-edit"size="16"></clr-icon> Here</button> -->

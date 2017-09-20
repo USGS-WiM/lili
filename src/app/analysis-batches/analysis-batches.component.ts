@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms/";
+import {Wizard} from "clarity-angular";
 
 import { IAnalysisBatchSummary } from './analysis-batch-summary';
 import { IAnalysisBatch } from './analysis-batch';
@@ -20,6 +21,9 @@ import { APP_UTILITIES } from '../app.utilities'
   styleUrls: ['./analysis-batches.component.scss']
 })
 export class AnalysisBatchesComponent implements OnInit {
+  @ViewChild("wizardextract") wizardExtract: Wizard;
+
+  extractOpen: boolean = false;
 
   allAnalysisBatchSummaries: IAnalysisBatchSummary[];
 
@@ -27,6 +31,9 @@ export class AnalysisBatchesComponent implements OnInit {
 
   focusAnalysisBatchID: number;
   focusAnalysisBatchData: IAnalysisBatch;
+
+  selectedAnalysisBatchID: number;
+  selectedAnalysisBatchData: IAnalysisBatch;
 
   showHideEdit: boolean = false;
   showHideExtractionDetailModal: boolean = false;
@@ -74,8 +81,10 @@ export class AnalysisBatchesComponent implements OnInit {
     return this._analysisBatchService.getAnalysisBatchData(abID);
   }
 
-  extractAB(){
+  extractAB(selectedAB){
     //open extract wizard and begin
+    this.extractOpen = true;
+    this.selectedAnalysisBatchID = selectedAB.id;
   }
 
   openExtractionDetails(abID) {

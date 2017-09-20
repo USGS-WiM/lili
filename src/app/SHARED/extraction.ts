@@ -7,6 +7,7 @@ export interface IExtraction {
     extraction_volume: number,
     elution_volume: number,
     extraction_method: number,
+    extraction_date: string,
     inhibitions: IInhibition[],
     reverse_transcriptions: IReverseTranscription[],
     targets: Object[]
