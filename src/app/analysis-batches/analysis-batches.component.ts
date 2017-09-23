@@ -9,11 +9,13 @@ import { IStudy } from '../studies/study';
 import { IExtraction } from '../SHARED/extraction';
 import { IInhibition } from '../SHARED/inhibition';
 import { IReverseTranscription } from '../SHARED/reverse-transcription';
+import { ITarget } from '../targets/target';
 
 import { StudyService } from '../studies/study.service';
 import { AnalysisBatchService } from './analysis-batch.service';
+import { TargetService } from '../targets/target.service';
 
-import { APP_UTILITIES } from '../app.utilities'
+import { APP_UTILITIES } from '../app.utilities';
 
 @Component({
   selector: 'app-analysis-batches',
@@ -193,5 +195,9 @@ export class AnalysisBatchesComponent implements OnInit {
     update_user: new FormControl('genericUser', Validators.required)
 
   })
+
+  selectTargetForm = new FormGroup({
+
+  });
 
 }

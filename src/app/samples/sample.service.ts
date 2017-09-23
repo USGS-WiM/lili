@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 
-import { APP_SETTINGS } from '../app.settings'
+import { APP_SETTINGS } from '../app.settings';
 
 import { ISample } from './sample';
 
@@ -21,7 +21,6 @@ export class SampleService {
     return body.data || {};
   }
 
-  //get services from demo services on github
   public getSamples(): Observable<ISample[]> {
 
     let options = new RequestOptions({
@@ -29,9 +28,9 @@ export class SampleService {
     });
 
     return this._http.get(APP_SETTINGS.SAMPLES_URL, options)
-      //return this._http.get(this._samplesUrl)
+      // return this._http.get(this._samplesUrl)
       .map((response: Response) => <ISample[]>response.json())
-      //.do(data => console.log('Samples data: ' + JSON.stringify(data)))
+      // .do(data => console.log('Samples data: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
@@ -43,7 +42,7 @@ export class SampleService {
 
     return this._http.post(APP_SETTINGS.SAMPLES_URL, formValue, options)
       .map(this.extractData)
-      .catch(this.handleError)
+      .catch(this.handleError);
 
   }
 
@@ -62,7 +61,7 @@ export class SampleService {
   public getSampleFormConfig(): Observable<any[]> {
     return this._http.get(this._sampleFormConfigUrl)
       .map((response: Response) => <any>response.json())
-      //.do(data => console.log('Display config data: ' + JSON.stringify(data)))
+      // .do(data => console.log('Display config data: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 

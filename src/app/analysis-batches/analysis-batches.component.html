@@ -204,7 +204,7 @@
 <!-- end target detail modal -->
 
 <!-- begin extract wizard -->
-<clr-wizard #wizardextract [(clrWizardOpen)]="extractOpen" clrWizardSize="lg">
+<clr-wizard #wizardextract [(clrWizardOpen)]="extractOpen" clrWizardSize="xl">
     <clr-wizard-title>Extract Samples in Analysis Batch {{selectedAnalysisBatchID}}</clr-wizard-title>
 
     <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
@@ -213,12 +213,30 @@
     <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
 
     <clr-wizard-page>
-        <ng-template clrPageTitle>Extraction Data</ng-template>
-        ...
-    </clr-wizard-page>
-
-    <clr-wizard-page>
         <ng-template clrPageTitle>Select Targets</ng-template>
+        <form id="selectTargetForm" class="compact" [formGroup]="selectTargetForm" (ngSubmit)="onSubmit()">
+            <section class="form-block">
+                <!-- <label>Select Boxes</label> -->
+                <div class="form-group">
+                    <label for="select_targets">qPCR targets</label>
+                    <div class="select multiple">
+                        <select id="select_targets" multiple>
+                            <option>Enterovirus (E)</option>
+                            <option>G1 Norovirus (G1)</option>
+                            <option>G2 Norovirus (G2)</option>
+                            <option>Adenovirus (A)</option>
+                            <option>Adenovirus AA (AA)</option>
+                            <option>Adenovirus AB (AB)</option>
+                            <option>HAV (H)</option>                   
+                        </select>
+                    </div>
+                </div>
+                <p>Form value: {{ selectTargetForm.value | json }}</p>
+            </section>
+        </form>
+    </clr-wizard-page>
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Extraction Data</ng-template>
         ...
     </clr-wizard-page>
 
