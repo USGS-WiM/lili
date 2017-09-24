@@ -220,18 +220,17 @@
                 <div class="form-group">
                     <label for="select_targets">qPCR targets</label>
                     <div class="select multiple">
-                        <select id="select_targets" multiple>
-                            <option>Enterovirus (E)</option>
-                            <option>G1 Norovirus (G1)</option>
-                            <option>G2 Norovirus (G2)</option>
-                            <option>Adenovirus (A)</option>
-                            <option>Adenovirus AA (AA)</option>
-                            <option>Adenovirus AB (AB)</option>
-                            <option>HAV (H)</option>                   
+                        <select id="select_targets" multiple formControlName="id" [(ngModel)]="selectedTargets">
+                            <option *ngFor="let target of allTargets" [value]="target">{{target.name}} ({{target.code}})</option>
                         </select>
                     </div>
                 </div>
-                <p>Form value: {{ selectTargetForm.value | json }}</p>
+                <p><label>Selected Targets:</label> 
+                    <ul class="list compact">
+                        <!-- li below uses ngFor iterator on the selctedTargets ngModel established by the 'select_targets' select above -->
+                        <li *ngFor="let target of selectedTargets">{{target.name}} ({{target.code}})</li>
+                    </ul>
+                <p>Form value: {{ selectTargetForm.value | json }}
             </section>
         </form>
     </clr-wizard-page>

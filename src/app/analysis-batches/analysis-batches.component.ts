@@ -28,6 +28,7 @@ export class AnalysisBatchesComponent implements OnInit {
   extractOpen: boolean = false;
 
   allAnalysisBatchSummaries: IAnalysisBatchSummary[];
+  allTargets: ITarget[];
 
   studies: IStudy[];
 
@@ -52,7 +53,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   selected: IAnalysisBatch[] = [];
 
-  //currentExtraction: IExtraction;
+  // currentExtraction: IExtraction;
 
   errorMessage: string;
 
@@ -60,10 +61,13 @@ export class AnalysisBatchesComponent implements OnInit {
 
   ngOnInit() {
 
-    //grab temporary hard-coded sample analysis batch summary data (until web service endpoint is up-to-date)
+    // grab temporary hard-coded sample analysis batch summary data (until web service endpoint is up-to-date)
     this.allAnalysisBatchSummaries = APP_UTILITIES.ANALYSIS_BATCH_SUMMARY_ENDPOINT;
 
-    //on init, call getAnalysisBatches function of the AnalysisBatchService, set results to the allAnalysisBatches var
+    // grab temporary hard-coded sample target summary data (until web service endpoint is up-to-date)
+    this.allTargets = APP_UTILITIES.TARGETS_ENDPOINT;
+
+    // on init, call getAnalysisBatches function of the AnalysisBatchService, set results to the allAnalysisBatches var
     // this._analysisBatchService.getAnalysisBatches()
     //   .subscribe(analysisBatches => this.allAnalysisBatches = analysisBatches,
     //   error => this.errorMessage = <any>error);
@@ -196,8 +200,13 @@ export class AnalysisBatchesComponent implements OnInit {
 
   })
 
+  //select target form
   selectTargetForm = new FormGroup({
-
+    id: new FormControl(''),
+    name: new FormControl(''),
+    code: new FormControl(''),
+    medium: new FormControl(''),
+    type: new FormControl('')
   });
 
 }
