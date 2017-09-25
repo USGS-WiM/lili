@@ -38,6 +38,7 @@ import { FilterBornOnDateFilter } from './FILTERS/filter-born-on-date-filter/fil
 import { DateAddedFilter} from './FILTERS/date-added-filter/date-added-filter.component';
 import { DateUpdatedFilter } from './FILTERS/date-updated-filter/date-updated-filter.component';
 import { AnalysisBatchDetailComponent } from './analysis-batches/analysis-batch-detail/analysis-batch-detail.component';
+import { ExtractWizardComponent } from './analysis-batches/extract-wizard/extract-wizard.component';
 
 @NgModule({
     declarations: [
@@ -65,7 +66,8 @@ import { AnalysisBatchDetailComponent } from './analysis-batches/analysis-batch-
         FilterBornOnDateFilter,
         DateAddedFilter,
         DateUpdatedFilter,
-        AnalysisBatchDetailComponent
+        AnalysisBatchDetailComponent,
+        ExtractWizardComponent
     ],
     imports: [
         BrowserAnimationsModule,
