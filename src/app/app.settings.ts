@@ -5,7 +5,7 @@ import { Headers } from '@angular/http';
 export class APP_SETTINGS {
 
     private static _environment: string = 'development';
-    private static _API_ENDPOINT: string = APP_SETTINGS._environment == 'production' ? 'https://lidedev.wim.usgs.gov/lideservices/' : 'https://lidedev.wim.usgs.gov/lideservices/';
+    private static _API_ENDPOINT: string = APP_SETTINGS._environment === 'production' ? 'https://lidedev.wim.usgs.gov/lideservices/' : 'https://lidedev.wim.usgs.gov/lideservices/';
     public static set environment(env: string) { this._environment = env };
     public static get API_USERNAME(): string { return 'admin' };
     public static get API_PASSWORD(): string { return 'lideadmin' };
@@ -21,7 +21,8 @@ export class APP_SETTINGS {
     public static get FILTER_TYPES_URL(): string { return this._API_ENDPOINT + 'filtertypes/' };
     public static get WATER_TYPES_URL(): string { return this._API_ENDPOINT + 'watertypes/' };
     public static get ANALYSIS_BATCHES_URL(): string { return this._API_ENDPOINT + 'analysisbatches/' };
-    public static get EXTRACTIONS_URL(): string { return this._API_ENDPOINT + 'extractions/' };
+    public static get EXTRACTIONS_URL(): string { return this._API_ENDPOINT + 'extractions/'; };
+    public static get EXTRACTION_METHODS_URL(): string { return this._API_ENDPOINT + 'extractionmethods/' };
     public static get INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'inhibitions/' };
     public static get RT_URL(): string { return this._API_ENDPOINT + 'reversetranscriptions/' };
     public static get REPLICATES_URL(): string { return this._API_ENDPOINT + 'pcrreplicates/' };
@@ -34,22 +35,22 @@ export class APP_SETTINGS {
 
     public static get MIN_JSON_HEADERS() { return new Headers({ 'Accept': 'application/json' }) };
     public static get JSON_HEADERS() { return new Headers({ 'Accept': 'application/json', 'Content-Type': 'application/json' }) };
-    //line below is for headers stored in local storage. todo: revisit and implement this
-    //public static get AUTH_HEADERS() { return new Headers({ 'Authorization': 'Basic ' + btoa(sessionStorage.getItem('username') + ':' + sessionStorage.getItem('password'))}) };
-    public static get AUTH_HEADERS() { return new Headers({ 'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD) }) };
+    // line below is for headers stored in local storage. todo: revisit and implement this
+    // public static get AUTH_HEADERS() { return new Headers({ 'Authorization': 'Basic ' + btoa(sessionStorage.getItem('username') + ':' + sessionStorage.getItem('password'))}) };
+    public static get AUTH_HEADERS() { return new Headers({ 'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD) }); };
     public static get MIN_AUTH_JSON_HEADERS() {
         return new Headers({
             'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD),
             'Accept': 'application/json'
         }
-        )
+        );
     };
     public static get AUTH_JSON_HEADERS() {
         return new Headers({
             'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD),
             'Accept': 'application/json', 'Content-Type': 'application/json'
         }
-        )
+        );
     };
 
 }

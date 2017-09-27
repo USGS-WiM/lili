@@ -3,9 +3,9 @@ import { FormControl, FormGroup, Validators } from "@angular/forms/";
 
 import { IAnalysisBatchSummary } from '../analysis-batch-summary';
 import { IAnalysisBatch } from '../analysis-batch';
-import { IExtraction } from '../../SHARED/extraction';
-import { IInhibition } from '../../SHARED/inhibition';
-import { IReverseTranscription } from '../../SHARED/reverse-transcription';
+import { IExtraction } from '../../extractions/extraction';
+import { IInhibition } from '../../inhibitions/inhibition';
+import { IReverseTranscription } from '../../reverse-transcriptions/reverse-transcription';
 
 import { AnalysisBatchService } from '../analysis-batch.service';
 
@@ -27,24 +27,41 @@ export class AnalysisBatchDetailComponent implements OnInit {
   rtDetailArray: IReverseTranscription[] = [];
   targetDetailArray;
 
+  editExtractionForm = new FormGroup({
+    id: new FormControl(''),
+    extraction_no: new FormControl(''),
+    extraction_volume: new FormControl(''),
+    elution_volume: new FormControl(''),
+    extraction_method: new FormControl('')
+  })
+
+  editRTForm = new FormGroup({
+    id: new FormControl(''),
+    reverse_transcription_no: new FormControl(''),
+    vol_in: new FormControl(''),
+    vol_out: new FormControl(''),
+    rt_cq: new FormControl('')
+
+  })
+
   constructor(private _analysisBatchService: AnalysisBatchService) { }
 
   ngOnInit() {
     this.loading = true;
 
     this.selectedABDetail = this._analysisBatchService.getAnalysisBatchData(this.selectedABSummary.id);
-    //console.log(this.selectedABDetail);
+    // console.log(this.selectedABDetail);
 
     this.extractionDetailArray = this.selectedABDetail.extractions;
 
-    //build the inhibition list by looping through the AB data and adding all inhibitions to a local array
+    // build the inhibition list by looping through the AB data and adding all inhibitions to a local array
     // for (let extraction of this.extractionDetailArray) {
     //   for (let inhibition of extraction.inhibitions) {
     //     this.inhibitionDetailArray.push(inhibition)
     //   }
     // }
 
-    //build the rt list by looping through the AB data and adding all rts to a local array
+    // build the rt list by looping through the AB data and adding all rts to a local array
     //  for (let extraction of this.extractionDetailArray) {
     //   for (let rt of extraction.reverse_transcriptions) {
     //     this.rtDetailArray.push(rt)
@@ -54,23 +71,6 @@ export class AnalysisBatchDetailComponent implements OnInit {
     this.loading = false;
 
   }
-
-  editExtractionForm = new FormGroup({
-    id: new FormControl(''), 
-    extraction_no: new FormControl(''), 
-    extraction_volume: new FormControl(''), 
-    elution_volume: new FormControl(''), 
-    extraction_method: new FormControl('')
-  })
-
-  editRTForm = new FormGroup({
-    id: new FormControl(''), 
-    reverse_transcription_no: new FormControl(''), 
-    vol_in: new FormControl(''), 
-    vol_out: new FormControl(''), 
-    rt_cq: new FormControl('')
-
-  })
 
   editExtraction(extraction) {
 

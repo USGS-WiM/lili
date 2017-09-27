@@ -6,14 +6,16 @@ import { IAnalysisBatchSummary } from './analysis-batch-summary';
 import { IAnalysisBatch } from './analysis-batch';
 
 import { IStudy } from '../studies/study';
-import { IExtraction } from '../SHARED/extraction';
-import { IInhibition } from '../SHARED/inhibition';
-import { IReverseTranscription } from '../SHARED/reverse-transcription';
+import { IExtraction } from '../extractions/extraction';
+import { IInhibition } from '../inhibitions/inhibition';
+import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcription';
 import { ITarget } from '../targets/target';
+import {  IExtractionMethod } from '../extractions/extraction-method';
 
 import { StudyService } from '../studies/study.service';
 import { AnalysisBatchService } from './analysis-batch.service';
 import { TargetService } from '../targets/target.service';
+import { ExtractionMethodService } from '../extractions/extraction-method.service';
 
 import { APP_UTILITIES } from '../app.utilities';
 
@@ -31,6 +33,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   allAnalysisBatchSummaries: IAnalysisBatchSummary[];
   allTargets: ITarget[];
+  allExtractionMethods: IExtractionMethod[];
 
   studies: IStudy[];
 
@@ -68,7 +71,7 @@ export class AnalysisBatchesComponent implements OnInit {
     extraction_date: new FormControl('')
   });
 
-  constructor(private _studyService: StudyService, private _analysisBatchService: AnalysisBatchService) { }
+  constructor(private _studyService: StudyService, private _analysisBatchService: AnalysisBatchService, private _targetService: TargetService, private _extractionMethodService: ExtractionMethodService) { }
 
   ngOnInit() {
 
@@ -95,8 +98,6 @@ export class AnalysisBatchesComponent implements OnInit {
   public handleDangerClick(): void {
     this.wizardExtract.finish();
   }
-
-
 
   public doCustomClick(buttonType: string): void {
     if ("custom-next" === buttonType) {

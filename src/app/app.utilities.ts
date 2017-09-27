@@ -7,8 +7,8 @@ import { ITarget } from './targets/target';
 @Injectable()
 export class APP_UTILITIES {
 
-	//SAMPLE_FORM_CONFIG is the config JSON object for the sample form, based on matrix selection
-	//object keys match the matrix ID
+	// SAMPLE_FORM_CONFIG is the config JSON object for the sample form, based on matrix selection
+	// object keys match the matrix ID
 	public static get SAMPLE_FORM_CONFIG(): Object {
 		return {
 			"6": {
