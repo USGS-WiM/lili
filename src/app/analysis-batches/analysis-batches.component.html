@@ -7,6 +7,106 @@
     </div>
 </div> -->
 
+<clr-wizard #wizardExtract [(clrWizardOpen)]="extractOpen" clrWizardSize="xl">
+    <clr-wizard-title>Extract Samples in Analysis Batch {{selectedAnalysisBatchID}}</clr-wizard-title>
+
+    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+    <clr-wizard-page [clrWizardPageNextDisabled]="selected.length < 1" (clrWizardPageCustomButton)="doCustomClick($event)">
+        <ng-template clrPageTitle>Target Selection</ng-template>
+
+        <div class="row">
+            <div class="col-lg-10 col-md-10">
+                <p>Select targets to analyze for this extraction from the table below
+                    <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
+
+                        <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+                        <clr-dg-column [clrDgField]="'code'">Code</clr-dg-column>
+                        <clr-dg-column [clrDgField]="'medium'">Medium</clr-dg-column>
+                        <clr-dg-column [clrDgField]="'type'">Type</clr-dg-column>
+
+                        <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
+                            <clr-dg-cell>{{target.name}}</clr-dg-cell>
+                            <clr-dg-cell>{{target.code}}</clr-dg-cell>
+                            <clr-dg-cell>{{target.medium}}</clr-dg-cell>
+                            <clr-dg-cell>{{target.type}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>{{allTargets.length}} targets</clr-dg-footer>
+                    </clr-datagrid>
+
+            </div>
+            <div class="col-lg-2 col-md-2"></div>
+        </div>
+
+        <ng-template clrPageButtons>
+            <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-next'">Next</clr-wizard-button>
+        </ng-template>
+
+    </clr-wizard-page>
+    <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
+        <ng-template clrPageTitle>Replicate Count</ng-template>
+
+        <p>Select desired number of replicates for each selected target. To update the targets list, return to Target Selection
+            page.
+            <form class="compact">
+                <section class="form-block">
+                    <div class="form-group" *ngFor="let target of selected">
+                        <label>{{target.name}} ({{target.code}})</label>
+                        <input type="number" class="target-count-input" [(ngModel)]="target.count" name="{{target.name}}">
+                    </div>
+                </section>
+            </form>
+
+
+            <ng-template clrPageButtons>
+                <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
+                <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
+                <clr-wizard-button [type]="'custom-next-replicates'">Next</clr-wizard-button>
+            </ng-template>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Extraction Data</ng-template>
+        <form id="extractionForm" class="compact" [formGroup]="extractionForm">
+            <section class="form-block">
+
+                <div class="form-group">
+                    <label for="extractVol">Extraction Volume</label>
+                    <input id="extractVol" type="text" size="10" formControlName="extraction_volume">
+                </div>
+
+                <div class="form-group">
+                    <label for="elutionVol">Elution Volume</label>
+                    <input id="elutionVol" type="text" size="10" formControlName="elution_volume">
+                </div>
+
+                <div class="form-group">
+                    <label for="elutionVol">Extraction Method</label>
+                    <div class="select">
+                        <select id="extractionMethodSelect" name="extraction_method" formControlName="extraction_method">
+                            <option *ngFor="let method of extractionMethods" [value]="method.id">{{method.name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="extractionDateInput" class="required">Extraction Date</label>
+                    <input type="date" id="extractionDateInput" formControlName="extraction_date">
+                </div>
+
+            </section>
+        </form>
+    </clr-wizard-page>
+</clr-wizard>
+
+<!-- <extract-wizard [extractOpen]="extractOpen" [selectedAnalysisBatchID]="selectedAnalysisBatchID"></extract-wizard> -->
+
 <!-- edit analysis batch modal -->
 <clr-modal [(clrModalOpen)]="showHideEdit">
     <h3 class="modal-title">Edit Analysis Batch Details</h3>
@@ -203,49 +303,6 @@
 </clr-modal>
 <!-- end target detail modal -->
 
-<!-- begin extract wizard -->
-<clr-wizard #wizardextract [(clrWizardOpen)]="extractOpen" clrWizardSize="xl">
-    <clr-wizard-title>Extract Samples in Analysis Batch {{selectedAnalysisBatchID}}</clr-wizard-title>
-
-    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
-    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
-    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-    <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
-
-    <clr-wizard-page>
-        <ng-template clrPageTitle>Select Targets</ng-template>
-        <form id="selectTargetForm" class="compact" [formGroup]="selectTargetForm" (ngSubmit)="onSubmit()">
-            <section class="form-block">
-                <!-- <label>Select Boxes</label> -->
-                <div class="form-group">
-                    <label for="select_targets">qPCR targets</label>
-                    <div class="select multiple">
-                        <select id="select_targets" multiple>
-                            <option>Enterovirus (E)</option>
-                            <option>G1 Norovirus (G1)</option>
-                            <option>G2 Norovirus (G2)</option>
-                            <option>Adenovirus (A)</option>
-                            <option>Adenovirus AA (AA)</option>
-                            <option>Adenovirus AB (AB)</option>
-                            <option>HAV (H)</option>                   
-                        </select>
-                    </div>
-                </div>
-                <p>Form value: {{ selectTargetForm.value | json }}</p>
-            </section>
-        </form>
-    </clr-wizard-page>
-    <clr-wizard-page>
-        <ng-template clrPageTitle>Extraction Data</ng-template>
-        ...
-    </clr-wizard-page>
-
-    <clr-wizard-page>
-        <ng-template clrPageTitle>Page 3</ng-template>
-        ...
-    </clr-wizard-page>
-</clr-wizard>
-<!-- end extract wizard -->
 
 
 <!-- begin Analysis batches table -->
@@ -257,12 +314,12 @@
                     All Analysis Batches
                 </div>
                 <div class="card-text">
-                    <clr-datagrid [(clrDgSelected)]="selected">
+                    <clr-datagrid [(clrDgSingleSelected)]="selectedAB">
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editAB(selected[0])"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Analysis Batch Details</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="extractAB(selected[0])"><clr-icon shape="login"></clr-icon> Extract</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Analysis Batch Details</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)"><clr-icon shape="login"></clr-icon> Extract</button>
                                 <!--<button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
                                 <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>
                                 <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="note-edit"size="16"></clr-icon> Here</button> -->

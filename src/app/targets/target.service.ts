@@ -19,6 +19,12 @@ export class TargetService {
     return body.data || {};
   }
 
+
+    // **********************************************Temporary**************************************************** */
+  // temporary function to return AB details, in place until AB endpoint is functional
+  public getTargetsData(){}
+
+
   public getTargets(): Observable<ITarget[]> {
 
     let options = new RequestOptions({
@@ -27,7 +33,7 @@ export class TargetService {
 
     return this._http.get(APP_SETTINGS.TARGETS_URL, options)
       .map((response: Response) => <ITarget[]>response.json())
-      //.do(data => console.log('Targets data: ' + JSON.stringify(data)))
+      // .do(data => console.log('Targets data: ' + JSON.stringify(data)))
       .catch(this.handleError);
 
   }
