@@ -387,11 +387,11 @@ export class APP_UTILITIES {
 
 	}
 
-	// temporary use hard-coded target sample data object
 	public static get ANALYSIS_BATCH_DETAIL_ENDPOINT(): IAnalysisBatch[] {
 		return []
 	}
 
+	// temporary use hard-coded target sample data object
 	public static get TARGETS_ENDPOINT(): ITarget[] {
 		return [
 			{
@@ -451,6 +451,95 @@ export class APP_UTILITIES {
 				"type": "RNA"
 			}
 
+		]
+
+	}
+
+	public static get INHIBITIONS_PER_SAMPLE_ENDPOINT() {
+		return [
+			{
+				"id": 1003,
+				"sample_type": 1,
+				"sample_description": "test",
+				"inhibitions": [
+					{
+						"id": 1877,
+						"inhibition_number": 1,
+						"type": "DNA",
+						"dilution_factor": 10,
+						"inhibition_date": "2017-09-13",
+						"created_date": "2017-09-26",
+						"created_by": 1,
+						"modified_date": "2017-09-26",
+						"modified_by": 1
+					}
+				]
+			},
+			{
+				"id": 1237,
+				"sample_type": 1,
+				"sample_description": "test",
+				"inhibitions": [
+					{
+						"id": 1547,
+						"inhibition_number": 1,
+						"type": "DNA",
+						"dilution_factor": 5,
+						"inhibition_date": "2017-09-13",
+						"created_date": "2017-09-26",
+						"created_by": 1,
+						"modified_date": "2017-09-26",
+						"modified_by": 1
+					}
+				]
+			},
+			{
+				"id": 1678,
+				"sample_type": 1,
+				"sample_description": "test",
+				"inhibitions": [
+					{
+						"id": 1888,
+						"inhibition_number": 1,
+						"type": "DNA",
+						"dilution_factor": 5,
+						"inhibition_date": "2017-09-13",
+						"created_date": "2017-09-26",
+						"created_by": 1,
+						"modified_date": "2017-09-26",
+						"modified_by": 1
+					}
+				]
+			},
+			{
+				"id": 1456,
+				"sample_type": 1,
+				"sample_description": "test",
+				"inhibitions": [
+					{
+						"id": 1654,
+						"inhibition_number": 1,
+						"type": "RNA",
+						"dilution_factor": 1,
+						"inhibition_date": "2017-09-13",
+						"created_date": "2017-09-26",
+						"created_by": 1,
+						"modified_date": "2017-09-26",
+						"modified_by": 1
+					},
+					{
+						"id": 1655,
+						"inhibition_number": 1,
+						"type": "DNA",
+						"dilution_factor": 5,
+						"inhibition_date": "2017-09-13",
+						"created_date": "2017-09-26",
+						"created_by": 1,
+						"modified_date": "2017-09-26",
+						"modified_by": 1
+					}
+				]
+			}
 		]
 
 	}

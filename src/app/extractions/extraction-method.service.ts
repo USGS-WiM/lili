@@ -20,7 +20,7 @@ export class ExtractionMethodService {
     return body.data || {};
   }
 
-  getExtractionMehods(): Observable<IExtractionMethod[]> {
+  getExtractionMethods(): Observable<IExtractionMethod[]> {
 
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 

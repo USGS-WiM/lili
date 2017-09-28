@@ -29,6 +29,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   public showWarning = false;
 
+  inhibitionsExist: boolean = false;
+
   extractOpen: boolean = false;
 
   allAnalysisBatchSummaries: IAnalysisBatchSummary[];
@@ -42,6 +44,9 @@ export class AnalysisBatchesComponent implements OnInit {
 
   selectedAnalysisBatchID: number;
   selectedAnalysisBatchData: IAnalysisBatch;
+
+  private inhibitionsPerSample = [];
+  abInhibitionCount = 0;
 
   showHideEdit: boolean = false;
   showHideExtractionDetailModal: boolean = false;
@@ -64,7 +69,7 @@ export class AnalysisBatchesComponent implements OnInit {
   });
 
   // extraction form
-  extractionForm = new FormGroup({
+  addExtractionForm = new FormGroup({
     extraction_volume: new FormControl(''),
     elution_volume: new FormControl(''),
     extraction_method: new FormControl(''),
@@ -81,11 +86,18 @@ export class AnalysisBatchesComponent implements OnInit {
     // grab temporary hard-coded sample target summary data (until web service endpoint is up-to-date)
     this.allTargets = APP_UTILITIES.TARGETS_ENDPOINT;
 
+    // grab temporary hard-coded inhibitionsPerSample object (until web service endpoint is up-to-date)
+    this.inhibitionsPerSample = APP_UTILITIES.INHIBITIONS_PER_SAMPLE_ENDPOINT;
 
     // on init, call getAnalysisBatches function of the AnalysisBatchService, set results to the allAnalysisBatches var
     // this._analysisBatchService.getAnalysisBatches()
     //   .subscribe(analysisBatches => this.allAnalysisBatches = analysisBatches,
     //   error => this.errorMessage = <any>error);
+
+    // on init, call getExtractionMethods function of the EXtractionMethodService, set results to allExtractionMethods var
+    this._extractionMethodService.getExtractionMethods()
+    .subscribe(extractionMethods => this.allExtractionMethods = extractionMethods,
+    error => this.errorMessage = <any>error);
 
 
     // on init, call getStudies function of the StudyService, set results to the studies var
@@ -102,22 +114,13 @@ export class AnalysisBatchesComponent implements OnInit {
   public doCustomClick(buttonType: string): void {
     if ("custom-next" === buttonType) {
 
-      console.log(this.selected);
+      // add the 'count' property to the selected (targets) object
       this.selected.map((target) => {
         target.count = 0;
         return target;
       });
       this.wizardExtract.next();
     }
-
-    if ("custom-next-replicates" === buttonType) {
-
-      // createFormGroup with some constant_targetName
-
-      console.log("2nd: ", this.selected);
-      this.wizardExtract.next();
-    }
-
 
     if ("custom-previous" === buttonType) {
       this.wizardExtract.previous();
@@ -139,8 +142,23 @@ export class AnalysisBatchesComponent implements OnInit {
 
   extractAB(selectedAB) {
     // open extract wizard and begin
+
+    this.abInhibitionCount = 0;
     this.extractOpen = true;
     this.selectedAnalysisBatchID = selectedAB.id;
+
+    // TODO: retrieve the inhibitons per sample list from web services
+
+    
+    //check the this.inhibitionsPerSample for inhibitions
+    for (let sample of this.inhibitionsPerSample) {
+        this.abInhibitionCount += sample.inhibitions.length;
+    }
+    if (this.abInhibitionCount > 0){
+      this.inhibitionsExist = true;
+    }
+
+
   }
 
   openExtractionDetails(abID) {

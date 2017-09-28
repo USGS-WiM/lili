@@ -49,7 +49,10 @@
         </ng-template>
 
     </clr-wizard-page>
-    <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
+
+
+
+    <clr-wizard-page>
         <ng-template clrPageTitle>Replicate Count</ng-template>
 
         <p>Select desired number of replicates for each selected target. To update the targets list, return to Target Selection
@@ -62,18 +65,11 @@
                     </div>
                 </section>
             </form>
-
-
-            <ng-template clrPageButtons>
-                <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
-                <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
-                <clr-wizard-button [type]="'custom-next-replicates'">Next</clr-wizard-button>
-            </ng-template>
     </clr-wizard-page>
 
     <clr-wizard-page>
         <ng-template clrPageTitle>Extraction Data</ng-template>
-        <form id="extractionForm" class="compact" [formGroup]="extractionForm">
+        <form id="addExtractionForm" class="compact" [formGroup]="addExtractionForm" (ngSubmit)="onSubmit('add', addExtractionForm.value)">
             <section class="form-block">
 
                 <div class="form-group">
@@ -90,7 +86,7 @@
                     <label for="elutionVol">Extraction Method</label>
                     <div class="select">
                         <select id="extractionMethodSelect" name="extraction_method" formControlName="extraction_method">
-                            <option *ngFor="let method of extractionMethods" [value]="method.id">{{method.name}}</option>
+                            <option *ngFor="let method of allExtractionMethods" [value]="method.id">{{method.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -103,6 +99,49 @@
             </section>
         </form>
     </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Inhibition</ng-template>
+
+        <div>
+
+            <p> LILI has detected {{abInhibitionCount}} existing inhibitions for this Analysis Batch.
+                    <form>
+                            <section class="form-block">
+                                <div>
+                                    <clr-checkbox name="inhibitionActionCheckbox" id="" [(ngModel)]="appyExisting">
+                                        Apply existing inhibitions to this extraction
+                                    </clr-checkbox>
+                                </div>
+                            </section>
+                        </form>
+                <p>Would you like to create a new inhibition for the samples in this Analysis Batch?
+                    <div>
+                        <form>
+                            <section class="form-block">
+                                <label>New Inhibition</label>
+                                <div class="form-group">
+
+                                    <div class="form-group">
+                                        <label for="elutionVol">Inhibition Type</label>
+                                        <div class="select">
+                                            <select id="inhibitionTypeSelect" name="inhibition_type">
+                                            <option [value]="DNA">DNA</option>
+                                            <option [value]="RNA">RNA</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </section>
+                        </form>
+                    </div>
+        </div>
+        <div>
+        </div>
+
+    </clr-wizard-page>
+
 </clr-wizard>
 
 <!-- edit analysis batch modal -->
