@@ -102,44 +102,33 @@
 
     <clr-wizard-page>
         <ng-template clrPageTitle>Inhibition</ng-template>
-
         <div>
+            <p><span>lili has detected an existing inhibition for this Analysis Batch.</span><br>
 
-            <p> LILI has detected {{abInhibitionCount}} existing inhibitions for this Analysis Batch.
-                    <form>
-                            <section class="form-block">
-                                <div>
-                                    <clr-checkbox name="inhibitionActionCheckbox" id="" [(ngModel)]="appyExisting">
-                                        Apply existing inhibitions to this extraction
-                                    </clr-checkbox>
-                                </div>
-                            </section>
-                        </form>
-                <p>Would you like to create a new inhibition for the samples in this Analysis Batch?
-                    <div>
-                        <form>
-                            <section class="form-block">
-                                <label>New Inhibition</label>
-                                <div class="form-group">
+                <clr-dropdown>
+                    <button type="button" class="btn btn-primary" clrDropdownTrigger>
+                        Create Inhibition
+                        <clr-icon shape="caret down"></clr-icon>
+                    </button>
+                    <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
+                        <button type="button" clrDropdownItem>Create New Inhibition</button>
+                        <button type="button" clrDropdownItem>Apply Existing Inhibition</button>
+                    </clr-dropdown-menu>
+                    
+                </clr-dropdown>
 
-                                    <div class="form-group">
-                                        <label for="elutionVol">Inhibition Type</label>
-                                        <div class="select">
-                                            <select id="inhibitionTypeSelect" name="inhibition_type">
-                                            <option [value]="DNA">DNA</option>
-                                            <option [value]="RNA">RNA</option>
-                                            </select>
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </section>
-                        </form>
-                    </div>
+                <!-- <clr-dropdown>
+                    <button class="dropdown-toggle btn btn-primary" type="button">
+                        Options
+                        <clr-icon shape="caret down"></clr-icon>
+                    </button>
+                    <clr-dropdown-menu clrPosition="top-left" *clrIfOpen>
+                        <button type="button" clrDropdownItem>Create New Inhibition</button>
+                        <button type="button" clrDropdownItem>Apply Existing Inhibition</button>
+                    </clr-dropdown-menu>
+                </clr-dropdown> -->
         </div>
-        <div>
-        </div>
-
     </clr-wizard-page>
 
 </clr-wizard>
