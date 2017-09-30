@@ -1,11 +1,11 @@
 export interface IInhibition {
-    id: number,
-    inhibition_no,
-    dilution: number,
-    type: string,
+    id: number;
+    inhibition_no;
+    type: string;
+    dilution_factor: number;
     inhibition_date: string;
-    insert_date: string,
-    insert_user:string
-    update_date: string,
-    update_user:string
+    created_date: string;
+    created_by: string;
+    modified_date: string;
+    modified_by: string;
 }

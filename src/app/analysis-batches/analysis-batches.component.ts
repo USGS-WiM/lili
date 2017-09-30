@@ -32,6 +32,7 @@ export class AnalysisBatchesComponent implements OnInit {
   inhibitionsExist: boolean = false;
 
   extractOpen: boolean = false;
+  useExistingInhibition: boolean = false;
 
   allAnalysisBatchSummaries: IAnalysisBatchSummary[];
   allTargets: ITarget[];
@@ -45,8 +46,10 @@ export class AnalysisBatchesComponent implements OnInit {
   selectedAnalysisBatchID: number;
   selectedAnalysisBatchData: IAnalysisBatch;
 
-  private inhibitionsPerSample = [];
+  inhibitionsPerSample = [];
+  // may not need this abInhibitionCount var, consider removing
   abInhibitionCount = 0;
+  abInhibitions: IInhibition[];
 
   showHideEdit: boolean = false;
   showHideExtractionDetailModal: boolean = false;
@@ -75,6 +78,16 @@ export class AnalysisBatchesComponent implements OnInit {
     extraction_method: new FormControl(''),
     extraction_date: new FormControl('')
   });
+
+  // add inhibition form
+  addInhibitionForm = new FormGroup({
+    type: new FormControl('')
+  })
+
+  applyInhibition_batchForm = new FormGroup({
+    dnaInhibition: new FormControl(''),
+    rnaInhibition: new FormControl('')
+  })
 
   constructor(private _studyService: StudyService, private _analysisBatchService: AnalysisBatchService, private _targetService: TargetService, private _extractionMethodService: ExtractionMethodService) { }
 
@@ -144,6 +157,7 @@ export class AnalysisBatchesComponent implements OnInit {
     // open extract wizard and begin
 
     this.abInhibitionCount = 0;
+    this.abInhibitions = [];
     this.extractOpen = true;
     this.selectedAnalysisBatchID = selectedAB.id;
 
@@ -152,13 +166,20 @@ export class AnalysisBatchesComponent implements OnInit {
     
     //check the this.inhibitionsPerSample for inhibitions
     for (let sample of this.inhibitionsPerSample) {
-        this.abInhibitionCount += sample.inhibitions.length;
+        //this.abInhibitionCount += sample.inhibitions.length;
+        for (let inhibition of sample.inhibitions) {
+          this.abInhibitions.push(inhibition);
+        }
     }
-    if (this.abInhibitionCount > 0){
-      this.inhibitionsExist = true;
+    if (this.abInhibitions.length > 0){
+       this.inhibitionsExist = true;
     }
 
 
+  }
+
+  showApplyExistingCard(){
+    this.useExistingInhibition = true;
   }
 
   openExtractionDetails(abID) {
@@ -214,9 +235,9 @@ export class AnalysisBatchesComponent implements OnInit {
 
     this.rtDetailArray = [];
 
-    // check if AB ID matches the current focusAnalysisBatchID. 
+    // check if AB ID matches the current focusAnalysisBatchID.
     // This will mean the desired AB data is already stored in the variable and does not need to be retrieved
-    if (abID == this.focusAnalysisBatchID) {
+    if (abID === this.focusAnalysisBatchID) {
       this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
     } else {
       // set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
