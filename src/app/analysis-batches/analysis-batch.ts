@@ -1,4 +1,4 @@
-import { IExtraction } from '../SHARED/extraction';
+import { IExtraction } from '../extractions/extraction';
 
 export interface IAnalysisBatch {
     id: number;

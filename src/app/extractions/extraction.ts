@@ -1,5 +1,5 @@
-import { IInhibition } from './inhibition';
-import { IReverseTranscription } from './reverse-transcription';
+import { IInhibition } from '../inhibitions/inhibition';
+import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcription';
 
 export interface IExtraction {
     id: number
