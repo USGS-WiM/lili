@@ -499,11 +499,37 @@
 
 <!-- begin analysis batch modal -->
 <clr-modal [(clrModalOpen)]="showHideABModal">
-    <h3 class="modal-title">Add Sample to Analysis Batch</h3>
+    <h3 class="modal-title">Create Analysis Batch</h3>
     <div class="modal-body">
 
         <div class="row">
             <div class="col-lg-12">
+
+                <form id="createABForm" class="compact" [formGroup]="createABForm" (ngSubmit)="onSubmit('edit', createABForm.value)" [hidden]="submitted">
+                    <section class="form-block">
+
+                        <clr-stack-label>You have selected the following samples for inclusion in a new Analysis Batch:</clr-stack-label>
+
+                        <ul class="list compact">
+                            <li *ngFor="let sample of selected">Sample {{sample.id}} ({{sample.study.name }})</li>
+                        </ul>
+                        <p>
+
+                        <div class="form-group">
+                            <label for="abDescInput">Analysis Batch Description</label>
+                            <textarea id="abDescInput" rows="2" formControlName="analysis_batch_description" style="max-width:25em"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="abNotesInput">Analysis Batch Notes</label>
+                            <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid">Submit</button>
+                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+
+                    </section>
+                </form>
 
             </div>
             <!--<div class="col-lg-6">
@@ -920,30 +946,30 @@
                                 </div>
                             </clr-dg-cell>-->
                             <clr-dg-cell>{{sample.id}}</clr-dg-cell>
-                            <clr-dg-cell></clr-dg-cell>
+                            <clr-dg-cell>{{analysisbatches}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.studies">{{sample.study | displayValue:'name':this.studies}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type | displayValue:'name':this.sampleTypes}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.studies">{{sample.study.name}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type.name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type | displayValue:'name':this.matrices}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type.name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
 
-                            <clr-dg-cell>X</clr-dg-cell>
-                            <clr-dg-cell>X</clr-dg-cell>
-                            <clr-dg-cell>X</clr-dg-cell>
+                            <clr-dg-cell>{{sample.final_concentrated_sample_volume}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.final_concentrated_sample_volume_type}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.final_concentrated_sample_volume_notes}}</clr-dg-cell>
 
                             <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.air_subsample_volume}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type | displayValue:'name':this.filterTypes}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type.name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_born_on_date | date:'shortDate'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.users">{{sample.sampler_name | displayValue:'username':this.users}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.users">{{sample.sampler_name.name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_notes}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.insert_user}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.insert_date | date:'shortDate'}}</clr-dg-cell>

@@ -32,8 +32,12 @@ export interface ISample {
     air_subsample_volume: number;
     post_dilution_volume: number;
     pump_flow_rate: number;
-    insert_date: string;
-    insert_user: string;
-    update_date: string;
-    update_user: string;
+    final_concentrated_sample_volume: number;
+    final_concentrated_sample_volume_type: number;
+    final_concentrated_sample_volume_notes: string;
+    analysisbatches: number[];
+    created_date: string;
+    created_by: string;
+    modified_date: string;
+    modified_by: string;
 }

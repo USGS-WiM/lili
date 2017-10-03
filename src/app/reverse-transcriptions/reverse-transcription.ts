@@ -6,8 +6,8 @@ export interface IReverseTranscription {
     vol_out: number;
     rt_cq: number;
     rt_date: string;
-    insert_date: string;
-    insert_user: string;
-    update_date: string;
-    update_user: string;
+    created_date: string;
+    created_by: string;
+    modified_date: string;
+    modified_by: string;
 }

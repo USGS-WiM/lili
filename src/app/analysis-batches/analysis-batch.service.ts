@@ -76,24 +76,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1090,
                   "inhibition_no": 1,
-                  "dilution": 32,
+                  "dilution_factor": 32,
                   "type": "RNA",
                   "inhibition_date": "2013-04-17",
-                  "insert_date": "2014-12-02",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2016-04-05",
-                  "update_user": "sspencer"
+                  "created_date": "2014-12-02",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2016-04-05",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1032,
                   "inhibition_no": 2,
-                  "dilution": 27,
+                  "dilution_factor": 27,
                   "type": "DNA",
                   "inhibition_date": "2016-10-14",
-                  "insert_date": "2015-10-05",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2012-07-14",
-                  "update_user": "sspencer"
+                  "created_date": "2015-10-05",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2012-07-14",
+                  "modified_by": "sspencer"
                 }
               ],
               "reverse_transcriptions": [
@@ -105,10 +105,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.27,
                   "rt_cq": 1.51,
                   "rt_date": "2016-09-14",
-                  "insert_date": "2014-08-19",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2017-09-01",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2014-08-19",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2017-09-01",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1084,
@@ -118,10 +118,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.61,
                   "rt_cq": 1.33,
                   "rt_date": "2016-08-14",
-                  "insert_date": "2015-01-29",
-                  "insert_user": "sspencer",
-                  "update_date": "2014-10-14",
-                  "update_user": "afirnstahl"
+                  "created_date": "2015-01-29",
+                  "created_by": "sspencer",
+                  "modified_date": "2014-10-14",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "targets": [
@@ -152,24 +152,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1031,
                   "inhibition_no": 1,
-                  "dilution": 8,
+                  "dilution_factor": 8,
                   "type": "RNA",
                   "inhibition_date": "2016-09-17",
-                  "insert_date": "2015-10-09",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2017-01-12",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2015-10-09",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2017-01-12",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1044,
                   "inhibition_no": 2,
-                  "dilution": 12,
+                  "dilution_factor": 12,
                   "type": "RNA",
                   "inhibition_date": "2016-07-10",
-                  "insert_date": "2015-02-04",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2012-08-14",
-                  "update_user": "sspencer"
+                  "created_date": "2015-02-04",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2012-08-14",
+                  "modified_by": "sspencer"
                 }
               ],
               "reverse_transcriptions": [
@@ -181,10 +181,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.57,
                   "rt_cq": 1.59,
                   "rt_date": "2016-06-02",
-                  "insert_date": "2014-06-09",
-                  "insert_user": "sspencer",
-                  "update_date": "2014-01-22",
-                  "update_user": "sspencer"
+                  "created_date": "2014-06-09",
+                  "created_by": "sspencer",
+                  "modified_date": "2014-01-22",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1008,
@@ -194,10 +194,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.18,
                   "rt_cq": 0.96,
                   "rt_date": "2014-03-05",
-                  "insert_date": "2014-12-04",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-05-16",
-                  "update_user": "sspencer"
+                  "created_date": "2014-12-04",
+                  "created_by": "sspencer",
+                  "modified_date": "2016-05-16",
+                  "modified_by": "sspencer"
                 }
               ],
               "targets": [
@@ -218,10 +218,10 @@ export class AnalysisBatchService {
               ]
             }
           ],
-          "insert_date": "2016-06-12",
-          "insert_user": "sspencer",
-          "update_date": "2017-05-07",
-          "update_user": "jpstokdyk"
+          "created_date": "2016-06-12",
+          "created_by": "sspencer",
+          "modified_date": "2017-05-07",
+          "modified_by": "jpstokdyk"
         }
       case 1001:
         return {
@@ -274,24 +274,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1049,
                   "inhibition_no": 1,
-                  "dilution": 45,
+                  "dilution_factor": 45,
                   "type": "DNA",
                   "inhibition_date": "2015-07-01",
-                  "insert_date": "2016-12-03",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2013-05-26",
-                  "update_user": "afirnstahl"
+                  "created_date": "2016-12-03",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2013-05-26",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1014,
                   "inhibition_no": 2,
-                  "dilution": 31,
+                  "dilution_factor": 31,
                   "type": "RNA",
                   "inhibition_date": "2016-04-11",
-                  "insert_date": "2014-06-17",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2015-05-28",
-                  "update_user": "sspencer"
+                  "created_date": "2014-06-17",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2015-05-28",
+                  "modified_by": "sspencer"
                 }
               ],
               "reverse_transcriptions": [
@@ -303,10 +303,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.29,
                   "rt_cq": 0.85,
                   "rt_date": "2012-11-30",
-                  "insert_date": "2015-03-20",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2012-08-20",
-                  "update_user": "afirnstahl"
+                  "created_date": "2015-03-20",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2012-08-20",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1066,
@@ -316,10 +316,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.31,
                   "rt_cq": 0.61,
                   "rt_date": "2015-02-10",
-                  "insert_date": "2016-07-24",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2017-04-21",
-                  "update_user": "sspencer"
+                  "created_date": "2016-07-24",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2017-04-21",
+                  "modified_by": "sspencer"
                 }
               ],
               "targets": [
@@ -350,24 +350,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1100,
                   "inhibition_no": 1,
-                  "dilution": 23,
+                  "dilution_factor": 23,
                   "type": "RNA",
                   "inhibition_date": "2015-11-21",
-                  "insert_date": "2012-05-25",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2016-03-19",
-                  "update_user": "afirnstahl"
+                  "created_date": "2012-05-25",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2016-03-19",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1012,
                   "inhibition_no": 2,
-                  "dilution": 13,
+                  "dilution_factor": 13,
                   "type": "RNA",
                   "inhibition_date": "2015-04-08",
-                  "insert_date": "2015-08-23",
-                  "insert_user": "sspencer",
-                  "update_date": "2014-03-07",
-                  "update_user": "sspencer"
+                  "created_date": "2015-08-23",
+                  "created_by": "sspencer",
+                  "modified_date": "2014-03-07",
+                  "modified_by": "sspencer"
                 }
               ],
               "reverse_transcriptions": [
@@ -379,10 +379,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.1,
                   "rt_cq": 1.24,
                   "rt_date": "2017-08-13",
-                  "insert_date": "2016-04-21",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2016-04-20",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2016-04-21",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2016-04-20",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1048,
@@ -392,10 +392,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.55,
                   "rt_cq": 1.5,
                   "rt_date": "2014-07-25",
-                  "insert_date": "2013-02-07",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2016-11-25",
-                  "update_user": "afirnstahl"
+                  "created_date": "2013-02-07",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2016-11-25",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "targets": [
@@ -416,10 +416,10 @@ export class AnalysisBatchService {
               ]
             }
           ],
-          "insert_date": "2013-03-02",
-          "insert_user": "jpstokdyk",
-          "update_date": "2014-01-20",
-          "update_user": "jpstokdyk"
+          "created_date": "2013-03-02",
+          "created_by": "jpstokdyk",
+          "modified_date": "2014-01-20",
+          "modified_by": "jpstokdyk"
         }
       case 1002:
         return {
@@ -472,24 +472,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1071,
                   "inhibition_no": 1,
-                  "dilution": 31,
+                  "dilution_factor": 31,
                   "type": "RNA",
                   "inhibition_date": "2015-10-22",
-                  "insert_date": "2015-05-04",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2013-07-07",
-                  "update_user": "afirnstahl"
+                  "created_date": "2015-05-04",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2013-07-07",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1056,
                   "inhibition_no": 2,
-                  "dilution": 42,
+                  "dilution_factor": 42,
                   "type": "RNA",
                   "inhibition_date": "2017-01-19",
-                  "insert_date": "2012-04-17",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2015-04-21",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2012-04-17",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2015-04-21",
+                  "modified_by": "jpstokdyk"
                 }
               ],
               "reverse_transcriptions": [
@@ -501,10 +501,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.02,
                   "rt_cq": 1.2,
                   "rt_date": "2013-05-27",
-                  "insert_date": "2012-02-04",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2015-04-01",
-                  "update_user": "afirnstahl"
+                  "created_date": "2012-02-04",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2015-04-01",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1084,
@@ -514,10 +514,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.82,
                   "rt_cq": 1.52,
                   "rt_date": "2015-12-12",
-                  "insert_date": "2013-12-22",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2016-11-14",
-                  "update_user": "afirnstahl"
+                  "created_date": "2013-12-22",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2016-11-14",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "targets": [
@@ -548,24 +548,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1016,
                   "inhibition_no": 1,
-                  "dilution": 30,
+                  "dilution_factor": 30,
                   "type": "DNA",
                   "inhibition_date": "2014-09-15",
-                  "insert_date": "2017-09-07",
-                  "insert_user": "sspencer",
-                  "update_date": "2014-10-11",
-                  "update_user": "sspencer"
+                  "created_date": "2017-09-07",
+                  "created_by": "sspencer",
+                  "modified_date": "2014-10-11",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1019,
                   "inhibition_no": 2,
-                  "dilution": 15,
+                  "dilution_factor": 15,
                   "type": "RNA",
                   "inhibition_date": "2017-05-24",
-                  "insert_date": "2017-02-20",
-                  "insert_user": "sspencer",
-                  "update_date": "2013-04-15",
-                  "update_user": "sspencer"
+                  "created_date": "2017-02-20",
+                  "created_by": "sspencer",
+                  "modified_date": "2013-04-15",
+                  "modified_by": "sspencer"
                 }
               ],
               "reverse_transcriptions": [
@@ -577,10 +577,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.36,
                   "rt_cq": 2.18,
                   "rt_date": "2016-04-12",
-                  "insert_date": "2013-12-03",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2012-08-24",
-                  "update_user": "sspencer"
+                  "created_date": "2013-12-03",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2012-08-24",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1094,
@@ -590,10 +590,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.92,
                   "rt_cq": 0.46,
                   "rt_date": "2016-06-21",
-                  "insert_date": "2013-06-29",
-                  "insert_user": "sspencer",
-                  "update_date": "2017-05-23",
-                  "update_user": "afirnstahl"
+                  "created_date": "2013-06-29",
+                  "created_by": "sspencer",
+                  "modified_date": "2017-05-23",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "targets": [
@@ -614,10 +614,10 @@ export class AnalysisBatchService {
               ]
             }
           ],
-          "insert_date": "2014-09-28",
-          "insert_user": "jpstokdyk",
-          "update_date": "2014-02-13",
-          "update_user": "jpstokdyk"
+          "created_date": "2014-09-28",
+          "created_by": "jpstokdyk",
+          "modified_date": "2014-02-13",
+          "modified_by": "jpstokdyk"
         }
       case 1003:
         return {
@@ -670,24 +670,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1008,
                   "inhibition_no": 1,
-                  "dilution": 29,
+                  "dilution_factor": 29,
                   "type": "RNA",
                   "inhibition_date": "2012-10-27",
-                  "insert_date": "2012-02-05",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-02-18",
-                  "update_user": "afirnstahl"
+                  "created_date": "2012-02-05",
+                  "created_by": "sspencer",
+                  "modified_date": "2016-02-18",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1058,
                   "inhibition_no": 2,
-                  "dilution": 6,
+                  "dilution_factor": 6,
                   "type": "RNA",
                   "inhibition_date": "2012-10-01",
-                  "insert_date": "2013-05-19",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2016-02-18",
-                  "update_user": "afirnstahl"
+                  "created_date": "2013-05-19",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2016-02-18",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "reverse_transcriptions": [
@@ -699,10 +699,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.06,
                   "rt_cq": 2.86,
                   "rt_date": "2016-03-02",
-                  "insert_date": "2013-09-15",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2014-04-12",
-                  "update_user": "afirnstahl"
+                  "created_date": "2013-09-15",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2014-04-12",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1032,
@@ -712,10 +712,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.82,
                   "rt_cq": 2.78,
                   "rt_date": "2015-06-11",
-                  "insert_date": "2015-10-09",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2016-08-05",
-                  "update_user": "sspencer"
+                  "created_date": "2015-10-09",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2016-08-05",
+                  "modified_by": "sspencer"
                 }
               ],
               "targets": [
@@ -746,24 +746,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1070,
                   "inhibition_no": 1,
-                  "dilution": 26,
+                  "dilution_factor": 26,
                   "type": "DNA",
                   "inhibition_date": "2013-10-18",
-                  "insert_date": "2012-03-08",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2013-09-23",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2012-03-08",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2013-09-23",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1030,
                   "inhibition_no": 2,
-                  "dilution": 49,
+                  "dilution_factor": 49,
                   "type": "RNA",
                   "inhibition_date": "2017-05-09",
-                  "insert_date": "2015-02-21",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2013-12-22",
-                  "update_user": "afirnstahl"
+                  "created_date": "2015-02-21",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2013-12-22",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "reverse_transcriptions": [
@@ -775,10 +775,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.66,
                   "rt_cq": 1.02,
                   "rt_date": "2015-10-28",
-                  "insert_date": "2012-12-22",
-                  "insert_user": "sspencer",
-                  "update_date": "2015-05-30",
-                  "update_user": "sspencer"
+                  "created_date": "2012-12-22",
+                  "created_by": "sspencer",
+                  "modified_date": "2015-05-30",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1058,
@@ -788,10 +788,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.13,
                   "rt_cq": 0.73,
                   "rt_date": "2017-08-22",
-                  "insert_date": "2016-05-05",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2017-03-06",
-                  "update_user": "sspencer"
+                  "created_date": "2016-05-05",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2017-03-06",
+                  "modified_by": "sspencer"
                 }
               ],
               "targets": [
@@ -812,10 +812,10 @@ export class AnalysisBatchService {
               ]
             }
           ],
-          "insert_date": "2012-12-29",
-          "insert_user": "afirnstahl",
-          "update_date": "2012-04-08",
-          "update_user": "jpstokdyk"
+          "created_date": "2012-12-29",
+          "created_by": "afirnstahl",
+          "modified_date": "2012-04-08",
+          "modified_by": "jpstokdyk"
         }
       case 1004:
         return {
@@ -868,24 +868,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1029,
                   "inhibition_no": 1,
-                  "dilution": 18,
+                  "dilution_factor": 18,
                   "type": "RNA",
                   "inhibition_date": "2013-11-29",
-                  "insert_date": "2016-08-05",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2016-04-02",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2016-08-05",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2016-04-02",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1077,
                   "inhibition_no": 2,
-                  "dilution": 25,
+                  "dilution_factor": 25,
                   "type": "RNA",
                   "inhibition_date": "2016-05-13",
-                  "insert_date": "2015-11-14",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2016-07-25",
-                  "update_user": "afirnstahl"
+                  "created_date": "2015-11-14",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2016-07-25",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "reverse_transcriptions": [
@@ -897,10 +897,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.65,
                   "rt_cq": 1,
                   "rt_date": "2017-03-29",
-                  "insert_date": "2013-04-11",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2014-01-13",
-                  "update_user": "sspencer"
+                  "created_date": "2013-04-11",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2014-01-13",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1028,
@@ -910,10 +910,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.9,
                   "rt_cq": 1.6,
                   "rt_date": "2017-08-10",
-                  "insert_date": "2012-11-25",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2015-12-05",
-                  "update_user": "afirnstahl"
+                  "created_date": "2012-11-25",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2015-12-05",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "targets": [
@@ -944,24 +944,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1034,
                   "inhibition_no": 1,
-                  "dilution": 15,
+                  "dilution_factor": 15,
                   "type": "DNA",
                   "inhibition_date": "2014-10-17",
-                  "insert_date": "2015-10-21",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2013-09-14",
-                  "update_user": "sspencer"
+                  "created_date": "2015-10-21",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2013-09-14",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1096,
                   "inhibition_no": 2,
-                  "dilution": 28,
+                  "dilution_factor": 28,
                   "type": "RNA",
                   "inhibition_date": "2013-05-04",
-                  "insert_date": "2015-09-27",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2012-08-16",
-                  "update_user": "afirnstahl"
+                  "created_date": "2015-09-27",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2012-08-16",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "reverse_transcriptions": [
@@ -973,10 +973,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.03,
                   "rt_cq": 2.55,
                   "rt_date": "2016-10-07",
-                  "insert_date": "2012-10-22",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2014-05-22",
-                  "update_user": "sspencer"
+                  "created_date": "2012-10-22",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2014-05-22",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1064,
@@ -986,10 +986,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.43,
                   "rt_cq": 0.82,
                   "rt_date": "2017-01-11",
-                  "insert_date": "2015-04-03",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2012-12-30",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2015-04-03",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2012-12-30",
+                  "modified_by": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -1010,10 +1010,10 @@ export class AnalysisBatchService {
               ]
             }
           ],
-          "insert_date": "2014-05-19",
-          "insert_user": "sspencer",
-          "update_date": "2017-03-01",
-          "update_user": "jpstokdyk"
+          "created_date": "2014-05-19",
+          "created_by": "sspencer",
+          "modified_date": "2017-03-01",
+          "modified_by": "jpstokdyk"
         }
       case 1005:
         return {
@@ -1066,24 +1066,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1063,
                   "inhibition_no": 1,
-                  "dilution": 9,
+                  "dilution_factor": 9,
                   "type": "RNA",
                   "inhibition_date": "2014-03-02",
-                  "insert_date": "2012-09-13",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2017-05-10",
-                  "update_user": "sspencer"
+                  "created_date": "2012-09-13",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2017-05-10",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1012,
                   "inhibition_no": 2,
-                  "dilution": 22,
+                  "dilution_factor": 22,
                   "type": "DNA",
                   "inhibition_date": "2016-05-15",
-                  "insert_date": "2012-12-02",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2017-08-11",
-                  "update_user": "afirnstahl"
+                  "created_date": "2012-12-02",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2017-08-11",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "reverse_transcriptions": [
@@ -1095,10 +1095,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.39,
                   "rt_cq": 2.96,
                   "rt_date": "2012-03-14",
-                  "insert_date": "2016-08-18",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2013-06-05",
-                  "update_user": "afirnstahl"
+                  "created_date": "2016-08-18",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2013-06-05",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1054,
@@ -1108,10 +1108,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.49,
                   "rt_cq": 1.99,
                   "rt_date": "2013-04-04",
-                  "insert_date": "2015-01-09",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2015-04-19",
-                  "update_user": "sspencer"
+                  "created_date": "2015-01-09",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2015-04-19",
+                  "modified_by": "sspencer"
                 }
               ],
               "targets": [
@@ -1142,24 +1142,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1090,
                   "inhibition_no": 1,
-                  "dilution": 47,
+                  "dilution_factor": 47,
                   "type": "DNA",
                   "inhibition_date": "2017-03-23",
-                  "insert_date": "2013-04-08",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2014-02-09",
-                  "update_user": "afirnstahl"
+                  "created_date": "2013-04-08",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2014-02-09",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1048,
                   "inhibition_no": 2,
-                  "dilution": 13,
+                  "dilution_factor": 13,
                   "type": "DNA",
                   "inhibition_date": "2017-05-20",
-                  "insert_date": "2015-01-28",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-08-07",
-                  "update_user": "afirnstahl"
+                  "created_date": "2015-01-28",
+                  "created_by": "sspencer",
+                  "modified_date": "2016-08-07",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "reverse_transcriptions": [
@@ -1171,10 +1171,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.28,
                   "rt_cq": 1.9,
                   "rt_date": "2017-01-09",
-                  "insert_date": "2017-01-08",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2012-04-17",
-                  "update_user": "afirnstahl"
+                  "created_date": "2017-01-08",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2012-04-17",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1001,
@@ -1184,10 +1184,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.14,
                   "rt_cq": 2.6,
                   "rt_date": "2015-06-20",
-                  "insert_date": "2017-09-05",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2013-09-20",
-                  "update_user": "afirnstahl"
+                  "created_date": "2017-09-05",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2013-09-20",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "targets": [
@@ -1208,10 +1208,10 @@ export class AnalysisBatchService {
               ]
             }
           ],
-          "insert_date": "2016-12-10",
-          "insert_user": "legacy data upload",
-          "update_date": "2015-03-29",
-          "update_user": "afirnstahl"
+          "created_date": "2016-12-10",
+          "created_by": "legacy data upload",
+          "modified_date": "2015-03-29",
+          "modified_by": "afirnstahl"
         }
       case 1006:
         return {
@@ -1264,24 +1264,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1083,
                   "inhibition_no": 1,
-                  "dilution": 8,
+                  "dilution_factor": 8,
                   "type": "RNA",
                   "inhibition_date": "2013-03-23",
-                  "insert_date": "2014-06-17",
-                  "insert_user": "sspencer",
-                  "update_date": "2012-04-10",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2014-06-17",
+                  "created_by": "sspencer",
+                  "modified_date": "2012-04-10",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1077,
                   "inhibition_no": 2,
-                  "dilution": 11,
+                  "dilution_factor": 11,
                   "type": "DNA",
                   "inhibition_date": "2015-10-05",
-                  "insert_date": "2013-08-19",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2016-12-29",
-                  "update_user": "afirnstahl"
+                  "created_date": "2013-08-19",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2016-12-29",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "reverse_transcriptions": [
@@ -1293,10 +1293,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.1,
                   "rt_cq": 0.29,
                   "rt_date": "2016-09-25",
-                  "insert_date": "2016-07-13",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2014-10-18",
-                  "update_user": "sspencer"
+                  "created_date": "2016-07-13",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2014-10-18",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1031,
@@ -1306,10 +1306,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.31,
                   "rt_cq": 2.3,
                   "rt_date": "2014-12-11",
-                  "insert_date": "2015-07-29",
-                  "insert_user": "sspencer",
-                  "update_date": "2012-02-22",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2015-07-29",
+                  "created_by": "sspencer",
+                  "modified_date": "2012-02-22",
+                  "modified_by": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -1340,24 +1340,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1028,
                   "inhibition_no": 1,
-                  "dilution": 32,
+                  "dilution_factor": 32,
                   "type": "DNA",
                   "inhibition_date": "2013-07-21",
-                  "insert_date": "2014-07-05",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2016-08-21",
-                  "update_user": "sspencer"
+                  "created_date": "2014-07-05",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2016-08-21",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1085,
                   "inhibition_no": 2,
-                  "dilution": 8,
+                  "dilution_factor": 8,
                   "type": "RNA",
                   "inhibition_date": "2017-05-24",
-                  "insert_date": "2013-07-10",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2013-08-11",
-                  "update_user": "sspencer"
+                  "created_date": "2013-07-10",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2013-08-11",
+                  "modified_by": "sspencer"
                 }
               ],
               "reverse_transcriptions": [
@@ -1369,10 +1369,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.31,
                   "rt_cq": 2.46,
                   "rt_date": "2013-01-11",
-                  "insert_date": "2014-05-04",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2013-07-17",
-                  "update_user": "afirnstahl"
+                  "created_date": "2014-05-04",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2013-07-17",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1064,
@@ -1382,10 +1382,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.37,
                   "rt_cq": 0.45,
                   "rt_date": "2013-11-05",
-                  "insert_date": "2015-11-23",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2016-03-18",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2015-11-23",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2016-03-18",
+                  "modified_by": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -1406,10 +1406,10 @@ export class AnalysisBatchService {
               ]
             }
           ],
-          "insert_date": "2016-09-29",
-          "insert_user": "jpstokdyk",
-          "update_date": "2015-08-29",
-          "update_user": "jpstokdyk"
+          "created_date": "2016-09-29",
+          "created_by": "jpstokdyk",
+          "modified_date": "2015-08-29",
+          "modified_by": "jpstokdyk"
         }
       case 1007:
         return {
@@ -1462,24 +1462,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1071,
                   "inhibition_no": 1,
-                  "dilution": 19,
+                  "dilution_factor": 19,
                   "type": "RNA",
                   "inhibition_date": "2012-12-15",
-                  "insert_date": "2015-04-30",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2014-04-09",
-                  "update_user": "sspencer"
+                  "created_date": "2015-04-30",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2014-04-09",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1013,
                   "inhibition_no": 2,
-                  "dilution": 30,
+                  "dilution_factor": 30,
                   "type": "RNA",
                   "inhibition_date": "2014-02-04",
-                  "insert_date": "2012-01-16",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2015-10-14",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2012-01-16",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2015-10-14",
+                  "modified_by": "jpstokdyk"
                 }
               ],
               "reverse_transcriptions": [
@@ -1491,10 +1491,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.53,
                   "rt_cq": 0.06,
                   "rt_date": "2015-11-27",
-                  "insert_date": "2012-07-13",
-                  "insert_user": "sspencer",
-                  "update_date": "2012-03-04",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2012-07-13",
+                  "created_by": "sspencer",
+                  "modified_date": "2012-03-04",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1006,
@@ -1504,10 +1504,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.51,
                   "rt_cq": 2.51,
                   "rt_date": "2014-02-17",
-                  "insert_date": "2013-09-08",
-                  "insert_user": "sspencer",
-                  "update_date": "2012-01-03",
-                  "update_user": "sspencer"
+                  "created_date": "2013-09-08",
+                  "created_by": "sspencer",
+                  "modified_date": "2012-01-03",
+                  "modified_by": "sspencer"
                 }
               ],
               "targets": [
@@ -1538,24 +1538,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1035,
                   "inhibition_no": 1,
-                  "dilution": 16,
+                  "dilution_factor": 16,
                   "type": "DNA",
                   "inhibition_date": "2013-12-07",
-                  "insert_date": "2013-01-16",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2017-02-24",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2013-01-16",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2017-02-24",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1039,
                   "inhibition_no": 2,
-                  "dilution": 45,
+                  "dilution_factor": 45,
                   "type": "RNA",
                   "inhibition_date": "2012-02-13",
-                  "insert_date": "2014-04-12",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2013-07-20",
-                  "update_user": "sspencer"
+                  "created_date": "2014-04-12",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2013-07-20",
+                  "modified_by": "sspencer"
                 }
               ],
               "reverse_transcriptions": [
@@ -1567,10 +1567,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.46,
                   "rt_cq": 1.81,
                   "rt_date": "2015-10-08",
-                  "insert_date": "2014-04-05",
-                  "insert_user": "sspencer",
-                  "update_date": "2012-04-20",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2014-04-05",
+                  "created_by": "sspencer",
+                  "modified_date": "2012-04-20",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1053,
@@ -1580,10 +1580,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.69,
                   "rt_cq": 1.36,
                   "rt_date": "2015-04-01",
-                  "insert_date": "2014-10-22",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2015-10-11",
-                  "update_user": "sspencer"
+                  "created_date": "2014-10-22",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2015-10-11",
+                  "modified_by": "sspencer"
                 }
               ],
               "targets": [
@@ -1604,10 +1604,10 @@ export class AnalysisBatchService {
               ]
             }
           ],
-          "insert_date": "2013-05-03",
-          "insert_user": "afirnstahl",
-          "update_date": "2013-08-09",
-          "update_user": "sspencer"
+          "created_date": "2013-05-03",
+          "created_by": "afirnstahl",
+          "modified_date": "2013-08-09",
+          "modified_by": "sspencer"
         }
       case 1008:
         return {
@@ -1660,24 +1660,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1028,
                   "inhibition_no": 1,
-                  "dilution": 22,
+                  "dilution_factor": 22,
                   "type": "DNA",
                   "inhibition_date": "2014-11-29",
-                  "insert_date": "2016-06-17",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-10-05",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2016-06-17",
+                  "created_by": "sspencer",
+                  "modified_date": "2016-10-05",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1032,
                   "inhibition_no": 2,
-                  "dilution": 6,
+                  "dilution_factor": 6,
                   "type": "RNA",
                   "inhibition_date": "2016-12-08",
-                  "insert_date": "2012-09-30",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2016-06-21",
-                  "update_user": "afirnstahl"
+                  "created_date": "2012-09-30",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2016-06-21",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "reverse_transcriptions": [
@@ -1689,10 +1689,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.79,
                   "rt_cq": 1.26,
                   "rt_date": "2013-11-07",
-                  "insert_date": "2015-12-15",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2014-07-23",
-                  "update_user": "sspencer"
+                  "created_date": "2015-12-15",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2014-07-23",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1003,
@@ -1702,10 +1702,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.2,
                   "rt_cq": 2.44,
                   "rt_date": "2017-07-25",
-                  "insert_date": "2015-11-10",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-10-19",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2015-11-10",
+                  "created_by": "sspencer",
+                  "modified_date": "2016-10-19",
+                  "modified_by": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -1736,24 +1736,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1091,
                   "inhibition_no": 1,
-                  "dilution": 39,
+                  "dilution_factor": 39,
                   "type": "RNA",
                   "inhibition_date": "2013-10-05",
-                  "insert_date": "2017-06-23",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2015-05-09",
-                  "update_user": "afirnstahl"
+                  "created_date": "2017-06-23",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2015-05-09",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1013,
                   "inhibition_no": 2,
-                  "dilution": 9,
+                  "dilution_factor": 9,
                   "type": "RNA",
                   "inhibition_date": "2013-08-01",
-                  "insert_date": "2012-01-04",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2016-10-05",
-                  "update_user": "sspencer"
+                  "created_date": "2012-01-04",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2016-10-05",
+                  "modified_by": "sspencer"
                 }
               ],
               "reverse_transcriptions": [
@@ -1765,10 +1765,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.68,
                   "rt_cq": 1.29,
                   "rt_date": "2015-11-24",
-                  "insert_date": "2016-02-08",
-                  "insert_user": "sspencer",
-                  "update_date": "2013-01-03",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2016-02-08",
+                  "created_by": "sspencer",
+                  "modified_date": "2013-01-03",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1001,
@@ -1778,10 +1778,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.87,
                   "rt_cq": 2.23,
                   "rt_date": "2013-08-07",
-                  "insert_date": "2015-11-03",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2013-12-15",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2015-11-03",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2013-12-15",
+                  "modified_by": "jpstokdyk"
                 }
               ],
               "targets": [
@@ -1802,10 +1802,10 @@ export class AnalysisBatchService {
               ]
             }
           ],
-          "insert_date": "2012-08-30",
-          "insert_user": "sspencer",
-          "update_date": "2017-03-25",
-          "update_user": "sspencer"
+          "created_date": "2012-08-30",
+          "created_by": "sspencer",
+          "modified_date": "2017-03-25",
+          "modified_by": "sspencer"
         }
       case 1009:
         return {
@@ -1858,24 +1858,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1072,
                   "inhibition_no": 1,
-                  "dilution": 49,
+                  "dilution_factor": 49,
                   "type": "DNA",
                   "inhibition_date": "2013-08-30",
-                  "insert_date": "2013-07-26",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2015-08-13",
-                  "update_user": "sspencer"
+                  "created_date": "2013-07-26",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2015-08-13",
+                  "modified_by": "sspencer"
                 },
                 {
                   "id": 1032,
                   "inhibition_no": 2,
-                  "dilution": 27,
+                  "dilution_factor": 27,
                   "type": "DNA",
                   "inhibition_date": "2015-10-19",
-                  "insert_date": "2012-07-23",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2016-04-25",
-                  "update_user": "afirnstahl"
+                  "created_date": "2012-07-23",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2016-04-25",
+                  "modified_by": "afirnstahl"
                 }
               ],
               "reverse_transcriptions": [
@@ -1887,10 +1887,10 @@ export class AnalysisBatchService {
                   "vol_out": 1.36,
                   "rt_cq": 1.06,
                   "rt_date": "2016-11-08",
-                  "insert_date": "2015-09-16",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2014-05-14",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2015-09-16",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2014-05-14",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1035,
@@ -1900,10 +1900,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.51,
                   "rt_cq": 2.28,
                   "rt_date": "2015-12-15",
-                  "insert_date": "2016-11-14",
-                  "insert_user": "afirnstahl",
-                  "update_date": "2014-01-10",
-                  "update_user": "sspencer"
+                  "created_date": "2016-11-14",
+                  "created_by": "afirnstahl",
+                  "modified_date": "2014-01-10",
+                  "modified_by": "sspencer"
                 }
               ],
               "targets": [
@@ -1934,24 +1934,24 @@ export class AnalysisBatchService {
                 {
                   "id": 1044,
                   "inhibition_no": 1,
-                  "dilution": 21,
+                  "dilution_factor": 21,
                   "type": "DNA",
                   "inhibition_date": "2014-09-13",
-                  "insert_date": "2017-07-01",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2015-04-13",
-                  "update_user": "afirnstahl"
+                  "created_date": "2017-07-01",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2015-04-13",
+                  "modified_by": "afirnstahl"
                 },
                 {
                   "id": 1095,
                   "inhibition_no": 2,
-                  "dilution": 48,
+                  "dilution_factor": 48,
                   "type": "DNA",
                   "inhibition_date": "2013-11-04",
-                  "insert_date": "2012-04-05",
-                  "insert_user": "legacy data upload",
-                  "update_date": "2016-08-07",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2012-04-05",
+                  "created_by": "legacy data upload",
+                  "modified_date": "2016-08-07",
+                  "modified_by": "jpstokdyk"
                 }
               ],
               "reverse_transcriptions": [
@@ -1963,10 +1963,10 @@ export class AnalysisBatchService {
                   "vol_out": 0.39,
                   "rt_cq": 1.1,
                   "rt_date": "2017-07-04",
-                  "insert_date": "2014-04-19",
-                  "insert_user": "sspencer",
-                  "update_date": "2016-10-08",
-                  "update_user": "jpstokdyk"
+                  "created_date": "2014-04-19",
+                  "created_by": "sspencer",
+                  "modified_date": "2016-10-08",
+                  "modified_by": "jpstokdyk"
                 },
                 {
                   "id": 1054,
@@ -1976,10 +1976,10 @@ export class AnalysisBatchService {
                   "vol_out": 2.76,
                   "rt_cq": 2.18,
                   "rt_date": "2012-08-26",
-                  "insert_date": "2017-07-01",
-                  "insert_user": "jpstokdyk",
-                  "update_date": "2015-12-26",
-                  "update_user": "sspencer"
+                  "created_date": "2017-07-01",
+                  "created_by": "jpstokdyk",
+                  "modified_date": "2015-12-26",
+                  "modified_by": "sspencer"
                 }
               ],
               "targets": [
@@ -2000,10 +2000,10 @@ export class AnalysisBatchService {
               ]
             }
           ],
-          "insert_date": "2013-07-08",
-          "insert_user": "afirnstahl",
-          "update_date": "2016-03-06",
-          "update_user": "jpstokdyk"
+          "created_date": "2013-07-08",
+          "created_by": "afirnstahl",
+          "modified_date": "2016-03-06",
+          "modified_by": "jpstokdyk"
         }
       default:
         break;
