@@ -162,7 +162,12 @@ export class SamplesComponent implements OnInit {
     row: new FormControl('', Validators.required),
     spot: new FormControl('', Validators.required),
     frozen: new FormControl(true, Validators.required)
-  })
+  });
+
+  createABForm = new FormGroup({
+    analysis_batch_description: new FormControl(''),
+    analysis_batch_notes: new FormControl('')
+  });
 
 
   constructor(private _sampleService: SampleService, private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _filterTypeService: FilterTypeService, private _matrixService: MatrixService, private _unitService: UnitService, private _userService: UserService) { }
@@ -291,9 +296,9 @@ export class SamplesComponent implements OnInit {
       collection_start_time: selectedSample.collection_start_time,
       collection_end_date: selectedSample.collection_end_date,
       collection_end_time: selectedSample.collection_end_time,
-      final_concentrated_sample_volume: "X",
-      final_concentrated_sample_volume_type: "X",
-      final_concentrated_sample_volume_notes: "X",
+      final_concentrated_sample_volume: selectedSample.final_concentrated_sample_volume,
+      final_concentrated_sample_volume_type: selectedSample.final_concentrated_sample_volume_type,
+      final_concentrated_sample_volume_notes: selectedSample.final_concentrated_sample_volume_notes,
       sample_volume_filtered: selectedSample.sample_volume_filtered,
       pump_flow_rate: selectedSample.pump_flow_rate,
       meter_reading_initial: selectedSample.meter_reading_initial,

@@ -1,0 +1,30 @@
+{
+  "name": "lili",
+  "organization": "U.S. Geological Survey",
+  "description": "Laboratory information management system (LIMS) for USDA/USGS Laboratory for Infectious Disease and Environment",
+  "status": "development",
+  "homepage": "private",
+  "downloadURL": "https://github.com/USGS-WiM/lili/archive/master.zip",
+
+  "openSourceProject": 1,
+  "license": "https://github.com/USGS-WiM/lili/blob/master/LICENSE.md",
+  "vcs": "git",
+  "repository": "https://github.com/USGS-WiM/lili.git",
+
+  "tags": [
+    "TAG1",
+    "TAG2"
+  ],
+  "languages": [
+    "typescript",
+    "HTML"
+  ],
+
+  "contact": {
+    "name": "Blake Draper",
+    "email": "bdraper@usgs.gov"
+  },
+  "updated": {
+    "metadataLastUpdated": "2017-09-30"
+  }
+}

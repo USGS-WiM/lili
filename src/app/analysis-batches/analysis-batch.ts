@@ -7,8 +7,8 @@ export interface IAnalysisBatch {
     samples: Object[];
     studies: Object[];
     extractions: IExtraction[];
-    insert_date: string;
-    insert_user: string;
-    update_date: string;
-    update_user: string;
+    created_date: string;
+    created_by: string;
+    modified_date: string;
+    modified_by: string;
 }
