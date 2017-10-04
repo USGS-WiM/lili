@@ -32,22 +32,22 @@ export class AnalysisBatchService {
           "analysis_batch_notes": "Sunt id sunt nostrud Lorem enim magna tempor.",
           "samples": [
             {
-              "id": 1372,
+              "id": 14,
               "sample_type": 2,
               "sample_description": "Dolor ipsum ipsum amet non reprehenderit officia Lorem deserunt cupidatat ex."
             },
             {
-              "id": 1429,
+              "id": 4,
               "sample_type": 4,
               "sample_description": "Aliquip amet adipisicing duis adipisicing velit quis id qui Lorem qui labore."
             },
             {
-              "id": 1040,
+              "id": 7,
               "sample_type": 4,
               "sample_description": "In irure duis proident ullamco irure ex commodo."
             },
             {
-              "id": 1487,
+              "id": 3,
               "sample_type": 1,
               "sample_description": "Ullamco eu aute sint eu amet exercitation sunt fugiat voluptate pariatur."
             }
@@ -222,7 +222,7 @@ export class AnalysisBatchService {
           "created_by": "sspencer",
           "modified_date": "2017-05-07",
           "modified_by": "jpstokdyk"
-        }
+        };
       case 1001:
         return {
           "id": 1001,

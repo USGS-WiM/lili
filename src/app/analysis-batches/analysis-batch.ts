@@ -1,10 +1,11 @@
 import { IExtraction } from '../extractions/extraction';
+import { ISampleSummary } from '../samples/sample-summary';
 
 export interface IAnalysisBatch {
     id: number;
     analysis_batch_description: string;
     analysis_batch_notes: string;
-    samples: Object[];
+    samples: ISampleSummary[];
     studies: Object[];
     extractions: IExtraction[];
     created_date: string;

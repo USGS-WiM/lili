@@ -58,6 +58,21 @@ export class SampleService {
 
   }
 
+  public read(sampleID: number): Observable<ISample> {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.SAMPLES_URL + sampleID + '/?format=json', options)
+    // .map((response: Response) => <any>response.json())
+    // .catch(this.handleError);
+
+    .map(this.extractData)
+    .catch(this.handleError);
+
+  }
+
   public getSampleFormConfig(): Observable<any[]> {
     return this._http.get(this._sampleFormConfigUrl)
       .map((response: Response) => <any>response.json())
