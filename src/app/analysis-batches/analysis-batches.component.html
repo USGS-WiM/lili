@@ -57,7 +57,7 @@
                 <section class="form-block">
                     <div class="form-group" *ngFor="let target of selected">
                         <label>{{target.name}} ({{target.code}})</label>
-                        <input type="number" class="target-count-input" [(ngModel)]="target.count" name="{{target.name}}">
+                        <input type="number" class="target-count-input" [(ngModel)]="target.count" name="targetCount">
                     </div>
                 </section>
             </form>
@@ -262,36 +262,146 @@
 </clr-wizard>
 
 <!-- edit analysis batch modal -->
-<clr-modal [(clrModalOpen)]="showHideEdit">
-    <h3 class="modal-title">Edit Analysis Batch Details</h3>
+<clr-modal [(clrModalOpen)]="showHideEdit" [clrModalSize]="'xl'">
+    <h3 class="modal-title">Edit Analysis Batch {{editABForm.value.id}}</h3>
     <div class="modal-body">
 
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('edit', editABForm.value)" [hidden]="submitted">
-                    <section class="form-block">
 
-                        <div class="form-group">
-                            <label for="studyId">Analysis Batch ID</label>
-                            <input type="text" id="studyId" size="35" formControlName="id" readonly>
-                        </div>
+                <clr-tabs>
+                    <clr-tab>
+                        <button clrTabLink>Details</button>
+                        <ng-template [(clrIfActive)]="detailsActive">
+                            <clr-tab-content>
+                                <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('edit', editABForm.value)" [hidden]="submitted">
+                                    <section class="form-block">
 
-                        <div class="form-group">
-                            <label for="abDescInput">Analysis Batch Description</label>
-                            <textarea id="abDescInput" rows="2" formControlName="analysis_batch_description" style="max-width:25em"></textarea>
-                        </div>
+                                        <div class="form-group">
+                                            <label for="studyId">Analysis Batch ID</label>
+                                            <input type="text" id="studyId" size="35" formControlName="id" readonly>
+                                        </div>
 
-                        <div class="form-group">
-                            <label for="abNotesInput">Analysis Batch Notes</label>
-                            <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
-                        </div>
+                                        <div class="form-group">
+                                            <label for="abDescInput">Analysis Batch Description</label>
+                                            <textarea id="abDescInput" rows="2" formControlName="analysis_batch_description" style="max-width:25em"></textarea>
+                                        </div>
 
-                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid">Save Edits</button>
-                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+                                        <div class="form-group">
+                                            <label for="abNotesInput">Analysis Batch Notes</label>
+                                            <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
+                                        </div>
 
-                    </section>
-                </form>
+                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid">Save Edits</button>
+                                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+
+                                    </section>
+                                </form>
+
+                            </clr-tab-content>
+                        </ng-template>
+                    </clr-tab>
+
+                    <clr-tab>
+                        <button clrTabLink>Sample List</button>
+                        <ng-template [(clrIfActive)]="sampleListActive">
+                            <clr-tab-content>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <form [formGroup]="abSampleListForm">
+                                            <section class="form-block">
+                                                <label>Samples in this Analysis Batch</label>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-secondary remove-sample" (click)="removeSample(this.abSampleListForm.value)"><clr-icon shape="close"></clr-icon> Remove Selected</button>
+                                                </div>
+                                                <div class="select multiple study-list-select">
+                                                    <select multiple formControlName="abSamples">
+                                                        <option *ngFor="let sample of allSamples" value="{{sample.id}}">{{sample.id}} ({{sample.study.name}})</option>
+                                                     </select>
+                                                </div>
+                                            </section>
+                                        </form>
+
+
+                                    </div>
+                                    <div class="col-lg-8">
+
+                                        <form [formGroup]="abSampleListForm">
+                                            <section class="form-block">
+                                                <label>All Samples</label>
+                                                <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
+                                                    <clr-dg-action-bar>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-sm btn-secondary" (click)="onAdd()"><clr-icon shape="plus"></clr-icon> Add Selected</button>
+                                                        </div>
+                                                    </clr-dg-action-bar>
+
+                                                    <!-- filter column header for Sample ID -->
+                                                    <clr-dg-column [clrDgField]="'sample_id'">
+                                                        Sample ID
+                                                        <clr-dg-filter [clrDgFilter]="rangeFilter">
+
+                                                            <range-filter #rangeFilter></range-filter>
+                                                        </clr-dg-filter>
+                                                    </clr-dg-column>
+
+                                                    <clr-dg-column [clrDgField]="'collaborator_sample_id'">
+                                                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                                                            Collaborator Sample ID
+                                                        </ng-container>
+                                                    </clr-dg-column>
+
+                                                    <!-- filter column header for study -->
+                                                    <clr-dg-column [clrDgField]="'study'">
+                                                        Study
+                                                        <clr-dg-filter [clrDgFilter]="studyFilter">
+                                                            <study-filter #studyFilter></study-filter>
+                                                        </clr-dg-filter>
+                                                    </clr-dg-column>
+
+                                                    <!-- filter column header for sample type -->
+                                                    <clr-dg-column [clrDgField]="'sample_type'">
+                                                        Sample Type
+                                                        <clr-dg-filter [clrDgFilter]="sampleTypeFilter">
+                                                            <sample-type-filter #sampleTypeFilter></sample-type-filter>
+                                                        </clr-dg-filter>
+                                                    </clr-dg-column>
+
+                                                    <!-- filter column header for collection start date -->
+                                                    <clr-dg-column [clrDgField]="'collection_start_date'">
+                                                        Collect Start Date
+                                                        <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
+                                                            <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
+                                                        </clr-dg-filter>
+                                                    </clr-dg-column>
+
+                                                    <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
+                                                        <clr-dg-cell>{{sample.id}}</clr-dg-cell>
+                                                        <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
+                                                        <clr-dg-cell>{{sample.study.name}}</clr-dg-cell>
+                                                        <clr-dg-cell>{{sample.sample_type. name}}</clr-dg-cell>
+                                                        <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
+                                                    </clr-dg-row>
+
+                                                    <clr-dg-footer>{{allSamples.length}} samples</clr-dg-footer>
+                                                </clr-datagrid>
+                                            </section>
+                                        </form>
+
+                                    </div>
+                                    <!-- <div class="col-lg-6">
+
+                                        Selected samples: <span *ngFor="let sample of selected">{{sample.id}}</span>
+                                    </div> -->
+                                </div>
+                            </clr-tab-content>
+                        </ng-template>
+                    </clr-tab>
+
+                </clr-tabs>
+
+
 
             </div>
         </div>
@@ -472,7 +582,7 @@
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Analysis Batch Details</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Analysis Batch</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)"><clr-icon shape="login"></clr-icon> Extract</button>
                                 <!--<button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
                                 <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>

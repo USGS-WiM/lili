@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ISample } from './sample'
+import { ISample } from './sample';
 import { ISampleType } from '../SHARED/sample-type';
 import { IFilterType } from '../SHARED/filter-type'
 import { IMatrix } from '../SHARED/matrix';

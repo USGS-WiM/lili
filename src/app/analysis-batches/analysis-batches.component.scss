@@ -17,3 +17,15 @@
 .target-count-input {
     width: 5em;
 }
+
+.study-list-select {
+    height: 24em !important;
+}
+
+select[multiple], select[size] {
+    height: 22em !important;
+}
+
+.remove-sample {
+    margin: 1em;
+}
