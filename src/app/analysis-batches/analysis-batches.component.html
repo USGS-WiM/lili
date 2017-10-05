@@ -311,31 +311,36 @@
                                     <div class="col-lg-4">
                                         <form [formGroup]="abSampleListForm">
                                             <section class="form-block">
-                                                <label>Samples in this Analysis Batch</label>
-                                                <div class="btn-group">
+                                                <label>Samples in this Analysis Batch  <span class="badge badge-light-blue">{{abSampleList.length}}</span> </label>
+                                                <ul class="list">
+                                                    <li *ngFor="let sample of abSampleList">{{sample.id}} ({{sample.study.name}})</li>
+                                                </ul>
+                                                <!-- <div class="btn-group">
                                                     <button type="button" class="btn btn-sm btn-secondary remove-sample" (click)="removeSample(this.abSampleListForm.value)"><clr-icon shape="close"></clr-icon> Remove Selected</button>
                                                 </div>
                                                 <div class="select multiple study-list-select">
                                                     <select multiple formControlName="abSamples">
-                                                        <option *ngFor="let sample of allSamples" value="{{sample.id}}">{{sample.id}} ({{sample.study.name}})</option>
+                                                        <option *ngFor="let sample of abSampleList" value="{{sample.id}}">{{sample.id}} ({{sample.study.name}})</option>
                                                      </select>
-                                                </div>
+                                                </div> -->
                                             </section>
                                         </form>
-
-
                                     </div>
                                     <div class="col-lg-8">
 
                                         <form [formGroup]="abSampleListForm">
                                             <section class="form-block">
-                                                <label>All Samples</label>
+                                                <label>All Samples <a href="" role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
+                                                        <clr-icon shape="info-circle" size="24"></clr-icon>
+                                                        <span class="tooltip-content">Check/uncheck to add/remove Sample from Analysis Batch</span>
+                                                    </a> 
+                                                </label>
                                                 <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
-                                                    <clr-dg-action-bar>
+                                                    <!-- <clr-dg-action-bar>
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-sm btn-secondary" (click)="onAdd()"><clr-icon shape="plus"></clr-icon> Add Selected</button>
                                                         </div>
-                                                    </clr-dg-action-bar>
+                                                    </clr-dg-action-bar> -->
 
                                                     <!-- filter column header for Sample ID -->
                                                     <clr-dg-column [clrDgField]="'sample_id'">
@@ -388,24 +393,20 @@
                                                 </clr-datagrid>
                                             </section>
                                         </form>
-
                                     </div>
-                                    <!-- <div class="col-lg-6">
-
-                                        Selected samples: <span *ngFor="let sample of selected">{{sample.id}}</span>
-                                    </div> -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid" (click)="updateABSampleList(editABForm.value.id,selected)">Save Edits</button>
+                                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+                                    </div>
                                 </div>
                             </clr-tab-content>
                         </ng-template>
                     </clr-tab>
-
                 </clr-tabs>
-
-
-
             </div>
         </div>
-
     </div>
 
 </clr-modal>

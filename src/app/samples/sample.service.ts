@@ -65,9 +65,6 @@ export class SampleService {
     });
 
     return this._http.get(APP_SETTINGS.SAMPLES_URL + sampleID + '/?format=json', options)
-    // .map((response: Response) => <any>response.json())
-    // .catch(this.handleError);
-
     .map(this.extractData)
     .catch(this.handleError);
 
