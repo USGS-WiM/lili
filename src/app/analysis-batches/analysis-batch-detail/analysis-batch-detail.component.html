@@ -15,114 +15,115 @@
               Analysis Batch {{selectedABDetail.id}}
               <ng-template [clrIfExpanded]="true"> -->
 
-                <clr-tree-node *ngFor="let extraction of extractionDetailArray">
-                  Extraction # {{extraction.extraction_no}} 
-                  <ng-template clrIfExpanded>
-                    <clr-tree-node>
-                      <table class="table table-vertical table-compact">
-                        <tbody>
-                          <!-- <tr>
+            <clr-tree-node *ngFor="let extraction of extractionDetailArray">
+              Extraction # {{extraction.extraction_no}}
+
+              <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editExtraction(extraction)" type="button">Edit</button>
+              <ng-template clrIfExpanded>
+                <clr-tree-node>
+                  <table class="table table-vertical table-compact">
+                    <tbody>
+                      <!-- <tr>
                             <th>Extraction ID</th>
                             <td>{{extraction.id}}</td>
                           </tr> -->
-                          <tr>
-                            <th>Extraction Volume <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editExtraction(extraction)"
-                                type="button">Edit</button></th>
-                            <td>{{extraction.extraction_volume}}</td>
-                          </tr>
-                          <tr>
-                            <th>Elution Volume</th>
-                            <td>{{extraction.elution_volume}}</td>
-                          </tr>
-                          <tr>
-                            <th>Extraction Method</th>
-                            <td>{{extraction.extraction_method}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </clr-tree-node>
+                      <tr>
+                        <th>Extraction Volume</th>
+                        <td>{{extraction.extraction_volume}}</td>
+                      </tr>
+                      <tr>
+                        <th>Elution Volume</th>
+                        <td>{{extraction.elution_volume}}</td>
+                      </tr>
+                      <tr>
+                        <th>Extraction Method</th>
+                        <td>{{extraction.extraction_method | displayValue:'name':this.allExtractionMethods}}</td>
+                      </tr>
+                      <tr>
+                        <th>Extraction Date</th>
+                        <td>{{extraction.extraction_date | date:'shortDate'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </clr-tree-node>
 
-                    <clr-tree-node>
-                      Inhibitions
+                <clr-tree-node>
+                  Inhibitions
+                  <ng-template clrIfExpanded>
+                    <clr-tree-node *ngFor="let inhibition of extraction.inhibitions">
+                      Inhibition # {{inhibition.inhibition_no}}
                       <ng-template clrIfExpanded>
-                        <clr-tree-node *ngFor="let inhibition of extraction.inhibitions">
-                          Inhibition {{inhibition.id}}
-                          <ng-template clrIfExpanded>
-                            <clr-tree-node>
-                              <table class="table table-vertical table-compact">
-                                <tbody>
-                                  <tr>
-                                    <th>Inhibition Date</th>
-                                    <td>{{inhibition.insert_date}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th>Type</th>
-                                    <td>{{inhibition.type}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th>Dilution</th>
-                                    <td>{{inhibition.dilution}}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </clr-tree-node>
-                          </ng-template>
+                        <clr-tree-node>
+                          <table class="table table-vertical table-compact">
+                            <tbody>
+                              <tr>
+                                <th>Inhibition Date</th>
+                                <td>{{inhibition.inhibition_date | date:'shortDate' }}</td>
+                              </tr>
+                              <tr>
+                                <th>Type</th>
+                                <td>{{inhibition.type}}</td>
+                              </tr>
+                              <tr>
+                                <th>Dilution</th>
+                                <td>{{inhibition.dilution_factor}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </clr-tree-node>
-                      </ng-template>
-                    </clr-tree-node>
-
-                    <clr-tree-node>
-                      Reverse Transcriptions
-                      <ng-template clrIfExpanded>
-                        <clr-tree-node *ngFor="let rt of extraction.reverse_transcriptions">
-                          RT # {{rt.reverse_transcription_no}}
-                          <ng-template clrIfExpanded>
-                            <clr-tree-node>
-                              <table class="table table-vertical table-compact">
-                                <tbody>
-                                  <tr>
-                                    <th>Volume In <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editRT(rt)"
-                                      type="button">Edit</button></th>
-                                    <td>{{rt.vol_in}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th>Volume Out</th>
-                                    <td>{{rt.vol_out}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th>Cq Value</th>
-                                    <td>{{rt.rt_cq}}</td>
-                                  </tr>
-                                  <tr>
-                                    <th>Date</th>
-                                    <td>{{rt.insert_date}}</td>
-                                  </tr>
-
-                                </tbody>
-                              </table>
-                            </clr-tree-node>
-                          </ng-template>
-                        </clr-tree-node>
-                      </ng-template>
-                    </clr-tree-node>
-
-                    <clr-tree-node>
-                      Targets
-                      <ng-template clrIfExpanded>
-                        <ul class="list compact">
-                          <li *ngFor="let target of extraction.targets">{{target.name}} ({{target.type}})</li>
-                        </ul>
                       </ng-template>
                     </clr-tree-node>
                   </ng-template>
                 </clr-tree-node>
-              <!-- </ng-template>
+
+                <clr-tree-node>
+                  Reverse Transcriptions
+                  <ng-template clrIfExpanded>
+                    <clr-tree-node *ngFor="let rt of extraction.reverse_transcriptions">
+                      RT # {{rt.rt_no}}
+                      <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editRT(rt)" type="button">Edit</button>
+                      <ng-template clrIfExpanded>
+                        <clr-tree-node>
+                          <table class="table table-vertical table-compact">
+                            <tbody>
+                              <tr>
+                                <th>Template Volume </th>
+                                <td>{{rt.vol_in}}</td>
+                              </tr>
+                              <tr>
+                                <th>Reaction Volume</th>
+                                <td>{{rt.vol_out}}</td>
+                              </tr>
+                              <tr>
+                                <th>Date</th>
+                                <td>{{rt.rt_date | date:'shortDate'}}</td>
+                              </tr>
+
+                            </tbody>
+                          </table>
+                        </clr-tree-node>
+                      </ng-template>
+                    </clr-tree-node>
+                  </ng-template>
+                </clr-tree-node>
+
+                <clr-tree-node>
+                  Targets
+                  <ng-template clrIfExpanded>
+                    <ul class="list compact">
+                      <li *ngFor="let target of extraction.targets">{{target.name}} ({{target.type}})</li>
+                    </ul>
+                  </ng-template>
+                </clr-tree-node>
+              </ng-template>
+            </clr-tree-node>
+            <!-- </ng-template>
             </clr-tree-node> -->
           </p>
         </div>
       </div>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
       <div class="card ab-detail-card">
         <div class="card-block">
           <h3 class="card-title">Samples</h3>
@@ -137,11 +138,11 @@
                     <tbody>
                       <tr>
                         <th>Collaborator ID</th>
-                        <td>{{extraction.extraction_volume}}</td>
+                        <td>56732</td>
                       </tr>
                       <tr>
                         <th>Study</th>
-                        <td>{{extraction.elution_volume}}</td>
+                        <td>Kewuanee County Study</td>
                       </tr>
                     </tbody>
                   </table>
@@ -159,43 +160,61 @@
 
 
 <clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditExtractionDetail">
-  <h3 class="modal-title">Edit extraction volume</h3>
+  <h3 class="modal-title">Edit extraction</h3>
   <div class="modal-body">
-      <span>Analysis Batch {{selectedABDetail.id}}</span>
-      <form id="editExtractionForm" class="compact" [formGroup]="editExtractionForm" (ngSubmit)="onSubmit('edit', editExtractionForm.value)" [hidden]="submitted">
-          <section class="form-block">
-              <div class="form-group">
-                  <label for="extractionNo">Extraction No.</label>
-                  <input type="text" id="extractionNo" size="10" formControlName="extraction_no" readonly>
-              </div>
-              <div class="form-group">
-                  <label for="extractionVol">Extraction Volume</label>
-                  <input type="text" id="extractionVol" size="10" formControlName="extraction_volume">
-              </div>
-              <button class="btn btn-primary" type="submit" [disabled]="editExtractionForm.invalid">Save Edit</button>
-              <button class="btn btn-info" (click)="showHideEditExtractionDetail = !showHideEditExtractionDetail">Cancel</button>
-          </section>
-      </form>
+    <span>Analysis Batch {{selectedABDetail.id}}</span>
+    <form id="editExtractionForm" class="compact" [formGroup]="editExtractionForm" (ngSubmit)="onSubmit(editExtractionForm.value)"
+      [hidden]="submitted">
+      <section class="form-block">
+        <div class="form-group">
+          <label for="extractionNo">Extraction No.</label>
+          <input type="text" id="extractionNo" size="10" formControlName="extraction_no" readonly>
+        </div>
+        <div class="form-group">
+          <label for="extractionVol">Extraction Volume</label>
+          <input type="text" id="extractionVol" size="10" formControlName="extraction_volume">
+        </div>
+        <div class="form-group">
+          <label for="extractionVol">Elution Volume</label>
+          <input type="text" id="elutionVol" size="10" formControlName="elution_volume">
+        </div>
+        <div class="form-group">
+          <label for="elutionVol">Extraction Method</label>
+          <div class="select">
+            <select id="extractionMethodSelect" name="extraction_method" formControlName="extraction_method">
+                    <option *ngFor="let method of allExtractionMethods" [value]="method.id">{{method.name}}</option>
+                </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="extractionDateInput">Extraction Date</label>
+          <input type="date" id="extractionDateInput" formControlName="extraction_date">
+        </div>
+
+        <button class="btn btn-primary" type="submit" [disabled]="editExtractionForm.invalid">Save Edits</button>
+        <button class="btn btn-info" (click)="showHideEditExtractionDetail = !showHideEditExtractionDetail">Cancel</button>
+      </section>
+    </form>
   </div>
 </clr-modal>
 
 <clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditRTDetail">
-    <h3 class="modal-title">Edit RT volume</h3>
-    <div class="modal-body">
-        <span>Analysis Batch {{selectedABDetail.id}}</span>
-        <form id="editRTForm" class="compact" [formGroup]="editRTForm" (ngSubmit)="onSubmit('edit', editRTForm.value)" [hidden]="submitted">
-            <section class="form-block">
-                <div class="form-group">
-                    <label for="rtNo">RT No.</label>
-                    <input type="text" id="rtNo" size="10" formControlName="reverse_transcription_no" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="rtVol">RT Volume</label>
-                    <input type="text" id="rtVol" size="10" formControlName="vol_in">
-                </div>
-                <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid">Save Edit</button>
-                <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail">Cancel</button>
-            </section>
-        </form>
-    </div>
-  </clr-modal>
+  <h3 class="modal-title">Edit RT volume</h3>
+  <div class="modal-body">
+    <span>Analysis Batch {{selectedABDetail.id}}</span>
+    <form id="editRTForm" class="compact" [formGroup]="editRTForm" (ngSubmit)="onSubmit('edit', editRTForm.value)" [hidden]="submitted">
+      <section class="form-block">
+        <div class="form-group">
+          <label for="rtNo">RT No.</label>
+          <input type="text" id="rtNo" size="10" formControlName="reverse_transcription_no" readonly>
+        </div>
+        <div class="form-group">
+          <label for="rtVol">RT Volume</label>
+          <input type="text" id="rtVol" size="10" formControlName="vol_in">
+        </div>
+        <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid">Save Edits</button>
+        <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail">Cancel</button>
+      </section>
+    </form>
+  </div>
+</clr-modal>

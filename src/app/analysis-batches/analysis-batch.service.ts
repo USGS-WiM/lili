@@ -70,7 +70,7 @@ export class AnalysisBatchService {
               "extraction_no": 1,
               "extraction_volume": 1.44,
               "elution_volume": 2.35,
-              "extraction_method": 2,
+              "extraction_method": 1,
               "extraction_date": "2013-07-25",
               "inhibitions": [
                 {

@@ -96,38 +96,47 @@
         </form>
     </clr-wizard-page>
 
-    <clr-wizard-page  *ngIf="rnaTargetsSelected">
-            <ng-template clrPageTitle>Reverse Transcription</ng-template>
-            <clr-alert [clrAlertClosable]="false" *ngIf="inhibitionsExist">
-                <div clr-alert-item class="alert-item">
-                    <span class="alert-text">
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Reverse Transcription</ng-template>
+        <clr-alert [clrAlertClosable]="false" *ngIf="rnaTargetsSelected">
+            <div clr-alert-item class="alert-item">
+                <span class="alert-text">
                         You have selected RNA targets for this extraction. Please enter RT data below.
                     </span>
-    
+
+            </div>
+        </clr-alert>
+
+        <clr-alert [clrAlertClosable]="false" *ngIf="!rnaTargetsSelected">
+            <div clr-alert-item class="alert-item">
+                <span class="alert-text">
+                            You have not selected any RNA targets for this extraction. No RT record will be created. Please click Next to skip to the next step.
+                        </span>
+
+            </div>
+        </clr-alert>
+
+        <form id="addRTForm" class="compact" [formGroup]="addRTForm" (ngSubmit)="onSubmit('add', addRTForm.value)" *ngIf="rnaTargetsSelected">
+            <section class="form-block">
+
+                <div class="form-group">
+                    <label for="templateVol">Template Volume</label>
+                    <input id="templateVol" type="text" size="10" formControlName="template_volume">
                 </div>
-            </clr-alert>
-    
-            <form id="addRTForm" class="compact" [formGroup]="addRTForm" (ngSubmit)="onSubmit('add', addRTForm.value)">
-                <section class="form-block">
-    
-                    <div class="form-group">
-                        <label for="templateVol">Template Volume</label>
-                        <input id="templateVol" type="text" size="10" formControlName="template_volume">
-                    </div>
-    
-                    <div class="form-group">
-                        <label for="reactionVol">Reaction Volume</label>
-                        <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
-                    </div>
-    
-                    <div class="form-group">
-                        <label for="rtDateInput" class="required">RT Date</label>
-                        <input type="date" id="rtDateInput" formControlName="rt_date">
-                    </div>
-    
-                </section>
-            </form>
-        </clr-wizard-page>
+
+                <div class="form-group">
+                    <label for="reactionVol">Reaction Volume</label>
+                    <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
+                </div>
+
+                <div class="form-group">
+                    <label for="rtDateInput" class="required">RT Date</label>
+                    <input type="date" id="rtDateInput" formControlName="rt_date">
+                </div>
+
+            </section>
+        </form>
+    </clr-wizard-page>
 
     <clr-wizard-page>
         <ng-template clrPageTitle>Inhibition</ng-template>
@@ -139,7 +148,7 @@
                             lili has detected an existing inhibition for this Analysis Batch
                             </span>
                     <div class="alert-actions">
-                        <button class="btn btn-sm" (click)="showApplyExistingCard()">Apply Existing Inhibition</button>
+                        <a class="alert-actions" (click)="showApplyExistingCard()">Apply Existing Inhibition</a>
                     </div>
 
                 </div>
@@ -292,7 +301,7 @@
                 </clr-dropdown> -->
         </div>
     </clr-wizard-page>
-    
+
 
 </clr-wizard>
 
@@ -310,6 +319,7 @@
                         <button clrTabLink>Details</button>
                         <ng-template [(clrIfActive)]="detailsActive">
                             <clr-tab-content>
+
                                 <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('edit', editABForm.value)" [hidden]="submitted">
                                     <section class="form-block">
 
@@ -363,7 +373,17 @@
                                     </div>
                                     <div class="col-lg-8">
 
-                                        <form [formGroup]="abSampleListForm">
+
+                                        <clr-alert [clrAlertClosable]="false" *ngIf="sampleListEditLocked">
+                                            <div clr-alert-item class="alert-item">
+                                                <span class="alert-text">
+                                                    This Analysis Batch has been extracted. Editing of the sample list is locked. 
+                                                </span>
+
+                                            </div>
+                                        </clr-alert>
+
+                                        <form *ngIf="!sampleListEditLocked">
                                             <section class="form-block">
                                                 <label>All Samples <a href="" role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
                                                         <clr-icon shape="info-circle" size="24"></clr-icon>
@@ -432,7 +452,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid" (click)="updateABSampleList(editABForm.value.id,selected)">Save Edits</button>
+                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid || sampleListEditLocked" (click)="updateABSampleList(editABForm.value.id,selected)">Save Edits</button>
                                         <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
                                     </div>
                                 </div>
