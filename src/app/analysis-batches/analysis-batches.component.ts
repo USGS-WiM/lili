@@ -30,6 +30,7 @@ export class AnalysisBatchesComponent implements OnInit {
   @ViewChild("wizardExtract") wizardExtract: Wizard;
 
   public showWarning = false;
+  rnaTargetsSelected: boolean = false;
 
   inhibitionsExist: boolean = false;
 
@@ -50,7 +51,7 @@ export class AnalysisBatchesComponent implements OnInit {
   selectedAnalysisBatchID: number;
   selectedAnalysisBatchData: IAnalysisBatch;
 
-  abSampleList: number[] = [];
+  abSampleList: ISample[] = [];
 
   inhibitionsPerSample = [];
   // may not need this abInhibitionCount var, consider removing
@@ -84,6 +85,12 @@ export class AnalysisBatchesComponent implements OnInit {
     extraction_method: new FormControl(''),
     extraction_date: new FormControl('')
   });
+
+  addRTForm = new FormGroup({
+    template_volume: new FormControl(''),
+    reaction_volume: new FormControl(''),
+    rt_date: new FormControl('')
+  })
 
   // add inhibition form
   addInhibitionForm = new FormGroup({
@@ -147,6 +154,13 @@ export class AnalysisBatchesComponent implements OnInit {
         target.count = 0;
         return target;
       });
+      // check for RNA targets, set rnaTargetsSelected var to true
+      for (let target of this.selected) {
+        if (target.type === "RNA") {
+          this.rnaTargetsSelected = true;
+          break;
+        }
+      }
       this.wizardExtract.next();
     }
 
@@ -168,12 +182,16 @@ export class AnalysisBatchesComponent implements OnInit {
     return this._analysisBatchService.getAnalysisBatchData(abID);
   }
 
-  retrieveSampleData(sampleID){
-    return this._sampleService.read(sampleID);
- }
+  retrieveSampleData(sampleID) {
+    // this._sampleService.read(sampleID)
+    // .subscribe(sampleData =>  this.abSampleList = sampleData,
+    // error => this.errorMessage = <any>error);
+    // return 
+  }
   extractAB(selectedAB) {
     // open extract wizard and begin
 
+    this.selected = [];
     this.abInhibitionCount = 0;
     this.abInhibitions = [];
     this.extractOpen = true;
@@ -182,9 +200,9 @@ export class AnalysisBatchesComponent implements OnInit {
     // TODO: retrieve the inhibitons per sample list from web services
 
 
-    //check the this.inhibitionsPerSample for inhibitions
+    // check the this.inhibitionsPerSample for inhibitions
     for (let sample of this.inhibitionsPerSample) {
-      //this.abInhibitionCount += sample.inhibitions.length;
+      // this.abInhibitionCount += sample.inhibitions.length;
       for (let inhibition of sample.inhibitions) {
         this.abInhibitions.push(inhibition);
       }
@@ -196,7 +214,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
-  removeSample(samplesToRemove){
+  removeSample(samplesToRemove) {
     console.log(samplesToRemove);
   }
 
@@ -286,43 +304,42 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
-  onAdd(){
+  updateABSampleList(abID, abSamples){
+    let abUpdateObject = [];
+    for(let sample of abSamples) {
+      abUpdateObject.push({"sample": sample.id , "analysis_batch": abID });
+    }
+    console.log(abUpdateObject);
 
-    this.selected.push({"id":4,"sample_type":{"name":"Performance Evaluation","id":3},"matrix_type":{"name":"Forage or sediment","id":4},"filter_type":{"name":"NanoCeram","id":5},"study":{"name":"MDH Storm Water Irrigation","id":3},"study_site_name":"aute","collaborator_sample_id":"5736","sampler_name":{"name":"afirnstahl","id":3},"sample_notes":"Veniam est do magna ipsum nisi aliqua.","sample_description":"Cupidatat ex adipisicing in est id amet tempor in enim voluptate est elit enim minim.","arrival_date":"2015-02-27","arrival_notes":"Irure et sunt laborum minim ullamco ad velit pariatur duis nostrud.","collection_start_date":"2016-01-29","collection_start_time":"20:58:00","collection_end_date":"2014-09-23","collection_end_time":"00:47:00","meter_reading_initial":86.2,"meter_reading_final":543.5,"meter_reading_unit":1,"total_volume_sampled_initial":592.2753,"total_volume_sampled_unit_initial":2,"total_volume_sampled":617.5353,"sample_volume_initial":255.0,"sample_volume_filtered":2.63,"filter_born_on_date":"2015-04-13","filter_flag":false,"secondary_concentration_flag":true,"elution_date":"2013-09-01","elution_notes":"Nulla labore sint amet adipisicing ex eu occaecat consequat pariatur in.","technician_initials":"sks","air_subsample_volume":578.62,"post_dilution_volume":683.45,"pump_flow_rate":997.11,"analysisbatches":[],"final_concentrated_sample_volume":null,"final_concentrated_sample_volume_type":null,"final_concentrated_sample_volume_notes":null,"created_date":"2017-06-27","created_by":"admin","modified_date":"2017-06-27","modified_by":"admin"})
-    
-    console.log(this.selected);
   }
 
   editAB(selectedAB) {
-
-    // show the edit analysis batch modal if not showing already
-    if (this.showHideEdit === false) {
-      this.showHideEdit = true;
-    }
+    this.selected = [];
 
     this.editABForm.setValue({
       id: selectedAB.id,
       analysis_batch_description: selectedAB.analysis_batch_description,
       analysis_batch_notes: selectedAB.analysis_batch_notes
     });
-
-
     // call to retrieve AB detail data
     this.selectedAnalysisBatchData = this.retrieveABData(selectedAB.id);
 
     // get sample id for each sample in the AB
     // add those to selected array
-    for (let sample of this.selectedAnalysisBatchData.samples) {
-        this.abSampleList.push(sample.id);
+    for (let sampleSummary of this.selectedAnalysisBatchData.samples) {
+        for (let sample of this.allSamples){
+            if (sampleSummary.id === sample.id){
+              this.abSampleList.push(sample);
+            }
+        }
     }
 
-    console.log(this.selected)
+    // console.log(this.abSampleList);
+    this.selected = this.abSampleList;
 
-
-
+    // show the edit analysis batch modal if not showing already
+    if (this.showHideEdit === false) {
+      this.showHideEdit = true;
+    }
   }
-
-
-
-
 }
