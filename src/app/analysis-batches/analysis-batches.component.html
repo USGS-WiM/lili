@@ -96,6 +96,39 @@
         </form>
     </clr-wizard-page>
 
+    <clr-wizard-page  *ngIf="rnaTargetsSelected">
+            <ng-template clrPageTitle>Reverse Transcription</ng-template>
+            <clr-alert [clrAlertClosable]="false" *ngIf="inhibitionsExist">
+                <div clr-alert-item class="alert-item">
+                    <span class="alert-text">
+                        You have selected RNA targets for this extraction. Please enter RT data below.
+                    </span>
+    
+                </div>
+            </clr-alert>
+    
+            <form id="addRTForm" class="compact" [formGroup]="addRTForm" (ngSubmit)="onSubmit('add', addRTForm.value)">
+                <section class="form-block">
+    
+                    <div class="form-group">
+                        <label for="templateVol">Template Volume</label>
+                        <input id="templateVol" type="text" size="10" formControlName="template_volume">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="reactionVol">Reaction Volume</label>
+                        <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="rtDateInput" class="required">RT Date</label>
+                        <input type="date" id="rtDateInput" formControlName="rt_date">
+                    </div>
+    
+                </section>
+            </form>
+        </clr-wizard-page>
+
     <clr-wizard-page>
         <ng-template clrPageTitle>Inhibition</ng-template>
         <div>
@@ -259,6 +292,8 @@
                 </clr-dropdown> -->
         </div>
     </clr-wizard-page>
+    
+
 </clr-wizard>
 
 <!-- edit analysis batch modal -->
