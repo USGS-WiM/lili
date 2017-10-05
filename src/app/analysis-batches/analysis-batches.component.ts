@@ -31,6 +31,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   public showWarning = false;
   rnaTargetsSelected: boolean = false;
+  sampleListEditLocked: boolean = false;
 
   inhibitionsExist: boolean = false;
 
@@ -315,6 +316,14 @@ export class AnalysisBatchesComponent implements OnInit {
 
   editAB(selectedAB) {
     this.selected = [];
+    this.abSampleList = [];
+    this.sampleListEditLocked = false;
+
+    // TODO: create a reset function to set all the state variables to original/empty
+
+    if (selectedAB.extraction_count > 0) {
+        this.sampleListEditLocked = true;
+    }
 
     this.editABForm.setValue({
       id: selectedAB.id,
