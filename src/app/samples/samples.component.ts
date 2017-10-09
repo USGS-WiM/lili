@@ -57,7 +57,7 @@ export class SamplesComponent implements OnInit {
 
   selected: ISample[] = [];
 
-  selectedStudy: number;
+  selectedStudy;
 
    // add sample form - declare reactive form with appropriate sample fields
   // all fields except matrix_type are disabled until matrix_type is selected (see onMatrixSelect function)
@@ -257,7 +257,7 @@ export class SamplesComponent implements OnInit {
       }
     }
 
-    this.selectedStudy = this.selected[0].study
+    this.selectedStudy = this.selected[0].study;
   }
 
   printLabel(selectedSampleArray) {

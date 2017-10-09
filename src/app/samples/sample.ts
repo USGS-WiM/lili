@@ -1,12 +1,12 @@
 export interface ISample {
     id: number;
-    sample_type: number;
-    matrix_type: number;
-    filter_type: number;
-    study: number;
+    sample_type: Object;
+    matrix_type: Object;
+    filter_type: Object;
+    study: Object;
     study_site_name: string;
     collaborator_sample_id: string;
-    sampler_name:  string;
+    sampler_name:  Object;
     sample_notes: string;
     sample_description: string;
     arrival_date: string;
@@ -36,6 +36,7 @@ export interface ISample {
     final_concentrated_sample_volume_type: number;
     final_concentrated_sample_volume_notes: string;
     analysisbatches: number[];
+    aliquots: number[];
     created_date: string;
     created_by: string;
     modified_date: string;

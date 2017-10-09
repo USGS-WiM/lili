@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms/";
+import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from "@angular/forms/";
 import { Wizard } from "clarity-angular";
 
 import { IAnalysisBatchSummary } from './analysis-batch-summary';
@@ -44,7 +44,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   studies: IStudy[];
 
-  allSamples: ISample[];
+  allSamples: ISample[] = [];
 
   focusAnalysisBatchID: number;
   focusAnalysisBatchData: IAnalysisBatch;
@@ -84,7 +84,10 @@ export class AnalysisBatchesComponent implements OnInit {
     extraction_volume: new FormControl(''),
     elution_volume: new FormControl(''),
     extraction_method: new FormControl(''),
-    extraction_date: new FormControl('')
+    extraction_date: new FormControl(''),
+    sample_dilution_factor: new FormControl(''),
+    qpcr_template_volume: new FormControl(''),
+    qpcr_date: new FormControl('')
   });
 
   addRTForm = new FormGroup({
@@ -95,19 +98,31 @@ export class AnalysisBatchesComponent implements OnInit {
 
   // add inhibition form
   addInhibitionForm = new FormGroup({
-    type: new FormControl('')
+    type: new FormControl(''),
+    inhibition_date: new FormControl('')
   })
 
   applyInhibition_batchForm = new FormGroup({
     dnaInhibition: new FormControl(''),
-    rnaInhibition: new FormControl('')
+    rnaInhibition: new FormControl(''),
+    inhibition_date: new FormControl('')
   })
 
   abSampleListForm = new FormGroup({
     abSamples: new FormControl('')
   })
 
-  constructor(private _studyService: StudyService, private _sampleService: SampleService, private _analysisBatchService: AnalysisBatchService, private _targetService: TargetService, private _extractionMethodService: ExtractionMethodService) { }
+  aliquotsForm = new FormArray([]);
+
+  setAliquots() {
+
+  }
+
+  get aliquots(): FormArray {
+    return this.aliquotsForm.get('aliquots') as FormArray;
+  };
+
+  constructor(private fb: FormBuilder, private _studyService: StudyService, private _sampleService: SampleService, private _analysisBatchService: AnalysisBatchService, private _targetService: TargetService, private _extractionMethodService: ExtractionMethodService) { }
 
   ngOnInit() {
 
@@ -189,16 +204,44 @@ export class AnalysisBatchesComponent implements OnInit {
     // error => this.errorMessage = <any>error);
     // return 
   }
-  extractAB(selectedAB) {
-    // open extract wizard and begin
 
+  resetAB(){
     this.selected = [];
+    this.abSampleList = [];
     this.abInhibitionCount = 0;
     this.abInhibitions = [];
+    this.selected = [];
+
+    this.sampleListEditLocked = false;
+  }
+  extractAB(selectedAB) {
+    // open extract wizard and begin
+    this.resetAB();
     this.extractOpen = true;
     this.selectedAnalysisBatchID = selectedAB.id;
 
-    // TODO: retrieve the inhibitons per sample list from web services
+    // call to retrieve AB detail data
+    this.selectedAnalysisBatchData = this.retrieveABData(selectedAB.id);
+
+    // get sample id for each sample in the AB
+    // add those to selected array
+    for (let sampleSummary of this.selectedAnalysisBatchData.samples) {
+      for (let sample of this.allSamples) {
+        if (sampleSummary.id === sample.id) {
+          this.abSampleList.push(sample);
+        }
+      }
+    }
+
+    // TODO: need to get a list of aliquots for each sample (samples endpoint currently down; revisit)
+
+    for (let sample of this.abSampleList) {
+      this.aliquotsForm.push(
+        new FormGroup({
+          aliquot: new FormControl(sample.aliquots)
+        })
+      )
+    }
 
 
     // check the this.inhibitionsPerSample for inhibitions
@@ -305,24 +348,20 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
-  updateABSampleList(abID, abSamples){
+  updateABSampleList(abID, abSamples) {
     let abUpdateObject = [];
-    for(let sample of abSamples) {
-      abUpdateObject.push({"sample": sample.id , "analysis_batch": abID });
+    for (let sample of abSamples) {
+      abUpdateObject.push({ "sample": sample.id, "analysis_batch": abID });
     }
     console.log(abUpdateObject);
 
   }
 
   editAB(selectedAB) {
-    this.selected = [];
-    this.abSampleList = [];
-    this.sampleListEditLocked = false;
 
-    // TODO: create a reset function to set all the state variables to original/empty
-
+    this.resetAB();
     if (selectedAB.extraction_count > 0) {
-        this.sampleListEditLocked = true;
+      this.sampleListEditLocked = true;
     }
 
     this.editABForm.setValue({
@@ -336,11 +375,11 @@ export class AnalysisBatchesComponent implements OnInit {
     // get sample id for each sample in the AB
     // add those to selected array
     for (let sampleSummary of this.selectedAnalysisBatchData.samples) {
-        for (let sample of this.allSamples){
-            if (sampleSummary.id === sample.id){
-              this.abSampleList.push(sample);
-            }
+      for (let sample of this.allSamples) {
+        if (sampleSummary.id === sample.id) {
+          this.abSampleList.push(sample);
         }
+      }
     }
 
     // console.log(this.abSampleList);

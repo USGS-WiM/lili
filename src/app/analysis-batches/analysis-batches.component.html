@@ -15,6 +15,29 @@
     <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
     <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
 
+    <clr-wizard-page [clrWizardPageNextDisabled]="">
+        <ng-template clrPageTitle>Aliquot Selection</ng-template>
+        <div class="row">
+            <div class="col-lg-10 col-md-10">
+                <p>Select an aliquot for each Sample in this Analysis Batch
+
+                    <!-- <form class="compact">
+                        <section class="form-block">
+                           <div formArrayName="aliquots">
+                               <div *ngFor="let aliquot of aliquots.controls; let i=index" [formGroupName]="i">
+
+                               </div>
+                           </div>
+                        </section>
+                    </form> -->
+
+
+            </div>
+            <div class="col-lg-2 col-md-2"></div>
+        </div>
+
+    </clr-wizard-page>
+
     <clr-wizard-page [clrWizardPageNextDisabled]="selected.length < 1" (clrWizardPageCustomButton)="doCustomClick($event)">
         <ng-template clrPageTitle>Target Selection</ng-template>
         <div class="row">
@@ -88,9 +111,26 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="extractionDateInput" class="required">Extraction Date</label>
+                    <label for="sampleDilution">Dilution of Sample</label>
+                    <input id="sampleDilution" type="text" size="10" formControlName="sample_dilution_factor">
+                </div>
+
+                <div class="form-group">
+                    <label for="extractionDateInput">Extraction Date</label>
                     <input type="date" id="extractionDateInput" formControlName="extraction_date">
                 </div>
+
+                <div class="form-group">
+                    <label for="qpcrTemplateVol">qPCR Template Volume</label>
+                    <input id="qpcrTemplateVol" type="text" size="10" formControlName="qpcr_template_volume">
+                </div>
+
+                <div class="form-group">
+                    <label for="qpcrDateInput">qPCR Date</label>
+                    <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
+                </div>
+
+
 
             </section>
         </form>
@@ -164,6 +204,7 @@
                             <div class="card-text">
                                 <form id="addInhibitionForm" class="compact" [formGroup]="addInhibitionForm" (ngSubmit)="onSubmit('add', addInhibitionForm.value)">
                                     <section class="form-block">
+
                                         <div class="form-group">
                                             <label>Inhibition Type</label>
                                             <div class="radio">
@@ -175,9 +216,15 @@
                                                 <label for="rnaRadio">RNA</label>
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="inhibitionDateInput">Inhibition Date</label>
+                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
+                                        </div>
+
                                     </section>
                                 </form>
-                                <span>Inh type form value: {{addInhibitionForm.value | json}}</span>
+                                <!-- <span>Inh type form value: {{addInhibitionForm.value | json}}</span> -->
                             </div>
                         </div>
                         <div class="card-footer" *ngIf="inhibitionsExist">
@@ -192,6 +239,21 @@
                     <div class="card">
                         <div class="card-header">
                             Apply Existing Inhibition
+                        </div>
+                        <div class="card-block">
+                            <div class="card-text">
+                                <form id="addExtractionForm" class="compact" [formGroup]="applyInhibition_batchForm" (ngSubmit)="onSubmit('add', applyInhibition_batchForm.value)">
+                                    <section class="form-block">
+
+                                        <div class="form-group">
+                                            <label for="inhibitionDateInput">Inhibition Date (for new Inhibitions)</label>
+                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
+                                        </div>
+
+                                    </section>
+                                </form>
+
+                            </div>
                         </div>
                         <div class="card-block">
                             <div class="card-title">
@@ -226,6 +288,12 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="inhibitionDateInput">Inhibition Date (for new Inhibitions)</label>
+                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
+                                        </div>
+
                                     </section>
                                 </form>
                             </div>
