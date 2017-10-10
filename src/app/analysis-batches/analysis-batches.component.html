@@ -21,15 +21,67 @@
             <div class="col-lg-10 col-md-10">
                 <p>Select an aliquot for each Sample in this Analysis Batch
 
-                    <!-- <form class="compact">
+                    <form class="compact" [formGroup]="aliquotsForm">
                         <section class="form-block">
-                           <div formArrayName="aliquots">
-                               <div *ngFor="let aliquot of aliquots.controls; let i=index" [formGroupName]="i">
+                            <!-- <div [formGroup]="aliquotsForm" >
+                                <div formArrayName="aliquots">
+                                    <div *ngFor="let aliquot of aliquots.controls; let i=index" [formControlName]="i">
 
-                               </div>
-                           </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- Temporary hard-coded form for demo purposes -->
+
+                            <div class="form-group">
+                                <label for="">Sample 1 (6780)</label>
+                                <div class="select">
+                                    <select id="" name="aliquot_select" formControlName="aliquot">
+                                            <option>6780-1</option>
+                                            <option>6780-2</option>
+                                            <option>6780-3</option>
+                                        </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="">Sample 2 (6781)</label>
+                                <div class="select">
+                                    <select id="" name="aliquot_select" formControlName="aliquot">
+                                                <option>6781-1</option>
+                                                <option>6780-2</option>
+                                                <option>6780-3</option>
+                                            </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label for="">Sample 3 (6793)</label>
+                                <div class="select">
+                                    <select id="" name="aliquot_select" formControlName="aliquot">
+                                                <option>6793-1</option>
+                                                <option>6780-2</option>
+                                                <option>6780-3</option>
+                                            </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Sample 4 (6794)</label>
+                                <div class="select">
+                                    <select id="" name="aliquot_select" formControlName="aliquot">
+                                                    <option>6794-1</option>
+                                                    <option>6780-2</option>
+                                                    <option>6780-3</option>
+                                                </select>
+                                </div>
+                            </div>
+
+                            <!-- End Temporary hard-coded form for demo purposes -->
                         </section>
-                    </form> -->
+                    </form>
 
 
             </div>
@@ -129,9 +181,6 @@
                     <label for="qpcrDateInput">qPCR Date</label>
                     <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
                 </div>
-
-
-
             </section>
         </form>
     </clr-wizard-page>
@@ -143,7 +192,6 @@
                 <span class="alert-text">
                         You have selected RNA targets for this extraction. Please enter RT data below.
                     </span>
-
             </div>
         </clr-alert>
 
@@ -152,7 +200,6 @@
                 <span class="alert-text">
                             You have not selected any RNA targets for this extraction. No RT record will be created. Please click Next to skip to the next step.
                         </span>
-
             </div>
         </clr-alert>
 
@@ -338,35 +385,11 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-sm btn-link" (click)="useExistingInhibition = false">Create New Inhibition</button>
+                            <button class="btn btn-sm btn-link" (click)="useExistingInhibition = false">Create New Inhibition Batch-Wide</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- <clr-dropdown>
-                    <button type="button" class="btn btn-primary" clrDropdownTrigger>
-                        Create Inhibition
-                        <clr-icon shape="caret down"></clr-icon>
-                    </button>
-                    <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
-                        <button type="button" clrDropdownItem>Create New Inhibition</button>
-                        <button type="button" clrDropdownItem>Apply Existing Inhibition</button>
-                    </clr-dropdown-menu>
-
-                </clr-dropdown> -->
-
-
-            <!-- <clr-dropdown>
-                    <button class="dropdown-toggle btn btn-primary" type="button">
-                        Options
-                        <clr-icon shape="caret down"></clr-icon>
-                    </button>
-                    <clr-dropdown-menu clrPosition="top-left" *clrIfOpen>
-                        <button type="button" clrDropdownItem>Create New Inhibition</button>
-                        <button type="button" clrDropdownItem>Apply Existing Inhibition</button>
-                    </clr-dropdown-menu>
-                </clr-dropdown> -->
         </div>
     </clr-wizard-page>
 

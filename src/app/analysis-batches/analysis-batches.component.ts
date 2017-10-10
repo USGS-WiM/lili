@@ -112,17 +112,15 @@ export class AnalysisBatchesComponent implements OnInit {
     abSamples: new FormControl('')
   })
 
-  aliquotsForm = new FormArray([]);
+  aliquotsForm = new FormGroup({
+    aliquot: new FormControl('')
+  })
 
-  setAliquots() {
+  // aliquotsForm = this.fb.group({
+  //   aliquots: this.fb.array([])
+  // });
 
-  }
-
-  get aliquots(): FormArray {
-    return this.aliquotsForm.get('aliquots') as FormArray;
-  };
-
-  constructor(private fb: FormBuilder, private _studyService: StudyService, private _sampleService: SampleService, private _analysisBatchService: AnalysisBatchService, private _targetService: TargetService, private _extractionMethodService: ExtractionMethodService) { }
+  constructor(private formBuilder: FormBuilder, private _studyService: StudyService, private _sampleService: SampleService, private _analysisBatchService: AnalysisBatchService, private _targetService: TargetService, private _extractionMethodService: ExtractionMethodService) { }
 
   ngOnInit() {
 
@@ -155,6 +153,10 @@ export class AnalysisBatchesComponent implements OnInit {
     this._sampleService.getSamples()
       .subscribe(samples => this.allSamples = samples,
       error => this.errorMessage = <any>error);
+
+      // this.aliquotsForm = this.formBuilder.group({
+      //   aliquots: this.formBuilder.array([])
+      // })
   }
 
   // wizard button handlers
@@ -233,15 +235,19 @@ export class AnalysisBatchesComponent implements OnInit {
       }
     }
 
+    // const aliquotFGs = this.abSampleList.map(sample => this.fb.group(sample));
+    // const aliquotFormArray = this.fb.array(aliquotFGs);
+    // this.aliquotsForm.setControl('aliquots', aliquotFormArray);
+
     // TODO: need to get a list of aliquots for each sample (samples endpoint currently down; revisit)
 
-    for (let sample of this.abSampleList) {
-      this.aliquotsForm.push(
-        new FormGroup({
-          aliquot: new FormControl(sample.aliquots)
-        })
-      )
-    }
+    // for (let sample of this.abSampleList) {
+    //   this.aliquotsForm.push(
+    //     new FormGroup({
+    //       aliquot: new FormControl(sample.aliquots)
+    //     })
+    //   )
+    // }
 
 
     // check the this.inhibitionsPerSample for inhibitions
