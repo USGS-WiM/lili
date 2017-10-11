@@ -19,7 +19,7 @@ import { UserService } from '../SHARED/user.service';
 
 import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
 
-import { APP_UTILITIES } from '../app.utilities'
+import { APP_UTILITIES } from '../app.utilities';
 
 @Component({
   selector: 'app-samples',

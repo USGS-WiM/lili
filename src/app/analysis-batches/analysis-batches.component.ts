@@ -12,12 +12,14 @@ import { IInhibition } from '../inhibitions/inhibition';
 import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcription';
 import { ITarget } from '../targets/target';
 import { IExtractionMethod } from '../extractions/extraction-method';
+import { IUnit } from '../SHARED/unit';
 
 import { StudyService } from '../studies/study.service';
 import { SampleService } from '../samples/sample.service';
 import { AnalysisBatchService } from './analysis-batch.service';
 import { TargetService } from '../targets/target.service';
 import { ExtractionMethodService } from '../extractions/extraction-method.service';
+import { UnitService } from '../SHARED/unit.service';
 
 import { APP_UTILITIES } from '../app.utilities';
 
@@ -43,6 +45,7 @@ export class AnalysisBatchesComponent implements OnInit {
   allExtractionMethods: IExtractionMethod[];
 
   studies: IStudy[];
+  units: IUnit[];
 
   allSamples: ISample[] = [];
 
@@ -87,7 +90,9 @@ export class AnalysisBatchesComponent implements OnInit {
     extraction_date: new FormControl(''),
     sample_dilution_factor: new FormControl(''),
     qpcr_template_volume: new FormControl(''),
-    qpcr_date: new FormControl('')
+    // set the default units to microliters
+    qpcr_template_volume_units: new FormControl(4),
+    qpcr_date: new FormControl('1507688613')
   });
 
   addRTForm = new FormGroup({
@@ -120,7 +125,7 @@ export class AnalysisBatchesComponent implements OnInit {
   //   aliquots: this.fb.array([])
   // });
 
-  constructor(private formBuilder: FormBuilder, private _studyService: StudyService, private _sampleService: SampleService, private _analysisBatchService: AnalysisBatchService, private _targetService: TargetService, private _extractionMethodService: ExtractionMethodService) { }
+  constructor(private formBuilder: FormBuilder, private _studyService: StudyService, private _sampleService: SampleService, private _analysisBatchService: AnalysisBatchService, private _targetService: TargetService, private _extractionMethodService: ExtractionMethodService, private _unitService: UnitService) { }
 
   ngOnInit() {
 
@@ -154,9 +159,14 @@ export class AnalysisBatchesComponent implements OnInit {
       .subscribe(samples => this.allSamples = samples,
       error => this.errorMessage = <any>error);
 
-      // this.aliquotsForm = this.formBuilder.group({
-      //   aliquots: this.formBuilder.array([])
-      // })
+    // on init, call getUnits function of the UnitService, set results to the units var
+    this._unitService.getUnits()
+      .subscribe(units => this.units = units,
+      error => this.errorMessage = <any>error);
+
+    // this.aliquotsForm = this.formBuilder.group({
+    //   aliquots: this.formBuilder.array([])
+    // })
   }
 
   // wizard button handlers
@@ -207,7 +217,7 @@ export class AnalysisBatchesComponent implements OnInit {
     // return 
   }
 
-  resetAB(){
+  resetAB() {
     this.selected = [];
     this.abSampleList = [];
     this.abInhibitionCount = 0;
