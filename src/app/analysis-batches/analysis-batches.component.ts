@@ -12,14 +12,14 @@ import { IInhibition } from '../inhibitions/inhibition';
 import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcription';
 import { ITarget } from '../targets/target';
 import { IExtractionMethod } from '../extractions/extraction-method';
-import { IUnit } from '../SHARED/unit';
+import { IUnit } from '../units/unit';
 
 import { StudyService } from '../studies/study.service';
 import { SampleService } from '../samples/sample.service';
 import { AnalysisBatchService } from './analysis-batch.service';
 import { TargetService } from '../targets/target.service';
 import { ExtractionMethodService } from '../extractions/extraction-method.service';
-import { UnitService } from '../SHARED/unit.service';
+import { UnitService } from '../units/unit.service';
 
 import { APP_UTILITIES } from '../app.utilities';
 
@@ -41,7 +41,7 @@ export class AnalysisBatchesComponent implements OnInit {
   useExistingInhibition: boolean = false;
 
   allAnalysisBatchSummaries: IAnalysisBatchSummary[];
-  allTargets: ITarget[];
+  allTargets: ITarget[] = [];
   allExtractionMethods: IExtractionMethod[];
 
   studies: IStudy[];
@@ -132,8 +132,11 @@ export class AnalysisBatchesComponent implements OnInit {
     // grab temporary hard-coded sample analysis batch summary data (until web service endpoint is up-to-date)
     this.allAnalysisBatchSummaries = APP_UTILITIES.ANALYSIS_BATCH_SUMMARY_ENDPOINT;
 
-    // grab temporary hard-coded sample target summary data (until web service endpoint is up-to-date)
-    this.allTargets = APP_UTILITIES.TARGETS_ENDPOINT;
+    // on init, call getTargets function of the TargetService, set results to allTargets var
+    this._targetService.getTargets()
+      .subscribe(targets => this.allTargets = targets,
+      error => this.errorMessage = <any>error);
+
 
     // grab temporary hard-coded inhibitionsPerSample object (until web service endpoint is up-to-date)
     this.inhibitionsPerSample = APP_UTILITIES.INHIBITIONS_PER_SAMPLE_ENDPOINT;
@@ -360,7 +363,33 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
-  openTargetDetails() {
+  openTargetDetails(abID) {
+
+    this.targetDetailArray = [];
+
+    // check if AB ID matches the current focusAnalysisBatchID.
+    // This will mean the desired AB data is already stored in the variable and does not need to be retrieved
+    if (abID === this.focusAnalysisBatchID) {
+      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
+    } else {
+      // set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
+      this.focusAnalysisBatchID = abID;
+      // call to retrieve AB detail data
+      this.focusAnalysisBatchData = this.retrieveABData(abID);
+      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
+    }
+
+    // build the target list by looping through the AB data and adding all targets to a local array
+    for (let extraction of this.extractionDetailArray) {
+      for (let target of extraction.targets) {
+        this.targetDetailArray.push(target);
+      }
+    }
+    // show the inhibition details modal if not showing already
+    if (this.showHideTargetDetailModal === false) {
+      this.showHideTargetDetailModal = true;
+    }
+
 
   }
 

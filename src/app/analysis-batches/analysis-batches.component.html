@@ -105,7 +105,7 @@
                         <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
                             <clr-dg-cell>{{target.name}}</clr-dg-cell>
                             <clr-dg-cell>{{target.code}}</clr-dg-cell>
-                            <clr-dg-cell>{{target.medium}}</clr-dg-cell>
+                            <clr-dg-cell>{{target.medium.name}}</clr-dg-cell>
                             <clr-dg-cell>{{target.type}}</clr-dg-cell>
                         </clr-dg-row>
 
@@ -614,19 +614,19 @@
                     <clr-stack-header>Inhibitions in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
 
                     <clr-stack-block *ngFor="let inhibition of inhibitionDetailArray">
-                        <clr-stack-label>Inhibition {{inhibition.id}}</clr-stack-label>
+                        <clr-stack-label>Inhibition # {{inhibition.inhibition_no}}</clr-stack-label>
                         <clr-stack-content></clr-stack-content>
                         <clr-stack-block>
                             <clr-stack-label>Inhibition Date</clr-stack-label>
-                            <clr-stack-content>{{inhibition.insert_date | date:'shortDate'}}</clr-stack-content>
+                            <clr-stack-content>{{inhibition.inhibition_date | date:'shortDate'}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block>
                             <clr-stack-label>Type</clr-stack-label>
                             <clr-stack-content>{{inhibition.type}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block>
-                            <clr-stack-label>Dilution</clr-stack-label>
-                            <clr-stack-content>{{inhibition.dilution}}</clr-stack-content>
+                            <clr-stack-label>Dilution Factor</clr-stack-label>
+                            <clr-stack-content>{{inhibition.dilution_factor}}</clr-stack-content>
                         </clr-stack-block>
                     </clr-stack-block>
 
@@ -650,8 +650,8 @@
                 <clr-stack-view>
                     <clr-stack-header>RTs in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
 
-                    <clr-stack-block *ngFor="let rt of rtDetailArray" [clrSbExpanded]="true">
-                        <clr-stack-label>RT # {{rt.reverse_transcription_no}}</clr-stack-label>
+                    <clr-stack-block *ngFor="let rt of rtDetailArray" >
+                        <clr-stack-label>RT # {{rt.rt_no}}</clr-stack-label>
                         <clr-stack-content></clr-stack-content>
                         <clr-stack-block [clrSbExpanded]="true">
                             <clr-stack-label>Volume In</clr-stack-label>
@@ -667,7 +667,7 @@
                         </clr-stack-block>
                         <clr-stack-block [clrSbExpanded]="true">
                             <clr-stack-label>Date</clr-stack-label>
-                            <clr-stack-content>{{rt.insert_date | date:'shortDate' }}</clr-stack-content>
+                            <clr-stack-content>{{rt.rt_date | date:'shortDate' }}</clr-stack-content>
                         </clr-stack-block>
                     </clr-stack-block>
 
@@ -691,22 +691,18 @@
             <div class="col-sm-12">
 
                 <clr-stack-view>
-                    <clr-stack-header>Extractions in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
+                    <clr-stack-header>Targets analyzed in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
 
-                    <clr-stack-block *ngFor="let item of focusDetailObject">
-                        <clr-stack-label>Extraction {{item.extraction_no}}</clr-stack-label>
+                    <clr-stack-block *ngFor="let target of targetDetailArray">
+                        <clr-stack-label>{{target.name}} ({{target.code}})</clr-stack-label>
                         <clr-stack-content></clr-stack-content>
                         <clr-stack-block>
-                            <clr-stack-label>Extraction Volume</clr-stack-label>
-                            <clr-stack-content>{{item.extraction_volume}}</clr-stack-content>
+                            <clr-stack-label>Type</clr-stack-label>
+                            <clr-stack-content>{{target.type}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block>
-                            <clr-stack-label>Elution Volume</clr-stack-label>
-                            <clr-stack-content>{{item.elution_volume}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block>
-                            <clr-stack-label>Extraction Method</clr-stack-label>
-                            <clr-stack-content>{{item.extraction_method}}</clr-stack-content>
+                            <clr-stack-label>Replicates</clr-stack-label>
+                            <clr-stack-content>{{target.replicates}}</clr-stack-content>
                         </clr-stack-block>
                     </clr-stack-block>
 
@@ -788,7 +784,7 @@
 
                         <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Analaysis Batch Notes
+                                Analysis Batch Notes
                             </ng-container>
                         </clr-dg-column>
 
@@ -847,7 +843,9 @@
                                 <a (click)="openRTDetails(ab.id)" class="label label-blue clickable">{{ab.reverse_transcription_count}}</a>
                             </clr-dg-cell>
 
-                            <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.target_count}}</a></clr-dg-cell>
+                            <clr-dg-cell>
+                                <a (click)="openTargetDetails(ab.id)" class="label label-blue clickable">{{ab.target_count}}</a>
+                            </clr-dg-cell>
 
                             <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.insert_user}}</clr-dg-cell>

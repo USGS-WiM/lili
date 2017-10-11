@@ -6,7 +6,7 @@ import { ISampleType } from '../SHARED/sample-type';
 import { IFilterType } from '../SHARED/filter-type'
 import { IMatrix } from '../SHARED/matrix';
 import { IStudy } from '../studies/study';
-import { IUnit } from '../SHARED/unit';
+import { IUnit } from '../units/unit';
 import { IUser } from '../SHARED/user';
 
 import { SampleService } from './sample.service';
@@ -14,7 +14,7 @@ import { SampleTypeService } from '../SHARED/sample-type.service';
 import { FilterTypeService } from '../SHARED/filter-type.service'
 import { MatrixService } from '../SHARED/matrix.service';
 import { StudyService } from '../studies/study.service';
-import { UnitService } from '../SHARED/unit.service';
+import { UnitService } from '../units/unit.service';
 import { UserService } from '../SHARED/user.service';
 
 import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'

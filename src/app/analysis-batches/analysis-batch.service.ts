@@ -28,11 +28,11 @@ export class AnalysisBatchService {
       case 1000:
         return {
           "id": 1000,
-          "analysis_batch_description": "In exercitation nostrud duis velit aliquip nostrud sint qui ad incididunt officia fugiat elit.",
-          "analysis_batch_notes": "Sunt id sunt nostrud Lorem enim magna tempor.",
+          "analysis_batch_description": "1st dummy analysis batch.",
+          "analysis_batch_notes": "Dummy AB for exploring lili",
           "samples": [
             {
-              "id": 14,
+              "id": 10,
               "sample_type": 2,
               "sample_description": "Dolor ipsum ipsum amet non reprehenderit officia Lorem deserunt cupidatat ex."
             },
@@ -57,11 +57,6 @@ export class AnalysisBatchService {
               "id": 4,
               "name": "Kewuanee County Study",
               "description": "Laboris consequat est incididunt ut duis."
-            },
-            {
-              "id": 7,
-              "name": "Iowa DNR Beach Study 2016",
-              "description": "Dolor adipisicing ad amet et deserunt ea et ex ad in est sint officia."
             }
           ],
           "extractions": [
@@ -83,17 +78,6 @@ export class AnalysisBatchService {
                   "created_by": "legacy data upload",
                   "modified_date": "2016-04-05",
                   "modified_by": "sspencer"
-                },
-                {
-                  "id": 1032,
-                  "inhibition_no": 2,
-                  "dilution_factor": 27,
-                  "type": "DNA",
-                  "inhibition_date": "2016-10-14",
-                  "created_date": "2015-10-05",
-                  "created_by": "jpstokdyk",
-                  "modified_date": "2012-07-14",
-                  "modified_by": "sspencer"
                 }
               ],
               "reverse_transcriptions": [
@@ -109,34 +93,21 @@ export class AnalysisBatchService {
                   "created_by": "legacy data upload",
                   "modified_date": "2017-09-01",
                   "modified_by": "jpstokdyk"
-                },
-                {
-                  "id": 1084,
-                  "rt_no": 2,
-                  "extraction_id": 1589,
-                  "vol_in": 1.45,
-                  "vol_out": 0.61,
-                  "rt_cq": 1.33,
-                  "rt_date": "2016-08-14",
-                  "created_date": "2015-01-29",
-                  "created_by": "sspencer",
-                  "modified_date": "2014-10-14",
-                  "modified_by": "afirnstahl"
                 }
               ],
               "targets": [
                 {
                   "id": 1245,
-                  "name": "Bovine Flu",
-                  "abbreviation": "F",
+                  "name": "Enterovirus",
+                  "code": "E",
                   "type": "RNA",
                   "replicates": 3
                 },
                 {
                   "id": 1059,
-                  "name": "E.Coli",
-                  "abbreviation": "SS",
-                  "type": "DNA",
+                  "name": "HAV",
+                  "code": "H",
+                  "type": "RNA",
                   "replicates": 8
                 }
               ]
@@ -159,33 +130,9 @@ export class AnalysisBatchService {
                   "created_by": "legacy data upload",
                   "modified_date": "2017-01-12",
                   "modified_by": "jpstokdyk"
-                },
-                {
-                  "id": 1044,
-                  "inhibition_no": 2,
-                  "dilution_factor": 12,
-                  "type": "RNA",
-                  "inhibition_date": "2016-07-10",
-                  "created_date": "2015-02-04",
-                  "created_by": "afirnstahl",
-                  "modified_date": "2012-08-14",
-                  "modified_by": "sspencer"
                 }
               ],
               "reverse_transcriptions": [
-                {
-                  "id": 1024,
-                  "rt_no": 1,
-                  "extraction_id": 1833,
-                  "vol_in": 0.46,
-                  "vol_out": 1.57,
-                  "rt_cq": 1.59,
-                  "rt_date": "2016-06-02",
-                  "created_date": "2014-06-09",
-                  "created_by": "sspencer",
-                  "modified_date": "2014-01-22",
-                  "modified_by": "sspencer"
-                },
                 {
                   "id": 1008,
                   "rt_no": 2,
@@ -203,15 +150,15 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1557,
-                  "name": "Bovine Flu",
-                  "abbreviation": "E",
-                  "type": "DNA",
+                  "name": "Enterovirus",
+                  "code": "E",
+                  "type": "RNA",
                   "replicates": 2
                 },
                 {
                   "id": 1267,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "E",
+                  "name": "Human rotavirus",
+                  "code": "R",
                   "type": "RNA",
                   "replicates": 3
                 }
@@ -325,16 +272,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1080,
-                  "name": "Salmonella",
-                  "abbreviation": "F",
+                  "name": "G1 Norovirus",
+                  "code": "G1",
                   "type": "DNA",
                   "replicates": 6
                 },
                 {
                   "id": 1405,
-                  "name": "E.Coli",
-                  "abbreviation": "E",
-                  "type": "DNA",
+                  "name": "HAV",
+                  "code": "H",
+                  "type": "RNA",
                   "replicates": 8
                 }
               ]
@@ -401,16 +348,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1754,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "E",
+                  "name": "Human rotavirus",
+                  "code": "R",
                   "type": "RNA",
                   "replicates": 6
                 },
                 {
                   "id": 1269,
-                  "name": "Bovine Flu",
-                  "abbreviation": "E",
-                  "type": "DNA",
+                  "name": "Enterovirus",
+                  "code": "E",
+                  "type": "RNA",
                   "replicates": 7
                 }
               ]
@@ -523,16 +470,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1626,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "F",
+                  "name": "Human rotavirus",
+                  "code": "R",
                   "type": "RNA",
                   "replicates": 8
                 },
                 {
                   "id": 1598,
-                  "name": "Bovine Flu",
-                  "abbreviation": "GB",
-                  "type": "DNA",
+                  "name": "Enterovirus",
+                  "code": "E",
+                  "type": "RNA",
                   "replicates": 4
                 }
               ]
@@ -599,16 +546,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1912,
-                  "name": "Bovine Flu",
-                  "abbreviation": "F",
-                  "type": "DNA",
+                  "name": "Enterovirus",
+                  "code": "E",
+                  "type": "RNA",
                   "replicates": 2
                 },
                 {
                   "id": 1948,
-                  "name": "Salmonella",
-                  "abbreviation": "F",
-                  "type": "RNA",
+                  "name": "G1 Norovirus",
+                  "code": "G1",
+                  "type": "DNA",
                   "replicates": 2
                 }
               ]
@@ -721,16 +668,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1473,
-                  "name": "E.Coli",
-                  "abbreviation": "SS",
-                  "type": "DNA",
+                  "name": "HAV",
+                  "code": "H",
+                  "type": "RNA",
                   "replicates": 7
                 },
                 {
                   "id": 1779,
-                  "name": "Bovine Flu",
-                  "abbreviation": "SS",
-                  "type": "DNA",
+                  "name": "Enterovirus",
+                  "code": "E",
+                  "type": "RNA",
                   "replicates": 8
                 }
               ]
@@ -797,16 +744,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1541,
-                  "name": "Salmonella",
-                  "abbreviation": "F",
+                  "name": "G1 Norovirus",
+                  "code": "F",
                   "type": "RNA",
                   "replicates": 5
                 },
                 {
                   "id": 1026,
-                  "name": "Salmonella",
-                  "abbreviation": "GB",
-                  "type": "RNA",
+                  "name": "G1 Norovirus",
+                  "code": "G1",
+                  "type": "DNA",
                   "replicates": 3
                 }
               ]
@@ -919,15 +866,15 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1602,
-                  "name": "E.Coli",
-                  "abbreviation": "GB",
+                  "name": "HAV",
+                  "code": "H",
                   "type": "RNA",
                   "replicates": 2
                 },
                 {
                   "id": 1232,
-                  "name": "E.Coli",
-                  "abbreviation": "SS",
+                  "name": "HAV",
+                  "code": "H",
                   "type": "RNA",
                   "replicates": 8
                 }
@@ -995,16 +942,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1047,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "F",
+                  "name": "Human rotavirus",
+                  "code": "R",
                   "type": "RNA",
                   "replicates": 7
                 },
                 {
                   "id": 1777,
-                  "name": "E.Coli",
-                  "abbreviation": "GB",
-                  "type": "DNA",
+                  "name": "HAV",
+                  "code": "H",
+                  "type": "RNA",
                   "replicates": 3
                 }
               ]
@@ -1117,15 +1064,15 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1159,
-                  "name": "E.Coli",
-                  "abbreviation": "SS",
+                  "name": "HAV",
+                  "code": "H",
                   "type": "RNA",
                   "replicates": 5
                 },
                 {
                   "id": 1281,
-                  "name": "Salmonella",
-                  "abbreviation": "SS",
+                  "name": "G1 Norovirus",
+                  "code": "G1",
                   "type": "DNA",
                   "replicates": 5
                 }
@@ -1193,16 +1140,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1834,
-                  "name": "Bovine Flu",
-                  "abbreviation": "SS",
+                  "name": "Enterovirus",
+                  "code": "E",
                   "type": "RNA",
                   "replicates": 8
                 },
                 {
                   "id": 1466,
-                  "name": "E.Coli",
-                  "abbreviation": "GB",
-                  "type": "DNA",
+                  "name": "HAV",
+                  "code": "H",
+                  "type": "RNA",
                   "replicates": 4
                 }
               ]
@@ -1315,15 +1262,15 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1929,
-                  "name": "Salmonella",
-                  "abbreviation": "E",
-                  "type": "RNA",
+                  "name": "G1 Norovirus",
+                  "code": "G1",
+                  "type": "DNA",
                   "replicates": 6
                 },
                 {
                   "id": 1043,
-                  "name": "E.Coli",
-                  "abbreviation": "E",
+                  "name": "HAV",
+                  "code": "H",
                   "type": "RNA",
                   "replicates": 5
                 }
@@ -1391,16 +1338,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1541,
-                  "name": "Salmonella",
-                  "abbreviation": "F",
+                  "name": "G1 Norovirus",
+                  "code": "G1",
                   "type": "DNA",
                   "replicates": 7
                 },
                 {
                   "id": 1608,
-                  "name": "Bovine Flu",
-                  "abbreviation": "F",
-                  "type": "DNA",
+                  "name": "Enterovirus",
+                  "code": "E",
+                  "type": "RNA",
                   "replicates": 6
                 }
               ]
@@ -1513,16 +1460,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1922,
-                  "name": "Bovine Flu",
-                  "abbreviation": "F",
-                  "type": "DNA",
+                  "name": "Enterovirus",
+                  "code": "E",
+                  "type": "RNA",
                   "replicates": 4
                 },
                 {
                   "id": 1016,
-                  "name": "Salmonella",
-                  "abbreviation": "GB",
-                  "type": "RNA",
+                  "name": "G1 Norovirus",
+                  "code": "G1",
+                  "type": "DNA",
                   "replicates": 3
                 }
               ]
@@ -1589,15 +1536,15 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1625,
-                  "name": "E.Coli",
-                  "abbreviation": "E",
+                  "name": "HAV",
+                  "code": "H",
                   "type": "RNA",
                   "replicates": 8
                 },
                 {
                   "id": 1474,
-                  "name": "Salmonella",
-                  "abbreviation": "GB",
+                  "name": "G1 Norovirus",
+                  "code": "G1",
                   "type": "DNA",
                   "replicates": 8
                 }
@@ -1711,15 +1658,15 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1208,
-                  "name": "Salmonella",
-                  "abbreviation": "GB",
+                  "name": "G1 Norovirus",
+                  "code": "G1",
                   "type": "DNA",
                   "replicates": 4
                 },
                 {
                   "id": 1752,
-                  "name": "E.Coli",
-                  "abbreviation": "F",
+                  "name": "HAV",
+                  "code": "H",
                   "type": "RNA",
                   "replicates": 6
                 }
@@ -1787,15 +1734,15 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1997,
-                  "name": "Bovine Flu",
-                  "abbreviation": "F",
-                  "type": "DNA",
+                  "name": "Enterovirus",
+                  "code": "E",
+                  "type": "RNA",
                   "replicates": 7
                 },
                 {
                   "id": 1321,
-                  "name": "Bovine Flu",
-                  "abbreviation": "F",
+                  "name": "Enterovirus",
+                  "code": "E",
                   "type": "RNA",
                   "replicates": 3
                 }
@@ -1909,16 +1856,16 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1651,
-                  "name": "Salmonella",
-                  "abbreviation": "SS",
+                  "name": "G1 Norovirus",
+                  "code": "G1",
                   "type": "DNA",
                   "replicates": 8
                 },
                 {
                   "id": 1204,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "GB",
-                  "type": "DNA",
+                  "name": "Human rotavirus",
+                  "code": "R",
+                  "type": "RNA",
                   "replicates": 8
                 }
               ]
@@ -1985,15 +1932,15 @@ export class AnalysisBatchService {
               "targets": [
                 {
                   "id": 1799,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "F",
+                  "name": "Human rotavirus",
+                  "code": "R",
                   "type": "RNA",
                   "replicates": 3
                 },
                 {
                   "id": 1760,
-                  "name": "Crazy Cow-itis",
-                  "abbreviation": "F",
+                  "name": "Human rotavirus",
+                  "code": "R",
                   "type": "RNA",
                   "replicates": 8
                 }
