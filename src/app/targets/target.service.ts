@@ -20,9 +20,7 @@ export class TargetService {
   }
 
 
-    // **********************************************Temporary**************************************************** */
-  // temporary function to return AB details, in place until AB endpoint is functional
-  public getTargetsData(){}
+  // public getTargetsData(){}
 
 
   public getTargets(): Observable<ITarget[]> {

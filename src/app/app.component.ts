@@ -7,17 +7,16 @@ import { AnalysisBatchService } from './analysis-batches/analysis-batch.service'
 import { SampleTypeService } from './SHARED/sample-type.service';
 import { FilterTypeService } from './SHARED/filter-type.service';
 import { MatrixService } from './SHARED/matrix.service';
-import { UnitService } from './SHARED/unit.service';
+import { UnitService } from './units/unit.service';
 import { UserService } from './SHARED/user.service';
 import { TargetService } from './targets/target.service';
 import { ExtractionMethodService } from './extractions/extraction-method.service'
-
 
 @Component({
     selector: 'my-app',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    providers: [ StudyService, SampleService, AnalysisBatchService, SampleTypeService, FilterTypeService, MatrixService, UnitService, UserService, TargetService, ExtractionMethodService ]
+    providers: [ StudyService, SampleService, AnalysisBatchService, SampleTypeService, FilterTypeService, MatrixService, UnitService, UserService, TargetService, ExtractionMethodService]
 })
 export class AppComponent {
     constructor(private router: Router) {

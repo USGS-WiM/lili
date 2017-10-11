@@ -20,10 +20,6 @@ import { AnalysisBatchesComponent } from './analysis-batches/analysis-batches.co
 import { ResultsComponent } from './results/results.component';
 import { ReportsComponent } from './reports/reports.component';
 
-//to be removed
-import { StudiesFormComponent } from './studies/studies-form/studies-form.component';
-//to be removed
-import { StudiesTableComponent } from './studies/studies-table/studies-table.component';
 import { AdminComponent } from './admin/admin.component';
 import { DisplayValuePipe } from './SHARED/display-value.pipe';
 import { StudyFilter } from './FILTERS/study-filter/study-filter.component';
@@ -48,10 +44,6 @@ import { AnalysisBatchDetailComponent } from './analysis-batches/analysis-batch-
         AnalysisBatchesComponent,
         ResultsComponent,
         ReportsComponent,
-        //to be removed
-        StudiesFormComponent,
-        //to be removed
-        StudiesTableComponent,
         AdminComponent,
         DisplayValuePipe,
         StudyFilter,

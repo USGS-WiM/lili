@@ -15,6 +15,81 @@
     <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
     <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
 
+    <clr-wizard-page [clrWizardPageNextDisabled]="">
+        <ng-template clrPageTitle>Aliquot Selection</ng-template>
+        <div class="row">
+            <div class="col-lg-10 col-md-10">
+                <p>Select an aliquot for each Sample in this Analysis Batch
+
+                    <form class="compact" [formGroup]="aliquotsForm">
+                        <section class="form-block">
+                            <!-- <div [formGroup]="aliquotsForm" >
+                                <div formArrayName="aliquots">
+                                    <div *ngFor="let aliquot of aliquots.controls; let i=index" [formControlName]="i">
+
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- Temporary hard-coded form for demo purposes -->
+
+                            <div class="form-group">
+                                <label for="">Sample 1 (6780)</label>
+                                <div class="select">
+                                    <select id="" name="aliquot_select" formControlName="aliquot">
+                                            <option>6780-1</option>
+                                            <option>6780-2</option>
+                                            <option>6780-3</option>
+                                        </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="">Sample 2 (6781)</label>
+                                <div class="select">
+                                    <select id="" name="aliquot_select" formControlName="aliquot">
+                                                <option>6781-1</option>
+                                                <option>6780-2</option>
+                                                <option>6780-3</option>
+                                            </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label for="">Sample 3 (6793)</label>
+                                <div class="select">
+                                    <select id="" name="aliquot_select" formControlName="aliquot">
+                                                <option>6793-1</option>
+                                                <option>6780-2</option>
+                                                <option>6780-3</option>
+                                            </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Sample 4 (6794)</label>
+                                <div class="select">
+                                    <select id="" name="aliquot_select" formControlName="aliquot">
+                                                    <option>6794-1</option>
+                                                    <option>6780-2</option>
+                                                    <option>6780-3</option>
+                                                </select>
+                                </div>
+                            </div>
+
+                            <!-- End Temporary hard-coded form for demo purposes -->
+                        </section>
+                    </form>
+
+
+            </div>
+            <div class="col-lg-2 col-md-2"></div>
+        </div>
+
+    </clr-wizard-page>
+
     <clr-wizard-page [clrWizardPageNextDisabled]="selected.length < 1" (clrWizardPageCustomButton)="doCustomClick($event)">
         <ng-template clrPageTitle>Target Selection</ng-template>
         <div class="row">
@@ -30,7 +105,7 @@
                         <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
                             <clr-dg-cell>{{target.name}}</clr-dg-cell>
                             <clr-dg-cell>{{target.code}}</clr-dg-cell>
-                            <clr-dg-cell>{{target.medium}}</clr-dg-cell>
+                            <clr-dg-cell>{{target.medium.name}}</clr-dg-cell>
                             <clr-dg-cell>{{target.type}}</clr-dg-cell>
                         </clr-dg-row>
 
@@ -88,10 +163,29 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="extractionDateInput" class="required">Extraction Date</label>
+                    <label for="sampleDilution">Dilution of Sample</label>
+                    <input id="sampleDilution" type="text" size="10" formControlName="sample_dilution_factor">
+                </div>
+
+                <div class="form-group">
+                    <label for="extractionDateInput">Extraction Date</label>
                     <input type="date" id="extractionDateInput" formControlName="extraction_date">
                 </div>
 
+                <div class="form-group">
+                    <label for="qpcrTemplateVol">qPCR Template Volume</label>
+                    <input id="qpcrTemplateVol" type="text" size="10" formControlName="qpcr_template_volume">
+                    <div class="select">
+                            <select id="qpcrTemplateVolUnits" formControlName="qpcr_template_volume_units" (change)="onUnitChange($event.target.value)">
+                                <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                            </select>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="qpcrDateInput">qPCR Date</label>
+                    <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
+                </div>
             </section>
         </form>
     </clr-wizard-page>
@@ -103,7 +197,6 @@
                 <span class="alert-text">
                         You have selected RNA targets for this extraction. Please enter RT data below.
                     </span>
-
             </div>
         </clr-alert>
 
@@ -112,7 +205,6 @@
                 <span class="alert-text">
                             You have not selected any RNA targets for this extraction. No RT record will be created. Please click Next to skip to the next step.
                         </span>
-
             </div>
         </clr-alert>
 
@@ -164,6 +256,7 @@
                             <div class="card-text">
                                 <form id="addInhibitionForm" class="compact" [formGroup]="addInhibitionForm" (ngSubmit)="onSubmit('add', addInhibitionForm.value)">
                                     <section class="form-block">
+
                                         <div class="form-group">
                                             <label>Inhibition Type</label>
                                             <div class="radio">
@@ -175,9 +268,15 @@
                                                 <label for="rnaRadio">RNA</label>
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="inhibitionDateInput">Inhibition Date</label>
+                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
+                                        </div>
+
                                     </section>
                                 </form>
-                                <span>Inh type form value: {{addInhibitionForm.value | json}}</span>
+                                <!-- <span>Inh type form value: {{addInhibitionForm.value | json}}</span> -->
                             </div>
                         </div>
                         <div class="card-footer" *ngIf="inhibitionsExist">
@@ -192,6 +291,21 @@
                     <div class="card">
                         <div class="card-header">
                             Apply Existing Inhibition
+                        </div>
+                        <div class="card-block">
+                            <div class="card-text">
+                                <form id="addExtractionForm" class="compact" [formGroup]="applyInhibition_batchForm" (ngSubmit)="onSubmit('add', applyInhibition_batchForm.value)">
+                                    <section class="form-block">
+
+                                        <div class="form-group">
+                                            <label for="inhibitionDateInput">Inhibition Date (for new Inhibitions)</label>
+                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
+                                        </div>
+
+                                    </section>
+                                </form>
+
+                            </div>
                         </div>
                         <div class="card-block">
                             <div class="card-title">
@@ -226,6 +340,12 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="inhibitionDateInput">Inhibition Date (for new Inhibitions)</label>
+                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
+                                        </div>
+
                                     </section>
                                 </form>
                             </div>
@@ -270,35 +390,11 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-sm btn-link" (click)="useExistingInhibition = false">Create New Inhibition</button>
+                            <button class="btn btn-sm btn-link" (click)="useExistingInhibition = false">Create New Inhibition Batch-Wide</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- <clr-dropdown>
-                    <button type="button" class="btn btn-primary" clrDropdownTrigger>
-                        Create Inhibition
-                        <clr-icon shape="caret down"></clr-icon>
-                    </button>
-                    <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
-                        <button type="button" clrDropdownItem>Create New Inhibition</button>
-                        <button type="button" clrDropdownItem>Apply Existing Inhibition</button>
-                    </clr-dropdown-menu>
-
-                </clr-dropdown> -->
-
-
-            <!-- <clr-dropdown>
-                    <button class="dropdown-toggle btn btn-primary" type="button">
-                        Options
-                        <clr-icon shape="caret down"></clr-icon>
-                    </button>
-                    <clr-dropdown-menu clrPosition="top-left" *clrIfOpen>
-                        <button type="button" clrDropdownItem>Create New Inhibition</button>
-                        <button type="button" clrDropdownItem>Apply Existing Inhibition</button>
-                    </clr-dropdown-menu>
-                </clr-dropdown> -->
         </div>
     </clr-wizard-page>
 
@@ -518,19 +614,19 @@
                     <clr-stack-header>Inhibitions in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
 
                     <clr-stack-block *ngFor="let inhibition of inhibitionDetailArray">
-                        <clr-stack-label>Inhibition {{inhibition.id}}</clr-stack-label>
+                        <clr-stack-label>Inhibition # {{inhibition.inhibition_no}}</clr-stack-label>
                         <clr-stack-content></clr-stack-content>
                         <clr-stack-block>
                             <clr-stack-label>Inhibition Date</clr-stack-label>
-                            <clr-stack-content>{{inhibition.insert_date | date:'shortDate'}}</clr-stack-content>
+                            <clr-stack-content>{{inhibition.inhibition_date | date:'shortDate'}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block>
                             <clr-stack-label>Type</clr-stack-label>
                             <clr-stack-content>{{inhibition.type}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block>
-                            <clr-stack-label>Dilution</clr-stack-label>
-                            <clr-stack-content>{{inhibition.dilution}}</clr-stack-content>
+                            <clr-stack-label>Dilution Factor</clr-stack-label>
+                            <clr-stack-content>{{inhibition.dilution_factor}}</clr-stack-content>
                         </clr-stack-block>
                     </clr-stack-block>
 
@@ -554,8 +650,8 @@
                 <clr-stack-view>
                     <clr-stack-header>RTs in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
 
-                    <clr-stack-block *ngFor="let rt of rtDetailArray" [clrSbExpanded]="true">
-                        <clr-stack-label>RT # {{rt.reverse_transcription_no}}</clr-stack-label>
+                    <clr-stack-block *ngFor="let rt of rtDetailArray" >
+                        <clr-stack-label>RT # {{rt.rt_no}}</clr-stack-label>
                         <clr-stack-content></clr-stack-content>
                         <clr-stack-block [clrSbExpanded]="true">
                             <clr-stack-label>Volume In</clr-stack-label>
@@ -571,7 +667,7 @@
                         </clr-stack-block>
                         <clr-stack-block [clrSbExpanded]="true">
                             <clr-stack-label>Date</clr-stack-label>
-                            <clr-stack-content>{{rt.insert_date | date:'shortDate' }}</clr-stack-content>
+                            <clr-stack-content>{{rt.rt_date | date:'shortDate' }}</clr-stack-content>
                         </clr-stack-block>
                     </clr-stack-block>
 
@@ -595,22 +691,18 @@
             <div class="col-sm-12">
 
                 <clr-stack-view>
-                    <clr-stack-header>Extractions in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
+                    <clr-stack-header>Targets analyzed in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
 
-                    <clr-stack-block *ngFor="let item of focusDetailObject">
-                        <clr-stack-label>Extraction {{item.extraction_no}}</clr-stack-label>
+                    <clr-stack-block *ngFor="let target of targetDetailArray">
+                        <clr-stack-label>{{target.name}} ({{target.code}})</clr-stack-label>
                         <clr-stack-content></clr-stack-content>
                         <clr-stack-block>
-                            <clr-stack-label>Extraction Volume</clr-stack-label>
-                            <clr-stack-content>{{item.extraction_volume}}</clr-stack-content>
+                            <clr-stack-label>Type</clr-stack-label>
+                            <clr-stack-content>{{target.type}}</clr-stack-content>
                         </clr-stack-block>
                         <clr-stack-block>
-                            <clr-stack-label>Elution Volume</clr-stack-label>
-                            <clr-stack-content>{{item.elution_volume}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block>
-                            <clr-stack-label>Extraction Method</clr-stack-label>
-                            <clr-stack-content>{{item.extraction_method}}</clr-stack-content>
+                            <clr-stack-label>Replicates</clr-stack-label>
+                            <clr-stack-content>{{target.replicates}}</clr-stack-content>
                         </clr-stack-block>
                     </clr-stack-block>
 
@@ -692,7 +784,7 @@
 
                         <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Analaysis Batch Notes
+                                Analysis Batch Notes
                             </ng-container>
                         </clr-dg-column>
 
@@ -751,7 +843,9 @@
                                 <a (click)="openRTDetails(ab.id)" class="label label-blue clickable">{{ab.reverse_transcription_count}}</a>
                             </clr-dg-cell>
 
-                            <clr-dg-cell><a href="" class="label label-blue clickable">{{ab.target_count}}</a></clr-dg-cell>
+                            <clr-dg-cell>
+                                <a (click)="openTargetDetails(ab.id)" class="label label-blue clickable">{{ab.target_count}}</a>
+                            </clr-dg-cell>
 
                             <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.insert_user}}</clr-dg-cell>

@@ -6,7 +6,7 @@ import { ISampleType } from '../SHARED/sample-type';
 import { IFilterType } from '../SHARED/filter-type'
 import { IMatrix } from '../SHARED/matrix';
 import { IStudy } from '../studies/study';
-import { IUnit } from '../SHARED/unit';
+import { IUnit } from '../units/unit';
 import { IUser } from '../SHARED/user';
 
 import { SampleService } from './sample.service';
@@ -14,12 +14,12 @@ import { SampleTypeService } from '../SHARED/sample-type.service';
 import { FilterTypeService } from '../SHARED/filter-type.service'
 import { MatrixService } from '../SHARED/matrix.service';
 import { StudyService } from '../studies/study.service';
-import { UnitService } from '../SHARED/unit.service';
+import { UnitService } from '../units/unit.service';
 import { UserService } from '../SHARED/user.service';
 
 import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
 
-import { APP_UTILITIES } from '../app.utilities'
+import { APP_UTILITIES } from '../app.utilities';
 
 @Component({
   selector: 'app-samples',
@@ -57,7 +57,7 @@ export class SamplesComponent implements OnInit {
 
   selected: ISample[] = [];
 
-  selectedStudy: number;
+  selectedStudy;
 
    // add sample form - declare reactive form with appropriate sample fields
   // all fields except matrix_type are disabled until matrix_type is selected (see onMatrixSelect function)
@@ -257,7 +257,7 @@ export class SamplesComponent implements OnInit {
       }
     }
 
-    this.selectedStudy = this.selected[0].study
+    this.selectedStudy = this.selected[0].study;
   }
 
   printLabel(selectedSampleArray) {

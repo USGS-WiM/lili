@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="btn-group">
             <button class="btn btn-sm" (click)="showHideAdd = !showHideAdd">Add Study</button>
         </div>
@@ -8,32 +8,32 @@
 
 <!-- add study card -->
 <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" *ngIf="showHideAdd" >
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" *ngIf="showHideAdd">
         <div class="card">
             <div class="card-block">
                 <div class="card-title">Add Study</div>
                 <div class="card-text">
-                <form id="addStudyForm" class="compact" [formGroup]="addStudyForm" (ngSubmit)="onSubmit('add', addStudyForm.value)" [hidden]="submitted" >
-                <section class="form-block">
-                    <!--<label>Add Study</label>-->
-                    <div class="form-group">
-                    <label>Name</label>
-                    <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addStudyForm.get('name').invalid && (addStudyForm.get('name').dirty || addStudyForm.get('name').touched)">
+                    <form id="addStudyForm" class="compact" [formGroup]="addStudyForm" (ngSubmit)="onSubmit('add', addStudyForm.value)" [hidden]="submitted">
+                        <section class="form-block">
+                            <!--<label>Add Study</label>-->
+                            <div class="form-group">
+                                <label>Name</label>
+                                <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addStudyForm.get('name').invalid && (addStudyForm.get('name').dirty || addStudyForm.get('name').touched)">
                         <input id="name" type="text" formControlName="name" size="40">
                         <span class="tooltip-content">Name is required.</span>
                     </label>
-                    </div>
-                    <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" type="text" formControlName="description" rows="2" style="max-width:25em"></textarea>
-                    </div>
-                    <button class="btn btn-primary" type="submit" [disabled]="addStudyForm.invalid">Add</button>
-                    <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
-                </section>
-                <p>Form value: {{ addStudyForm.value | json }}</p>
-                <p>Form status: {{ addStudyForm.status | json }}</p> 
-                </form>
-                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea id="description" type="text" formControlName="description" rows="2" style="max-width:25em"></textarea>
+                            </div>
+                            <button class="btn btn-primary" type="submit" [disabled]="addStudyForm.invalid">Add</button>
+                            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
+                        </section>
+                        <p>Form value: {{ addStudyForm.value | json }}</p>
+                        <p>Form status: {{ addStudyForm.status | json }}</p>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -41,13 +41,13 @@
 
 <div class="row">
 
-    <clr-modal [(clrModalOpen)]="showHideEdit" >
+    <clr-modal [(clrModalOpen)]="showHideEdit">
         <h3 class="modal-title">Edit Study</h3>
         <div class="modal-body">
 
             <div class="row">
                 <div class="col-lg-12">
-                    <form id="editStudyForm" class="compact" [formGroup]="editStudyForm" (ngSubmit)="onSubmit('edit', editStudyForm.value)" [hidden]="submitted" >
+                    <form id="editStudyForm" class="compact" [formGroup]="editStudyForm" (ngSubmit)="onSubmit('edit', editStudyForm.value)" [hidden]="submitted">
                         <section class="form-block">
 
                             <label>Selected Study: {{selectedStudyName}}</label>
@@ -71,8 +71,8 @@
                             <button class="btn btn-primary" type="submit" [disabled]="editStudyForm.invalid">Save Edits</button>
                             <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
                         </section>
-                        <p>Form value: {{ editStudyForm.value | json }}</p>
-                        <p>Form status: {{ editStudyForm.status | json }}</p> 
+                        <!-- <p>Form value: {{ editStudyForm.value | json }}</p>
+                        <p>Form status: {{ editStudyForm.status | json }}</p> -->
                     </form>
                 </div>
             </div>
@@ -83,28 +83,29 @@
         </div>-->
     </clr-modal>
 
-   
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
         <div class="card">
             <div class="card-block">
                 <div class="card-title">
                     All Studies
                 </div>
                 <div class="card-text">
-                    <clr-datagrid>
-                         <clr-dg-column class="no-padding ten">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Edit
-                            </ng-container>
-                        </clr-dg-column>
+                    <clr-datagrid [(clrDgSingleSelected)]="selectedStudy">
 
-                         <clr-dg-column [clrDgField]="'id'">
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedStudy" (click)="editStudy(selectedStudy)"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Study</button>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'id'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Study ID
                             </ng-container>
                         </clr-dg-column>
 
-                         <clr-dg-column [clrDgField]="'name'">
+                        <clr-dg-column [clrDgField]="'name'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Study Name
                             </ng-container>
@@ -116,23 +117,22 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        
 
-                        <clr-dg-row *clrDgItems="let study of allStudies">
-                            <clr-dg-cell>
-                                 <div class="btn-group">
-                                    <!--<button class="btn btn-sm btn-link" (click)="showHideEdit = !showHideEdit" ><clr-icon shape="note-edit" size="16"></clr-icon></button>-->
-                                    <button class="btn btn-sm btn-link" (click)="editStudy(study)"><clr-icon shape="note-edit" size="16"></clr-icon></button>
-                                </div>
-                            </clr-dg-cell>
+
+                        <clr-dg-row *clrDgItems="let study of allStudies" [clrDgItem]="study">
                             <clr-dg-cell>{{study.id}}</clr-dg-cell>
                             <clr-dg-cell>{{study.name}}</clr-dg-cell>
                             <clr-dg-cell>{{study.description}}</clr-dg-cell>
                         </clr-dg-row>
 
+                        <clr-dg-footer>
+                            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} studies
+                            <clr-dg-pagination #pagination [clrDgPageSize]="20"></clr-dg-pagination>
+                        </clr-dg-footer>
+
 
                     </clr-datagrid>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
@@ -140,7 +140,7 @@
     <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <app-studies-table></app-studies-table>
     </div>-->
-    
+
 </div>
 
 

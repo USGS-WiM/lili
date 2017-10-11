@@ -216,15 +216,15 @@ export class APP_UTILITIES {
 		return [
 			{
 				"id": 1000,
-				"analysis_batch_description": "Velit irure Lorem et reprehenderit.",
-				"analysis_batch_notes": "Ipsum laboris reprehenderit eu laboris veniam.",
+				"analysis_batch_description": "1st dummy analysis batch",
+				"analysis_batch_notes": "Dummy AB for exploring lili",
 				"studies": [
-					10
+					4
 				],
 				"extraction_count": 2,
-				"inhibition_count": 4,
-				"reverse_transcription_count": 4,
-				"target_count": 8,
+				"inhibition_count": 2,
+				"reverse_transcription_count": 2,
+				"target_count": 4,
 				"insert_date": "2017-06-11",
 				"insert_user": "sspencer",
 				"update_date": "2012-08-20",
@@ -383,74 +383,6 @@ export class APP_UTILITIES {
 				"update_date": "2017-01-19",
 				"update_user": "jpstokdyk"
 			}
-		]
-
-	}
-
-	public static get ANALYSIS_BATCH_DETAIL_ENDPOINT(): IAnalysisBatch[] {
-		return []
-	}
-
-	// temporary use hard-coded target sample data object
-	public static get TARGETS_ENDPOINT(): ITarget[] {
-		return [
-			{
-				"id": 0,
-				"name": "Enterovirus",
-				"code": "E",
-				"medium": "Human",
-				"type": "RNA"
-			},
-			{
-				"id": 1,
-				"name": "G1 Norovirus",
-				"code": "G1",
-				"medium": "Human",
-				"type": "DNA"
-			},
-			{
-				"id": 2,
-				"name": "G2 Norovirus",
-				"code": "G2",
-				"medium": "Human",
-				"type": "RNA"
-			},
-			{
-				"id": 3,
-				"name": "Adenovirus",
-				"code": "A",
-				"medium": "Human",
-				"type": "DNA"
-			},
-			{
-				"id": 4,
-				"name": "Adenovirus AA",
-				"code": "AA",
-				"medium": "Human",
-				"type": "DNA"
-			},
-			{
-				"id": 5,
-				"name": "Adenovirus AB",
-				"code": "AB",
-				"medium": "Human",
-				"type": "DNA"
-			},
-			{
-				"id": 6,
-				"name": "HAV",
-				"code": "H",
-				"medium": "Human",
-				"type": "RNA"
-			},
-			{
-				"id": 7,
-				"name": "Human rotavirus",
-				"code": "R",
-				"medium": "Human",
-				"type": "RNA"
-			}
-
 		]
 
 	}
