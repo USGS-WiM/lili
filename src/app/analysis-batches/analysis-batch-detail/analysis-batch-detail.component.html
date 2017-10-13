@@ -163,7 +163,7 @@
   <h3 class="modal-title">Edit extraction</h3>
   <div class="modal-body">
     <span>Analysis Batch {{selectedABDetail.id}}</span>
-    <form id="editExtractionForm" class="compact" [formGroup]="editExtractionForm" (ngSubmit)="onSubmit(editExtractionForm.value)"
+    <form id="editExtractionForm" class="compact" [formGroup]="editExtractionForm" (ngSubmit)="onSubmit('edit', editExtractionForm.value)"
       [hidden]="submitted">
       <section class="form-block">
         <div class="form-group">

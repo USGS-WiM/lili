@@ -57,6 +57,8 @@ export class SamplesComponent implements OnInit {
 
   selected: ISample[] = [];
 
+  submitted: boolean = false;
+
   selectedStudy;
 
    // add sample form - declare reactive form with appropriate sample fields

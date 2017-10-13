@@ -33,6 +33,8 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   errorMessage: string;
 
+  submitted;
+
   editExtractionForm = new FormGroup({
     id: new FormControl(''),
     extraction_no: new FormControl(''),
@@ -124,6 +126,10 @@ export class AnalysisBatchDetailComponent implements OnInit {
     if (this.showHideEditRTDetail === false) {
       this.showHideEditRTDetail = true;
     }
+
+  }
+
+  onSubmit(formID, formValue){
 
   }
 

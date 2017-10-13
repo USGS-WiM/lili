@@ -11,7 +11,7 @@ import { FilterTypeService } from '../../SHARED/filter-type.service';
 })
 export class FilterTypeFilter implements OnInit, Filter<any> {
   allFilterTypes: IFilterType[];
-  private selectedFilterType: number;
+  selectedFilterType: number;
   private errorMessage: string;
 
   constructor(private _filterTypeService: FilterTypeService) { }

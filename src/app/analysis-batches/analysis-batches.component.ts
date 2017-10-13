@@ -73,7 +73,10 @@ export class AnalysisBatchesComponent implements OnInit {
   targetDetailArray;
 
   selected = [];
+  selectedAB: IAnalysisBatchSummary;
   errorMessage: string;
+
+  sampleListActive: boolean;
 
   // edit AB form
   editABForm = new FormGroup({
@@ -85,14 +88,23 @@ export class AnalysisBatchesComponent implements OnInit {
   // extraction form
   addExtractionForm = new FormGroup({
     extraction_volume: new FormControl(''),
+    // set the default units to microliters
+    extraction_volume_units: new FormControl('4'),
     elution_volume: new FormControl(''),
+    // set the default units to microliters
+    elution_volume_units: new FormControl('4'),
     extraction_method: new FormControl(''),
     extraction_date: new FormControl(''),
     sample_dilution_factor: new FormControl(''),
-    qpcr_template_volume: new FormControl(''),
+    // set default value to 6
+    qpcr_template_volume: new FormControl('6'),
     // set the default units to microliters
     qpcr_template_volume_units: new FormControl(4),
-    qpcr_date: new FormControl('1507688613')
+    // set default value to 20
+    qpcr_reaction_volume: new FormControl('20'),
+    // set the default units to microliters
+    qpcr_reaction_volume_units: new FormControl(4),
+    qpcr_date: new FormControl('')
   });
 
   addRTForm = new FormGroup({
@@ -181,8 +193,9 @@ export class AnalysisBatchesComponent implements OnInit {
     if ("custom-next" === buttonType) {
 
       // add the 'count' property to the selected (targets) object
+      // set the default count to 2
       this.selected.map((target) => {
-        target.count = 0;
+        target.count = 2;
         return target;
       });
       // check for RNA targets, set rnaTargetsSelected var to true
@@ -283,6 +296,14 @@ export class AnalysisBatchesComponent implements OnInit {
 
   showApplyExistingCard() {
     this.useExistingInhibition = true;
+  }
+
+  onUnitChange() {
+
+  }
+
+  onSubmit(formID, formValue) {
+
   }
 
   openExtractionDetails(abID) {

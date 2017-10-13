@@ -11,8 +11,8 @@ import { SampleTypeService } from '../../SHARED/sample-type.service';
 })
 export class SampleTypeFilter implements OnInit, Filter<any> {
   allSampleTypes: ISampleType[];
-  private selectedSampleType: number;
-  private errorMessage: string;
+  selectedSampleType: number;
+  errorMessage: string;
 
   constructor(private _sampleTypeService: SampleTypeService) { }
 
