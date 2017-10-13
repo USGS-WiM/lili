@@ -124,9 +124,39 @@
     </clr-wizard-page>
 
     <clr-wizard-page>
-        <ng-template clrPageTitle>Replicate Count</ng-template>
+        <ng-template clrPageTitle>qPCR Details</ng-template>
 
-        <p>Select desired number of replicates for each selected target. To update the targets list, return to Target Selection
+        <form id="addExtractionForm" class="compact" [formGroup]="addExtractionForm" (ngSubmit)="onSubmit('add', addExtractionForm.value)">
+            <section class="form-block">
+
+                <div class="form-group">
+                    <label for="qpcrTemplateVol">qPCR Template Volume</label>
+                    <input id="qpcrTemplateVol" type="text" size="5" formControlName="qpcr_template_volume">
+                    <div class="select">
+                        <select id="qpcrTemplateVolUnits" formControlName="qpcr_template_volume_units">
+                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="qpcrReactionVol">qPCR Reaction Volume</label>
+                    <input id="qpcrReactionVol" type="text" size="5" formControlName="qpcr_reaction_volume">
+                    <div class="select">
+                        <select id="qpcrReactionVolUnits" formControlName="qpcr_reaction_volume_units">
+                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                    </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="qpcrDateInput">qPCR Date</label>
+                    <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
+                </div>
+            </section>
+        </form>
+
+        <p>Select desired number of PCR replicates for each selected target. To update the targets list, return to Target Selection
             page.
             <form class="compact">
                 <section class="form-block">
@@ -139,18 +169,28 @@
     </clr-wizard-page>
 
     <clr-wizard-page>
-        <ng-template clrPageTitle>Extraction Data</ng-template>
+        <ng-template clrPageTitle>Extraction Details</ng-template>
         <form id="addExtractionForm" class="compact" [formGroup]="addExtractionForm" (ngSubmit)="onSubmit('add', addExtractionForm.value)">
             <section class="form-block">
 
                 <div class="form-group">
                     <label for="extractVol">Extraction Volume</label>
                     <input id="extractVol" type="text" size="10" formControlName="extraction_volume">
+                    <div class="select">
+                        <select id="extractVolUnits" formControlName="extraction_volume_units">
+                                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="elutionVol">Elution Volume</label>
                     <input id="elutionVol" type="text" size="10" formControlName="elution_volume">
+                    <div class="select">
+                        <select id="elutionVolUnits" formControlName="elution_volume_units">
+                                                <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                            </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -163,28 +203,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="sampleDilution">Dilution of Sample</label>
+                    <label for="sampleDilution">Dilution factor of Sample</label>
                     <input id="sampleDilution" type="text" size="10" formControlName="sample_dilution_factor">
                 </div>
 
                 <div class="form-group">
                     <label for="extractionDateInput">Extraction Date</label>
                     <input type="date" id="extractionDateInput" formControlName="extraction_date">
-                </div>
-
-                <div class="form-group">
-                    <label for="qpcrTemplateVol">qPCR Template Volume</label>
-                    <input id="qpcrTemplateVol" type="text" size="10" formControlName="qpcr_template_volume">
-                    <div class="select">
-                            <select id="qpcrTemplateVolUnits" formControlName="qpcr_template_volume_units" (change)="onUnitChange($event.target.value)">
-                                <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-                            </select>
-                        </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="qpcrDateInput">qPCR Date</label>
-                    <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
                 </div>
             </section>
         </form>
@@ -270,7 +295,6 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="inhibitionDateInput">Inhibition Date</label>
                                             <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
                                         </div>
 
@@ -413,7 +437,7 @@
                 <clr-tabs>
                     <clr-tab>
                         <button clrTabLink>Details</button>
-                        <ng-template [(clrIfActive)]="detailsActive">
+                        <ng-template>
                             <clr-tab-content>
 
                                 <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('edit', editABForm.value)" [hidden]="submitted">
@@ -650,7 +674,7 @@
                 <clr-stack-view>
                     <clr-stack-header>RTs in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
 
-                    <clr-stack-block *ngFor="let rt of rtDetailArray" >
+                    <clr-stack-block *ngFor="let rt of rtDetailArray">
                         <clr-stack-label>RT # {{rt.rt_no}}</clr-stack-label>
                         <clr-stack-content></clr-stack-content>
                         <clr-stack-block [clrSbExpanded]="true">

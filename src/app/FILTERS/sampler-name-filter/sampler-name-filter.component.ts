@@ -11,8 +11,10 @@ import { UserService } from '../../SHARED/user.service';
 })
 export class SamplerNameFilter implements OnInit, Filter<any> {
   allUsers: IUser[];
-  private selectedUser: number;
+  selectedUser: number;
   private errorMessage: string;
+
+  selectedUsers;
 
   constructor(private _userService: UserService) { }
 

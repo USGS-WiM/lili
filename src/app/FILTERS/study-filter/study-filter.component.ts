@@ -11,7 +11,8 @@ import { StudyService } from '../../studies/study.service';
 })
 export class StudyFilter implements OnInit, Filter<any> {
   allStudies: IStudy[];
-  private selectedStudy: number;
+  selectedStudy: number;
+  selectedStudies;
   private errorMessage: string;
 
   constructor(private _studyService: StudyService) { }

@@ -551,7 +551,7 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmit()">
+                <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmit('freeze', freezeSampleForm.value)">
                     <section class="form-block">
 
                         <div *ngIf="this.selectedStudy">

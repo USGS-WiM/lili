@@ -11,8 +11,8 @@ import { MatrixService } from '../../SHARED/matrix.service';
 })
 export class MatrixTypeFilter implements OnInit, Filter<any> {
   allMatrices: IMatrix[];
-  private selectedMatrix: number;
-  private errorMessage: string;
+  selectedMatrix: number;
+  errorMessage: string;
 
   constructor(private _matrixService: MatrixService) { }
 
