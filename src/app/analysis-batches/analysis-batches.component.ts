@@ -37,7 +37,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   inhibitionsExist: boolean = false;
 
-  extractOpen: boolean = false;
+  extractWizardOpen: boolean = false;
   useExistingInhibition: boolean = false;
 
   allAnalysisBatchSummaries: IAnalysisBatchSummary[];
@@ -73,10 +73,13 @@ export class AnalysisBatchesComponent implements OnInit {
   targetDetailArray;
 
   selected = [];
+  selectedSamples = [];
   selectedAB: IAnalysisBatchSummary;
   errorMessage: string;
 
+  // boooleans foe edit AB tabs
   sampleListActive: boolean;
+  detailsActive: boolean;
 
   // edit AB form
   editABForm = new FormGroup({
@@ -109,7 +112,11 @@ export class AnalysisBatchesComponent implements OnInit {
 
   addRTForm = new FormGroup({
     template_volume: new FormControl(''),
+    // set the default units to microliters
+    template_volume_units: new FormControl('4'),
     reaction_volume: new FormControl(''),
+    // set the default units to microliters
+    reaction_volume_units: new FormControl('4'),
     rt_date: new FormControl('')
   })
 
@@ -245,7 +252,7 @@ export class AnalysisBatchesComponent implements OnInit {
   extractAB(selectedAB) {
     // open extract wizard and begin
     this.resetAB();
-    this.extractOpen = true;
+    this.extractWizardOpen = true;
     this.selectedAnalysisBatchID = selectedAB.id;
 
     // call to retrieve AB detail data
@@ -287,6 +294,14 @@ export class AnalysisBatchesComponent implements OnInit {
       this.inhibitionsExist = true;
     }
 
+
+  }
+
+  resetExtractWizard() {
+    this.wizardExtract.reset();
+  }
+
+  finishExtractWizard () {
 
   }
 
@@ -448,7 +463,11 @@ export class AnalysisBatchesComponent implements OnInit {
       }
     }
 
+    // get target if for each target in the AB
+    // add
+
     // console.log(this.abSampleList);
+    //this.selected = this.abSampleList;
     this.selected = this.abSampleList;
 
     // show the edit analysis batch modal if not showing already

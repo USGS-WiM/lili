@@ -7,7 +7,8 @@
     </div>
 </div> -->
 
-<clr-wizard #wizardExtract [(clrWizardOpen)]="extractOpen" clrWizardSize="xl">
+<clr-wizard #wizardExtract [(clrWizardOpen)]="extractWizardOpen" (clrWizardOnFinish)="finishExtractWizard()" (clrWizardOnCancel)="resetExtractWizard()"
+    clrWizardSize="xl">
     <clr-wizard-title>Extract Samples in Analysis Batch {{selectedAnalysisBatchID}}</clr-wizard-title>
 
     <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
@@ -15,7 +16,7 @@
     <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
     <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
 
-    <clr-wizard-page [clrWizardPageNextDisabled]="">
+    <clr-wizard-page>
         <ng-template clrPageTitle>Aliquot Selection</ng-template>
         <div class="row">
             <div class="col-lg-10 col-md-10">
@@ -23,14 +24,6 @@
 
                     <form class="compact" [formGroup]="aliquotsForm">
                         <section class="form-block">
-                            <!-- <div [formGroup]="aliquotsForm" >
-                                <div formArrayName="aliquots">
-                                    <div *ngFor="let aliquot of aliquots.controls; let i=index" [formControlName]="i">
-
-                                    </div>
-                                </div>
-                            </div> -->
-                            <!-- Temporary hard-coded form for demo purposes -->
 
                             <div class="form-group">
                                 <label for="">Sample 1 (6780)</label>
@@ -43,7 +36,6 @@
                                 </div>
                             </div>
 
-
                             <div class="form-group">
                                 <label for="">Sample 2 (6781)</label>
                                 <div class="select">
@@ -54,8 +46,6 @@
                                             </select>
                                 </div>
                             </div>
-
-
 
                             <div class="form-group">
                                 <label for="">Sample 3 (6793)</label>
@@ -78,12 +68,8 @@
                                                 </select>
                                 </div>
                             </div>
-
-                            <!-- End Temporary hard-coded form for demo purposes -->
                         </section>
                     </form>
-
-
             </div>
             <div class="col-lg-2 col-md-2"></div>
         </div>
@@ -93,19 +79,21 @@
     <clr-wizard-page [clrWizardPageNextDisabled]="selected.length < 1" (clrWizardPageCustomButton)="doCustomClick($event)">
         <ng-template clrPageTitle>Target Selection</ng-template>
         <div class="row">
-            <div class="col-lg-10 col-md-10">
-                <p>Select targets to analyze for this extraction from the table below
+            <div  class="col-lg-12 col-md-12 col-sm-12" >
+                    Select targets to analyze for this extraction from the table below
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-10 col-sm-12">
                     <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
 
                         <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
                         <clr-dg-column [clrDgField]="'code'">Code</clr-dg-column>
-                        <clr-dg-column [clrDgField]="'medium'">Medium</clr-dg-column>
                         <clr-dg-column [clrDgField]="'type'">Type</clr-dg-column>
 
                         <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
                             <clr-dg-cell>{{target.name}}</clr-dg-cell>
                             <clr-dg-cell>{{target.code}}</clr-dg-cell>
-                            <clr-dg-cell>{{target.medium.name}}</clr-dg-cell>
                             <clr-dg-cell>{{target.type}}</clr-dg-cell>
                         </clr-dg-row>
 
@@ -125,47 +113,51 @@
 
     <clr-wizard-page>
         <ng-template clrPageTitle>qPCR Details</ng-template>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <form id="addExtractionForm" class="compact" [formGroup]="addExtractionForm" (ngSubmit)="onSubmit('add', addExtractionForm.value)">
+                    <section class="form-block">
 
-        <form id="addExtractionForm" class="compact" [formGroup]="addExtractionForm" (ngSubmit)="onSubmit('add', addExtractionForm.value)">
-            <section class="form-block">
-
-                <div class="form-group">
-                    <label for="qpcrTemplateVol">qPCR Template Volume</label>
-                    <input id="qpcrTemplateVol" type="text" size="5" formControlName="qpcr_template_volume">
-                    <div class="select">
-                        <select id="qpcrTemplateVolUnits" formControlName="qpcr_template_volume_units">
+                        <div class="form-group">
+                            <label for="qpcrTemplateVol">qPCR Template Volume</label>
+                            <input id="qpcrTemplateVol" type="text" size="5" formControlName="qpcr_template_volume">
+                            <div class="select">
+                                <select id="qpcrTemplateVolUnits" formControlName="qpcr_template_volume_units">
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                 </select>
-                    </div>
-                </div>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label for="qpcrReactionVol">qPCR Reaction Volume</label>
-                    <input id="qpcrReactionVol" type="text" size="5" formControlName="qpcr_reaction_volume">
-                    <div class="select">
-                        <select id="qpcrReactionVolUnits" formControlName="qpcr_reaction_volume_units">
+                        <div class="form-group">
+                            <label for="qpcrReactionVol">qPCR Reaction Volume</label>
+                            <input id="qpcrReactionVol" type="text" size="5" formControlName="qpcr_reaction_volume">
+                            <div class="select">
+                                <select id="qpcrReactionVolUnits" formControlName="qpcr_reaction_volume_units">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                     </select>
-                    </div>
-                </div>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label for="qpcrDateInput">qPCR Date</label>
-                    <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
-                </div>
-            </section>
-        </form>
+                        <div class="form-group">
+                            <label for="qpcrDateInput">qPCR Date</label>
+                            <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
+                        </div>
+                    </section>
+                </form>
 
-        <p>Select desired number of PCR replicates for each selected target. To update the targets list, return to Target Selection
-            page.
-            <form class="compact">
-                <section class="form-block">
-                    <div class="form-group" *ngFor="let target of selected">
-                        <label>{{target.name}} ({{target.code}})</label>
-                        <input type="number" class="target-count-input" [(ngModel)]="target.count" name="targetCount">
-                    </div>
-                </section>
-            </form>
+                <p>Select desired number of PCR replicates for each selected target. To update the targets list, return to Target
+                    Selection page.
+                    <form class="compact">
+                        <section class="form-block">
+                            <div class="form-group" *ngFor="let target of selected">
+                                <label>{{target.name}} ({{target.code}})</label>
+                                <input type="number" class="target-count-input" [(ngModel)]="target.count" name="targetCount">
+                            </div>
+                        </section>
+                    </form>
+
+            </div>
+        </div>
     </clr-wizard-page>
 
     <clr-wizard-page>
@@ -239,11 +231,21 @@
                 <div class="form-group">
                     <label for="templateVol">Template Volume</label>
                     <input id="templateVol" type="text" size="10" formControlName="template_volume">
+                    <div class="select">
+                        <select id="rtTemplateVolUnits" formControlName="template_volume_units">
+                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="reactionVol">Reaction Volume</label>
                     <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
+                    <div class="select">
+                        <select id="rtReactionVolUnits" formControlName="reaction_volume_units">
+                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -300,7 +302,6 @@
 
                                     </section>
                                 </form>
-                                <!-- <span>Inh type form value: {{addInhibitionForm.value | json}}</span> -->
                             </div>
                         </div>
                         <div class="card-footer" *ngIf="inhibitionsExist">
@@ -344,7 +345,6 @@
                             <div class="card-text">
                                 <form id="addExtractionForm" class="compact" [formGroup]="applyInhibition_batchForm" (ngSubmit)="onSubmit('add', applyInhibition_batchForm.value)">
                                     <section class="form-block">
-                                        <!-- <label for="">Select an Inhibition per Target Type</label> -->
                                         <div class="form-group">
                                             <label for="elutionVol">Inhibition for DNA targets</label>
                                             <div class="select">
@@ -421,8 +421,6 @@
             </div>
         </div>
     </clr-wizard-page>
-
-
 </clr-wizard>
 
 <!-- edit analysis batch modal -->
@@ -432,17 +430,13 @@
 
         <div class="row">
             <div class="col-lg-12">
-
-
                 <clr-tabs>
                     <clr-tab>
                         <button clrTabLink>Details</button>
-                        <ng-template>
+                        <ng-template [(clrIfActive)]="detailsActive">
                             <clr-tab-content>
-
-                                <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('edit', editABForm.value)" [hidden]="submitted">
+                                <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('edit', editABForm.value)">
                                     <section class="form-block">
-
                                         <div class="form-group">
                                             <label for="studyId">Analysis Batch ID</label>
                                             <input type="text" id="studyId" size="35" formControlName="id" readonly>
@@ -579,6 +573,9 @@
                             </clr-tab-content>
                         </ng-template>
                     </clr-tab>
+
+                   
+
                 </clr-tabs>
             </div>
         </div>

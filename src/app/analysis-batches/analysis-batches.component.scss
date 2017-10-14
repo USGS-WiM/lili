@@ -29,3 +29,8 @@ select[multiple], select[size] {
 .remove-sample {
     margin: 1em;
 }
+
+.datagrid .datagrid-column, .datagrid .datagrid-cell .no-padding  {
+    padding: 0px
+
+}
