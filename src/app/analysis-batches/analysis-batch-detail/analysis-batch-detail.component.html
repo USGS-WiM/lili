@@ -16,7 +16,7 @@
               <ng-template [clrIfExpanded]="true"> -->
 
             <clr-tree-node *ngFor="let extraction of extractionDetailArray">
-              Extraction # {{extraction.extraction_no}}
+              Extraction # {{extraction.extraction_no}}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  
 
               <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editExtraction(extraction)" type="button">Edit</button>
               <ng-template clrIfExpanded>
@@ -29,11 +29,11 @@
                           </tr> -->
                       <tr>
                         <th>Extraction Volume</th>
-                        <td>{{extraction.extraction_volume}}</td>
+                        <td>{{extraction.extraction_volume}} µL</td>
                       </tr>
                       <tr>
                         <th>Elution Volume</th>
-                        <td>{{extraction.elution_volume}}</td>
+                        <td>{{extraction.elution_volume}} µL</td>
                       </tr>
                       <tr>
                         <th>Extraction Method</th>
@@ -51,7 +51,7 @@
                   Inhibitions
                   <ng-template clrIfExpanded>
                     <clr-tree-node *ngFor="let inhibition of extraction.inhibitions">
-                      Inhibition # {{inhibition.inhibition_no}}
+                      Inhibition {{inhibition.id}} ({{inhibition.type}})
                       <ng-template clrIfExpanded>
                         <clr-tree-node>
                           <table class="table table-vertical table-compact">
@@ -80,19 +80,19 @@
                   Reverse Transcriptions
                   <ng-template clrIfExpanded>
                     <clr-tree-node *ngFor="let rt of extraction.reverse_transcriptions">
-                      RT # {{rt.rt_no}}
+                      RT # {{rt.rt_no}}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  
                       <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editRT(rt)" type="button">Edit</button>
                       <ng-template clrIfExpanded>
                         <clr-tree-node>
                           <table class="table table-vertical table-compact">
                             <tbody>
                               <tr>
-                                <th>Template Volume </th>
-                                <td>{{rt.vol_in}}</td>
+                                <th>Template Volume</th>
+                                <td>{{rt.template_volume}} µL</td>
                               </tr>
                               <tr>
                                 <th>Reaction Volume</th>
-                                <td>{{rt.vol_out}}</td>
+                                <td>{{rt.reaction_volume}} µL</td>
                               </tr>
                               <tr>
                                 <th>Date</th>
@@ -108,7 +108,7 @@
                 </clr-tree-node>
 
                 <clr-tree-node>
-                  Targets
+                  Targets <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editExtractionTargets(extraction)" type="button">Edit</button>
                   <ng-template clrIfExpanded>
                     <ul class="list compact">
                       <li *ngFor="let target of extraction.targets">{{target.name}} ({{target.type}})</li>
@@ -199,22 +199,54 @@
 </clr-modal>
 
 <clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditRTDetail">
-  <h3 class="modal-title">Edit RT volume</h3>
+  <h3 class="modal-title">Edit RT Details</h3>
   <div class="modal-body">
     <span>Analysis Batch {{selectedABDetail.id}}</span>
-    <form id="editRTForm" class="compact" [formGroup]="editRTForm" (ngSubmit)="onSubmit('edit', editRTForm.value)" [hidden]="submitted">
-      <section class="form-block">
-        <div class="form-group">
-          <label for="rtNo">RT No.</label>
-          <input type="text" id="rtNo" size="10" formControlName="reverse_transcription_no" readonly>
-        </div>
-        <div class="form-group">
-          <label for="rtVol">RT Volume</label>
-          <input type="text" id="rtVol" size="10" formControlName="vol_in">
-        </div>
-        <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid">Save Edits</button>
-        <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail">Cancel</button>
-      </section>
+
+    <form id="editRTForm" class="compact" [formGroup]="editRTForm" (ngSubmit)="onSubmit('edit', editRTForm.value)">
+        <section class="form-block">
+
+            <div class="form-group">
+                <label for="rtNo">RT No.</label>
+                <input type="text" id="rtNo" size="10" formControlName="rt_no" readonly>
+              </div>
+
+            <div class="form-group">
+                <label for="templateVol">Template Volume</label>
+                <input id="templateVol" type="text" size="10" formControlName="template_volume">
+                <div class="select">
+                    <select id="rtTemplateVolUnits" formControlName="template_volume_units">
+                                <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                            </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="reactionVol">Reaction Volume</label>
+                <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
+                <div class="select">
+                    <select id="rtReactionVolUnits" formControlName="reaction_volume_units">
+                                <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                            </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="templateVol">RT Cq Value</label>
+                <input id="rt_cq" type="text" size="10" formControlName="rt_cq">
+            </div>
+
+            <div class="form-group">
+                <label for="rtDateInput">RT Date</label>
+                <input type="date" id="rtDateInput" formControlName="rt_date">
+            </div>
+
+            <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid">Save Edits</button>
+            <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail">Cancel</button>
+
+        </section>
     </form>
+
+
   </div>
 </clr-modal>

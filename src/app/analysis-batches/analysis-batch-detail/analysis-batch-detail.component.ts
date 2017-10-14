@@ -7,9 +7,11 @@ import { IExtraction } from '../../extractions/extraction';
 import { IInhibition } from '../../inhibitions/inhibition';
 import { IReverseTranscription } from '../../reverse-transcriptions/reverse-transcription';
 import { IExtractionMethod } from '../../extractions/extraction-method';
+import { IUnit } from '../../units/unit';
 
 import { AnalysisBatchService } from '../analysis-batch.service';
 import { ExtractionMethodService } from '../../extractions/extraction-method.service';
+import { UnitService } from '../../units/unit.service';
 
 @Component({
   selector: 'analysis-batch-detail',
@@ -31,6 +33,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
   rtDetailArray: IReverseTranscription[] = [];
   targetDetailArray;
 
+  units: IUnit[];
   errorMessage: string;
 
   submitted;
@@ -54,14 +57,16 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   editRTForm = new FormGroup({
     id: new FormControl(''),
-    reverse_transcription_no: new FormControl(''),
-    vol_in: new FormControl(''),
-    vol_out: new FormControl(''),
-    rt_cq: new FormControl('')
-
+    rt_no: new FormControl(''),
+    rt_cq: new FormControl(''),
+    template_volume: new FormControl(''),
+    template_volume_units: new FormControl(''),
+    reaction_volume: new FormControl(''),
+    reaction_volume_units: new FormControl(''),
+    rt_date: new FormControl('')
   })
 
-  constructor(private _analysisBatchService: AnalysisBatchService, private _extractionMethodService: ExtractionMethodService) { }
+  constructor(private _analysisBatchService: AnalysisBatchService, private _extractionMethodService: ExtractionMethodService, private _unitService: UnitService) { }
 
   ngOnInit() {
     this.loading = true;
@@ -75,6 +80,12 @@ export class AnalysisBatchDetailComponent implements OnInit {
      this._extractionMethodService.getExtractionMethods()
      .subscribe(extractionMethods => this.allExtractionMethods = extractionMethods,
      error => this.errorMessage = <any>error);
+
+     
+    // on init, call getUnits function of the UnitService, set results to the units var
+    this._unitService.getUnits()
+    .subscribe(units => this.units = units,
+    error => this.errorMessage = <any>error);
 
     // build the inhibition list by looping through the AB data and adding all inhibitions to a local array
     // for (let extraction of this.extractionDetailArray) {
@@ -117,12 +128,15 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
     this.editRTForm.setValue({
       id: rt.id,
-      reverse_transcription_no: rt.reverse_transcription_no, 
-      vol_in: rt.vol_in,
-      vol_out: rt.vol_out,
+      rt_no: rt.rt_no,
+      rt_cq: rt.rt_cq,
+      template_volume: rt.template_volume,
+      template_volume_units: 4,
+      reaction_volume: rt.reaction_volume,
+      reaction_volume_units: 4,
       rt_date: rt.rt_date
     })
-    //show the edit detail modal if not showing already
+    //show the edit rt detail modal if not showing already
     if (this.showHideEditRTDetail === false) {
       this.showHideEditRTDetail = true;
     }
