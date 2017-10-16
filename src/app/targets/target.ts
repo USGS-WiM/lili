@@ -3,4 +3,5 @@ export interface ITarget {
     name: string;
     code: string;
     type: string;
+    replicates: number;
 }

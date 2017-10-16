@@ -7,10 +7,12 @@ import { IExtraction } from '../../extractions/extraction';
 import { IInhibition } from '../../inhibitions/inhibition';
 import { IReverseTranscription } from '../../reverse-transcriptions/reverse-transcription';
 import { IExtractionMethod } from '../../extractions/extraction-method';
+import { ITarget } from '../../targets/target';
 import { IUnit } from '../../units/unit';
 
 import { AnalysisBatchService } from '../analysis-batch.service';
 import { ExtractionMethodService } from '../../extractions/extraction-method.service';
+import { TargetService } from '../../targets/target.service';
 import { UnitService } from '../../units/unit.service';
 
 @Component({
@@ -31,12 +33,22 @@ export class AnalysisBatchDetailComponent implements OnInit {
   extractionDetailArray: IExtraction[] = [];
   inhibitionDetailArray: IInhibition[] = [];
   rtDetailArray: IReverseTranscription[] = [];
-  targetDetailArray;
 
   units: IUnit[];
+  allTargets: ITarget[] = [];
   errorMessage: string;
 
+  extractionTargetArray: ITarget[] = [];
+
+  showHideEditTargetList: boolean = false;
+
+  targetListEditLocked: boolean = false;
+
+  currentExtractionNo: number;
+
   submitted;
+
+  selected = [];
 
   editExtractionForm = new FormGroup({
     id: new FormControl(''),
@@ -66,7 +78,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
     rt_date: new FormControl('')
   })
 
-  constructor(private _analysisBatchService: AnalysisBatchService, private _extractionMethodService: ExtractionMethodService, private _unitService: UnitService) { }
+  constructor(private _analysisBatchService: AnalysisBatchService, private _extractionMethodService: ExtractionMethodService, private _targetService: TargetService, private _unitService: UnitService) { }
 
   ngOnInit() {
     this.loading = true;
@@ -82,6 +94,11 @@ export class AnalysisBatchDetailComponent implements OnInit {
      error => this.errorMessage = <any>error);
 
      
+    // on init, call getTargets function of the TargetService, set results to allTargets var
+    this._targetService.getTargets()
+    .subscribe(targets => this.allTargets = targets,
+    error => this.errorMessage = <any>error);
+ 
     // on init, call getUnits function of the UnitService, set results to the units var
     this._unitService.getUnits()
     .subscribe(units => this.units = units,
@@ -124,6 +141,11 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   }
 
+  resetAB() {
+    this.selected =[];
+    this.extractionTargetArray = [];
+    }
+
   editRT(rt) {
 
     this.editRTForm.setValue({
@@ -140,6 +162,35 @@ export class AnalysisBatchDetailComponent implements OnInit {
     if (this.showHideEditRTDetail === false) {
       this.showHideEditRTDetail = true;
     }
+
+  }
+
+  editExtractionTargets(extraction) {
+
+    this.resetAB();
+
+    this.currentExtractionNo = extraction.extraction_no;
+
+    // build the target list by looping through the AB data and adding all targets to a local array
+    for (let extTarget of extraction.targets) {
+      for (let target of this.allTargets){
+        if (extTarget.id === target.id){
+          this.extractionTargetArray.push(target);
+        }
+      }
+    }
+
+
+    this.selected = this.extractionTargetArray;
+
+    // show the edit edit target list modal if not showing already
+    if (this.showHideEditTargetList === false) {
+      this.showHideEditTargetList = true;
+    }
+
+  }
+
+  updateABTargetList (){
 
   }
 

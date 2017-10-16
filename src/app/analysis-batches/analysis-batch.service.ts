@@ -97,14 +97,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1245,
+                  "id": 2,
                   "name": "Enterovirus",
                   "code": "E",
                   "type": "RNA",
                   "replicates": 3
                 },
                 {
-                  "id": 1059,
+                  "id": 8,
                   "name": "HAV",
                   "code": "H",
                   "type": "RNA",
@@ -149,14 +149,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1557,
+                  "id": 2,
                   "name": "Enterovirus",
                   "code": "E",
                   "type": "RNA",
                   "replicates": 2
                 },
                 {
-                  "id": 1267,
+                  "id": 9,
                   "name": "Human rotavirus",
                   "code": "R",
                   "type": "RNA",
@@ -271,14 +271,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1080,
+                  "id": 3,
                   "name": "G1 Norovirus",
                   "code": "G1",
                   "type": "DNA",
                   "replicates": 6
                 },
                 {
-                  "id": 1405,
+                  "id": 8,
                   "name": "HAV",
                   "code": "H",
                   "type": "RNA",
@@ -347,14 +347,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1754,
+                  "id": 9,
                   "name": "Human rotavirus",
                   "code": "R",
                   "type": "RNA",
                   "replicates": 6
                 },
                 {
-                  "id": 1269,
+                  "id": 2,
                   "name": "Enterovirus",
                   "code": "E",
                   "type": "RNA",
@@ -469,14 +469,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1626,
+                  "id": 9,
                   "name": "Human rotavirus",
                   "code": "R",
                   "type": "RNA",
                   "replicates": 8
                 },
                 {
-                  "id": 1598,
+                  "id": 2,
                   "name": "Enterovirus",
                   "code": "E",
                   "type": "RNA",
@@ -545,14 +545,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1912,
+                  "id": 2,
                   "name": "Enterovirus",
                   "code": "E",
                   "type": "RNA",
                   "replicates": 2
                 },
                 {
-                  "id": 1948,
+                  "id": 3,
                   "name": "G1 Norovirus",
                   "code": "G1",
                   "type": "DNA",
@@ -667,14 +667,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1473,
+                  "id": 8,
                   "name": "HAV",
                   "code": "H",
                   "type": "RNA",
                   "replicates": 7
                 },
                 {
-                  "id": 1779,
+                  "id": 2,
                   "name": "Enterovirus",
                   "code": "E",
                   "type": "RNA",
@@ -743,16 +743,16 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1541,
+                  "id": 3,
                   "name": "G1 Norovirus",
                   "code": "F",
                   "type": "RNA",
                   "replicates": 5
                 },
                 {
-                  "id": 1026,
-                  "name": "G1 Norovirus",
-                  "code": "G1",
+                  "id": 4,
+                  "name": "G2 Norovirus",
+                  "code": "G2",
                   "type": "DNA",
                   "replicates": 3
                 }
@@ -865,18 +865,11 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1602,
+                  "id": 8,
                   "name": "HAV",
                   "code": "H",
                   "type": "RNA",
                   "replicates": 2
-                },
-                {
-                  "id": 1232,
-                  "name": "HAV",
-                  "code": "H",
-                  "type": "RNA",
-                  "replicates": 8
                 }
               ]
             },
@@ -941,14 +934,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1047,
+                  "id": 9,
                   "name": "Human rotavirus",
                   "code": "R",
                   "type": "RNA",
                   "replicates": 7
                 },
                 {
-                  "id": 1777,
+                  "id": 8,
                   "name": "HAV",
                   "code": "H",
                   "type": "RNA",
@@ -1063,14 +1056,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1159,
+                  "id": 8,
                   "name": "HAV",
                   "code": "H",
                   "type": "RNA",
                   "replicates": 5
                 },
                 {
-                  "id": 1281,
+                  "id": 3,
                   "name": "G1 Norovirus",
                   "code": "G1",
                   "type": "DNA",
@@ -1139,14 +1132,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1834,
+                  "id": 2,
                   "name": "Enterovirus",
                   "code": "E",
                   "type": "RNA",
                   "replicates": 8
                 },
                 {
-                  "id": 1466,
+                  "id": 8,
                   "name": "HAV",
                   "code": "H",
                   "type": "RNA",
@@ -1261,14 +1254,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1929,
+                  "id": 3,
                   "name": "G1 Norovirus",
                   "code": "G1",
                   "type": "DNA",
                   "replicates": 6
                 },
                 {
-                  "id": 1043,
+                  "id": 18,
                   "name": "HAV",
                   "code": "H",
                   "type": "RNA",
@@ -1337,14 +1330,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1541,
+                  "id": 3,
                   "name": "G1 Norovirus",
                   "code": "G1",
                   "type": "DNA",
                   "replicates": 7
                 },
                 {
-                  "id": 1608,
+                  "id": 2,
                   "name": "Enterovirus",
                   "code": "E",
                   "type": "RNA",
@@ -1459,14 +1452,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1922,
+                  "id": 2,
                   "name": "Enterovirus",
                   "code": "E",
                   "type": "RNA",
                   "replicates": 4
                 },
                 {
-                  "id": 1016,
+                  "id": 3,
                   "name": "G1 Norovirus",
                   "code": "G1",
                   "type": "DNA",
@@ -1535,14 +1528,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1625,
+                  "id": 8,
                   "name": "HAV",
                   "code": "H",
                   "type": "RNA",
                   "replicates": 8
                 },
                 {
-                  "id": 1474,
+                  "id": 3,
                   "name": "G1 Norovirus",
                   "code": "G1",
                   "type": "DNA",
@@ -1657,14 +1650,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1208,
+                  "id": 3,
                   "name": "G1 Norovirus",
                   "code": "G1",
                   "type": "DNA",
                   "replicates": 4
                 },
                 {
-                  "id": 1752,
+                  "id": 8,
                   "name": "HAV",
                   "code": "H",
                   "type": "RNA",
@@ -1733,18 +1726,11 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1997,
+                  "id": 2,
                   "name": "Enterovirus",
                   "code": "E",
                   "type": "RNA",
                   "replicates": 7
-                },
-                {
-                  "id": 1321,
-                  "name": "Enterovirus",
-                  "code": "E",
-                  "type": "RNA",
-                  "replicates": 3
                 }
               ]
             }
@@ -1855,14 +1841,14 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1651,
+                  "id": 3,
                   "name": "G1 Norovirus",
                   "code": "G1",
                   "type": "DNA",
                   "replicates": 8
                 },
                 {
-                  "id": 1204,
+                  "id": 9,
                   "name": "Human rotavirus",
                   "code": "R",
                   "type": "RNA",
@@ -1931,18 +1917,11 @@ export class AnalysisBatchService {
               ],
               "targets": [
                 {
-                  "id": 1799,
+                  "id": 9,
                   "name": "Human rotavirus",
                   "code": "R",
                   "type": "RNA",
                   "replicates": 3
-                },
-                {
-                  "id": 1760,
-                  "name": "Human rotavirus",
-                  "code": "R",
-                  "type": "RNA",
-                  "replicates": 8
                 }
               ]
             }
