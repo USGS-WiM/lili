@@ -122,7 +122,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   // add inhibition form
   addInhibitionForm = new FormGroup({
-    type: new FormControl(''),
+    dna: new FormControl(''),
+    rna: new FormControl(''),
     inhibition_date: new FormControl('')
   })
 
@@ -245,7 +246,6 @@ export class AnalysisBatchesComponent implements OnInit {
     this.abSampleList = [];
     this.abInhibitionCount = 0;
     this.abInhibitions = [];
-    this.selected = [];
 
     this.sampleListEditLocked = false;
   }

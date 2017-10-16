@@ -16,7 +16,7 @@
               <ng-template [clrIfExpanded]="true"> -->
 
             <clr-tree-node *ngFor="let extraction of extractionDetailArray">
-              Extraction # {{extraction.extraction_no}}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  
+              Extraction # {{extraction.extraction_no}}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
               <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editExtraction(extraction)" type="button">Edit</button>
               <ng-template clrIfExpanded>
@@ -80,7 +80,7 @@
                   Reverse Transcriptions
                   <ng-template clrIfExpanded>
                     <clr-tree-node *ngFor="let rt of extraction.reverse_transcriptions">
-                      RT # {{rt.rt_no}}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  
+                      RT # {{rt.rt_no}}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                       <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editRT(rt)" type="button">Edit</button>
                       <ng-template clrIfExpanded>
                         <clr-tree-node>
@@ -108,7 +108,8 @@
                 </clr-tree-node>
 
                 <clr-tree-node>
-                  Targets <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editExtractionTargets(extraction)" type="button">Edit</button>
+                  Targets <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit"
+                    (click)="editExtractionTargets(extraction)" type="button">Edit</button>
                   <ng-template clrIfExpanded>
                     <ul class="list compact">
                       <li *ngFor="let target of extraction.targets">{{target.name}} ({{target.type}})</li>
@@ -204,49 +205,98 @@
     <span>Analysis Batch {{selectedABDetail.id}}</span>
 
     <form id="editRTForm" class="compact" [formGroup]="editRTForm" (ngSubmit)="onSubmit('edit', editRTForm.value)">
-        <section class="form-block">
+      <section class="form-block">
 
-            <div class="form-group">
-                <label for="rtNo">RT No.</label>
-                <input type="text" id="rtNo" size="10" formControlName="rt_no" readonly>
-              </div>
+        <div class="form-group">
+          <label for="rtNo">RT No.</label>
+          <input type="text" id="rtNo" size="10" formControlName="rt_no" readonly>
+        </div>
 
-            <div class="form-group">
-                <label for="templateVol">Template Volume</label>
-                <input id="templateVol" type="text" size="10" formControlName="template_volume">
-                <div class="select">
-                    <select id="rtTemplateVolUnits" formControlName="template_volume_units">
+        <div class="form-group">
+          <label for="templateVol">Template Volume</label>
+          <input id="templateVol" type="text" size="10" formControlName="template_volume">
+          <div class="select">
+            <select id="rtTemplateVolUnits" formControlName="template_volume_units">
                                 <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                             </select>
-                </div>
-            </div>
+          </div>
+        </div>
 
-            <div class="form-group">
-                <label for="reactionVol">Reaction Volume</label>
-                <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
-                <div class="select">
-                    <select id="rtReactionVolUnits" formControlName="reaction_volume_units">
+        <div class="form-group">
+          <label for="reactionVol">Reaction Volume</label>
+          <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
+          <div class="select">
+            <select id="rtReactionVolUnits" formControlName="reaction_volume_units">
                                 <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                             </select>
-                </div>
-            </div>
+          </div>
+        </div>
 
-            <div class="form-group">
-                <label for="templateVol">RT Cq Value</label>
-                <input id="rt_cq" type="text" size="10" formControlName="rt_cq">
-            </div>
+        <div class="form-group">
+          <label for="templateVol">RT Cq Value</label>
+          <input id="rt_cq" type="text" size="10" formControlName="rt_cq">
+        </div>
 
-            <div class="form-group">
-                <label for="rtDateInput">RT Date</label>
-                <input type="date" id="rtDateInput" formControlName="rt_date">
-            </div>
+        <div class="form-group">
+          <label for="rtDateInput">RT Date</label>
+          <input type="date" id="rtDateInput" formControlName="rt_date">
+        </div>
 
-            <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid">Save Edits</button>
-            <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail">Cancel</button>
+        <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid">Save Edits</button>
+        <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail">Cancel</button>
 
-        </section>
+      </section>
     </form>
 
 
+  </div>
+</clr-modal>
+
+<!-- edit target list modal -->
+<clr-modal [(clrModalOpen)]="showHideEditTargetList" [clrModalSize]="'xl'">
+  <h3 class="modal-title">Edit Target List for Extraction # {{currentExtractionNo}} </h3>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col-lg-12">
+
+        <!-- <clr-alert [clrAlertClosable]="false" *ngIf="targetListEditLocked">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">
+            This Analysis Batch has been extracted. Editing of the target list is locked. 
+            </span>
+          </div>
+        </clr-alert> -->
+
+        <form *ngIf="!targetListEditLocked">
+          <section class="form-block">
+
+            <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
+
+              <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+              <clr-dg-column [clrDgField]="'code'">Code</clr-dg-column>
+              <clr-dg-column [clrDgField]="'type'">Type</clr-dg-column>
+              <!-- <clr-dg-column [clrDgField]="'type'">Replicates</clr-dg-column> -->
+
+              <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
+                <clr-dg-cell>{{target.name}}</clr-dg-cell>
+                <clr-dg-cell>{{target.code}}</clr-dg-cell>
+                <clr-dg-cell>{{target.type}}</clr-dg-cell>
+                <!-- <clr-dg-cell>{{target.replicates}}</clr-dg-cell> -->
+              </clr-dg-row>
+
+              <clr-dg-footer>{{allTargets.length}} targets</clr-dg-footer>
+            </clr-datagrid>
+
+          </section>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <button class="btn btn-primary" type="submit" (click)="updateABTargetList()">Save Edits</button>
+        <button class="btn btn-info" (click)="showHideEditTargetList = !showHideEditTargetList">Cancel</button>
+      </div>
+    </div>
   </div>
 </clr-modal>
