@@ -179,10 +179,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
         }
       }
     }
-
-
     this.selected = this.extractionTargetArray;
-
     // show the edit edit target list modal if not showing already
     if (this.showHideEditTargetList === false) {
       this.showHideEditTargetList = true;

@@ -16,8 +16,16 @@ export class StudiesComponent implements OnInit {
     showHideAdd: boolean = false;
     showHideEdit: boolean = false;
 
+    showStudyCreateError: boolean = false;
+    showStudyEditError: boolean = false;
+
+    showStudyCreateSuccess: boolean = false;
+    showStudyEditSuccess: boolean = false;
+
     selectedStudyName;
     selectedStudyId;
+
+    submitLoading: boolean = false;
 
     // add study form - declare a reactive form with appropriate study fields
     addStudyForm = new FormGroup({
@@ -71,28 +79,47 @@ export class StudiesComponent implements OnInit {
     }
 
     // split these out
-    submitted = false;
-    onSubmit(formId, formValue) {
+    onSubmitStudy(formId, formValue) {
+        this.showStudyCreateError = false;
+        this.showStudyEditError = false;
+        this.submitLoading = true;
         switch (formId) {
             case 'edit':
-                //update a record
+                // update a record
                 this._studyService.update(formValue)
-                    .subscribe(study => study,
-                    error => this.errorMessage = <any>error);
-                this.editStudyForm.reset();
-                this.updateStudiesArray(formValue);
-                // this.updateStudiesArray( { "id": 4, "name": "Minnesota urban runoff study", "description": "Minnesota urban runoff study test" });
-                this.showHideEdit = false;
+                    .subscribe(
+                    (study) => {
+                        this.updateStudiesArray(formValue);
+                        this.editStudyForm.reset();
+                        this.submitLoading = false;
+                        this.showStudyEditSuccess = true;
+                    },
+                    error => {
+                        this.errorMessage = <any>error;
+                        this.submitLoading = false;
+                        this.showStudyEditError = true;
+                    }
+                    );
                 break;
             case 'add':
-                //add a record
+                // add a record
                 this._studyService.create(formValue)
-                    .subscribe(study => this.allStudies.push(formValue),
-                    error => this.errorMessage = <any>error);
-                this.addStudyForm.reset();
+                    .subscribe(
+                    (study) => {
+                        this.allStudies.push(study);
+                        this.addStudyForm.reset();
+                        this.submitLoading = false;
+                        this.showStudyCreateSuccess = true;
+                    },
+                    error => {
+                        this.errorMessage = <any>error;
+                        this.submitLoading = false;
+                        this.showStudyCreateError = true;
+                    }
+                    );
                 break;
             default:
-            //do something defaulty
+            // do something defaulty
         }
 
 

@@ -321,88 +321,9 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
-  openExtractionDetails(abID) {
-
-    // check if AB ID matches the current focusAnalysisBatchID. 
-    // This will mean the desired AB data is already stored in the variable and does not need to be retrieved
-    if (abID == this.focusAnalysisBatchID) {
-      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
-    } else {
-      // set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
-      this.focusAnalysisBatchID = abID;
-      // call to retrieve AB detail data
-      this.focusAnalysisBatchData = this.retrieveABData(abID);
-      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
-    }
-    // show the extraction details modal if not showing already
-    if (this.showHideExtractionDetailModal === false) {
-      this.showHideExtractionDetailModal = true;
-    }
-
-  }
-
-  openInhibitionDetails(abID) {
-
-    this.inhibitionDetailArray = [];
-
-    // check if AB ID matches the current focusAnalysisBatchID. 
-    // This will mean the desired AB data is already stored in the variable and does not need to be retrieved
-    if (abID == this.focusAnalysisBatchID) {
-      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
-    } else {
-      // set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
-      this.focusAnalysisBatchID = abID;
-      // call to retrieve AB detail data
-      this.focusAnalysisBatchData = this.retrieveABData(abID);
-      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
-    }
-
-    // build the inhibition list by looping through the AB data and adding all inhibitions to a local array
-    for (let extraction of this.extractionDetailArray) {
-      for (let inhibition of extraction.inhibitions) {
-        this.inhibitionDetailArray.push(inhibition);
-      }
-    }
-    // show the inhibition details modal if not showing already
-    if (this.showHideInhibitionDetailModal === false) {
-      this.showHideInhibitionDetailModal = true;
-    }
-
-  }
-
-  openRTDetails(abID) {
-
-    this.rtDetailArray = [];
-
-    // check if AB ID matches the current focusAnalysisBatchID.
-    // This will mean the desired AB data is already stored in the variable and does not need to be retrieved
-    if (abID === this.focusAnalysisBatchID) {
-      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
-    } else {
-      // set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
-      this.focusAnalysisBatchID = abID;
-      // call to retrieve AB detail data
-      this.focusAnalysisBatchData = this.retrieveABData(abID);
-      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
-    }
-
-    // build the inhibition list by looping through the AB data and adding all inhibitions to a local array
-    for (let extraction of this.extractionDetailArray) {
-      for (let rt of extraction.reverse_transcriptions) {
-        this.rtDetailArray.push(rt);
-      }
-    }
-    // show the inhibition details modal if not showing already
-    if (this.showHideRTDetailModal === false) {
-      this.showHideRTDetailModal = true;
-    }
-
-  }
-
   openTargetDetails(abID) {
 
     this.targetDetailArray = [];
-
     // check if AB ID matches the current focusAnalysisBatchID.
     // This will mean the desired AB data is already stored in the variable and does not need to be retrieved
     if (abID === this.focusAnalysisBatchID) {
@@ -425,7 +346,6 @@ export class AnalysisBatchesComponent implements OnInit {
     if (this.showHideTargetDetailModal === false) {
       this.showHideTargetDetailModal = true;
     }
-
 
   }
 

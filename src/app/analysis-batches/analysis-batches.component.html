@@ -586,160 +586,35 @@
 
 </clr-modal>
 
-<!-- begin extraction detail modal -->
-<clr-modal [(clrModalOpen)]="showHideExtractionDetailModal" [clrModalSize]="'m'">
-    <h3 class="modal-title">Extraction Details</h3>
-    <div class="modal-body">
-
-        <div class="row">
-            <div class="col-sm-12">
-
-                <clr-stack-view>
-                    <clr-stack-header>Extractions in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
-
-                    <clr-stack-block *ngFor="let extraction of extractionDetailArray">
-                        <clr-stack-label>Extraction # {{extraction.extraction_no}}</clr-stack-label>
-                        <clr-stack-content></clr-stack-content>
-                        <clr-stack-block>
-                            <clr-stack-label>Extraction Volume</clr-stack-label>
-                            <clr-stack-content>{{extraction.extraction_volume}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block>
-                            <clr-stack-label>Elution Volume</clr-stack-label>
-                            <clr-stack-content>{{extraction.elution_volume}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block>
-                            <clr-stack-label>Extraction Method</clr-stack-label>
-                            <clr-stack-content>{{extraction.extraction_method}}</clr-stack-content>
-                        </clr-stack-block>
-                    </clr-stack-block>
-
-                </clr-stack-view>
-
-            </div>
-        </div>
-
-
-
-    </div>
-    <!--<div class="modal-footer">        </div>-->
-</clr-modal>
-<!-- end extraction detail modal -->
-
-<!-- begin inhibition detail modal -->
-<clr-modal [(clrModalOpen)]="showHideInhibitionDetailModal" [clrModalSize]="'m'">
-    <h3 class="modal-title">Inhibition Details</h3>
-    <div class="modal-body">
-
-        <div class="row">
-            <div class="col-sm-12">
-
-                <clr-stack-view>
-                    <clr-stack-header>Inhibitions in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
-
-                    <clr-stack-block *ngFor="let inhibition of inhibitionDetailArray">
-                        <clr-stack-label>Inhibition # {{inhibition.inhibition_no}}</clr-stack-label>
-                        <clr-stack-content></clr-stack-content>
-                        <clr-stack-block>
-                            <clr-stack-label>Inhibition Date</clr-stack-label>
-                            <clr-stack-content>{{inhibition.inhibition_date | date:'shortDate'}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block>
-                            <clr-stack-label>Type</clr-stack-label>
-                            <clr-stack-content>{{inhibition.type}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block>
-                            <clr-stack-label>Dilution Factor</clr-stack-label>
-                            <clr-stack-content>{{inhibition.dilution_factor}}</clr-stack-content>
-                        </clr-stack-block>
-                    </clr-stack-block>
-
-                </clr-stack-view>
-
-            </div>
-        </div>
-    </div>
-    <!--<div class="modal-footer">        </div>-->
-</clr-modal>
-<!-- end inhibition detail modal -->
-
-<!-- begin RT detail modal -->
-<clr-modal [(clrModalOpen)]="showHideRTDetailModal" [clrModalSize]="'m'">
-    <h3 class="modal-title">RT Details</h3>
-    <div class="modal-body">
-
-        <div class="row">
-            <div class="col-sm-12">
-
-                <clr-stack-view>
-                    <clr-stack-header>RTs in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
-
-                    <clr-stack-block *ngFor="let rt of rtDetailArray">
-                        <clr-stack-label>RT # {{rt.rt_no}}</clr-stack-label>
-                        <clr-stack-content></clr-stack-content>
-                        <clr-stack-block [clrSbExpanded]="true">
-                            <clr-stack-label>Volume In</clr-stack-label>
-                            <clr-stack-content>{{rt.vol_in}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block [clrSbExpanded]="true">
-                            <clr-stack-label>Volume Out</clr-stack-label>
-                            <clr-stack-content>{{rt.vol_out}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block [clrSbExpanded]="true">
-                            <clr-stack-label>Cq Value</clr-stack-label>
-                            <clr-stack-content>{{rt.rt_cq}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block [clrSbExpanded]="true">
-                            <clr-stack-label>Date</clr-stack-label>
-                            <clr-stack-content>{{rt.rt_date | date:'shortDate' }}</clr-stack-content>
-                        </clr-stack-block>
-                    </clr-stack-block>
-
-                </clr-stack-view>
-
-            </div>
-        </div>
-    </div>
-    <!--<div class="modal-footer">        </div>-->
-</clr-modal>
-<!-- end RTdetail modal -->
-
-
-
 <!-- begin target detail modal -->
-<clr-modal [(clrModalOpen)]="showHideTargetDetailModal" [clrModalSize]="'m'">
-    <h3 class="modal-title">Extraction Details</h3>
+<clr-modal [(clrModalOpen)]="showHideTargetDetailModal" [clrModalSize]="'sm'">
+    <h3 class="modal-title">Targets analyzed in Analysis Batch {{focusAnalysisBatchID}}</h3>
     <div class="modal-body">
 
         <div class="row">
             <div class="col-sm-12">
 
-                <clr-stack-view>
-                    <clr-stack-header>Targets analyzed in Analysis Batch {{focusAnalysisBatchID}} </clr-stack-header>
-
-                    <clr-stack-block *ngFor="let target of targetDetailArray">
-                        <clr-stack-label>{{target.name}} ({{target.code}})</clr-stack-label>
-                        <clr-stack-content></clr-stack-content>
-                        <clr-stack-block>
-                            <clr-stack-label>Type</clr-stack-label>
-                            <clr-stack-content>{{target.type}}</clr-stack-content>
-                        </clr-stack-block>
-                        <clr-stack-block>
-                            <clr-stack-label>Replicates</clr-stack-label>
-                            <clr-stack-content>{{target.replicates}}</clr-stack-content>
-                        </clr-stack-block>
-                    </clr-stack-block>
-
-                </clr-stack-view>
-
+                <table class="table table-compact">
+                    <thead>
+                        <tr>
+                            <th>Target</th>
+                            <th>Type</th>
+                            <th>Replicates</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let target of targetDetailArray">
+                            <td>{{target.name}}</td>
+                            <td>{{target.type}}</td>
+                            <td>{{target.replicates}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <!--<div class="modal-footer">        </div>-->
 </clr-modal>
 <!-- end target detail modal -->
-
-
 
 <!-- begin Analysis batches table -->
 <div class="row">
@@ -855,17 +730,11 @@
                             <clr-dg-cell>{{ab.analysis_batch_description}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.studies}}</clr-dg-cell>
 
-                            <clr-dg-cell>
-                                <a (click)="openExtractionDetails(ab.id)" class="label label-blue clickable">{{ab.extraction_count}}</a>
-                            </clr-dg-cell>
+                            <clr-dg-cell>{{ab.extraction_count}}</clr-dg-cell>
 
-                            <clr-dg-cell>
-                                <a (click)="openInhibitionDetails(ab.id)" class="label label-blue clickable">{{ab.inhibition_count}}</a>
-                            </clr-dg-cell>
+                            <clr-dg-cell>{{ab.inhibition_count}}</clr-dg-cell>
 
-                            <clr-dg-cell>
-                                <a (click)="openRTDetails(ab.id)" class="label label-blue clickable">{{ab.reverse_transcription_count}}</a>
-                            </clr-dg-cell>
+                            <clr-dg-cell>{{ab.reverse_transcription_count}}</clr-dg-cell>
 
                             <clr-dg-cell>
                                 <a (click)="openTargetDetails(ab.id)" class="label label-blue clickable">{{ab.target_count}}</a>

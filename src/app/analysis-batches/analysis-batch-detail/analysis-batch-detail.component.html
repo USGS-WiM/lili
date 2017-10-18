@@ -1,11 +1,5 @@
 <div [clrLoading]="loading">
   <div class="row">
-    <div class="col-sm-12 ">
-      <!-- <hr class="ab-detail-header"> -->
-      <!-- <span class="card-title ab-detail-header">Analysis Batch 1000 Details</span> -->
-    </div>
-  </div>
-  <div class="row">
     <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
       <div class="card ab-detail-card">
         <div class="card-block">
@@ -16,110 +10,91 @@
               <ng-template [clrIfExpanded]="true"> -->
 
             <clr-tree-node *ngFor="let extraction of extractionDetailArray">
-              Extraction # {{extraction.extraction_no}}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span>Extraction {{extraction.extraction_no}}&nbsp;&nbsp;&nbsp;&nbsp;{{extraction.extraction_date | date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
-              <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editExtraction(extraction)" type="button">Edit</button>
-              <ng-template clrIfExpanded>
+              <button class="stack-action btn btn-sm btn-link " (click)="editExtraction(extraction)" type="button">Edit</button>
+              <ng-template [clrIfExpanded]>
                 <clr-tree-node>
-                  <table class="table table-vertical table-compact">
-                    <tbody>
-                      <!-- <tr>
-                            <th>Extraction ID</th>
-                            <td>{{extraction.id}}</td>
-                          </tr> -->
-                      <tr>
-                        <th>Extraction Volume</th>
-                        <td>{{extraction.extraction_volume}} µL</td>
-                      </tr>
-                      <tr>
-                        <th>Elution Volume</th>
-                        <td>{{extraction.elution_volume}} µL</td>
-                      </tr>
-                      <tr>
-                        <th>Extraction Method</th>
-                        <td>{{extraction.extraction_method | displayValue:'name':this.allExtractionMethods}}</td>
-                      </tr>
-                      <tr>
-                        <th>Extraction Date</th>
-                        <td>{{extraction.extraction_date | date:'shortDate'}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </clr-tree-node>
 
-                <clr-tree-node>
-                  Inhibitions
-                  <ng-template clrIfExpanded>
-                    <clr-tree-node *ngFor="let inhibition of extraction.inhibitions">
-                      Inhibition {{inhibition.id}} ({{inhibition.type}})
-                      <ng-template clrIfExpanded>
-                        <clr-tree-node>
-                          <table class="table table-vertical table-compact">
-                            <tbody>
-                              <tr>
-                                <th>Inhibition Date</th>
-                                <td>{{inhibition.inhibition_date | date:'shortDate' }}</td>
-                              </tr>
-                              <tr>
-                                <th>Type</th>
-                                <td>{{inhibition.type}}</td>
-                              </tr>
-                              <tr>
-                                <th>Dilution Factor</th>
-                                <td>{{inhibition.dilution_factor}}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </clr-tree-node>
-                      </ng-template>
-                    </clr-tree-node>
-                  </ng-template>
-                </clr-tree-node>
+                  <div class="row">
 
-                <clr-tree-node>
-                  Reverse Transcriptions
-                  <ng-template clrIfExpanded>
-                    <clr-tree-node *ngFor="let rt of extraction.reverse_transcriptions">
-                      RT # {{rt.rt_no}}<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                      <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit" (click)="editRT(rt)" type="button">Edit</button>
-                      <ng-template clrIfExpanded>
-                        <clr-tree-node>
-                          <table class="table table-vertical table-compact">
-                            <tbody>
-                              <tr>
-                                <th>Template Volume</th>
-                                <td>{{rt.template_volume}} µL</td>
-                              </tr>
-                              <tr>
-                                <th>Reaction Volume</th>
-                                <td>{{rt.reaction_volume}} µL</td>
-                              </tr>
-                              <tr>
-                                <th>Date</th>
-                                <td>{{rt.rt_date | date:'shortDate'}}</td>
-                              </tr>
+                    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
 
-                            </tbody>
-                          </table>
-                        </clr-tree-node>
-                      </ng-template>
-                    </clr-tree-node>
-                  </ng-template>
-                </clr-tree-node>
+                      <div>
+                        <table class="table table-vertical table-compact table-noborder">
+                          <tbody>
+                            <tr>
+                              <th>Volume Extracted</th>
+                              <td>{{extraction.extraction_volume}} µL</td>
+                            </tr>
+                            <tr>
+                              <th>Volume Eluted</th>
+                              <td>{{extraction.elution_volume}} µL</td>
+                            </tr>
+                            <tr>
+                              <th>Extraction Method</th>
+                              <td>{{extraction.extraction_method | displayValue:'name':this.allExtractionMethods}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <hr>
 
-                <clr-tree-node>
-                  Targets <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <button class="stack-action btn btn-sm btn-link btn-ab-detail-edit"
-                    (click)="editExtractionTargets(extraction)" type="button">Edit</button>
-                  <ng-template clrIfExpanded>
-                    <ul class="list compact">
-                      <li *ngFor="let target of extraction.targets">{{target.name}} ({{target.type}})</li>
-                    </ul>
-                  </ng-template>
+                      <div *ngFor="let rt of extraction.reverse_transcriptions">
+                        <span>Reverse Transcription&nbsp;&nbsp;&nbsp;&nbsp;{{rt.rt_date | date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <button class="stack-action btn btn-sm btn-link " (click)="editRT(rt)" type="button">Edit</button>
+                        <table class="table table-vertical table-compact table-noborder">
+                          <tbody>
+                            <tr>
+                              <th>Template Volume</th>
+                              <td>{{rt.template_volume}} µL</td>
+                            </tr>
+                            <tr>
+                              <th>Reaction Volume</th>
+                              <td>{{rt.reaction_volume}} µL</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <hr>
+
+                      <div *ngFor="let inhibition of extraction.inhibitions">
+                        <label>Inhibition</label>
+                        <table class="table table-vertical table-compact table-noborder">
+                          <tbody>
+                            <tr>
+                              <th>DNA Inhibition Date</th>
+                              <td>{{inhibition.inhibition_date | date:'shortDate' }}</td>
+                            </tr>
+                            <tr>
+                              <th>DNA Inhibition Date</th>
+                              <td>{{inhibition.inhibition_date | date:'shortDate' }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <hr>
+
+                      <div>
+                        <label>Targets </label><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <!-- <button class="stack-action btn btn-sm btn-link" (click)="editExtractionTargets(extraction)" type="button">Edit</button> -->
+                        <table class="table table-vertical table-compact table-noborder">
+                          <tbody>
+                            <tr *ngFor="let target of extraction.targets">
+                              <th>{{target.name}}</th>
+                              <td>{{target.type}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!-- <ul class="list compact">
+                          <li *ngFor="let target of extraction.targets">{{target.name}} ({{target.type}})</li>
+                        </ul> -->
+                      </div>
+                    </div>
+                  </div>
                 </clr-tree-node>
               </ng-template>
             </clr-tree-node>
-            <!-- </ng-template>
-            </clr-tree-node> -->
           </p>
         </div>
       </div>
@@ -130,16 +105,23 @@
           <h3 class="card-title">Samples</h3>
           <p class="card-text">
 
-
-            <clr-tree-node *ngFor="let extraction of extractionDetailArray">
-              Sample {{extraction.extraction_no}}
+            <clr-tree-node *ngFor="let sample of selectedABDetail.samples">
+              Sample {{sample.id}}
               <ng-template clrIfExpanded>
                 <clr-tree-node>
                   <table class="table table-vertical table-compact">
                     <tbody>
                       <tr>
-                        <th>Collaborator ID</th>
-                        <td>56732</td>
+                        <th>Collaborator Sample ID</th>
+                        <td>KC-7890</td>
+                      </tr>
+                      <tr>
+                        <th>Sample Type</th>
+                        <td>Sample</td>
+                      </tr>
+                      <tr>
+                        <th>Matrix</th>
+                        <td>Water</td>
                       </tr>
                       <tr>
                         <th>Study</th>
@@ -157,8 +139,6 @@
     </div>
   </div>
 </div>
-
-
 
 <clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditExtractionDetail">
   <h3 class="modal-title">Edit extraction</h3>
