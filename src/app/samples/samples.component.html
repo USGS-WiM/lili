@@ -27,7 +27,7 @@
 
                 <div class="card-text">
                     <!-- begin form -->
-                    <form class="form compact" [formGroup]="addSampleForm" (ngSubmit)="onSubmit('add', addSampleForm.value)" [hidden]="submitted">
+                    <form class="form compact" [formGroup]="addSampleForm" (ngSubmit)="onSubmitSample('add', addSampleForm.value)">
                         <section class="form-block">
 
                             <!-- sample type select form, without Clarity UI validation -->
@@ -242,6 +242,20 @@
                                 <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                             </div>
 
+                            <div class="alert alert-danger" *ngIf="showStudyCreateError">
+                                <div class="alert-item">
+                                    <div class="alert-icon-wrapper">
+                                        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                                    </div>
+                                    <span class="alert-text">
+                                                        Submission error. Sample not submitted.
+                                                    </span>
+                                    <div class="alert-actions">
+                                        <a class="alert-action" (click)="onSubmitSample('add', addSampleForm.value)">Try again</a>
+                                    </div>
+                                </div>
+                            </div>
+
                             <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid">Add</button>
                             <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
                         </section>
@@ -263,7 +277,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmit('edit', editSampleForm.value)"
+                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmitSample('edit', editSampleForm.value)"
                     [hidden]="submitted">
                     <section class="form-block">
 
@@ -505,7 +519,7 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="createABForm" class="compact" [formGroup]="createABForm" (ngSubmit)="onSubmit('edit', createABForm.value)" [hidden]="submitted">
+                <form id="createABForm" class="compact" [formGroup]="createABForm" (ngSubmit)="onSubmitAB('edit', createABForm.value)" [hidden]="submitted">
                     <section class="form-block">
 
                         <clr-stack-label>You have selected the following samples for inclusion in a new Analysis Batch:</clr-stack-label>
@@ -515,18 +529,18 @@
                         </ul>
                         <p>
 
-                        <div class="form-group">
-                            <label for="abDescInput">Analysis Batch Description</label>
-                            <textarea id="abDescInput" rows="2" formControlName="analysis_batch_description" style="max-width:25em"></textarea>
-                        </div>
+                            <div class="form-group">
+                                <label for="abDescInput">Analysis Batch Description</label>
+                                <textarea id="abDescInput" rows="2" formControlName="analysis_batch_description" style="max-width:25em"></textarea>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="abNotesInput">Analysis Batch Notes</label>
-                            <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
-                        </div>
+                            <div class="form-group">
+                                <label for="abNotesInput">Analysis Batch Notes</label>
+                                <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
+                            </div>
 
-                        <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid">Submit</button>
-                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid">Submit</button>
+                            <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
 
                     </section>
                 </form>
@@ -551,7 +565,7 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmit('freeze', freezeSampleForm.value)">
+                <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmitFreeze('freeze', freezeSampleForm.value)">
                     <section class="form-block">
 
                         <div *ngIf="this.selectedStudy">
