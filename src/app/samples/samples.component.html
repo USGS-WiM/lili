@@ -242,21 +242,16 @@
                                 <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                             </div>
 
-                            <div class="alert alert-danger" *ngIf="showStudyCreateError">
-                                <div class="alert-item">
-                                    <div class="alert-icon-wrapper">
-                                        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
-                                    </div>
-                                    <span class="alert-text">
-                                                        Submission error. Sample not submitted.
-                                                    </span>
+                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleCreateError">
+                                <div clr-alert-item class="alert-item">
+                                    <span class="alert-text">Submission error. Sample not submitted.</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="onSubmitSample('add', addSampleForm.value)">Try again</a>
+                                        <a class="alert-action" (click)="onSubmitStudy('add', addStudyForm.value)">Try again</a>
                                     </div>
                                 </div>
-                            </div>
+                            </clr-alert>
 
-                            <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid">Add</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
                             <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
                         </section>
                         <!--<p>Form value: {{ addSampleForm.value | json }}</p>
@@ -277,8 +272,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmitSample('edit', editSampleForm.value)"
-                    [hidden]="submitted">
+                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmitSample('edit', editSampleForm.value)">
                     <section class="form-block">
 
                         <div class="form-group">
@@ -432,9 +426,9 @@
 
                         <div class="form-group">
                             <label for="tvsInput">Total Volume Sampled</label>
-                            <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial" disabled>
+                            <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                             <div class="select">
-                                <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial" disabled>
+                                <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
                                 </select>
                             </div>
@@ -519,7 +513,7 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="createABForm" class="compact" [formGroup]="createABForm" (ngSubmit)="onSubmitAB('edit', createABForm.value)" [hidden]="submitted">
+                <form id="createABForm" class="compact" [formGroup]="createABForm" (ngSubmit)="onSubmitAB('edit', createABForm.value)">
                     <section class="form-block">
 
                         <clr-stack-label>You have selected the following samples for inclusion in a new Analysis Batch:</clr-stack-label>
@@ -565,7 +559,7 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmitFreeze('freeze', freezeSampleForm.value)">
+                <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmitFreeze(freezeSampleForm.value)">
                     <section class="form-block">
 
                         <div *ngIf="this.selectedStudy">

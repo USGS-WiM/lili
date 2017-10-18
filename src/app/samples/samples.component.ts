@@ -55,6 +55,7 @@ export class SamplesComponent implements OnInit {
   unitValue;
 
   onlyOneStudySelected: boolean;
+  submitLoading: boolean = false;
 
   selected: ISample[] = [];
 
@@ -360,16 +361,17 @@ export class SamplesComponent implements OnInit {
     return newItem.id === this;
   }
 
-  onSubmitFreeze() {
+  onSubmitFreeze(formValue) {
 
   }
 
-  onSubmitAB() {
+  onSubmitAB(formId, formValue) {
 
   }
 
   ///split these out
   onSubmitSample(formId, formValue) {
+    this.showSampleCreateError = false;
     switch (formId) {
       case 'edit':
         // update a record
@@ -386,7 +388,6 @@ export class SamplesComponent implements OnInit {
           .subscribe(
           (sample: ISample) => {
             this.allSamples.push(formValue);
-            this.showSampleCreateError = false;
             this.addSampleForm.reset();
 
           },

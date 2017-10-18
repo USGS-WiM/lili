@@ -17,9 +17,15 @@ export class StudiesComponent implements OnInit {
     showHideEdit: boolean = false;
 
     showStudyCreateError: boolean = false;
+    showStudyEditError: boolean = false;
+
+    showStudyCreateSuccess: boolean = false;
+    showStudyEditSuccess: boolean = false;
 
     selectedStudyName;
     selectedStudyId;
+
+    submitLoading: boolean = false;
 
     // add study form - declare a reactive form with appropriate study fields
     addStudyForm = new FormGroup({
@@ -73,29 +79,41 @@ export class StudiesComponent implements OnInit {
     }
 
     // split these out
-    submitted = false;
     onSubmitStudy(formId, formValue) {
+        this.showStudyCreateError = false;
+        this.showStudyEditError = false;
+        this.submitLoading = true;
         switch (formId) {
             case 'edit':
                 // update a record
                 this._studyService.update(formValue)
-                    .subscribe(study => study,
-                    error => this.errorMessage = <any>error);
-                this.editStudyForm.reset();
-                this.updateStudiesArray(formValue);
-                this.showHideEdit = false;
+                    .subscribe(
+                    (study) => {
+                        this.updateStudiesArray(formValue);
+                        this.editStudyForm.reset();
+                        this.submitLoading = false;
+                        this.showStudyEditSuccess = true;
+                    },
+                    error => {
+                        this.errorMessage = <any>error;
+                        this.submitLoading = false;
+                        this.showStudyEditError = true;
+                    }
+                    );
                 break;
             case 'add':
                 // add a record
                 this._studyService.create(formValue)
                     .subscribe(
-                    (study: IStudy) => {
-                        this.allStudies.push(formValue);
-                        this.showStudyCreateError = false;
-                        this.editStudyForm.reset();
+                    (study) => {
+                        this.allStudies.push(study);
+                        this.addStudyForm.reset();
+                        this.submitLoading = false;
+                        this.showStudyCreateSuccess = true;
                     },
                     error => {
                         this.errorMessage = <any>error;
+                        this.submitLoading = false;
                         this.showStudyCreateError = true;
                     }
                     );
