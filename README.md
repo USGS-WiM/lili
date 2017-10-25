@@ -1,6 +1,5 @@
 
-![WiM logo](wimlogo.png)  ![Lili logo](src/images/lily_icon.svg)
-<img src="src/images/lily_icon.svg">
+![WiM logo](wimlogo.png)  
 
 Lili 
 ============
