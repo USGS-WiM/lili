@@ -42,7 +42,7 @@ export class SamplesComponent implements OnInit {
   showHideFreezeModal: boolean = false;
   showHidePrintModal: boolean = false;
   showHideFreezeWarningModal: boolean = false;
-  showSampleCreateError: boolean = false;
+
   sampleSelected: boolean = false;
   displayConfig: Object = {};
   selectedSampleId;
@@ -60,6 +60,12 @@ export class SamplesComponent implements OnInit {
   selected: ISample[] = [];
 
   submitted: boolean = false;
+
+  showSampleCreateError: boolean = false;
+  showSampleEditError: boolean = false;
+
+  showSampleCreateSuccess: boolean = false;
+  showSampleEditSuccess: boolean = false;
 
   selectedStudy;
 
@@ -369,18 +375,27 @@ export class SamplesComponent implements OnInit {
 
   }
 
-  ///split these out
   onSubmitSample(formId, formValue) {
     this.showSampleCreateError = false;
+    this.showSampleEditError = false;
+    this.submitLoading = true;
     switch (formId) {
       case 'edit':
         // update a record
         this._sampleService.update(formValue)
-          .subscribe(sample => sample,
-          error => this.errorMessage = <any>error);
-        this.editSampleForm.reset();
-        this.updateSamplesArray(formValue);
-        this.showHideEdit = false;
+          .subscribe(
+          (sample) => {
+            this.updateSamplesArray(formValue);
+            this.editSampleForm.reset();
+            this.submitLoading = false;
+            this.showSampleEditSuccess = true;
+          },
+          error => {
+            this.errorMessage = <any>error;
+            this.submitLoading = false;
+            this.showSampleEditError = true;
+          }
+          );
         break;
       case 'add':
         // add a record
@@ -389,10 +404,12 @@ export class SamplesComponent implements OnInit {
           (sample: ISample) => {
             this.allSamples.push(formValue);
             this.addSampleForm.reset();
-
+            this.submitLoading = false;
+            this.showSampleCreateSuccess = true;
           },
           error => {
             this.errorMessage = <any>error;
+            this.submitLoading = false;
             this.showSampleCreateError = true;
           }
           );
