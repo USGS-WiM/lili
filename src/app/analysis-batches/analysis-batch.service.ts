@@ -5,9 +5,11 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 
-import { APP_SETTINGS } from '../app.settings'
+import { APP_SETTINGS } from '../app.settings';
 
-import { IAnalysisBatch } from './analysis-batch'
+import { IAnalysisBatch } from './analysis-batch';
+import { IAnalysisBatchSummary } from './analysis-batch-summary';
+import { IAnalysisBatchDetail } from './analysis-batch-detail';
 
 
 
@@ -23,7 +25,7 @@ export class AnalysisBatchService {
 
   //**********************************************Temporary**************************************************** */
   //temporary function to return AB details, in place until AB endpoint is functional
-  public getAnalysisBatchData(abID): IAnalysisBatch {
+  public getAnalysisBatchData(abID): IAnalysisBatchDetail {
     switch (abID) {
       case 1000:
         return {
@@ -1940,13 +1942,13 @@ export class AnalysisBatchService {
 
 
   //getAnalysisBatches function  - makes request to lide web services
-  getAnalysisBatches(): Observable<IAnalysisBatch[]> {
+  getAnalysisBatchSummaries(): Observable<IAnalysisBatchSummary[]> {
 
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
-    return this._http.get(APP_SETTINGS.ANALYSIS_BATCHES_URL, options)
+    return this._http.get(APP_SETTINGS.ANALYSIS_BATCH_SUMMARY_URL, options)
       .map((response: Response) => <IAnalysisBatch[]>response.json())
-      //.do(data => console.log('Analysis Batch data: ' + JSON.stringify(data)))
+      // .do(data => console.log('Analysis Batch data: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
@@ -1956,7 +1958,7 @@ export class AnalysisBatchService {
       headers: APP_SETTINGS.AUTH_JSON_HEADERS
     });
 
-    return this._http.post(APP_SETTINGS.ANALYSIS_BATCHES_URL, formValue, options)
+    return this._http.post(APP_SETTINGS.ANALYSIS_BATCH_URL, formValue, options)
       .map(this.extractData)
       .catch(this.handleError)
 
@@ -1968,7 +1970,7 @@ export class AnalysisBatchService {
       headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
     });
 
-    return this._http.put(APP_SETTINGS.ANALYSIS_BATCHES_URL + formValue.id + '/', formValue, options)
+    return this._http.put(APP_SETTINGS.ANALYSIS_BATCH_URL + formValue.id + '/', formValue, options)
       .map(this.extractData)
       .catch(this.handleError);
 

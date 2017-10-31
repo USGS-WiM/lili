@@ -526,7 +526,7 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="createABForm" class="compact" [formGroup]="createABForm" (ngSubmit)="onSubmitAB('edit', createABForm.value)">
+                <form id="createABForm" class="compact" [formGroup]="createABForm" (ngSubmit)="onSubmitAB(createABForm.value)">
                     <section class="form-block">
 
                         <clr-stack-label>You have selected the following samples for inclusion in a new Analysis Batch:</clr-stack-label>
@@ -546,7 +546,7 @@
                                 <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
                             </div>
 
-                            <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid">Submit</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid" [clrLoading]="submitLoading">Submit</button>
                             <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
 
                     </section>

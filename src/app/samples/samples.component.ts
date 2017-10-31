@@ -17,6 +17,8 @@ import { StudyService } from '../studies/study.service';
 import { UnitService } from '../units/unit.service';
 import { UserService } from '../SHARED/user.service';
 
+import { AnalysisBatchService } from '../analysis-batches/analysis-batch.service';
+
 import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
 
 import { APP_UTILITIES } from '../app.utilities';
@@ -66,6 +68,9 @@ export class SamplesComponent implements OnInit {
 
   showSampleCreateSuccess: boolean = false;
   showSampleEditSuccess: boolean = false;
+
+  showABCreateError: boolean = false;
+  showABCreateSuccess: boolean = false;
 
   selectedStudy;
 
@@ -175,19 +180,28 @@ export class SamplesComponent implements OnInit {
   });
 
   createABForm = new FormGroup({
+    samples: new FormControl([]),
     analysis_batch_description: new FormControl(''),
     analysis_batch_notes: new FormControl('')
   });
 
 
-  constructor(private _sampleService: SampleService, private _studyService: StudyService, private _sampleTypeService: SampleTypeService, private _filterTypeService: FilterTypeService, private _matrixService: MatrixService, private _unitService: UnitService, private _userService: UserService) { }
+  constructor(private _sampleService: SampleService,
+    private _studyService: StudyService,
+    private _sampleTypeService: SampleTypeService,
+    private _filterTypeService: FilterTypeService,
+    private _matrixService: MatrixService,
+    private _unitService: UnitService,
+    private _userService: UserService,
+    private _analysisBatchService: AnalysisBatchService
+  ) { }
 
   ngOnInit(): void {
 
     // on init, get sample form config object from App Utilities and se to local displayConfig var
     this.displayConfig = APP_UTILITIES.SAMPLE_FORM_CONFIG;
 
-    //on init, call getSamples function of the SampleService, set results to the allSamples var
+    // on init, call getSamples function of the SampleService, set results to the allSamples var
     this._sampleService.getSamples()
       .subscribe(samples => this.allSamples = samples,
       error => this.errorMessage = <any>error);
@@ -231,10 +245,20 @@ export class SamplesComponent implements OnInit {
 
   // callback for the create analysis batch button
   createAB(selectedSampleArray) {
+
+    // grab just IDs of the selected samples
+
+    this.createABForm.setValue({
+      samples: selectedSampleArray,
+      analysis_batch_description: '',
+      analysis_batch_notes: ''
+    })
     // show the AB modal if not showing already
     if (this.showHideABModal === false) {
       this.showHideABModal = true;
     }
+
+    console.log(this.createABForm.value);
 
   }
 
@@ -250,17 +274,18 @@ export class SamplesComponent implements OnInit {
 
   // callback for the freeze samples button
   freezeSample(selectedSampleArray) {
-    // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function which checks if all the values for study are the same in the selected samples array
+    // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
+    // checks if all the values for study are the same in the selected samples array
     this.onlyOneStudySelected = selectedSampleArray.every(
       function (value, _, array) {
         return array[0].study === value.study;
       });
 
     // alert user they are attempting to select a set of studies for freezing that belong to more than one study
-    // show freeze warning modal if multiple studies, else show the freeze modal 
-    if (this.onlyOneStudySelected == false) {
+    // show freeze warning modal if multiple studies, else show the freeze modal
+    if (this.onlyOneStudySelected === false) {
       this.showHideFreezeWarningModal = true
-    } else if (this.onlyOneStudySelected == true) {
+    } else if (this.onlyOneStudySelected === true) {
       // show the freeze modal if not showing already
       if (this.showHideFreezeModal === false) {
         this.showHideFreezeModal = true;
@@ -334,7 +359,7 @@ export class SamplesComponent implements OnInit {
   onMatrixSelect(selectedMatrix) {
     console.log("Matrix selected:" + selectedMatrix);
     // loop through displayConfig variables for the selected matrix, from the config JSON file (all boolean)
-    for (var property in this.displayConfig[selectedMatrix]) {
+    for (let property in this.displayConfig[selectedMatrix]) {
       switch (this.displayConfig[selectedMatrix][property]) {
         case (true): {
           // if disabled == true, disable corresponding control
@@ -371,7 +396,24 @@ export class SamplesComponent implements OnInit {
 
   }
 
-  onSubmitAB(formId, formValue) {
+  onSubmitAB(formValue) {
+    this.showABCreateError = false;
+    this.showABCreateSuccess = false;
+    this.submitLoading = true;
+    this._analysisBatchService.create(formValue)
+      .subscribe(
+        (ab) => {
+          this.submitLoading = false;
+          this.showABCreateSuccess = true;
+
+        },
+        error => {
+          this.errorMessage = <any>error;
+          this.submitLoading = false;
+          this.showABCreateError = true;
+
+        }
+      )
 
   }
 
