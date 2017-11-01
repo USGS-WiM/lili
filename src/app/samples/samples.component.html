@@ -55,30 +55,32 @@
                             <div class="form-group">
                                 <label class="required">Study</label>
                                 <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
-                                <div class="select">
-                                    <select id="studySelect" name="study" formControlName="study">
-                                        <option value=""><span class="all">NO STUDY ASSOCIATION</span></option>
-                                        <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
-                                    </select>
-                                </div>
+                                    <div class="select">
+                                        <select id="studySelect" name="study" formControlName="study">
+                                            <option value="">
+                                                <span class="all">NO STUDY ASSOCIATION</span>
+                                            </option>
+                                            <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
+                                        </select>
+                                    </div>
                                 </label>
                             </div>
 
                             <div class="form-group">
                                 <label class="required">Sample type</label>
                                 <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sample_type').invalid && (addSampleForm.get('sample_type').dirty || addSampleForm.get('sample_type').touched)">
-                                <div class="select">
-                                    <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
-                                        <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
-                                    </select>
-                                </div>
+                                    <div class="select">
+                                        <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
+                                            <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
+                                        </select>
+                                    </div>
                                 </label>
                             </div>
 
                             <div class="form-group">
                                 <label class="required">Collaborator Sample ID</label>
                                 <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collaborator_sample_id').invalid && (addSampleForm.get('collaborator_sample_id').dirty || addSampleForm.get('collaborator_sample_id').touched)">
-                                    <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id" >
+                                    <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id">
                                     <span class="tooltip-content">Collaborator ID is required.</span>
                                 </label>
                             </div>
@@ -114,7 +116,7 @@
                                 <label>Sampler Name</label>
                                 <label for="samplerNameSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sampler_name').invalid && (addSampleForm.get('sampler_name').dirty || addSampleForm.get('sampler_name').touched)">
                                     <div class="select">
-                                        <select id="samplerNameSelect" name="samplerName" formControlName="sampler_name" >
+                                        <select id="samplerNameSelect" name="samplerName" formControlName="sampler_name">
                                             <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
                                         </select>
                                     </div>
@@ -141,27 +143,6 @@
                             <div class="form-group">
                                 <label for="collectEndTime">Collection End Time (HHmm)</label>
                                 <input id="collectEndTime" type="text" formControlName="collection_end_time">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="collectEndTime">FCSV</label>
-                                <input id="collectEndTime" type="text" formControlName="final_concentrated_sample_volume">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="required">FCSV Type</label>
-                                <label for="fcsvTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
-                                <div class="select">
-                                    <select id="fcsvTypeSelect" name="sample_type" formControlName="final_concentrated_sample_volume_type" >
-                                        <!-- <option *ngFor="let fcsvType of fcsvTypes" [value]="fscvType.id">{{fcsvType.name}}</option> -->
-                                    </select>
-                                </div>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="collectEndTime">FCSV Notes</label>
-                                <textarea id="eluteNotesInput" rows="2" formControlName="final_concentrated_sample_volume_notes" style="max-width:25em"></textarea>
                             </div>
 
 
@@ -198,14 +179,14 @@
 
                             <div class="form-group">
                                 <label for="volPostDiluteInput">Volume After Dilution</label>
-                                <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
+                                <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume"><span>µL</span>
                             </div>
 
                             <div class="form-group">
                                 <label>Filter</label>
                                 <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('filter_type').invalid && (editSampleForm.get('filter_type').dirty || editSampleForm.get('filter_type').touched)">
                                     <div class="select">
-                                        <select id="filterSelect" name="filterType" formControlName="filter_type" >
+                                        <select id="filterSelect" name="filterType" formControlName="filter_type">
                                             <option *ngFor="let filterType of filterTypes" [value]="filterType.id">{{filterType.name}}</option>
                                         </select>
                                     </div>
@@ -219,7 +200,7 @@
 
                             <div class="form-group">
                                 <label for="dissVolInput">Dissolution Volume (mL)</label>
-                                <input id="dissVolInput" type="text" formControlName="air_subsample_volume">
+                                <input id="dissVolInput" type="text" formControlName="dissolution_volume">
                             </div>
 
                             <div class="form-group">
@@ -246,7 +227,16 @@
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Submission error. Sample not submitted.</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="onSubmitStudy('add', addStudyForm.value)">Try again</a>
+                                        <a class="alert-action" (click)="onSubmitSample('add', addSampleForm.value)">Try again</a>
+                                    </div>
+                                </div>
+                            </clr-alert>
+
+                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess">
+                                <div clr-alert-item class="alert-item">
+                                    <span class="alert-text">Sample successfully submitted</span>
+                                    <div class="alert-actions">
+                                        <a class="alert-action" (click)="showHideAdd = false; showSampleCreateSuccess = false">Close</a>
                                     </div>
                                 </div>
                             </clr-alert>
@@ -294,30 +284,32 @@
                         <div class="form-group">
                             <label class="required">Study</label>
                             <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('study').invalid && (editSampleForm.get('study').dirty || editSampleForm.get('study').touched)">
-                            <div class="select">
-                                <select id="studySelect" name="study" formControlName="study">
-                                    <option value=""><span class="all">NO STUDY ASSOCIATION</span></option>
-                                    <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
-                                </select>
-                            </div>
+                                <div class="select">
+                                    <select id="studySelect" name="study" formControlName="study">
+                                        <option value="">
+                                            <span class="all">NO STUDY ASSOCIATION</span>
+                                        </option>
+                                        <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
+                                    </select>
+                                </div>
                             </label>
                         </div>
 
                         <div class="form-group">
                             <label class="required">Sample type</label>
                             <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
-                            <div class="select">
-                                <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
-                                    <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
-                                </select>
-                            </div>
+                                <div class="select">
+                                    <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
+                                        <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
+                                    </select>
+                                </div>
                             </label>
                         </div>
 
                         <div class="form-group">
                             <label class="required">Collaborator Sample ID</label>
                             <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('collaborator_sample_id').invalid && (editSampleForm.get('collaborator_sample_id').dirty || editSampleForm.get('collaborator_sample_id').touched)">
-                                <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id" >
+                                <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id">
                                 <span class="tooltip-content">Collaborator ID is required.</span>
                             </label>
                         </div>
@@ -390,11 +382,11 @@
                         <div class="form-group">
                             <label class="required">FCSV Type</label>
                             <label for="fcsvTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
-                            <div class="select">
-                                <select id="fcsvTypeSelect" name="sample_type" formControlName="final_concentrated_sample_volume_type">
-                                    <!-- <option *ngFor="let fcsvType of fcsvTypes" [value]="fscvType.id">{{fcsvType.name}}</option> -->
-                                </select>
-                            </div>
+                                <div class="select">
+                                    <select id="fcsvTypeSelect" name="sample_type" formControlName="final_concentrated_sample_volume_type">
+                                        <!-- <option *ngFor="let fcsvType of fcsvTypes" [value]="fscvType.id">{{fcsvType.name}}</option> -->
+                                    </select>
+                                </div>
                             </label>
                         </div>
 
@@ -421,7 +413,9 @@
                         <div class="form-group">
                             <label for="fmrInput">Final Meter Reading</label>
                             <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                            <label *ngIf="sampleSelected"><span>{{this.unitValue | displayValue:'name':this.units }}</span></label>
+                            <label *ngIf="sampleSelected">
+                                <span>{{this.unitValue | displayValue:'name':this.units }}</span>
+                            </label>
                         </div>
 
                         <div class="form-group">
@@ -436,7 +430,7 @@
 
                         <div class="form-group">
                             <label for="volPostDiluteInput">Volume After Dilution</label>
-                            <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
+                            <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume"><span>µL</span>
                         </div>
 
                         <div class="form-group">
@@ -457,7 +451,7 @@
 
                         <div class="form-group">
                             <label for="dissVolInput">Dissolution Volume (mL)</label>
-                            <input id="dissVolInput" type="text" formControlName="air_subsample_volume">
+                            <input id="dissVolInput" type="text" formControlName="dissolution_volume">
                         </div>
 
                         <div class="form-group">
@@ -479,6 +473,25 @@
                             <label for="eluteVolInput">Eluent/Backflush Volume Used</label>
                             <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                         </div>
+
+
+                        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleEditError">
+                            <div clr-alert-item class="alert-item">
+                                <span class="alert-text">Submission error. Sample not updated.</span>
+                                <div class="alert-actions">
+                                    <a class="alert-action" (click)="onSubmitSample('add', editSampleForm.value)">Try again</a>
+                                </div>
+                            </div>
+                        </clr-alert>
+
+                        <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleEditSuccess">
+                            <div clr-alert-item class="alert-item">
+                                <span class="alert-text">Sample successfully updated</span>
+                                <div class="alert-actions">
+                                    <a class="alert-action" (click)="showHideAdd = false; showSampleEditSuccess = false">Close</a>
+                                </div>
+                            </div>
+                        </clr-alert>
 
 
                         <button class="btn btn-primary" type="submit" [disabled]="editSampleForm.invalid">Save Edits</button>
@@ -513,7 +526,7 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="createABForm" class="compact" [formGroup]="createABForm" (ngSubmit)="onSubmitAB('edit', createABForm.value)">
+                <form id="createABForm" class="compact" [formGroup]="createABForm" (ngSubmit)="onSubmitAB(createABForm.value)">
                     <section class="form-block">
 
                         <clr-stack-label>You have selected the following samples for inclusion in a new Analysis Batch:</clr-stack-label>
@@ -533,7 +546,25 @@
                                 <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
                             </div>
 
-                            <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid">Submit</button>
+                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABCreateError">
+                                <div clr-alert-item class="alert-item">
+                                    <span class="alert-text">Submission error. Analysis Batch not created.</span>
+                                    <div class="alert-actions">
+                                        <a class="alert-action" (click)="onSubmitAB(createABForm.value)">Try again</a>
+                                    </div>
+                                </div>
+                            </clr-alert>
+
+                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showABCreateSuccess">
+                                <div clr-alert-item class="alert-item">
+                                    <span class="alert-text">Analysis Batch successfully created</span>
+                                    <div class="alert-actions">
+                                        <a class="alert-action" (click)="showHideABModal = false; showABCreateSuccess = false">Close</a>
+                                    </div>
+                                </div>
+                            </clr-alert>
+
+                            <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid" [clrLoading]="submitLoading">Submit</button>
                             <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
 
                     </section>
@@ -550,6 +581,68 @@
     </div>-->
 </clr-modal>
 <!-- end analysis batch modal -->
+
+
+<!-- begin FCSV modal -->
+<clr-modal [(clrModalOpen)]="showHideFCSVModal">
+    <h3 class="modal-title">Add Final Concentrated Sample Volume</h3>
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <form id="freezeSampleForm" class="compact" [formGroup]="createFCSVForm" (ngSubmit)="onSubmitFCSV(createFCSVForm.value)">
+                    <section class="form-block">
+
+                        <div>
+                            <label>You are adding a FCSV to the following samples:</label>
+                            <ul class="list">
+                                <li *ngFor="let sample of selected">
+                                    Sample {{sample.id}}
+                                </li>
+                            </ul>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="fcsv">FCSV</label>
+                            <input id="fcsv" type="text" formControlName="final_concentrated_sample_volume" size="5"><span>mL</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">FCSV Type</label>
+                            <label for="fcsvTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
+                                <div class="select">
+                                    <select id="fcsvTypeSelect" name="fcsv_type" formControlName="final_concentrated_sample_volume_type">
+                                        <option *ngFor="let type of concentrationTypes" [value]="type.id">{{type.name}}</option>
+                                    </select>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fcsvNotesInput">FCSV Notes</label>
+                            <textarea id="fcsvNotesInput" rows="2" formControlName="final_concentrated_sample_volume_notes" style="max-width:25em"></textarea>
+                        </div>
+
+
+                    </section>
+                </form>
+
+            </div>
+            <!--<div class="col-lg-6">
+            </div>-->
+        </div>
+    </div>
+    <!--<div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
+        <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
+    </div>-->
+</clr-modal>
+<!-- end FCSV modal -->
+
+
 
 <!-- begin freeze modal -->
 <clr-modal [(clrModalOpen)]="showHideFreezeModal">
@@ -569,7 +662,9 @@
                                     Sample {{sample.id}}
                                 </li>
                             </ul>
-                            <label>from the study <span class="label"> {{selectedStudy | displayValue:'name':this.studies}} </span></label>
+                            <label>from the study
+                                <span class="label"> {{selectedStudy | displayValue:'name':this.studies}} </span>
+                            </label>
 
                         </div>
 
@@ -663,11 +758,18 @@
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createAB(selected)"><clr-icon shape="plus"></clr-icon> Create Analysis Batch</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="freezeSample(selected)"><clr-icon shape="login"></clr-icon> Freeze</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="printLabel(selected)"><clr-icon shape="printer"></clr-icon> Print Labels</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1"><clr-icon shape="trash"></clr-icon> Delete Sample</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editSample(selected[0])"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Sample</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createAB(selected)">
+                                    <clr-icon shape="plus"></clr-icon> Create Analysis Batch</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createFCSV(selected)">
+                                    <clr-icon shape="plus"></clr-icon>Add FCSV</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="freezeSample(selected)">
+                                    <clr-icon shape="thermometer"></clr-icon> Freeze</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="printLabel(selected)">
+                                    <clr-icon shape="printer"></clr-icon> Print Labels</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1">
+                                    <clr-icon shape="trash"></clr-icon> Delete Sample</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editSample(selected[0])">
+                                    <clr-icon shape="note-edit" size="16"></clr-icon> Edit Sample</button>
 
                             </div>
                         </clr-dg-action-bar>
@@ -805,9 +907,9 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'air_subsample_volume'">
+                        <clr-dg-column [clrDgField]="'dissolution_volume'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Air Subsample Volume (mL)
+                                Dissolution Volume (mL)
                             </ng-container>
                         </clr-dg-column>
 
@@ -954,7 +1056,7 @@
                                 </div>
                             </clr-dg-cell>-->
                             <clr-dg-cell>{{sample.id}}</clr-dg-cell>
-                            <clr-dg-cell>{{analysisbatches}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.analysisbatches}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.studies">{{sample.study.name}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type.name}}</clr-dg-cell>
@@ -970,7 +1072,7 @@
                             <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.air_subsample_volume}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.dissolution_volume}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type.name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_born_on_date | date:'shortDate'}}</clr-dg-cell>

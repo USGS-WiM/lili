@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms/";
 
 import { IAnalysisBatchSummary } from '../analysis-batch-summary';
+import { IAnalysisBatchDetail } from '../analysis-batch-detail';
 import { IAnalysisBatch } from '../analysis-batch';
 import { IExtraction } from '../../extractions/extraction';
 import { IInhibition } from '../../inhibitions/inhibition';
@@ -26,7 +27,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
   loading: boolean;
   showHideEditExtractionDetail: boolean = false;
   showHideEditRTDetail: boolean = false;
-  selectedABDetail: IAnalysisBatch;
+  selectedABDetail: IAnalysisBatchDetail;
 
   allExtractionMethods: IExtractionMethod[];
 
@@ -78,7 +79,11 @@ export class AnalysisBatchDetailComponent implements OnInit {
     rt_date: new FormControl('')
   })
 
-  constructor(private _analysisBatchService: AnalysisBatchService, private _extractionMethodService: ExtractionMethodService, private _targetService: TargetService, private _unitService: UnitService) { }
+  constructor(private _analysisBatchService: AnalysisBatchService,
+    private _extractionMethodService: ExtractionMethodService,
+    private _targetService: TargetService,
+    private _unitService: UnitService
+  ) { }
 
   ngOnInit() {
     this.loading = true;
@@ -88,21 +93,20 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
     this.extractionDetailArray = this.selectedABDetail.extractions;
 
-     // on init, call getExtractionMethods function of the EXtractionMethodService, set results to allExtractionMethods var
-     this._extractionMethodService.getExtractionMethods()
-     .subscribe(extractionMethods => this.allExtractionMethods = extractionMethods,
-     error => this.errorMessage = <any>error);
+    // on init, call getExtractionMethods function of the EXtractionMethodService, set results to allExtractionMethods var
+    this._extractionMethodService.getExtractionMethods()
+      .subscribe(extractionMethods => this.allExtractionMethods = extractionMethods,
+      error => this.errorMessage = <any>error);
 
-     
     // on init, call getTargets function of the TargetService, set results to allTargets var
     this._targetService.getTargets()
-    .subscribe(targets => this.allTargets = targets,
-    error => this.errorMessage = <any>error);
- 
+      .subscribe(targets => this.allTargets = targets,
+      error => this.errorMessage = <any>error);
+
     // on init, call getUnits function of the UnitService, set results to the units var
     this._unitService.getUnits()
-    .subscribe(units => this.units = units,
-    error => this.errorMessage = <any>error);
+      .subscribe(units => this.units = units,
+      error => this.errorMessage = <any>error);
 
     // build the inhibition list by looping through the AB data and adding all inhibitions to a local array
     // for (let extraction of this.extractionDetailArray) {
@@ -142,9 +146,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
   }
 
   resetAB() {
-    this.selected =[];
+    this.selected = [];
     this.extractionTargetArray = [];
-    }
+  }
 
   editRT(rt) {
 
@@ -173,8 +177,8 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
     // build the target list by looping through the AB data and adding all targets to a local array
     for (let extTarget of extraction.targets) {
-      for (let target of this.allTargets){
-        if (extTarget.id === target.id){
+      for (let target of this.allTargets) {
+        if (extTarget.id === target.id) {
           this.extractionTargetArray.push(target);
         }
       }
@@ -187,11 +191,11 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   }
 
-  updateABTargetList (){
+  updateABTargetList() {
 
   }
 
-  onSubmit(formID, formValue){
+  onSubmit(formID, formValue) {
 
   }
 

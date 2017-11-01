@@ -20,10 +20,13 @@ export class APP_SETTINGS {
     public static get SAMP_LOC_URL(): string { return this._API_ENDPOINT + 'samplelocations/' };
     public static get FILTER_TYPES_URL(): string { return this._API_ENDPOINT + 'filtertypes/' };
     public static get WATER_TYPES_URL(): string { return this._API_ENDPOINT + 'watertypes/' };
-    public static get ANALYSIS_BATCHES_URL(): string { return this._API_ENDPOINT + 'analysisbatches/' };
+    public static get ANALYSIS_BATCH_URL(): string { return this._API_ENDPOINT + 'analysisbatches/' };
+    public static get ANALYSIS_BATCH_SUMMARY_URL(): string { return this._API_ENDPOINT + 'analysisbatchdetail/' };
+    public static get ANALYSIS_BATCH_DETAIL_URL(): string { return this._API_ENDPOINT + 'analysisbatchsummary/' };
     public static get EXTRACTIONS_URL(): string { return this._API_ENDPOINT + 'extractions/'; };
     public static get EXTRACTION_METHODS_URL(): string { return this._API_ENDPOINT + 'extractionmethods/' };
     public static get INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'inhibitions/' };
+    public static get CONCENTRATION_TYPES_URL(): string { return this._API_ENDPOINT + 'concentrationtype/'};
     public static get RT_URL(): string { return this._API_ENDPOINT + 'reversetranscriptions/' };
     public static get REPLICATES_URL(): string { return this._API_ENDPOINT + 'pcrreplicates/' };
     public static get STANDARD_CURVES_URL(): string { return this._API_ENDPOINT + 'standardcurves/' };

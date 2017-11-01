@@ -55,7 +55,7 @@ Please read [CONTRIBUTING.md]() for details on the process for submitting pull r
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/USGS-WiM/lili/tags). 
 
 Advance the version when adding features, fixing bugs or making minor enhancement. Follow semver principles. To add tag in git, type git tag v{major}.{minor}.{patch}. Example: git tag v2.0.5
 
@@ -68,7 +68,7 @@ To push tags to remote origin: `git push origin --tags`
 * **[Blake Draper](https://www.usgs.gov/staff-profiles/blake-a-draper)**  - *Lead Developer* - [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
 
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/USGS-WiM/lili/graphs/contributors) who participated in this project.
 
 ## License
 

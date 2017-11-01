@@ -4,6 +4,7 @@ import { Wizard } from "clarity-angular";
 
 import { IAnalysisBatchSummary } from './analysis-batch-summary';
 import { IAnalysisBatch } from './analysis-batch';
+import { IAnalysisBatchDetail } from './analysis-batch-detail';
 
 import { IStudy } from '../studies/study';
 import { ISample } from '../samples/sample';
@@ -50,10 +51,10 @@ export class AnalysisBatchesComponent implements OnInit {
   allSamples: ISample[] = [];
 
   focusAnalysisBatchID: number;
-  focusAnalysisBatchData: IAnalysisBatch;
+  focusAnalysisBatchData: IAnalysisBatchDetail;
 
   selectedAnalysisBatchID: number;
-  selectedAnalysisBatchData: IAnalysisBatch;
+  selectedAnalysisBatchData: IAnalysisBatchDetail;
 
   abSampleList: ISample[] = [];
 
@@ -387,7 +388,7 @@ export class AnalysisBatchesComponent implements OnInit {
     // add
 
     // console.log(this.abSampleList);
-    //this.selected = this.abSampleList;
+    // this.selected = this.abSampleList;
     this.selected = this.abSampleList;
 
     // show the edit analysis batch modal if not showing already
