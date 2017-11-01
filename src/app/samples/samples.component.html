@@ -179,7 +179,7 @@
 
                             <div class="form-group">
                                 <label for="volPostDiluteInput">Volume After Dilution</label>
-                                <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
+                                <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume"><span>µL</span>
                             </div>
 
                             <div class="form-group">
@@ -200,7 +200,7 @@
 
                             <div class="form-group">
                                 <label for="dissVolInput">Dissolution Volume (mL)</label>
-                                <input id="dissVolInput" type="text" formControlName="air_subsample_volume">
+                                <input id="dissVolInput" type="text" formControlName="dissolution_volume">
                             </div>
 
                             <div class="form-group">
@@ -430,7 +430,7 @@
 
                         <div class="form-group">
                             <label for="volPostDiluteInput">Volume After Dilution</label>
-                            <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
+                            <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume"><span>µL</span>
                         </div>
 
                         <div class="form-group">
@@ -451,7 +451,7 @@
 
                         <div class="form-group">
                             <label for="dissVolInput">Dissolution Volume (mL)</label>
-                            <input id="dissVolInput" type="text" formControlName="air_subsample_volume">
+                            <input id="dissVolInput" type="text" formControlName="dissolution_volume">
                         </div>
 
                         <div class="form-group">
@@ -546,6 +546,24 @@
                                 <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
                             </div>
 
+                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABCreateError">
+                                <div clr-alert-item class="alert-item">
+                                    <span class="alert-text">Submission error. Analysis Batch not created.</span>
+                                    <div class="alert-actions">
+                                        <a class="alert-action" (click)="onSubmitAB(createABForm.value)">Try again</a>
+                                    </div>
+                                </div>
+                            </clr-alert>
+
+                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showABCreateSuccess">
+                                <div clr-alert-item class="alert-item">
+                                    <span class="alert-text">Analysis Batch successfully created</span>
+                                    <div class="alert-actions">
+                                        <a class="alert-action" (click)="showHideABModal = false; showABCreateSuccess = false">Close</a>
+                                    </div>
+                                </div>
+                            </clr-alert>
+
                             <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid" [clrLoading]="submitLoading">Submit</button>
                             <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
 
@@ -563,6 +581,68 @@
     </div>-->
 </clr-modal>
 <!-- end analysis batch modal -->
+
+
+<!-- begin FCSV modal -->
+<clr-modal [(clrModalOpen)]="showHideFCSVModal">
+    <h3 class="modal-title">Add Final Concentrated Sample Volume</h3>
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <form id="freezeSampleForm" class="compact" [formGroup]="createFCSVForm" (ngSubmit)="onSubmitFCSV(createFCSVForm.value)">
+                    <section class="form-block">
+
+                        <div>
+                            <label>You are adding a FCSV to the following samples:</label>
+                            <ul class="list">
+                                <li *ngFor="let sample of selected">
+                                    Sample {{sample.id}}
+                                </li>
+                            </ul>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="fcsv">FCSV</label>
+                            <input id="fcsv" type="text" formControlName="final_concentrated_sample_volume" size="5"><span>mL</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">FCSV Type</label>
+                            <label for="fcsvTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
+                                <div class="select">
+                                    <select id="fcsvTypeSelect" name="fcsv_type" formControlName="final_concentrated_sample_volume_type">
+                                        <option *ngFor="let type of concentrationTypes" [value]="type.id">{{type.name}}</option>
+                                    </select>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fcsvNotesInput">FCSV Notes</label>
+                            <textarea id="fcsvNotesInput" rows="2" formControlName="final_concentrated_sample_volume_notes" style="max-width:25em"></textarea>
+                        </div>
+
+
+                    </section>
+                </form>
+
+            </div>
+            <!--<div class="col-lg-6">
+            </div>-->
+        </div>
+    </div>
+    <!--<div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
+        <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
+    </div>-->
+</clr-modal>
+<!-- end FCSV modal -->
+
+
 
 <!-- begin freeze modal -->
 <clr-modal [(clrModalOpen)]="showHideFreezeModal">
@@ -680,8 +760,10 @@
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createAB(selected)">
                                     <clr-icon shape="plus"></clr-icon> Create Analysis Batch</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createFCSV(selected)">
+                                    <clr-icon shape="plus"></clr-icon>Add FCSV</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="freezeSample(selected)">
-                                    <clr-icon shape="login"></clr-icon> Freeze</button>
+                                    <clr-icon shape="thermometer"></clr-icon> Freeze</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="printLabel(selected)">
                                     <clr-icon shape="printer"></clr-icon> Print Labels</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1">
@@ -825,9 +907,9 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'air_subsample_volume'">
+                        <clr-dg-column [clrDgField]="'dissolution_volume'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Air Subsample Volume (mL)
+                                Dissolution Volume (mL)
                             </ng-container>
                         </clr-dg-column>
 
@@ -974,7 +1056,7 @@
                                 </div>
                             </clr-dg-cell>-->
                             <clr-dg-cell>{{sample.id}}</clr-dg-cell>
-                            <clr-dg-cell>{{analysisbatches}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.analysisbatches}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.studies">{{sample.study.name}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type.name}}</clr-dg-cell>
@@ -990,7 +1072,7 @@
                             <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.air_subsample_volume}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.dissolution_volume}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type.name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_born_on_date | date:'shortDate'}}</clr-dg-cell>

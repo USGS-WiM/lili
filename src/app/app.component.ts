@@ -10,13 +10,26 @@ import { MatrixService } from './SHARED/matrix.service';
 import { UnitService } from './units/unit.service';
 import { UserService } from './SHARED/user.service';
 import { TargetService } from './targets/target.service';
-import { ExtractionMethodService } from './extractions/extraction-method.service'
+import { ExtractionMethodService } from './extractions/extraction-method.service';
+import { ConcentrationTypeService } from './concentration-types/concentration-types.service';
 
 @Component({
     selector: 'my-app',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    providers: [ StudyService, SampleService, AnalysisBatchService, SampleTypeService, FilterTypeService, MatrixService, UnitService, UserService, TargetService, ExtractionMethodService]
+    providers: [
+        StudyService,
+        SampleService,
+        AnalysisBatchService,
+        SampleTypeService,
+        FilterTypeService,
+        MatrixService,
+        UnitService,
+        UserService,
+        TargetService,
+        ExtractionMethodService,
+        ConcentrationTypeService
+    ]
 })
 export class AppComponent {
     constructor(private router: Router) {

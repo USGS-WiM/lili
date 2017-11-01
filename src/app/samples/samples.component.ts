@@ -3,7 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ISample } from './sample';
 import { ISampleType } from '../SHARED/sample-type';
-import { IFilterType } from '../SHARED/filter-type'
+import { IFilterType } from '../SHARED/filter-type';
+import { IConcentrationType } from '../concentration-types/concentration-type';
 import { IMatrix } from '../SHARED/matrix';
 import { IStudy } from '../studies/study';
 import { IUnit } from '../units/unit';
@@ -12,6 +13,7 @@ import { IUser } from '../SHARED/user';
 import { SampleService } from './sample.service';
 import { SampleTypeService } from '../SHARED/sample-type.service';
 import { FilterTypeService } from '../SHARED/filter-type.service'
+import { ConcentrationTypeService } from '../concentration-types/concentration-types.service';
 import { MatrixService } from '../SHARED/matrix.service';
 import { StudyService } from '../studies/study.service';
 import { UnitService } from '../units/unit.service';
@@ -32,6 +34,7 @@ export class SamplesComponent implements OnInit {
   allSamples: ISample[];
   sampleTypes: ISampleType[];
   filterTypes: IFilterType[];
+  concentrationTypes: IConcentrationType[];
   matrices: IMatrix[];
   studies: IStudy[];
   units: IUnit[];
@@ -41,6 +44,7 @@ export class SamplesComponent implements OnInit {
   showHideAdd: boolean = false;
   showHideEdit: boolean = false;
   showHideABModal: boolean = false;
+  showHideFCSVModal: boolean = false;
   showHideFreezeModal: boolean = false;
   showHidePrintModal: boolean = false;
   showHideFreezeWarningModal: boolean = false;
@@ -110,7 +114,7 @@ export class SamplesComponent implements OnInit {
     post_dilution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
     filter_type: new FormControl({ value: '', disabled: true }), // required when not disabled
     filter_born_on_date: new FormControl({ value: '', disabled: true }),
-    air_subsample_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
+    dissolution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
     elution_date: new FormControl({ value: '', disabled: true }),
     elution_notes: new FormControl({ value: '', disabled: true }),
     technician_initials: new FormControl({ value: '', disabled: true }),
@@ -158,7 +162,7 @@ export class SamplesComponent implements OnInit {
     post_dilution_volume: new FormControl(''), // required when not disabled
     filter_type: new FormControl(''), // required when not disabled
     filter_born_on_date: new FormControl(''),
-    air_subsample_volume: new FormControl(''), // required when not disabled
+    dissolution_volume: new FormControl(''), // required when not disabled
     elution_date: new FormControl(''),
     elution_notes: new FormControl(''),
     technician_initials: new FormControl(''),
@@ -185,11 +189,19 @@ export class SamplesComponent implements OnInit {
     analysis_batch_notes: new FormControl('')
   });
 
+  createFCSVForm = new FormGroup({
+    samples: new FormControl([]),
+    final_concentrated_sample_volume: new FormControl(''),
+    final_concentrated_sample_volume_type: new FormControl(''),
+    final_concentrated_sample_volume_notes: new FormControl('')
+  })
+
 
   constructor(private _sampleService: SampleService,
     private _studyService: StudyService,
     private _sampleTypeService: SampleTypeService,
     private _filterTypeService: FilterTypeService,
+    private _concentrationTypeService: ConcentrationTypeService,
     private _matrixService: MatrixService,
     private _unitService: UnitService,
     private _userService: UserService,
@@ -215,6 +227,11 @@ export class SamplesComponent implements OnInit {
     this._filterTypeService.getFilterTypes()
       .subscribe(filterTypes => this.filterTypes = filterTypes,
       error => this.errorMessage = <any>error);
+
+      // on init, call getConcentrationTypes function of the ConcentrationTypeService, set results to the sampleTypes var
+    this._concentrationTypeService.getConcentrationTypes()
+    .subscribe(concentrationTypes => this.concentrationTypes = concentrationTypes,
+    error => this.errorMessage = <any>error);
 
     // on init, call getMatrices function of the MatrixService, set results to the matrices var
     this._matrixService.getMatrices()
@@ -247,9 +264,13 @@ export class SamplesComponent implements OnInit {
   createAB(selectedSampleArray) {
 
     // grab just IDs of the selected samples
+    let sampleIDs = [];
+    for (let sample of selectedSampleArray ) {
+        sampleIDs.push(sample.id);
+    }
 
     this.createABForm.setValue({
-      samples: selectedSampleArray,
+      samples: sampleIDs,
       analysis_batch_description: '',
       analysis_batch_notes: ''
     })
@@ -259,6 +280,16 @@ export class SamplesComponent implements OnInit {
     }
 
     console.log(this.createABForm.value);
+
+  }
+
+  createFCSV() {
+
+
+    // show the freeze modal if not showing already
+    if (this.showHideFCSVModal === false) {
+      this.showHideFCSVModal = true;
+    }
 
   }
 
@@ -345,7 +376,7 @@ export class SamplesComponent implements OnInit {
       post_dilution_volume: selectedSample.post_dilution_volume,
       filter_type: selectedSample.filter_type,
       filter_born_on_date: selectedSample.filter_born_on_date,
-      air_subsample_volume: selectedSample.air_subsample_volume,
+      dissolution_volume: selectedSample.dissolution_volume,
       elution_date: selectedSample.elution_date,
       elution_notes: selectedSample.elution_notes,
       technician_initials: selectedSample.technician_initials,
@@ -359,22 +390,26 @@ export class SamplesComponent implements OnInit {
   onMatrixSelect(selectedMatrix) {
     console.log("Matrix selected:" + selectedMatrix);
     // loop through displayConfig variables for the selected matrix, from the config JSON file (all boolean)
-    for (let property in this.displayConfig[selectedMatrix]) {
-      switch (this.displayConfig[selectedMatrix][property]) {
-        case (true): {
-          // if disabled == true, disable corresponding control
-          this.addSampleForm.controls[property].disable();
-          break;
-        }
-        case (false): {
-          // if disabled == false, enable corresponding control
-          this.addSampleForm.controls[property].enable();
-          break;
-        }
-        default: {
-          // default to enabled
-          this.addSampleForm.controls[property].enable();
-          break;
+    for (let i in this.displayConfig[selectedMatrix]) {
+
+      if (this.displayConfig[selectedMatrix].hasOwnProperty(i)) {
+
+        switch (this.displayConfig[selectedMatrix][i]) {
+          case (true): {
+            // if disabled == true, disable corresponding control
+            this.addSampleForm.controls[i].disable();
+            break;
+          }
+          case (false): {
+            // if disabled == false, enable corresponding control
+            this.addSampleForm.controls[i].enable();
+            break;
+          }
+          default: {
+            // default to enabled
+            this.addSampleForm.controls[i].enable();
+            break;
+          }
         }
       }
     }
@@ -405,7 +440,6 @@ export class SamplesComponent implements OnInit {
         (ab) => {
           this.submitLoading = false;
           this.showABCreateSuccess = true;
-
         },
         error => {
           this.errorMessage = <any>error;
