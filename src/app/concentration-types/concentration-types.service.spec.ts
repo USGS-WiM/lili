@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { ConcentrationTypesService } from './concentration-types.service';
+import { ConcentrationTypeService } from './concentration-types.service';
 
-describe('ConcentrationTypesService', () => {
+describe('ConcentrationTypeService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ConcentrationTypesService]
+      providers: [ConcentrationTypeService]
     });
   });
 
-  it('should be created', inject([ConcentrationTypesService], (service: ConcentrationTypesService) => {
+  it('should be created', inject([ConcentrationTypeService], (service: ConcentrationTypeService) => {
     expect(service).toBeTruthy();
   }));
 });

@@ -179,7 +179,8 @@
 
                             <div class="form-group">
                                 <label for="volPostDiluteInput">Volume After Dilution</label>
-                                <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume"><span>µL</span>
+                                <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
+                                <span>µL</span>
                             </div>
 
                             <div class="form-group">
@@ -199,8 +200,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="dissVolInput">Dissolution Volume (mL)</label>
-                                <input id="dissVolInput" type="text" formControlName="dissolution_volume">
+                                <label for="dissVolInput">Dissolution Volume</label>
+                                <input id="dissVolInput" type="text" formControlName="dissolution_volume"><span>mL</span>
                             </div>
 
                             <div class="form-group">
@@ -430,7 +431,8 @@
 
                         <div class="form-group">
                             <label for="volPostDiluteInput">Volume After Dilution</label>
-                            <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume"><span>µL</span>
+                            <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
+                            <span>µL</span>
                         </div>
 
                         <div class="form-group">
@@ -450,8 +452,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="dissVolInput">Dissolution Volume (mL)</label>
-                            <input id="dissVolInput" type="text" formControlName="dissolution_volume">
+                            <label for="dissVolInput">Dissolution Volume</label>
+                            <input id="dissVolInput" type="text" formControlName="dissolution_volume"><span>mL</span>
                         </div>
 
                         <div class="form-group">
@@ -591,7 +593,7 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="freezeSampleForm" class="compact" [formGroup]="createFCSVForm" (ngSubmit)="onSubmitFCSV(createFCSVForm.value)">
+                <form id="createFCSVForm" class="compact" [formGroup]="createFCSVForm" (ngSubmit)="onSubmitFCSV(createFCSVForm.value)">
                     <section class="form-block">
 
                         <div>
@@ -607,7 +609,8 @@
 
                         <div class="form-group">
                             <label for="fcsv">FCSV</label>
-                            <input id="fcsv" type="text" formControlName="final_concentrated_sample_volume" size="5"><span>mL</span>
+                            <input id="fcsv" type="text" formControlName="final_concentrated_sample_volume" size="5">
+                            <span>mL</span>
                         </div>
 
                         <div class="form-group">
@@ -625,6 +628,27 @@
                             <label for="fcsvNotesInput">FCSV Notes</label>
                             <textarea id="fcsvNotesInput" rows="2" formControlName="final_concentrated_sample_volume_notes" style="max-width:25em"></textarea>
                         </div>
+
+                        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFCSVCreateError">
+                            <div clr-alert-item class="alert-item">
+                                <span class="alert-text">Submission error. FCSV not submitted.</span>
+                                <div class="alert-actions">
+                                    <a class="alert-action" (click)="onSubmitAB(createABForm.value)">Try again</a>
+                                </div>
+                            </div>
+                        </clr-alert>
+
+                        <clr-alert [clrAlertType]="'alert-success'" *ngIf="showFCSVCreateSuccess">
+                            <div clr-alert-item class="alert-item">
+                                <span class="alert-text">FCSV successfully submitted.</span>
+                                <div class="alert-actions">
+                                    <a class="alert-action" (click)="showHideFCSVModal = false; showFCSVCreateSuccess = false">Close</a>
+                                </div>
+                            </div>
+                        </clr-alert>
+
+                        <button class="btn btn-primary" type="submit" [disabled]="createFCSVForm.invalid" [clrLoading]="submitLoading">Submit</button>
+                        <button class="btn btn-info" (click)="showHideFCSVModal = !showHideFCSVModal">Cancel</button>
 
 
                     </section>

@@ -22,52 +22,18 @@
             <div class="col-lg-10 col-md-10">
                 <p>Select an aliquot for each Sample in this Analysis Batch
 
-                    <form class="compact" [formGroup]="aliquotsForm">
+                    <form class="compact" >
                         <section class="form-block">
 
-                            <div class="form-group">
-                                <label for="">Sample 1 (6780)</label>
+                            <div class="form-group" *ngFor="let sample of abSampleList">
+                                <label for="">Sample {{sample.id}}</label>
                                 <div class="select">
-                                    <select id="" name="aliquot_select" formControlName="aliquot">
-                                            <option>6780-1</option>
-                                            <option>6780-2</option>
-                                            <option>6780-3</option>
-                                        </select>
+                                    <select id="" name="aliquot_select" (change)="onAliquotSelect(sample.id, $event.target.value)">
+                                        <option *ngFor="let aliquot of sample.aliquots" [value]="aliquot">{{sample.id}}-{{aliquot}}</option>
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="">Sample 2 (6781)</label>
-                                <div class="select">
-                                    <select id="" name="aliquot_select" formControlName="aliquot">
-                                                <option>6781-1</option>
-                                                <option>6780-2</option>
-                                                <option>6780-3</option>
-                                            </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Sample 3 (6793)</label>
-                                <div class="select">
-                                    <select id="" name="aliquot_select" formControlName="aliquot">
-                                                <option>6793-1</option>
-                                                <option>6780-2</option>
-                                                <option>6780-3</option>
-                                            </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Sample 4 (6794)</label>
-                                <div class="select">
-                                    <select id="" name="aliquot_select" formControlName="aliquot">
-                                                    <option>6794-1</option>
-                                                    <option>6780-2</option>
-                                                    <option>6780-3</option>
-                                                </select>
-                                </div>
-                            </div>
                         </section>
                     </form>
             </div>
@@ -133,8 +99,8 @@
                             <input id="qpcrReactionVol" type="text" size="5" formControlName="qpcr_reaction_volume">
                             <div class="select">
                                 <select id="qpcrReactionVolUnits" formControlName="qpcr_reaction_volume_units">
-                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-                                    </select>
+                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                </select>
                             </div>
                         </div>
 
@@ -170,8 +136,8 @@
                     <input id="extractVol" type="text" size="10" formControlName="extraction_volume">
                     <div class="select">
                         <select id="extractVolUnits" formControlName="extraction_volume_units">
-                                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-                                        </select>
+                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                        </select>
                     </div>
                 </div>
 
@@ -180,8 +146,8 @@
                     <input id="elutionVol" type="text" size="10" formControlName="elution_volume">
                     <div class="select">
                         <select id="elutionVolUnits" formControlName="elution_volume_units">
-                                                <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-                                            </select>
+                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                        </select>
                     </div>
                 </div>
 
@@ -212,16 +178,17 @@
         <clr-alert [clrAlertClosable]="false" *ngIf="rnaTargetsSelected">
             <div clr-alert-item class="alert-item">
                 <span class="alert-text">
-                        You have selected RNA targets for this extraction. Please enter RT data below.
-                    </span>
+                    You have selected RNA targets for this extraction. Please enter RT data below.
+                </span>
             </div>
         </clr-alert>
 
         <clr-alert [clrAlertClosable]="false" *ngIf="!rnaTargetsSelected">
             <div clr-alert-item class="alert-item">
                 <span class="alert-text">
-                            You have not selected any RNA targets for this extraction. No RT record will be created. Please click Next to skip to the next step.
-                        </span>
+                    You have not selected any RNA targets for this extraction. No RT record will be created. Please click Next to skip to the
+                    next step.
+                </span>
             </div>
         </clr-alert>
 
@@ -233,8 +200,8 @@
                     <input id="templateVol" type="text" size="10" formControlName="template_volume">
                     <div class="select">
                         <select id="rtTemplateVolUnits" formControlName="template_volume_units">
-                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-                                </select>
+                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                        </select>
                     </div>
                 </div>
 
@@ -243,8 +210,8 @@
                     <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
                     <div class="select">
                         <select id="rtReactionVolUnits" formControlName="reaction_volume_units">
-                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-                                </select>
+                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                        </select>
                     </div>
                 </div>
 
@@ -264,8 +231,8 @@
             <clr-alert [clrAlertClosable]="false" *ngIf="inhibitionsExist">
                 <div clr-alert-item class="alert-item">
                     <span class="alert-text">
-                            lili has detected an existing inhibition for this Analysis Batch
-                            </span>
+                        lili has detected an existing inhibition for this Analysis Batch
+                    </span>
                     <div class="alert-actions">
                         <a class="alert-actions" (click)="showApplyExistingCard()">Apply Existing Inhibition</a>
                     </div>
@@ -362,7 +329,7 @@
                                             <label for="elutionVol">Inhibition for RNA targets</label>
                                             <div class="select">
                                                 <select id="inhibitionSelect_batchRNA" name="rnaInhibition" formControlName="rnaInhibition">
-                                                        <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
+                                                    <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
                                                     <option>Create New Inhibition</option>
                                                 </select>
                                             </div>
@@ -398,17 +365,17 @@
                                         <clr-dg-cell>
                                             <div class="select">
                                                 <select id="" name="dnaInhibition">
-                                                            <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
-                                                            <option>Create New Inhibition</option>
-                                                        </select>
+                                                    <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
+                                                    <option>Create New Inhibition</option>
+                                                </select>
                                             </div>
                                         </clr-dg-cell>
                                         <clr-dg-cell>
                                             <div class="select">
                                                 <select id="" name="dnaInhibition">
-                                                            <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
-                                                            <option>Create New Inhibition</option>
-                                                        </select>
+                                                    <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
+                                                    <option>Create New Inhibition</option>
+                                                </select>
                                             </div>
                                         </clr-dg-cell>
                                     </clr-dg-row>
@@ -473,7 +440,9 @@
                                     <div class="col-lg-4">
                                         <form [formGroup]="abSampleListForm">
                                             <section class="form-block">
-                                                <label>Samples in this Analysis Batch  <span class="badge badge-light-blue">{{abSampleList.length}}</span> </label>
+                                                <label>Samples in this Analysis Batch
+                                                    <span class="badge badge-light-blue">{{abSampleList.length}}</span>
+                                                </label>
                                                 <ul class="list">
                                                     <li *ngFor="let sample of abSampleList">{{sample.id}} ({{sample.study.name}})</li>
                                                 </ul>
@@ -494,7 +463,7 @@
                                         <clr-alert [clrAlertClosable]="false" *ngIf="sampleListEditLocked">
                                             <div clr-alert-item class="alert-item">
                                                 <span class="alert-text">
-                                                    This Analysis Batch has been extracted. Editing of the sample list is locked. 
+                                                    This Analysis Batch has been extracted. Editing of the sample list is locked.
                                                 </span>
 
                                             </div>
@@ -502,10 +471,11 @@
 
                                         <form *ngIf="!sampleListEditLocked">
                                             <section class="form-block">
-                                                <label>All Samples <a href="" role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
+                                                <label>All Samples
+                                                    <a href="" role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
                                                         <clr-icon shape="info-circle" size="24"></clr-icon>
                                                         <span class="tooltip-content">Check/uncheck to add/remove Sample from Analysis Batch</span>
-                                                    </a> 
+                                                    </a>
                                                 </label>
                                                 <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
                                                     <!-- <clr-dg-action-bar>
@@ -629,8 +599,10 @@
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Analysis Batch</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)"><clr-icon shape="login"></clr-icon> Extract</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)">
+                                    <clr-icon shape="note-edit" size="16"></clr-icon> Edit Analysis Batch</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)">
+                                    <clr-icon shape="login"></clr-icon> Extract</button>
                                 <!--<button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
                                 <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>
                                 <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="note-edit"size="16"></clr-icon> Here</button> -->
