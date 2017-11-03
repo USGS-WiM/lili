@@ -5,6 +5,7 @@ import { Wizard } from "clarity-angular";
 import { IAnalysisBatchSummary } from './analysis-batch-summary';
 import { IAnalysisBatch } from './analysis-batch';
 import { IAnalysisBatchDetail } from './analysis-batch-detail';
+import { IAliquotSelection } from './aliquot-selection';
 
 import { IStudy } from '../studies/study';
 import { ISample } from '../samples/sample';
@@ -58,6 +59,9 @@ export class AnalysisBatchesComponent implements OnInit {
 
   abSampleList: ISample[] = [];
 
+
+  aliquotSelectionArray: IAliquotSelection[] = [];
+
   inhibitionsPerSample = [];
   // may not need this abInhibitionCount var, consider removing
   abInhibitionCount = 0;
@@ -78,9 +82,12 @@ export class AnalysisBatchesComponent implements OnInit {
   selectedAB: IAnalysisBatchSummary;
   errorMessage: string;
 
-  // boooleans foe edit AB tabs
+  // booleans foe edit AB tabs
   sampleListActive: boolean;
   detailsActive: boolean;
+
+  //samplesForm: FormGroup;
+
 
   // edit AB form
   editABForm = new FormGroup({
@@ -134,19 +141,54 @@ export class AnalysisBatchesComponent implements OnInit {
     inhibition_date: new FormControl('')
   })
 
-  abSampleListForm = new FormGroup({
-    abSamples: new FormControl('')
-  })
+  // createForm() {
+  //   this.samplesForm = this.formBuilder.group({
+  //     samples: this.formBuilder.array([])
+  //   });
+  // }
 
-  aliquotsForm = new FormGroup({
-    aliquot: new FormControl('')
-  })
+  // abSampleListForm = new FormGroup({
+  //   abSamples: new FormControl('')
+  // })
 
-  // aliquotsForm = this.fb.group({
-  //   aliquots: this.fb.array([])
-  // });
+  // aliquotsForm = new FormGroup({
+  //   aliquot: new FormControl('')
+  // })
 
-  constructor(private formBuilder: FormBuilder, private _studyService: StudyService, private _sampleService: SampleService, private _analysisBatchService: AnalysisBatchService, private _targetService: TargetService, private _extractionMethodService: ExtractionMethodService, private _unitService: UnitService) { }
+  // setSamples(samples: ISample[]) {
+  //   const sampleFGs = samples.map(sample => this.formBuilder.group(sample, ));
+  //   const samplesFormArray = this.formBuilder.array(sampleFGs);
+  //   this.samplesForm.setControl('samples', samplesFormArray);
+  // }
+
+  // get samples(): FormArray {
+  //   return this.samplesForm.get('samples') as FormArray;
+  // }
+
+  onAliquotSelect(sampleID, selectedAliquot) {
+
+    for (let sample of this.aliquotSelectionArray) {
+      if (sampleID === sample.id) {
+        sample.aliquot = parseInt(selectedAliquot, 10);
+      }
+    }
+
+    console.log(this.aliquotSelectionArray);
+
+
+  }
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private _studyService: StudyService,
+    private _sampleService: SampleService,
+    private _analysisBatchService: AnalysisBatchService,
+    private _targetService: TargetService,
+    private _extractionMethodService: ExtractionMethodService,
+    private _unitService: UnitService
+  ) {
+    // this.createForm();
+  }
 
   ngOnInit() {
 
@@ -178,7 +220,7 @@ export class AnalysisBatchesComponent implements OnInit {
       .subscribe(studies => this.studies = studies,
       error => this.errorMessage = <any>error);
 
-    //on init, call getSamples function of the SampleService, set results to the allSamples var
+    // on init, call getSamples function of the SampleService, set results to the allSamples var
     this._sampleService.getSamples()
       .subscribe(samples => this.allSamples = samples,
       error => this.errorMessage = <any>error);
@@ -239,7 +281,7 @@ export class AnalysisBatchesComponent implements OnInit {
     // this._sampleService.read(sampleID)
     // .subscribe(sampleData =>  this.abSampleList = sampleData,
     // error => this.errorMessage = <any>error);
-    // return 
+    // return
   }
 
   resetAB() {
@@ -265,9 +307,14 @@ export class AnalysisBatchesComponent implements OnInit {
       for (let sample of this.allSamples) {
         if (sampleSummary.id === sample.id) {
           this.abSampleList.push(sample);
+          this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.aliquots[0] });
         }
       }
     }
+
+
+
+    // this.setSamples(this.abSampleList);
 
     // const aliquotFGs = this.abSampleList.map(sample => this.fb.group(sample));
     // const aliquotFormArray = this.fb.array(aliquotFGs);
@@ -295,6 +342,8 @@ export class AnalysisBatchesComponent implements OnInit {
       this.inhibitionsExist = true;
     }
 
+    this.extractWizardOpen = true;
+
 
   }
 
@@ -302,7 +351,7 @@ export class AnalysisBatchesComponent implements OnInit {
     this.wizardExtract.reset();
   }
 
-  finishExtractWizard () {
+  finishExtractWizard() {
 
   }
 

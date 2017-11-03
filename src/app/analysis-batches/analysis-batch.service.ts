@@ -377,24 +377,24 @@ export class AnalysisBatchService {
           "analysis_batch_notes": "Proident consequat voluptate aliqua est et do proident reprehenderit adipisicing.",
           "samples": [
             {
-              "id": 1490,
-              "sample_type": 3,
-              "sample_description": "Proident eiusmod elit elit incididunt magna exercitation consectetur cupidatat."
+              "id": 11,
+              "sample_type": 2,
+              "sample_description": "Dolor ipsum ipsum amet non reprehenderit officia Lorem deserunt cupidatat ex."
             },
             {
-              "id": 1270,
-              "sample_type": 5,
-              "sample_description": "Do elit fugiat duis laborum irure mollit cillum adipisicing quis eu in."
-            },
-            {
-              "id": 1056,
-              "sample_type": 5,
-              "sample_description": "Quis enim nisi tempor ex minim."
-            },
-            {
-              "id": 1166,
+              "id": 14,
               "sample_type": 4,
-              "sample_description": "In laboris sint ea mollit sunt do culpa eiusmod anim incididunt dolor eu cillum."
+              "sample_description": "Aliquip amet adipisicing duis adipisicing velit quis id qui Lorem qui labore."
+            },
+            {
+              "id": 7,
+              "sample_type": 4,
+              "sample_description": "In irure duis proident ullamco irure ex commodo."
+            },
+            {
+              "id": 9,
+              "sample_type": 1,
+              "sample_description": "Ullamco eu aute sint eu amet exercitation sunt fugiat voluptate pariatur."
             }
           ],
           "studies": [
@@ -575,24 +575,24 @@ export class AnalysisBatchService {
           "analysis_batch_notes": "Excepteur irure laboris excepteur est esse.",
           "samples": [
             {
-              "id": 1252,
-              "sample_type": 3,
-              "sample_description": "Ut proident ipsum reprehenderit laborum excepteur est fugiat aute fugiat excepteur amet cupidatat."
+              "id": 5,
+              "sample_type": 2,
+              "sample_description": "Dolor ipsum ipsum amet non reprehenderit officia Lorem deserunt cupidatat ex."
             },
             {
-              "id": 1376,
-              "sample_type": 5,
-              "sample_description": "Amet dolor aliqua consectetur dolor sunt excepteur veniam excepteur irure sint cupidatat nisi nulla exercitation."
+              "id": 6,
+              "sample_type": 4,
+              "sample_description": "Aliquip amet adipisicing duis adipisicing velit quis id qui Lorem qui labore."
             },
             {
-              "id": 1315,
-              "sample_type": 3,
-              "sample_description": "Deserunt incididunt cupidatat nulla nulla id."
+              "id": 8,
+              "sample_type": 4,
+              "sample_description": "In irure duis proident ullamco irure ex commodo."
             },
             {
-              "id": 1041,
+              "id": 9,
               "sample_type": 1,
-              "sample_description": "Sit dolor cupidatat Lorem incididunt consectetur reprehenderit minim exercitation exercitation mollit sunt ipsum deserunt."
+              "sample_description": "Ullamco eu aute sint eu amet exercitation sunt fugiat voluptate pariatur."
             }
           ],
           "studies": [

@@ -76,6 +76,9 @@ export class SamplesComponent implements OnInit {
   showABCreateError: boolean = false;
   showABCreateSuccess: boolean = false;
 
+  showFCSVCreateError: boolean = false;
+  showFCSVCreateSuccess: boolean = false;
+
   selectedStudy;
 
   // add sample form - declare reactive form with appropriate sample fields
@@ -257,7 +260,7 @@ export class SamplesComponent implements OnInit {
 
   onUnitChange(unitValue) {
     // sets the var unitValue used for meter reading unit display
-    this.unitValue = parseInt(unitValue);
+    this.unitValue = parseInt(unitValue, 10);
   }
 
   // callback for the create analysis batch button
@@ -283,8 +286,24 @@ export class SamplesComponent implements OnInit {
 
   }
 
-  createFCSV() {
+  createFCSV(selectedSamples) {
 
+    let selectedSampleIDs = []
+    if (selectedSamples.length > 1) {
+        for (let sample of selectedSamples) {
+          selectedSampleIDs.push(sample.id)
+        }
+    } else {
+      selectedSampleIDs = [selectedSamples[0].id]
+    }
+
+    this.createFCSVForm.setValue({
+      samples: selectedSampleIDs,
+      final_concentrated_sample_volume: '',
+      final_concentrated_sample_volume_type: '',
+      final_concentrated_sample_volume_notes: ''
+
+    })
 
     // show the freeze modal if not showing already
     if (this.showHideFCSVModal === false) {
@@ -429,6 +448,26 @@ export class SamplesComponent implements OnInit {
 
   onSubmitFreeze(formValue) {
 
+  }
+
+  onSubmitFCSV(formValue) {
+    this.showFCSVCreateError = false;
+    this.showFCSVCreateSuccess = false;
+    this.submitLoading = true;
+
+    let fcsvArray = [];
+
+    for (let sample of formValue.samples) {
+        fcsvArray.push({
+          "id": sample,
+          "final_concentrated_sample_volume": formValue.final_concentrated_sample_volume,
+          "final_concentrated_sample_volume_type": formValue.final_concentrated_sample_volume_type,
+          "final_concentrated_sample_volume_notes": formValue.final_concentrated_sample_volume_notes
+        })
+    }
+
+    // fcsvArray to be used to batch POST to FCSV endpoint; awaiting functioming endpoint
+    console.log(fcsvArray);
   }
 
   onSubmitAB(formValue) {
