@@ -113,19 +113,22 @@
                     <tbody>
                       <tr>
                         <th>Collaborator Sample ID</th>
-                        <td>KC-7890</td>
+                        <td>{{sample.collaborator_sample_id}}</td>
                       </tr>
                       <tr>
                         <th>Sample Type</th>
-                        <td>Sample</td>
+                        <td>{{sample.sample_type.name}}</td>
+                        <!-- <td>Sample</td> -->
                       </tr>
                       <tr>
                         <th>Matrix</th>
-                        <td>Water</td>
+                        <td>{{sample.matrix_type.name}}</td>
+                        <!-- <td>Water</td> -->
                       </tr>
                       <tr>
                         <th>Study</th>
-                        <td>Kewuanee County Study</td>
+                        <td>{{sample.study.id}}</td>
+                        <!-- <td>Kewuanee County Study</td> -->
                       </tr>
                     </tbody>
                   </table>
