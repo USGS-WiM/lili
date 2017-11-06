@@ -5,6 +5,7 @@ import { IAnalysisBatchSummary } from '../analysis-batch-summary';
 import { IAnalysisBatchDetail } from '../analysis-batch-detail';
 import { IAnalysisBatch } from '../analysis-batch';
 import { IExtraction } from '../../extractions/extraction';
+import { IExtractionBatch } from '../../extractions/extraction-batch';
 import { IInhibition } from '../../inhibitions/inhibition';
 import { IReverseTranscription } from '../../reverse-transcriptions/reverse-transcription';
 import { IExtractionMethod } from '../../extractions/extraction-method';
@@ -88,10 +89,22 @@ export class AnalysisBatchDetailComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
 
-    this.selectedABDetail = this._analysisBatchService.getAnalysisBatchData(this.selectedABSummary.id);
+    // this.selectedABDetail = this._analysisBatchService.getAnalysisBatchData(this.selectedABSummary.id);
     // console.log(this.selectedABDetail);
 
-    this.extractionDetailArray = this.selectedABDetail.extractions;
+    // on init, call the getAnalysisBatchDetail function of the AnalyisBatchService, se results to selectedABDetial var
+    this._analysisBatchService.getAnalysisBatchDetail(this.selectedABSummary.id)
+      .subscribe(
+      (analysisBatchDetail) => {
+        console.log(analysisBatchDetail);
+        this.selectedABDetail = analysisBatchDetail;
+        this.extractionDetailArray = this.selectedABDetail.extractionbatches.extractions;
+        this.loading = false;
+      },
+      error => {
+        this.errorMessage = <any>error
+      }
+      );
 
     // on init, call getExtractionMethods function of the EXtractionMethodService, set results to allExtractionMethods var
     this._extractionMethodService.getExtractionMethods()
@@ -137,7 +150,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
       extraction_date: extraction.extraction_date
     });
 
-    //show the edit detail modal if not showing already
+    // show the edit detail modal if not showing already
     if (this.showHideEditExtractionDetail === false) {
       this.showHideEditExtractionDetail = true;
     }
@@ -162,7 +175,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
       reaction_volume_units: 4,
       rt_date: rt.rt_date
     })
-    //show the edit rt detail modal if not showing already
+    // show the edit rt detail modal if not showing already
     if (this.showHideEditRTDetail === false) {
       this.showHideEditRTDetail = true;
     }

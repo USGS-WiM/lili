@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
       <div class="card ab-detail-card">
-        <div class="card-block">
+        <div class="card-block" *ngIf="!loading" >
           <h3 class="card-title">Extractions</h3>
           <p class="card-text">
             <!-- <clr-tree-node>
@@ -101,7 +101,7 @@
     </div>
     <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
       <div class="card ab-detail-card">
-        <div class="card-block">
+        <div class="card-block" *ngIf="!loading">
           <h3 class="card-title">Samples</h3>
           <p class="card-text">
 
@@ -143,7 +143,7 @@
   </div>
 </div>
 
-<clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditExtractionDetail">
+<clr-modal class="modal-sm" *ngIf="!loading" [(clrModalOpen)]="showHideEditExtractionDetail">
   <h3 class="modal-title">Edit extraction</h3>
   <div class="modal-body">
     <span>Analysis Batch {{selectedABDetail.id}}</span>
@@ -182,7 +182,7 @@
   </div>
 </clr-modal>
 
-<clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditRTDetail">
+<clr-modal class="modal-sm" *ngIf="selectedABDetail" [(clrModalOpen)]="showHideEditRTDetail">
   <h3 class="modal-title">Edit RT Details</h3>
   <div class="modal-body">
     <span>Analysis Batch {{selectedABDetail.id}}</span>
@@ -236,7 +236,7 @@
 </clr-modal>
 
 <!-- edit target list modal -->
-<clr-modal [(clrModalOpen)]="showHideEditTargetList" [clrModalSize]="'xl'">
+<clr-modal [(clrModalOpen)]="showHideEditTargetList" [clrModalSize]="'xl'" *ngIf="!loading">
   <h3 class="modal-title">Edit Target List for Extraction # {{currentExtractionNo}} </h3>
   <div class="modal-body">
 

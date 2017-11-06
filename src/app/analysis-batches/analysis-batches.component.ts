@@ -193,7 +193,7 @@ export class AnalysisBatchesComponent implements OnInit {
   ngOnInit() {
 
     // grab temporary hard-coded sample analysis batch summary data (until web service endpoint is up-to-date)
-    this.allAnalysisBatchSummaries = APP_UTILITIES.ANALYSIS_BATCH_SUMMARY_ENDPOINT;
+    // this.allAnalysisBatchSummaries = APP_UTILITIES.ANALYSIS_BATCH_SUMMARY_ENDPOINT;
 
     // on init, call getTargets function of the TargetService, set results to allTargets var
     this._targetService.getTargets()
@@ -204,10 +204,10 @@ export class AnalysisBatchesComponent implements OnInit {
     // grab temporary hard-coded inhibitionsPerSample object (until web service endpoint is up-to-date)
     this.inhibitionsPerSample = APP_UTILITIES.INHIBITIONS_PER_SAMPLE_ENDPOINT;
 
-    // on init, call getAnalysisBatches function of the AnalysisBatchService, set results to the allAnalysisBatches var
-    // this._analysisBatchService.getAnalysisBatches()
-    //   .subscribe(analysisBatches => this.allAnalysisBatches = analysisBatches,
-    //   error => this.errorMessage = <any>error);
+    // on init, call getAnalysisBatchSummaries function of the AnalysisBatchService, set results to the allAnalysisBatches var
+    this._analysisBatchService.getAnalysisBatchSummaries()
+      .subscribe(analysisBatches => this.allAnalysisBatchSummaries = analysisBatches,
+      error => this.errorMessage = <any>error);
 
     // on init, call getExtractionMethods function of the EXtractionMethodService, set results to allExtractionMethods var
     this._extractionMethodService.getExtractionMethods()
@@ -382,8 +382,19 @@ export class AnalysisBatchesComponent implements OnInit {
       // set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
       this.focusAnalysisBatchID = abID;
       // call to retrieve AB detail data
-      this.focusAnalysisBatchData = this.retrieveABData(abID);
-      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
+
+
+      this._analysisBatchService.getAnalysisBatchDetail(abID)
+      .subscribe(
+      (analysisBatchDetail) => {
+        console.log(analysisBatchDetail);
+        this.focusAnalysisBatchData = analysisBatchDetail;
+        this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
+      },
+      error => {
+        this.errorMessage = <any>error
+      }
+      );
     }
 
     // build the target list by looping through the AB data and adding all targets to a local array

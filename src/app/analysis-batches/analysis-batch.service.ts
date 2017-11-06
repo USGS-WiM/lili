@@ -1940,14 +1940,25 @@ export class AnalysisBatchService {
   }
   //**********************************************Temporary**************************************************** */
 
+  // get Analysis Batch Detail - for individual AB record retrieval 
+  public getAnalysisBatchDetail(abID: number): Observable<IAnalysisBatchDetail> {
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
 
-  //getAnalysisBatches function  - makes request to lide web services
+    return this._http.get(APP_SETTINGS.ANALYSIS_BATCH_DETAIL_URL + abID + '/?format=json', options)
+    .map((response: Response) => <IAnalysisBatchDetail[]>response.json())
+    .catch(this.handleError);
+
+  }
+
+  // get Analysis Batch Summaries - for populating table of ABs
   getAnalysisBatchSummaries(): Observable<IAnalysisBatchSummary[]> {
 
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
     return this._http.get(APP_SETTINGS.ANALYSIS_BATCH_SUMMARY_URL, options)
-      .map((response: Response) => <IAnalysisBatch[]>response.json())
+      .map((response: Response) => <IAnalysisBatchSummary[]>response.json())
       // .do(data => console.log('Analysis Batch data: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
