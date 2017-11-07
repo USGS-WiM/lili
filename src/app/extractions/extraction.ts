@@ -3,12 +3,9 @@ import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcr
 
 export interface IExtraction {
     id: number
-    extraction_no: number,
-    extraction_volume: number,
-    elution_volume: number,
-    extraction_method: number,
-    extraction_date: string,
-    inhibitions: IInhibition[],
-    reverse_transcriptions: IReverseTranscription[],
-    targets: Object[]
+    sample: number,
+    extraction_batch: number,
+    inhibition: number,
+    reverse_transcription: number,
+    pcrreplicates: number[]
 }

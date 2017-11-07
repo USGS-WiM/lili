@@ -10,6 +10,7 @@ import { IAliquotSelection } from './aliquot-selection';
 import { IStudy } from '../studies/study';
 import { ISample } from '../samples/sample';
 import { IExtraction } from '../extractions/extraction';
+import { IExtractionBatch } from '../extractions/extraction-batch';
 import { IInhibition } from '../inhibitions/inhibition';
 import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcription';
 import { ITarget } from '../targets/target';
@@ -59,6 +60,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   abSampleList: ISample[] = [];
 
+  extractionBatchArray: IExtractionBatch[];
+
 
   aliquotSelectionArray: IAliquotSelection[] = [];
 
@@ -82,12 +85,9 @@ export class AnalysisBatchesComponent implements OnInit {
   selectedAB: IAnalysisBatchSummary;
   errorMessage: string;
 
-  // booleans foe edit AB tabs
+  // booleans for edit AB tabs
   sampleListActive: boolean;
   detailsActive: boolean;
-
-  //samplesForm: FormGroup;
-
 
   // edit AB form
   editABForm = new FormGroup({
@@ -274,7 +274,23 @@ export class AnalysisBatchesComponent implements OnInit {
   }
 
   retrieveABData(abID) {
-    return this._analysisBatchService.getAnalysisBatchData(abID);
+    // return this._analysisBatchService.getAnalysisBatchData(abID);
+
+    this._analysisBatchService.getAnalysisBatchDetail(abID)
+      .subscribe(
+      (analysisBatchDetail) => {
+        console.log(analysisBatchDetail);
+        this.focusAnalysisBatchData = analysisBatchDetail;
+        // this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
+      },
+      error => {
+        this.errorMessage = <any>error
+      }
+      );
+
+    return this.focusAnalysisBatchData;
+
+
   }
 
   retrieveSampleData(sampleID) {
@@ -377,29 +393,18 @@ export class AnalysisBatchesComponent implements OnInit {
     // check if AB ID matches the current focusAnalysisBatchID.
     // This will mean the desired AB data is already stored in the variable and does not need to be retrieved
     if (abID === this.focusAnalysisBatchID) {
-      this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
+      // this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
     } else {
       // set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
       this.focusAnalysisBatchID = abID;
       // call to retrieve AB detail data
-
-
-      this._analysisBatchService.getAnalysisBatchDetail(abID)
-      .subscribe(
-      (analysisBatchDetail) => {
-        console.log(analysisBatchDetail);
-        this.focusAnalysisBatchData = analysisBatchDetail;
-        this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
-      },
-      error => {
-        this.errorMessage = <any>error
-      }
-      );
+      this.focusAnalysisBatchData = this.retrieveABData(abID);
+      this.extractionBatchArray = this.focusAnalysisBatchData.extractionbatches;
     }
 
-    // build the target list by looping through the AB data and adding all targets to a local array
-    for (let extraction of this.extractionDetailArray) {
-      for (let target of extraction.targets) {
+    // build the target list by looping through the AB extraction batch array and adding all targets to a local array
+    for (let extractionbatch of this.extractionBatchArray) {
+      for (let target of extractionbatch.targets) {
         this.targetDetailArray.push(target);
       }
     }

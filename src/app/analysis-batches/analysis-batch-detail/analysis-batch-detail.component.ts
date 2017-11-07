@@ -36,6 +36,8 @@ export class AnalysisBatchDetailComponent implements OnInit {
   inhibitionDetailArray: IInhibition[] = [];
   rtDetailArray: IReverseTranscription[] = [];
 
+  extractionBatchArray: IExtractionBatch[];
+
   units: IUnit[];
   allTargets: ITarget[] = [];
   errorMessage: string;
@@ -52,9 +54,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   selected = [];
 
-  editExtractionForm = new FormGroup({
+  editExtractionBatchForm = new FormGroup({
     id: new FormControl(''),
-    extraction_no: new FormControl(''),
+    extraction_number: new FormControl(''),
     extraction_volume: new FormControl(''),
     elution_volume: new FormControl(''),
     extraction_method: new FormControl(''),
@@ -92,13 +94,13 @@ export class AnalysisBatchDetailComponent implements OnInit {
     // this.selectedABDetail = this._analysisBatchService.getAnalysisBatchData(this.selectedABSummary.id);
     // console.log(this.selectedABDetail);
 
-    // on init, call the getAnalysisBatchDetail function of the AnalyisBatchService, se results to selectedABDetial var
+    // on init, call the getAnalysisBatchDetail function of the AnalyisBatchService, set results to selectedABDetail var
     this._analysisBatchService.getAnalysisBatchDetail(this.selectedABSummary.id)
       .subscribe(
       (analysisBatchDetail) => {
-        console.log(analysisBatchDetail);
         this.selectedABDetail = analysisBatchDetail;
-        this.extractionDetailArray = this.selectedABDetail.extractionbatches.extractions;
+        this.extractionBatchArray = analysisBatchDetail.extractionbatches
+        // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
         this.loading = false;
       },
       error => {
@@ -139,15 +141,26 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   }
 
-  editExtraction(extraction) {
+  public buildABExtractionArray(extractionBatchArray) {
+    let abExtractionArray: IExtraction[] = [];
+    for (let extractionbatch of extractionBatchArray ) {
+      for (let extraction of extractionbatch.extractions){
+        abExtractionArray.push(extraction);
+      }
+    }
+    console.log(abExtractionArray);
+    return abExtractionArray;
+  }
 
-    this.editExtractionForm.setValue({
-      id: extraction.id,
-      extraction_no: extraction.extraction_no,
-      extraction_volume: extraction.extraction_volume,
-      elution_volume: extraction.elution_volume,
-      extraction_method: extraction.extraction_method,
-      extraction_date: extraction.extraction_date
+  editExtractionBatch(extractionbatch) {
+
+    this.editExtractionBatchForm.setValue({
+      id: extractionbatch.id,
+      extraction_number: extractionbatch.extraction_number,
+      extraction_volume: extractionbatch.extraction_volume,
+      elution_volume: extractionbatch.elution_volume,
+      extraction_method: extractionbatch.extraction_method.id,
+      extraction_date: extractionbatch.extraction_date
     });
 
     // show the edit detail modal if not showing already
