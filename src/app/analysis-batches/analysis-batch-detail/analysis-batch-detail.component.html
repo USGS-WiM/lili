@@ -2,17 +2,18 @@
   <div class="row">
     <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
       <div class="card ab-detail-card">
-        <div class="card-block">
+        <div class="card-block" *ngIf="!loading">
           <h3 class="card-title">Extractions</h3>
           <p class="card-text">
             <!-- <clr-tree-node>
-              Analysis Batch {{selectedABDetail.id}}
+              Analysis Batch {{selectedABID}}
               <ng-template [clrIfExpanded]="true"> -->
 
-            <clr-tree-node *ngFor="let extraction of extractionDetailArray">
-              <span>Extraction {{extraction.extraction_no}}&nbsp;&nbsp;&nbsp;&nbsp;{{extraction.extraction_date | date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <clr-tree-node *ngFor="let extractionbatch of extractionBatchArray">
+              <span>Extraction {{extractionbatch.extraction_number}}&nbsp;&nbsp;&nbsp;&nbsp;{{extractionbatch.extraction_date |
+                date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
-              <button class="stack-action btn btn-sm btn-link " (click)="editExtraction(extraction)" type="button">Edit</button>
+              <button class="stack-action btn btn-sm btn-link " (click)="editExtractionBatch(extractionbatch)" type="button">Edit</button>
               <ng-template [clrIfExpanded]>
                 <clr-tree-node>
 
@@ -25,22 +26,22 @@
                           <tbody>
                             <tr>
                               <th>Volume Extracted</th>
-                              <td>{{extraction.extraction_volume}} µL</td>
+                              <td>{{extractionbatch.extraction_volume}} µL</td>
                             </tr>
                             <tr>
                               <th>Volume Eluted</th>
-                              <td>{{extraction.elution_volume}} µL</td>
+                              <td>{{extractionbatch.elution_volume}} µL</td>
                             </tr>
                             <tr>
                               <th>Extraction Method</th>
-                              <td>{{extraction.extraction_method | displayValue:'name':this.allExtractionMethods}}</td>
+                              <td>{{extractionbatch.extraction_method.name}}</td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
                       <hr>
 
-                      <div *ngFor="let rt of extraction.reverse_transcriptions">
+                      <div *ngFor="let rt of extractionbatch.reverse_transcriptions">
                         <span>Reverse Transcription&nbsp;&nbsp;&nbsp;&nbsp;{{rt.rt_date | date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         <button class="stack-action btn btn-sm btn-link " (click)="editRT(rt)" type="button">Edit</button>
                         <table class="table table-vertical table-compact table-noborder">
@@ -58,7 +59,7 @@
                       </div>
                       <hr>
 
-                      <div *ngFor="let inhibition of extraction.inhibitions">
+                      <div *ngFor="let inhibition of extractionbatch.inhibitions">
                         <label>Inhibition</label>
                         <table class="table table-vertical table-compact table-noborder">
                           <tbody>
@@ -76,21 +77,21 @@
                       <hr>
 
                       <div>
-                        <label>Targets </label><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        <!-- <button class="stack-action btn btn-sm btn-link" (click)="editExtractionTargets(extraction)" type="button">Edit</button> -->
+                        <label>Targets </label>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         <table class="table table-vertical table-compact table-noborder">
                           <tbody>
-                            <tr *ngFor="let target of extraction.targets">
+                            <tr *ngFor="let target of extractionbatch.targets">
                               <th>{{target.name}}</th>
                               <td>{{target.type}}</td>
                             </tr>
                           </tbody>
                         </table>
-                        <!-- <ul class="list compact">
-                          <li *ngFor="let target of extraction.targets">{{target.name}} ({{target.type}})</li>
-                        </ul> -->
                       </div>
+
+
                     </div>
+
                   </div>
                 </clr-tree-node>
               </ng-template>
@@ -101,11 +102,11 @@
     </div>
     <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
       <div class="card ab-detail-card">
-        <div class="card-block">
+        <div class="card-block" *ngIf="!loading">
           <h3 class="card-title">Samples</h3>
           <p class="card-text">
 
-            <clr-tree-node *ngFor="let sample of selectedABDetail.samples">
+            <clr-tree-node *ngFor="let sample of samplesArray">
               Sample {{sample.id}}
               <ng-template clrIfExpanded>
                 <clr-tree-node>
@@ -113,19 +114,22 @@
                     <tbody>
                       <tr>
                         <th>Collaborator Sample ID</th>
-                        <td>KC-7890</td>
+                        <td>{{sample.collaborator_sample_id}}</td>
                       </tr>
                       <tr>
                         <th>Sample Type</th>
-                        <td>Sample</td>
+                        <td>{{sample.sample_type.name}}</td>
+                        <!-- <td>Sample</td> -->
                       </tr>
                       <tr>
                         <th>Matrix</th>
-                        <td>Water</td>
+                        <td>{{sample.matrix_type.name}}</td>
+                        <!-- <td>Water</td> -->
                       </tr>
                       <tr>
                         <th>Study</th>
-                        <td>Kewuanee County Study</td>
+                        <td>{{sample.study.id}}</td>
+                        <!-- <td>Kewuanee County Study</td> -->
                       </tr>
                     </tbody>
                   </table>
@@ -140,16 +144,16 @@
   </div>
 </div>
 
-<clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditExtractionDetail">
+<clr-modal class="modal-sm" *ngIf="!loading" [(clrModalOpen)]="showHideEditExtractionDetail">
   <h3 class="modal-title">Edit extraction</h3>
   <div class="modal-body">
-    <span>Analysis Batch {{selectedABDetail.id}}</span>
-    <form id="editExtractionForm" class="compact" [formGroup]="editExtractionForm" (ngSubmit)="onSubmit('edit', editExtractionForm.value)"
+    <span>Analysis Batch {{selectedABID}}</span>
+    <form id="editExtractionBatchForm" class="compact" [formGroup]="editExtractionBatchForm" (ngSubmit)="onSubmit('edit', editExtractionBatchForm.value)"
       [hidden]="submitted">
       <section class="form-block">
         <div class="form-group">
           <label for="extractionNo">Extraction No.</label>
-          <input type="text" id="extractionNo" size="10" formControlName="extraction_no" readonly>
+          <input type="text" id="extractionNo" size="10" formControlName="extraction_number" readonly>
         </div>
         <div class="form-group">
           <label for="extractionVol">Extraction Volume</label>
@@ -163,8 +167,8 @@
           <label for="elutionVol">Extraction Method</label>
           <div class="select">
             <select id="extractionMethodSelect" name="extraction_method" formControlName="extraction_method">
-                    <option *ngFor="let method of allExtractionMethods" [value]="method.id">{{method.name}}</option>
-                </select>
+              <option *ngFor="let method of allExtractionMethods" [value]="method.id">{{method.name}}</option>
+            </select>
           </div>
         </div>
         <div class="form-group">
@@ -172,50 +176,41 @@
           <input type="date" id="extractionDateInput" formControlName="extraction_date">
         </div>
 
-        <button class="btn btn-primary" type="submit" [disabled]="editExtractionForm.invalid">Save Edits</button>
+        <button class="btn btn-primary" type="submit" [disabled]="editExtractionBatchForm.invalid">Save Edits</button>
         <button class="btn btn-info" (click)="showHideEditExtractionDetail = !showHideEditExtractionDetail">Cancel</button>
       </section>
     </form>
   </div>
 </clr-modal>
 
-<clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditRTDetail">
+<clr-modal class="modal-sm" *ngIf="selectedABDetail" [(clrModalOpen)]="showHideEditRTDetail">
   <h3 class="modal-title">Edit RT Details</h3>
   <div class="modal-body">
-    <span>Analysis Batch {{selectedABDetail.id}}</span>
+    <span>Analysis Batch {{selectedABID}}</span>
 
     <form id="editRTForm" class="compact" [formGroup]="editRTForm" (ngSubmit)="onSubmit('edit', editRTForm.value)">
       <section class="form-block">
 
         <div class="form-group">
           <label for="rtNo">RT No.</label>
-          <input type="text" id="rtNo" size="10" formControlName="rt_no" readonly>
+          <input type="text" id="rtNo" size="10" formControlName="rt_number" readonly>
         </div>
 
         <div class="form-group">
           <label for="templateVol">Template Volume</label>
-          <input id="templateVol" type="text" size="10" formControlName="template_volume">
-          <div class="select">
-            <select id="rtTemplateVolUnits" formControlName="template_volume_units">
-                                <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-                            </select>
-          </div>
+          <input id="templateVol" type="text" size="10" formControlName="template_volume"><span>µL</span>
         </div>
 
         <div class="form-group">
           <label for="reactionVol">Reaction Volume</label>
-          <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
-          <div class="select">
+          <input id="reactionVol" type="text" size="10" formControlName="reaction_volume"><span>µL</span>
+          <!-- <div class="select">
             <select id="rtReactionVolUnits" formControlName="reaction_volume_units">
-                                <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-                            </select>
-          </div>
+              <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+            </select>
+          </div> -->
         </div>
 
-        <div class="form-group">
-          <label for="templateVol">RT Cq Value</label>
-          <input id="rt_cq" type="text" size="10" formControlName="rt_cq">
-        </div>
 
         <div class="form-group">
           <label for="rtDateInput">RT Date</label>
@@ -233,7 +228,7 @@
 </clr-modal>
 
 <!-- edit target list modal -->
-<clr-modal [(clrModalOpen)]="showHideEditTargetList" [clrModalSize]="'xl'">
+<clr-modal [(clrModalOpen)]="showHideEditTargetList" [clrModalSize]="'xl'" *ngIf="!loading">
   <h3 class="modal-title">Edit Target List for Extraction # {{currentExtractionNo}} </h3>
   <div class="modal-body">
 

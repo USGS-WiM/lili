@@ -5,11 +5,14 @@ import { IAnalysisBatchSummary } from '../analysis-batch-summary';
 import { IAnalysisBatchDetail } from '../analysis-batch-detail';
 import { IAnalysisBatch } from '../analysis-batch';
 import { IExtraction } from '../../extractions/extraction';
+import { IExtractionBatch } from '../../extractions/extraction-batch';
 import { IInhibition } from '../../inhibitions/inhibition';
 import { IReverseTranscription } from '../../reverse-transcriptions/reverse-transcription';
 import { IExtractionMethod } from '../../extractions/extraction-method';
 import { ITarget } from '../../targets/target';
 import { IUnit } from '../../units/unit';
+
+import { ISampleSummary } from '../../samples/sample-summary';
 
 import { AnalysisBatchService } from '../analysis-batch.service';
 import { ExtractionMethodService } from '../../extractions/extraction-method.service';
@@ -35,11 +38,16 @@ export class AnalysisBatchDetailComponent implements OnInit {
   inhibitionDetailArray: IInhibition[] = [];
   rtDetailArray: IReverseTranscription[] = [];
 
+  extractionBatchArray: IExtractionBatch[];
+
   units: IUnit[];
   allTargets: ITarget[] = [];
   errorMessage: string;
 
   extractionTargetArray: ITarget[] = [];
+  samplesArray: ISampleSummary[] = [];
+
+  selectedABID: number;
 
   showHideEditTargetList: boolean = false;
 
@@ -51,9 +59,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   selected = [];
 
-  editExtractionForm = new FormGroup({
+  editExtractionBatchForm = new FormGroup({
     id: new FormControl(''),
-    extraction_no: new FormControl(''),
+    extraction_number: new FormControl(''),
     extraction_volume: new FormControl(''),
     elution_volume: new FormControl(''),
     extraction_method: new FormControl(''),
@@ -70,12 +78,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   editRTForm = new FormGroup({
     id: new FormControl(''),
-    rt_no: new FormControl(''),
-    rt_cq: new FormControl(''),
+    rt_number: new FormControl(''),
     template_volume: new FormControl(''),
-    template_volume_units: new FormControl(''),
     reaction_volume: new FormControl(''),
-    reaction_volume_units: new FormControl(''),
     rt_date: new FormControl('')
   })
 
@@ -88,10 +93,24 @@ export class AnalysisBatchDetailComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
 
-    this.selectedABDetail = this._analysisBatchService.getAnalysisBatchData(this.selectedABSummary.id);
+    // this.selectedABDetail = this._analysisBatchService.getAnalysisBatchData(this.selectedABSummary.id);
     // console.log(this.selectedABDetail);
 
-    this.extractionDetailArray = this.selectedABDetail.extractions;
+    // on init, call the getAnalysisBatchDetail function of the AnalyisBatchService, set results to selectedABDetail var
+    this._analysisBatchService.getAnalysisBatchDetail(this.selectedABSummary.id)
+      .subscribe(
+      (analysisBatchDetail) => {
+        this.selectedABDetail = analysisBatchDetail;
+        this.extractionBatchArray = analysisBatchDetail.extractionbatches
+        this.samplesArray = analysisBatchDetail.samples;
+        this.selectedABID = analysisBatchDetail.id;
+        // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
+        this.loading = false;
+      },
+      error => {
+        this.errorMessage = <any>error
+      }
+      );
 
     // on init, call getExtractionMethods function of the EXtractionMethodService, set results to allExtractionMethods var
     this._extractionMethodService.getExtractionMethods()
@@ -126,18 +145,29 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   }
 
-  editExtraction(extraction) {
+  public buildABExtractionArray(extractionBatchArray) {
+    let abExtractionArray: IExtraction[] = [];
+    for (let extractionbatch of extractionBatchArray ) {
+      for (let extraction of extractionbatch.extractions){
+        abExtractionArray.push(extraction);
+      }
+    }
+    console.log(abExtractionArray);
+    return abExtractionArray;
+  }
 
-    this.editExtractionForm.setValue({
-      id: extraction.id,
-      extraction_no: extraction.extraction_no,
-      extraction_volume: extraction.extraction_volume,
-      elution_volume: extraction.elution_volume,
-      extraction_method: extraction.extraction_method,
-      extraction_date: extraction.extraction_date
+  editExtractionBatch(extractionbatch) {
+
+    this.editExtractionBatchForm.setValue({
+      id: extractionbatch.id,
+      extraction_number: extractionbatch.extraction_number,
+      extraction_volume: extractionbatch.extraction_volume,
+      elution_volume: extractionbatch.elution_volume,
+      extraction_method: extractionbatch.extraction_method.id,
+      extraction_date: extractionbatch.extraction_date
     });
 
-    //show the edit detail modal if not showing already
+    // show the edit detail modal if not showing already
     if (this.showHideEditExtractionDetail === false) {
       this.showHideEditExtractionDetail = true;
     }
@@ -154,15 +184,12 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
     this.editRTForm.setValue({
       id: rt.id,
-      rt_no: rt.rt_no,
-      rt_cq: rt.rt_cq,
+      rt_number: rt.rt_number,
       template_volume: rt.template_volume,
-      template_volume_units: 4,
       reaction_volume: rt.reaction_volume,
-      reaction_volume_units: 4,
       rt_date: rt.rt_date
     })
-    //show the edit rt detail modal if not showing already
+    // show the edit rt detail modal if not showing already
     if (this.showHideEditRTDetail === false) {
       this.showHideEditRTDetail = true;
     }

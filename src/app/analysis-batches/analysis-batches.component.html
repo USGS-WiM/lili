@@ -623,11 +623,11 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'studies'">
+                        <!-- <clr-dg-column [clrDgField]="'studies'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Studies
                             </ng-container>
-                        </clr-dg-column>
+                        </clr-dg-column> -->
 
                         <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
@@ -700,23 +700,23 @@
 
                             <clr-dg-cell>{{ab.id}}</clr-dg-cell>
                             <clr-dg-cell>{{ab.analysis_batch_description}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.studies}}</clr-dg-cell>
+                            <!-- <clr-dg-cell><span *ngFor="let study of ab.studies">{{study.name}}<br></span></clr-dg-cell> -->
 
-                            <clr-dg-cell>{{ab.extraction_count}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.summary.extraction_count}}</clr-dg-cell>
 
-                            <clr-dg-cell>{{ab.inhibition_count}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.summary.inhibition_count}}</clr-dg-cell>
 
-                            <clr-dg-cell>{{ab.reverse_transcription_count}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.summary.reverse_transcription_count}}</clr-dg-cell>
 
                             <clr-dg-cell>
-                                <a (click)="openTargetDetails(ab.id)" class="label label-blue clickable">{{ab.target_count}}</a>
+                                <a (click)="openTargetDetails(ab.id)" class="label label-blue clickable">{{ab.summary.target_count}}</a>
                             </clr-dg-cell>
 
                             <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.insert_user}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.insert_date | date:'shortDate'}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.update_user }}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.update_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.created_by}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.created_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.modified_by }}</clr-dg-cell>
+                            <clr-dg-cell>{{ab.modified_date | date:'shortDate'}}</clr-dg-cell>
 
                             <analysis-batch-detail *clrIfExpanded [selectedABSummary]="ab" ngProjectAs="clr-dg-row-detail"></analysis-batch-detail>
 
