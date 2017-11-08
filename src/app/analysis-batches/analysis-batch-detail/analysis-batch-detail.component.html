@@ -6,7 +6,7 @@
           <h3 class="card-title">Extractions</h3>
           <p class="card-text">
             <!-- <clr-tree-node>
-              Analysis Batch {{selectedABDetail.id}}
+              Analysis Batch {{selectedABID}}
               <ng-template [clrIfExpanded]="true"> -->
 
             <clr-tree-node *ngFor="let extractionbatch of extractionBatchArray">
@@ -106,7 +106,7 @@
           <h3 class="card-title">Samples</h3>
           <p class="card-text">
 
-            <clr-tree-node *ngFor="let sample of selectedABDetail.samples">
+            <clr-tree-node *ngFor="let sample of samplesArray">
               Sample {{sample.id}}
               <ng-template clrIfExpanded>
                 <clr-tree-node>
@@ -147,7 +147,7 @@
 <clr-modal class="modal-sm" *ngIf="!loading" [(clrModalOpen)]="showHideEditExtractionDetail">
   <h3 class="modal-title">Edit extraction</h3>
   <div class="modal-body">
-    <span>Analysis Batch {{selectedABDetail.id}}</span>
+    <span>Analysis Batch {{selectedABID}}</span>
     <form id="editExtractionBatchForm" class="compact" [formGroup]="editExtractionBatchForm" (ngSubmit)="onSubmit('edit', editExtractionBatchForm.value)"
       [hidden]="submitted">
       <section class="form-block">
@@ -186,40 +186,31 @@
 <clr-modal class="modal-sm" *ngIf="selectedABDetail" [(clrModalOpen)]="showHideEditRTDetail">
   <h3 class="modal-title">Edit RT Details</h3>
   <div class="modal-body">
-    <span>Analysis Batch {{selectedABDetail.id}}</span>
+    <span>Analysis Batch {{selectedABID}}</span>
 
     <form id="editRTForm" class="compact" [formGroup]="editRTForm" (ngSubmit)="onSubmit('edit', editRTForm.value)">
       <section class="form-block">
 
         <div class="form-group">
           <label for="rtNo">RT No.</label>
-          <input type="text" id="rtNo" size="10" formControlName="rt_no" readonly>
+          <input type="text" id="rtNo" size="10" formControlName="rt_number" readonly>
         </div>
 
         <div class="form-group">
           <label for="templateVol">Template Volume</label>
-          <input id="templateVol" type="text" size="10" formControlName="template_volume">
-          <div class="select">
-            <select id="rtTemplateVolUnits" formControlName="template_volume_units">
-              <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-            </select>
-          </div>
+          <input id="templateVol" type="text" size="10" formControlName="template_volume"><span>µL</span>
         </div>
 
         <div class="form-group">
           <label for="reactionVol">Reaction Volume</label>
-          <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
-          <div class="select">
+          <input id="reactionVol" type="text" size="10" formControlName="reaction_volume"><span>µL</span>
+          <!-- <div class="select">
             <select id="rtReactionVolUnits" formControlName="reaction_volume_units">
               <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
             </select>
-          </div>
+          </div> -->
         </div>
 
-        <div class="form-group">
-          <label for="templateVol">RT Cq Value</label>
-          <input id="rt_cq" type="text" size="10" formControlName="rt_cq">
-        </div>
 
         <div class="form-group">
           <label for="rtDateInput">RT Date</label>

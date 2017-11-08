@@ -12,6 +12,8 @@ import { IExtractionMethod } from '../../extractions/extraction-method';
 import { ITarget } from '../../targets/target';
 import { IUnit } from '../../units/unit';
 
+import { ISampleSummary } from '../../samples/sample-summary';
+
 import { AnalysisBatchService } from '../analysis-batch.service';
 import { ExtractionMethodService } from '../../extractions/extraction-method.service';
 import { TargetService } from '../../targets/target.service';
@@ -43,6 +45,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
   errorMessage: string;
 
   extractionTargetArray: ITarget[] = [];
+  samplesArray: ISampleSummary[] = [];
+
+  selectedABID: number;
 
   showHideEditTargetList: boolean = false;
 
@@ -73,12 +78,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   editRTForm = new FormGroup({
     id: new FormControl(''),
-    rt_no: new FormControl(''),
-    rt_cq: new FormControl(''),
+    rt_number: new FormControl(''),
     template_volume: new FormControl(''),
-    template_volume_units: new FormControl(''),
     reaction_volume: new FormControl(''),
-    reaction_volume_units: new FormControl(''),
     rt_date: new FormControl('')
   })
 
@@ -100,6 +102,8 @@ export class AnalysisBatchDetailComponent implements OnInit {
       (analysisBatchDetail) => {
         this.selectedABDetail = analysisBatchDetail;
         this.extractionBatchArray = analysisBatchDetail.extractionbatches
+        this.samplesArray = analysisBatchDetail.samples;
+        this.selectedABID = analysisBatchDetail.id;
         // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
         this.loading = false;
       },
@@ -180,12 +184,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
     this.editRTForm.setValue({
       id: rt.id,
-      rt_no: rt.rt_no,
-      rt_cq: rt.rt_cq,
+      rt_number: rt.rt_number,
       template_volume: rt.template_volume,
-      template_volume_units: 4,
       reaction_volume: rt.reaction_volume,
-      reaction_volume_units: 4,
       rt_date: rt.rt_date
     })
     // show the edit rt detail modal if not showing already
