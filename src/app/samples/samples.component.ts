@@ -85,16 +85,15 @@ export class SamplesComponent implements OnInit {
   // all fields except matrix_type are disabled until matrix_type is selected (see onMatrixSelect function)
   addSampleForm = new FormGroup({
     // the following controls apply to every sample record, regardless of matrix selected
-    matrix_type: new FormControl('', Validators.required),
-    study: new FormControl({ value: '', disabled: true }, Validators.required),  // study name, maps to study id
     sample_type: new FormControl({ value: '', disabled: true }, Validators.required),
-    collaborator_sample_id: new FormControl({ value: '', disabled: true }, Validators.required),
-    filter_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
-    secondary_concentration_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
+    matrix_type: new FormControl('', Validators.required),
+    filter_type: new FormControl({ value: '', disabled: true }), // required when not disabled
+    study: new FormControl({ value: '', disabled: true }, Validators.required),  // study name, maps to study id
     study_site_name: new FormControl({ value: '', disabled: true }),
-    sample_description: new FormControl({ value: '', disabled: true }),
+    collaborator_sample_id: new FormControl({ value: '', disabled: true }, Validators.required),
     sampler_name: new FormControl({ value: '', disabled: true }),
     sample_notes: new FormControl({ value: '', disabled: true }),
+    sample_description: new FormControl({ value: '', disabled: true }),
     arrival_date: new FormControl({ value: '', disabled: true }),
     arrival_notes: new FormControl({ value: '', disabled: true }),
     collection_start_date: new FormControl({ value: '', disabled: true }, Validators.required),
@@ -104,45 +103,38 @@ export class SamplesComponent implements OnInit {
     collection_end_date: new FormControl({ value: '', disabled: true }),
     collection_end_time: new FormControl({ value: '', disabled: true }),
 
-    final_concentrated_sample_volume: new FormControl({ value: '', disabled: true }),
-    final_concentrated_sample_volume_type: new FormControl({ value: '', disabled: true }),
-    final_concentrated_sample_volume_notes: new FormControl({ value: '', disabled: true }),
-
-    pump_flow_rate: new FormControl({ value: '', disabled: true }),
     meter_reading_initial: new FormControl({ value: '', disabled: true }),
     meter_reading_final: new FormControl({ value: '', disabled: true }),
     meter_reading_unit: new FormControl({ value: '', disabled: true }),
+
     total_volume_sampled_initial: new FormControl({ value: '', disabled: true }),
     total_volume_sampled_unit_initial: new FormControl({ value: '', disabled: true }),
-    post_dilution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
-    filter_type: new FormControl({ value: '', disabled: true }), // required when not disabled
-    filter_born_on_date: new FormControl({ value: '', disabled: true }),
-    dissolution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
-    elution_date: new FormControl({ value: '', disabled: true }),
-    elution_notes: new FormControl({ value: '', disabled: true }),
-    technician_initials: new FormControl({ value: '', disabled: true }),
-    sample_volume_initial: new FormControl({ value: '', disabled: true }),
 
-    // the following controls are for fields/inputs that do not appear in the current LIMS
-    // they may be missing, or may be intended only for display in table, not for the form
+    sample_volume_initial: new FormControl({ value: '', disabled: true }),
     sample_volume_filtered: new FormControl({ value: '', disabled: true }),
-    total_volume_sampled: new FormControl({ value: '', disabled: true }),
+
+    filter_born_on_date: new FormControl({ value: '', disabled: true }),
+    filter_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
+    secondary_concentration_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
+    elution_notes: new FormControl({ value: '', disabled: true }),
+    technician_initials: new FormControl({ value: '', disabled: true }), 
+    dissolution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
+    post_dilution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
   });
 
   // edit sample form
   editSampleForm = new FormGroup({
     // the following controls apply to every sample record, regardless of matrix_type selected
     id: new FormControl(''),
-    matrix_type: new FormControl({ value: '', disabled: false }, Validators.required),
-    study: new FormControl('', Validators.required),  // study name, maps to study id
     sample_type: new FormControl('', Validators.required),
-    collaborator_sample_id: new FormControl('', Validators.required),
-    filter_flag: new FormControl(false, Validators.required), // radio button
-    secondary_concentration_flag: new FormControl(false, Validators.required), // radio button
+    matrix_type: new FormControl({ value: '', disabled: false }, Validators.required),
+    filter_type: new FormControl(''), // required when not disabled
+    study: new FormControl('', Validators.required),  // study name, maps to study id
     study_site_name: new FormControl(''),
-    sample_description: new FormControl(''),
+    collaborator_sample_id: new FormControl('', Validators.required),
     sampler_name: new FormControl(''),
     sample_notes: new FormControl(''),
+    sample_description: new FormControl(''),
     arrival_date: new FormControl(''),
     arrival_notes: new FormControl(''),
     collection_start_date: new FormControl('', Validators.required),
@@ -152,29 +144,29 @@ export class SamplesComponent implements OnInit {
     collection_end_date: new FormControl(''),
     collection_end_time: new FormControl(''),
 
-    final_concentrated_sample_volume: new FormControl(''),
-    final_concentrated_sample_volume_type: new FormControl(''),
-    final_concentrated_sample_volume_notes: new FormControl(''),
-
-    pump_flow_rate: new FormControl(''),
     meter_reading_initial: new FormControl(''),
     meter_reading_final: new FormControl(''),
     meter_reading_unit: new FormControl(''),
+
     total_volume_sampled_initial: new FormControl(''),
     total_volume_sampled_unit_initial: new FormControl(''),
-    post_dilution_volume: new FormControl(''), // required when not disabled
-    filter_type: new FormControl(''), // required when not disabled
+
+    sample_volume_initial: new FormControl(''),
+    sample_volume_filtered: new FormControl(''),
+
     filter_born_on_date: new FormControl(''),
-    dissolution_volume: new FormControl(''), // required when not disabled
-    elution_date: new FormControl(''),
+    filter_flag: new FormControl(false, Validators.required), // radio button
+    secondary_concentration_flag: new FormControl(false, Validators.required), // radio button
     elution_notes: new FormControl(''),
     technician_initials: new FormControl(''),
-    sample_volume_initial: new FormControl(''),
+    dissolution_volume: new FormControl(''), // required when not disabled
+    post_dilution_volume: new FormControl(''), // required when not disabled
 
-    // the following controls are for fields/inputs that do not appear in the current LIMS
-    // they may be missing, or may be intended only for display in table, not for the form
-    sample_volume_filtered: new FormControl(''),
-    total_volume_sampled: new FormControl(''),
+    //the following controls do not appear in create sample form
+    final_concentrated_sample_volume: new FormControl(''),
+    final_concentrated_sample_volume_type: new FormControl(''),
+    final_concentrated_sample_volume_notes: new FormControl(''),
+    total_volume_or_mass_sampled: new FormControl(''),
   });
 
   freezeSampleForm = new FormGroup({

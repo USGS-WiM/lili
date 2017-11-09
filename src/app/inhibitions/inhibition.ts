@@ -1,9 +1,10 @@
 export interface IInhibition {
     id: number;
-    inhibition_no;
+    sample: number;
+    analysis_batch: number;
+    inhibition_date: string;
     type: string;
     dilution_factor: number;
-    inhibition_date: string;
     created_date: string;
     created_by: string;
     modified_date: string;

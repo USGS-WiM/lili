@@ -16,6 +16,7 @@ import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcr
 import { ITarget } from '../targets/target';
 import { IExtractionMethod } from '../extractions/extraction-method';
 import { IUnit } from '../units/unit';
+import { IExtractionBatchSubmission } from '../extractions/extraction-batch-submission';
 
 import { StudyService } from '../studies/study.service';
 import { SampleService } from '../samples/sample.service';
@@ -89,6 +90,8 @@ export class AnalysisBatchesComponent implements OnInit {
   sampleListActive: boolean;
   detailsActive: boolean;
 
+  extractionBatchSubmission: IExtractionBatchSubmission;
+
   // edit AB form
   editABForm = new FormGroup({
     id: new FormControl(''),
@@ -100,31 +103,31 @@ export class AnalysisBatchesComponent implements OnInit {
   addExtractionForm = new FormGroup({
     extraction_volume: new FormControl(''),
     // set the default units to microliters
-    extraction_volume_units: new FormControl('4'),
+    // extraction_volume_units: new FormControl('4'),
     elution_volume: new FormControl(''),
     // set the default units to microliters
-    elution_volume_units: new FormControl('4'),
+    // elution_volume_units: new FormControl('4'),
     extraction_method: new FormControl(''),
     extraction_date: new FormControl(''),
     sample_dilution_factor: new FormControl(''),
     // set default value to 6
     qpcr_template_volume: new FormControl('6'),
     // set the default units to microliters
-    qpcr_template_volume_units: new FormControl(4),
+    // qpcr_template_volume_units: new FormControl(4),
     // set default value to 20
     qpcr_reaction_volume: new FormControl('20'),
     // set the default units to microliters
-    qpcr_reaction_volume_units: new FormControl(4),
+    // qpcr_reaction_volume_units: new FormControl(4),
     qpcr_date: new FormControl('')
   });
 
   addRTForm = new FormGroup({
     template_volume: new FormControl(''),
     // set the default units to microliters
-    template_volume_units: new FormControl('4'),
+    // template_volume_units: new FormControl('4'),
     reaction_volume: new FormControl(''),
     // set the default units to microliters
-    reaction_volume_units: new FormControl('4'),
+    // reaction_volume_units: new FormControl('4'),
     rt_date: new FormControl('')
   })
 
@@ -141,41 +144,16 @@ export class AnalysisBatchesComponent implements OnInit {
     inhibition_date: new FormControl('')
   })
 
-  // createForm() {
-  //   this.samplesForm = this.formBuilder.group({
-  //     samples: this.formBuilder.array([])
-  //   });
-  // }
-
-  // abSampleListForm = new FormGroup({
-  //   abSamples: new FormControl('')
-  // })
-
-  // aliquotsForm = new FormGroup({
-  //   aliquot: new FormControl('')
-  // })
-
-  // setSamples(samples: ISample[]) {
-  //   const sampleFGs = samples.map(sample => this.formBuilder.group(sample, ));
-  //   const samplesFormArray = this.formBuilder.array(sampleFGs);
-  //   this.samplesForm.setControl('samples', samplesFormArray);
-  // }
-
-  // get samples(): FormArray {
-  //   return this.samplesForm.get('samples') as FormArray;
-  // }
 
   onAliquotSelect(sampleID, selectedAliquot) {
 
-    for (let sample of this.aliquotSelectionArray) {
-      if (sampleID === sample.id) {
-        sample.aliquot = parseInt(selectedAliquot, 10);
-      }
-    }
+    // for (let sample of this.aliquotSelectionArray) {
+    //   if (sampleID === sample.id) {
+    //     sample.aliquot = parseInt(selectedAliquot, 10);
+    //   }
+    // }
 
-    console.log(this.aliquotSelectionArray);
-
-
+    // console.log(this.aliquotSelectionArray);
   }
 
   constructor(
@@ -199,7 +177,6 @@ export class AnalysisBatchesComponent implements OnInit {
     this._targetService.getTargets()
       .subscribe(targets => this.allTargets = targets,
       error => this.errorMessage = <any>error);
-
 
     // grab temporary hard-coded inhibitionsPerSample object (until web service endpoint is up-to-date)
     this.inhibitionsPerSample = APP_UTILITIES.INHIBITIONS_PER_SAMPLE_ENDPOINT;
@@ -229,10 +206,6 @@ export class AnalysisBatchesComponent implements OnInit {
     this._unitService.getUnits()
       .subscribe(units => this.units = units,
       error => this.errorMessage = <any>error);
-
-    // this.aliquotsForm = this.formBuilder.group({
-    //   aliquots: this.formBuilder.array([])
-    // })
   }
 
   // wizard button handlers
@@ -308,66 +281,84 @@ export class AnalysisBatchesComponent implements OnInit {
 
     this.sampleListEditLocked = false;
   }
+
+
   extractAB(selectedAB) {
-    // open extract wizard and begin
+
     this.resetAB();
-    this.extractWizardOpen = true;
     this.selectedAnalysisBatchID = selectedAB.id;
 
-    // call to retrieve AB detail data
-    this.selectedAnalysisBatchData = this.retrieveABData(selectedAB.id);
+    this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
+      .subscribe(
+      (analysisBatchDetail) => {
+        console.log(analysisBatchDetail);
+        this.selectedAnalysisBatchData = analysisBatchDetail;
 
-    // get sample id for each sample in the AB
-    // add those to selected array
-    for (let sampleSummary of this.selectedAnalysisBatchData.samples) {
-      for (let sample of this.allSamples) {
-        if (sampleSummary.id === sample.id) {
-          this.abSampleList.push(sample);
-          this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.aliquots[0] });
+        // get sample id for each sample in the AB
+        // add those to abSampleList array
+        for (let sampleSummary of this.selectedAnalysisBatchData.samples) {
+          for (let sample of this.allSamples) {
+            if (sampleSummary.id === sample.id) {
+              this.abSampleList.push(sample);
+              // DEPRECATED way of doing aliquots
+              // this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.aliquots[0] });
+            }
+          }
         }
+
+        // TODO: get inhibitions for each sample in this AB and build an array with all the inhibitions
+
+        // check the this.inhibitionsPerSample for inhibitions(temporary hard-coded approach)
+        for (let sample of this.inhibitionsPerSample) {
+          // this.abInhibitionCount += sample.inhibitions.length;
+          for (let inhibition of sample.inhibitions) {
+            this.abInhibitions.push(inhibition);
+          }
+        }
+        if (this.abInhibitions.length > 0) {
+          this.inhibitionsExist = true;
+        }
+
+        this.extractWizardOpen = true;
+
+
+
+      },
+      error => {
+        this.errorMessage = <any>error
       }
-    }
+      );
 
-
-
-    // this.setSamples(this.abSampleList);
-
-    // const aliquotFGs = this.abSampleList.map(sample => this.fb.group(sample));
-    // const aliquotFormArray = this.fb.array(aliquotFGs);
-    // this.aliquotsForm.setControl('aliquots', aliquotFormArray);
-
-    // TODO: need to get a list of aliquots for each sample (samples endpoint currently down; revisit)
-
-    // for (let sample of this.abSampleList) {
-    //   this.aliquotsForm.push(
-    //     new FormGroup({
-    //       aliquot: new FormControl(sample.aliquots)
-    //     })
-    //   )
-    // }
-
-
-    // check the this.inhibitionsPerSample for inhibitions
-    for (let sample of this.inhibitionsPerSample) {
-      // this.abInhibitionCount += sample.inhibitions.length;
-      for (let inhibition of sample.inhibitions) {
-        this.abInhibitions.push(inhibition);
-      }
-    }
-    if (this.abInhibitions.length > 0) {
-      this.inhibitionsExist = true;
-    }
-
-    this.extractWizardOpen = true;
-
-
+    // call to retrieve AB detail data
+    // this.selectedAnalysisBatchData = this.retrieveABData(selectedAB.id);
   }
 
   resetExtractWizard() {
     this.wizardExtract.reset();
   }
 
-  finishExtractWizard() {
+  finishExtractWizard(extractFormValue, rtFormValue, addInhibitionFormValue) {
+
+    alert("extract wiz finuto!")
+
+    // Needs: 
+
+    // 1: Info for new Inhibition if being done that way, must await response
+
+    // 2: Object for POST to the extraction batch endpoint with:
+    // extraction data, replicates object (target and count),
+    // and extractions object (sample id, inhibition, rt)
+
+    // 3: Build an object for creating the Extract worksheet (including the Aliquot selections)
+
+    // 4:
+
+    // this.extractionBatchSubmission 
+
+
+
+
+
 
   }
 
@@ -420,6 +411,7 @@ export class AnalysisBatchesComponent implements OnInit {
     for (let sample of abSamples) {
       abUpdateObject.push({ "sample": sample.id, "analysis_batch": abID });
     }
+    //use this to make service call to update the AB sample list
     console.log(abUpdateObject);
 
   }
