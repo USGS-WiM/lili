@@ -145,15 +145,15 @@ export class AnalysisBatchesComponent implements OnInit {
   })
 
 
-  onAliquotSelect(sampleID, selectedAliquot) {
+  onAliquotSelect(sampleID, aliquotString) {
 
-    // for (let sample of this.aliquotSelectionArray) {
-    //   if (sampleID === sample.id) {
-    //     sample.aliquot = parseInt(selectedAliquot, 10);
-    //   }
-    // }
+    for (let sample of this.aliquotSelectionArray) {
+      if (sampleID === sample.id) {
+        sample.aliquot = aliquotString;
+      }
+    }
 
-    // console.log(this.aliquotSelectionArray);
+    console.log(this.aliquotSelectionArray);
   }
 
   constructor(
@@ -300,8 +300,7 @@ export class AnalysisBatchesComponent implements OnInit {
           for (let sample of this.allSamples) {
             if (sampleSummary.id === sample.id) {
               this.abSampleList.push(sample);
-              // DEPRECATED way of doing aliquots
-              // this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.aliquots[0] });
+               this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.id + '-1' });
             }
           }
         }

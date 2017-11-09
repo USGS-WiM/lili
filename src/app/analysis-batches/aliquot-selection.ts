@@ -1,5 +1,5 @@
 export interface IAliquotSelection {
     id: number;
-    aliquot: number;
+    aliquot: string;
 }
 
