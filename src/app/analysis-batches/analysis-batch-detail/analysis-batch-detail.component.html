@@ -5,9 +5,7 @@
         <div class="card-block" *ngIf="!loading">
           <h3 class="card-title">Extractions</h3>
           <p class="card-text">
-            <!-- <clr-tree-node>
-              Analysis Batch {{selectedABID}}
-              <ng-template [clrIfExpanded]="true"> -->
+
 
             <clr-tree-node *ngFor="let extractionbatch of extractionBatchArray">
               <span>Extraction {{extractionbatch.extraction_number}}&nbsp;&nbsp;&nbsp;&nbsp;{{extractionbatch.extraction_date |
@@ -16,11 +14,8 @@
               <button class="stack-action btn btn-sm btn-link " (click)="editExtractionBatch(extractionbatch)" type="button">Edit</button>
               <ng-template [clrIfExpanded]>
                 <clr-tree-node>
-
                   <div class="row">
-
                     <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
-
                       <div>
                         <table class="table table-vertical table-compact table-noborder">
                           <tbody>

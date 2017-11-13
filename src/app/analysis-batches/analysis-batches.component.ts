@@ -92,6 +92,12 @@ export class AnalysisBatchesComponent implements OnInit {
 
   extractionBatchSubmission: IExtractionBatchSubmission;
 
+  extractForm: FormGroup;
+  replicateArray: FormArray;
+  extractionArray: FormArray;
+
+  x: boolean = false;
+
   // edit AB form
   editABForm = new FormGroup({
     id: new FormControl(''),
@@ -99,26 +105,25 @@ export class AnalysisBatchesComponent implements OnInit {
     analysis_batch_notes: new FormControl('')
   });
 
+
   // extraction form
-  addExtractionForm = new FormGroup({
+  extractionForm = new FormGroup({
+    analysis_batch: new FormControl(''),
     extraction_volume: new FormControl(''),
-    // set the default units to microliters
-    // extraction_volume_units: new FormControl('4'),
     elution_volume: new FormControl(''),
-    // set the default units to microliters
-    // elution_volume_units: new FormControl('4'),
     extraction_method: new FormControl(''),
     extraction_date: new FormControl(''),
+    reextraction: new FormControl(''),
     sample_dilution_factor: new FormControl(''),
-    // set default value to 6
     qpcr_template_volume: new FormControl('6'),
-    // set the default units to microliters
-    // qpcr_template_volume_units: new FormControl(4),
-    // set default value to 20
     qpcr_reaction_volume: new FormControl('20'),
-    // set the default units to microliters
-    // qpcr_reaction_volume_units: new FormControl(4),
-    qpcr_date: new FormControl('')
+    qpcr_date: new FormControl(''),
+    rt_template_volume: new FormControl(''),
+    rt_reaction_volume: new FormControl(''),
+    rt_date: new FormControl(''),
+    // TODO: make these formarrays(?)
+    replicates: new FormControl(''),
+    extractions: new FormControl('')
   });
 
   addRTForm = new FormGroup({
@@ -144,6 +149,44 @@ export class AnalysisBatchesComponent implements OnInit {
     inhibition_date: new FormControl('')
   })
 
+  buildExtractForm() {
+    this.extractForm = this.formBuilder.group({
+      analysis_batch: ['', Validators.required],
+      extraction_volume: ['', Validators.required],
+      elution_volume: ['', Validators.required],
+      extraction_method: ['', Validators.required],
+      extraction_date: ['', Validators.required],
+      reextraction: '',
+      sample_dilution_factor: ['', Validators.required],
+      qpcr_template_volume: ['6', Validators.required],
+      qpcr_reaction_volume: ['20', Validators.required],
+      qpcr_date: ['', Validators.required],
+      rt: this.formBuilder.group({
+        template_volume: ['6', Validators.required],
+        reaction_volume: ['20', Validators.required],
+        rt_date: ['', Validators.required],
+        re_rt: '',
+        re_rt_note: ''
+      }),
+      replicates: this.formBuilder.array([
+        this.formBuilder.group({
+          target: '',
+          count: '2'
+        })
+      ]),
+      extractions: this.formBuilder.array([
+        this.formBuilder.group({
+          sample: '',
+          inhibition: ''
+        })
+      ])
+    });
+
+    this.replicateArray = this.extractForm.get('replicates') as FormArray;
+
+
+  }
+
 
   onAliquotSelect(sampleID, aliquotString) {
 
@@ -165,7 +208,7 @@ export class AnalysisBatchesComponent implements OnInit {
     private _extractionMethodService: ExtractionMethodService,
     private _unitService: UnitService
   ) {
-    // this.createForm();
+    this.buildExtractForm();
   }
 
   ngOnInit() {
@@ -229,6 +272,20 @@ export class AnalysisBatchesComponent implements OnInit {
           break;
         }
       }
+
+      // reset the replicate form array controls to a blank array so it doesnt get populated twice
+      this.replicateArray.controls = [];
+      // loop through selected to create replicates form
+      for (let target of this.selected) {
+
+        let formGroup: FormGroup = this.formBuilder.group({
+          target:  this.formBuilder.control(target.id),
+          count: this.formBuilder.control(target.count)
+        });
+        this.replicateArray.push(formGroup);
+      }
+
+      this.x = true;
       this.wizardExtract.next();
     }
 
@@ -300,10 +357,12 @@ export class AnalysisBatchesComponent implements OnInit {
           for (let sample of this.allSamples) {
             if (sampleSummary.id === sample.id) {
               this.abSampleList.push(sample);
-               this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.id + '-1' });
+              this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.id + '-1' });
             }
           }
         }
+
+
 
         // TODO: get inhibitions for each sample in this AB and build an array with all the inhibitions
 
@@ -336,7 +395,11 @@ export class AnalysisBatchesComponent implements OnInit {
     this.wizardExtract.reset();
   }
 
-  finishExtractWizard(extractFormValue, rtFormValue, addInhibitionFormValue) {
+  finishExtractWizard(abID, extractFormValue, rtFormValue, addInhibitionFormValue) {
+
+    this.extractForm.patchValue({
+      analysis_batch: abID
+    })
 
     alert("extract wiz finuto!")
 
@@ -350,9 +413,17 @@ export class AnalysisBatchesComponent implements OnInit {
 
     // 3: Build an object for creating the Extract worksheet (including the Aliquot selections)
 
-    // 4:
+    // 4: 
 
-    // this.extractionBatchSubmission 
+    // set the analysis batch ID 
+    // this.extractionBatchSubmission.analysis_batch = abID;
+    // this.extractionBatchSubmission.extraction_method = extractFormValue.extraction_method;
+    // this.extractionBatchSubmission.extraction_volume = extractFormValue.extraction_volume;
+    // this.extractionBatchSubmission.elution_volume = extractFormValue.elution_volume;
+    // this.extractionBatchSubmission.
+    // this.extractionBatchSubmission.
+
+    // this.extractionBatchSubmission.reextraction
 
 
 
@@ -410,7 +481,7 @@ export class AnalysisBatchesComponent implements OnInit {
     for (let sample of abSamples) {
       abUpdateObject.push({ "sample": sample.id, "analysis_batch": abID });
     }
-    //use this to make service call to update the AB sample list
+    // use this to make service call to update the AB sample list
     console.log(abUpdateObject);
 
   }

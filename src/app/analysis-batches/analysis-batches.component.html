@@ -1,6 +1,6 @@
 <!-- Extract wizard -->
-<clr-wizard #wizardExtract [(clrWizardOpen)]="extractWizardOpen" (clrWizardOnFinish)="finishExtractWizard()" (clrWizardOnCancel)="resetExtractWizard()"
-    clrWizardSize="xl">
+<clr-wizard #wizardExtract [(clrWizardOpen)]="extractWizardOpen" (clrWizardOnFinish)="finishExtractWizard(selectedAnalysisBatchID, extractionForm.value, addRTForm.value, addInhibitionForm.value)"
+    (clrWizardOnCancel)="resetExtractWizard()" clrWizardSize="xl">
     <clr-wizard-title>Extract Samples in Analysis Batch {{selectedAnalysisBatchID}}</clr-wizard-title>
 
     <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
@@ -77,17 +77,19 @@
         <ng-template clrPageTitle>qPCR Details</ng-template>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <form id="addExtractionForm" class="compact" [formGroup]="addExtractionForm" (ngSubmit)="onSubmit('add', addExtractionForm.value)">
+                <form id="extractForm" class="compact" [formGroup]="extractForm" (ngSubmit)="onSubmit('add', extractionForm.value)">
                     <section class="form-block">
 
                         <div class="form-group">
                             <label for="qpcrTemplateVol">qPCR Template Volume</label>
-                            <input id="qpcrTemplateVol" type="text" size="5" formControlName="qpcr_template_volume"><span>µL</span>
+                            <input id="qpcrTemplateVol" type="text" size="5" formControlName="qpcr_template_volume">
+                            <span>µL</span>
                         </div>
 
                         <div class="form-group">
                             <label for="qpcrReactionVol">qPCR Reaction Volume</label>
-                            <input id="qpcrReactionVol" type="text" size="5" formControlName="qpcr_reaction_volume"><span>µL</span>
+                            <input id="qpcrReactionVol" type="text" size="5" formControlName="qpcr_reaction_volume">
+                            <span>µL</span>
                         </div>
 
                         <div class="form-group">
@@ -95,19 +97,33 @@
                             <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
                         </div>
                     </section>
+
+                    <section class="form-block" *ngIf="x">
+
+                        <p>Select desired number of PCR replicates for each selected target. To update the targets list, return
+                            to Target Selection page.
+                            <!-- <div class="form-group"> -->
+                                <table formArrayName="replicates">
+                                    <tr>
+                                        <th>Target</th>
+                                        <th>Count</th>
+                                    </tr>
+                                    <tr *ngFor="let target of replicateArray.controls; let i = index" [formGroupName]="i">
+                                        <td>
+                                            <input formControlName="target" readonly>  {{i.value.target}}
+                                        </td>
+                                        <td>
+                                            <input formControlName="count" type="number" size="5" >
+                                        </td>
+                                    </tr>
+                                </table>
+                            <!-- </div> -->
+                    </section>
                 </form>
-
-                <p>Select desired number of PCR replicates for each selected target. To update the targets list, return to Target
-                    Selection page.
-                    <form class="compact">
-                        <section class="form-block">
-                            <div class="form-group" *ngFor="let target of selected">
-                                <label>{{target.name}} ({{target.code}})</label>
-                                <input type="number" class="target-count-input" [(ngModel)]="target.count" name="targetCount">
-                            </div>
-                        </section>
-                    </form>
-
+                <!-- <div class="form-group" *ngFor="let target of selected">
+                     <label>{{target.name}} ({{target.code}})</label>
+                 <input type="number" class="target-count-input" [(ngModel)]="target.count" name="targetCount">
+                </div> -->
             </div>
         </div>
     </clr-wizard-page>
@@ -116,17 +132,20 @@
     <!-- extraction (batch) details page -->
     <clr-wizard-page>
         <ng-template clrPageTitle>Extraction Details</ng-template>
-        <form id="addExtractionForm" class="compact" [formGroup]="addExtractionForm" (ngSubmit)="onSubmit('add', addExtractionForm.value)">
+
+        <form id="extractionForm" class="compact" [formGroup]="extractForm" (ngSubmit)="onSubmit('add', extractionForm.value)">
             <section class="form-block">
 
                 <div class="form-group">
                     <label for="extractVol">Extraction Volume</label>
-                    <input id="extractVol" type="text" size="10" formControlName="extraction_volume"><span>µL</span>
+                    <input id="extractVol" type="text" size="10" formControlName="extraction_volume">
+                    <span>µL</span>
                 </div>
 
                 <div class="form-group">
                     <label for="elutionVol">Elution Volume</label>
-                    <input id="elutionVol" type="text" size="10" formControlName="elution_volume"><span>µL</span>
+                    <input id="elutionVol" type="text" size="10" formControlName="elution_volume">
+                    <span>µL</span>
                 </div>
 
                 <div class="form-group">
@@ -149,6 +168,7 @@
                 </div>
             </section>
         </form>
+
     </clr-wizard-page>
     <!-- extraction (batch) details page -->
 
@@ -172,32 +192,28 @@
             </div>
         </clr-alert>
 
-        <form id="addRTForm" class="compact" [formGroup]="addRTForm" (ngSubmit)="onSubmit('add', addRTForm.value)" *ngIf="rnaTargetsSelected">
+        <form id="addRTForm" class="compact" [formGroup]="extractForm" (ngSubmit)="onSubmit('add', addRTForm.value)" *ngIf="rnaTargetsSelected">
             <section class="form-block">
 
-                <div class="form-group">
-                    <label for="templateVol">Template Volume</label>
-                    <input id="templateVol" type="text" size="10" formControlName="template_volume"><span>µL</span>
-                    <!-- <div class="select">
-                        <select id="rtTemplateVolUnits" formControlName="template_volume_units">
-                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-                        </select>
-                    </div> -->
-                </div>
+                <div formGroupName="rt">
 
-                <div class="form-group">
-                    <label for="reactionVol">Reaction Volume</label>
-                    <input id="reactionVol" type="text" size="10" formControlName="reaction_volume"><span>µL</span>
-                    <!-- <div class="select">
-                        <select id="rtReactionVolUnits" formControlName="reaction_volume_units">
-                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
-                        </select>
-                    </div> -->
-                </div>
+                    <div class="form-group">
+                        <label for="templateVol">Template Volume</label>
+                        <input id="templateVol" type="text" size="10" formControlName="template_volume">
+                        <span>µL</span>
+                    </div>
 
-                <div class="form-group">
-                    <label for="rtDateInput" class="required">RT Date</label>
-                    <input type="date" id="rtDateInput" formControlName="rt_date">
+                    <div class="form-group">
+                        <label for="reactionVol">Reaction Volume</label>
+                        <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
+                        <span>µL</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rtDateInput" class="required">RT Date</label>
+                        <input type="date" id="rtDateInput" formControlName="rt_date">
+                    </div>
+
                 </div>
 
             </section>
@@ -268,7 +284,7 @@
                         </div>
                         <div class="card-block">
                             <div class="card-text">
-                                <form id="addExtractionForm" class="compact" [formGroup]="applyInhibition_batchForm" (ngSubmit)="onSubmit('add', applyInhibition_batchForm.value)">
+                                <form id="extractionForm" class="compact" [formGroup]="applyInhibition_batchForm" (ngSubmit)="onSubmit('add', applyInhibition_batchForm.value)">
                                     <section class="form-block">
 
                                         <div class="form-group">
@@ -292,7 +308,7 @@
                                 </clr-signpost>
                             </div>
                             <div class="card-text">
-                                <form id="addExtractionForm" class="compact" [formGroup]="applyInhibition_batchForm" (ngSubmit)="onSubmit('add', applyInhibition_batchForm.value)">
+                                <form id="extractionForm" class="compact" [formGroup]="applyInhibition_batchForm" (ngSubmit)="onSubmit('add', applyInhibition_batchForm.value)">
                                     <section class="form-block">
                                         <div class="form-group">
                                             <label for="elutionVol">Inhibition for DNA targets</label>
