@@ -78,7 +78,7 @@
                           <tbody>
                             <tr *ngFor="let target of extractionbatch.targets">
                               <th>{{target.name}}</th>
-                              <td>{{target.type}}</td>
+                              <td>{{target.nucleic_acid_type }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -251,7 +251,7 @@
               <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
                 <clr-dg-cell>{{target.name}}</clr-dg-cell>
                 <clr-dg-cell>{{target.code}}</clr-dg-cell>
-                <clr-dg-cell>{{target.type}}</clr-dg-cell>
+                <clr-dg-cell>{{target.nucleic_acid_type}}</clr-dg-cell>
                 <!-- <clr-dg-cell>{{target.replicates}}</clr-dg-cell> -->
               </clr-dg-row>
 

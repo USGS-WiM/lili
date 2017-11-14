@@ -1,5 +1,5 @@
 <!-- Extract wizard -->
-<clr-wizard #wizardExtract [(clrWizardOpen)]="extractWizardOpen" (clrWizardOnFinish)="finishExtractWizard(selectedAnalysisBatchID, extractionForm.value, addRTForm.value, addInhibitionForm.value)"
+<clr-wizard #wizardExtract [(clrWizardOpen)]="extractWizardOpen" (clrWizardOnFinish)="finishExtractWizard(selectedAnalysisBatchID, extractionForm.value, addRTForm.value, createInhibitionForm.value)"
     (clrWizardOnCancel)="resetExtractWizard()" clrWizardSize="xl">
     <clr-wizard-title>Extract Samples in Analysis Batch {{selectedAnalysisBatchID}}</clr-wizard-title>
 
@@ -20,7 +20,9 @@
 
                             <div class="form-group" *ngFor="let sample of abSampleList">
                                 <label for="">Sample {{sample.id}}</label>
-                                <div class="select">
+
+                                <span *ngIf="sample.aliquots.length === 0">No aliquots recorded</span>
+                                <div class="select" *ngIf="sample.aliquots.length > 0">
                                     <select id="" name="aliquot_select" (change)="onAliquotSelect(sample.id, $event.target.value)">
                                         <option *ngFor="let aliquot of sample.aliquots" [value]="aliquot.aliquot_string">{{aliquot.aliquot_string}}</option>
                                     </select>
@@ -54,7 +56,7 @@
                     <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
                         <clr-dg-cell>{{target.name}}</clr-dg-cell>
                         <clr-dg-cell>{{target.code}}</clr-dg-cell>
-                        <clr-dg-cell>{{target.type}}</clr-dg-cell>
+                        <clr-dg-cell>{{target.nucleic_acid_type }}</clr-dg-cell>
                     </clr-dg-row>
 
                     <clr-dg-footer>{{allTargets.length}} targets</clr-dg-footer>
@@ -102,22 +104,31 @@
 
                         <p>Select desired number of PCR replicates for each selected target. To update the targets list, return
                             to Target Selection page.
-                            <!-- <div class="form-group"> -->
-                                <table formArrayName="replicates">
-                                    <tr>
-                                        <th>Target</th>
-                                        <th>Count</th>
-                                    </tr>
-                                    <tr *ngFor="let target of replicateArray.controls; let i = index" [formGroupName]="i">
-                                        <td>
-                                            <input formControlName="target" readonly>  {{i.value.target}}
-                                        </td>
-                                        <td>
-                                            <input formControlName="count" type="number" size="5" >
-                                        </td>
-                                    </tr>
-                                </table>
-                            <!-- </div> -->
+
+                            <div formArrayName="replicates">
+                                <div class="form-group" *ngFor="let target of replicateArray.controls; let i = index" [formGroupName]="i">
+                                    <label>{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
+                                    <input formControlName="count" type="number" class="target-count-input">
+
+                                </div>
+                            </div>
+
+<!-- 
+                            <table formArrayName="replicates">
+                                <tr>
+                                    <th>Target</th>
+                                    <th>Count</th>
+                                </tr>
+                                <tr *ngFor="let target of replicateArray.controls; let i = index" [formGroupName]="i">
+                                    <td>
+                                        <label>{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
+                                    </td>
+                                    <td>
+                                        <input formControlName="count" type="number" size="5">
+                                    </td>
+                                </tr>
+                            </table> -->
+
                     </section>
                 </form>
                 <!-- <div class="form-group" *ngFor="let target of selected">
@@ -246,7 +257,7 @@
                         </div>
                         <div class="card-block">
                             <div class="card-text">
-                                <form id="addInhibitionForm" class="compact" [formGroup]="addInhibitionForm" (ngSubmit)="onSubmit('add', addInhibitionForm.value)">
+                                <form id="createInhibitionForm" class="compact" [formGroup]="createInhibitionForm" (ngSubmit)="onSubmit('add', createInhibitionForm.value)">
                                     <section class="form-block">
 
                                         <div class="form-group">
@@ -579,7 +590,7 @@
                     <tbody>
                         <tr *ngFor="let target of targetDetailArray">
                             <td>{{target.name}}</td>
-                            <td>{{target.type}}</td>
+                            <td>{{target.nucleic_acid_type}}</td>
                             <td>{{target.replicates}}</td>
                         </tr>
                     </tbody>

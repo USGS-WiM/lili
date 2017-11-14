@@ -32,8 +32,8 @@ export class AnalysisBatchService {
     });
 
     return this._http.get(APP_SETTINGS.ANALYSIS_BATCH_DETAIL_URL + abID + '/?format=json', options)
-    .map((response: Response) => <IAnalysisBatchDetail[]>response.json())
-    .catch(this.handleError);
+      .map((response: Response) => <IAnalysisBatchDetail[]>response.json())
+      .catch(this.handleError);
 
   }
 
@@ -45,6 +45,18 @@ export class AnalysisBatchService {
     return this._http.get(APP_SETTINGS.ANALYSIS_BATCH_SUMMARY_URL, options)
       .map((response: Response) => <IAnalysisBatchSummary[]>response.json())
       // .do(data => console.log('Analysis Batch data: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
+
+  // get sample-inhibition objects, i.e. inhibitions per sample
+  getSampleInhibitions(sampleList: number[]): Observable<any[]> {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.SAMPLE_INHIBITIONS_URL, options)
+      .map((response: Response) => <any[]>response.json())
       .catch(this.handleError);
   }
 

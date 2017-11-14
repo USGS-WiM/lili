@@ -60,6 +60,7 @@ export class AnalysisBatchesComponent implements OnInit {
   selectedAnalysisBatchData: IAnalysisBatchDetail;
 
   abSampleList: ISample[] = [];
+  abSampleIDList: number[] = [];
 
   extractionBatchArray: IExtractionBatch[];
 
@@ -137,7 +138,7 @@ export class AnalysisBatchesComponent implements OnInit {
   })
 
   // add inhibition form
-  addInhibitionForm = new FormGroup({
+  createInhibitionForm = new FormGroup({
     dna: new FormControl(''),
     rna: new FormControl(''),
     inhibition_date: new FormControl('')
@@ -267,7 +268,7 @@ export class AnalysisBatchesComponent implements OnInit {
       });
       // check for RNA targets, set rnaTargetsSelected var to true
       for (let target of this.selected) {
-        if (target.type === "RNA") {
+        if (target.nucleic_acid_type === "RNA") {
           this.rnaTargetsSelected = true;
           break;
         }
@@ -279,7 +280,7 @@ export class AnalysisBatchesComponent implements OnInit {
       for (let target of this.selected) {
 
         let formGroup: FormGroup = this.formBuilder.group({
-          target:  this.formBuilder.control(target.id),
+          target: this.formBuilder.control(target.id),
           count: this.formBuilder.control(target.count)
         });
         this.replicateArray.push(formGroup);
@@ -345,6 +346,7 @@ export class AnalysisBatchesComponent implements OnInit {
     this.resetAB();
     this.selectedAnalysisBatchID = selectedAB.id;
 
+    // get the AB detail
     this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
       .subscribe(
       (analysisBatchDetail) => {
@@ -357,14 +359,32 @@ export class AnalysisBatchesComponent implements OnInit {
           for (let sample of this.allSamples) {
             if (sampleSummary.id === sample.id) {
               this.abSampleList.push(sample);
+              this.abSampleIDList.push(sample.id);
               this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.id + '-1' });
             }
           }
         }
 
-
-
         // TODO: get inhibitions for each sample in this AB and build an array with all the inhibitions
+        this._analysisBatchService.getSampleInhibitions(this.abSampleIDList)
+          .subscribe(
+          (abSampleInhibitions) => {
+            console.log(abSampleInhibitions);
+
+            // check if any of the samples in the list have inhibitions
+            // if so set inhibitionsExists var to true
+            for (let sample of abSampleInhibitions) {
+              if (sample.inhibitions.length > 0) {
+                this.inhibitionsExist = true;
+                break;
+              }
+            }
+          },
+          error => {
+            this.errorMessage = <any>error
+          }
+          )
+
 
         // check the this.inhibitionsPerSample for inhibitions(temporary hard-coded approach)
         for (let sample of this.inhibitionsPerSample) {
@@ -376,10 +396,9 @@ export class AnalysisBatchesComponent implements OnInit {
         if (this.abInhibitions.length > 0) {
           this.inhibitionsExist = true;
         }
+        /////////////////////////////////////////////////////////////////////////////////////////////
 
         this.extractWizardOpen = true;
-
-
 
       },
       error => {
@@ -395,15 +414,37 @@ export class AnalysisBatchesComponent implements OnInit {
     this.wizardExtract.reset();
   }
 
-  finishExtractWizard(abID, extractFormValue, rtFormValue, addInhibitionFormValue) {
+  finishExtractWizard(abID, extractFormValue, rtFormValue, createInhibitionFormValue) {
 
     this.extractForm.patchValue({
       analysis_batch: abID
     })
 
+
+    if (this.useExistingInhibition === false) {
+      // creating a new inhibition then
+      // send a POST to the InhibitionBatch endpoint.The response will contain the new batch record
+      // and its children inhibition records (which will each include the sample ID to which they relate).
+      // Those new inhibition IDs should be used to populate the local (client-side) extractions.
+
+      // createInhibitionFormValue: {rna: true, dna: false, inhibition_date:"2017-11-14"}
+
+
+
+
+
+
+
+    } else if (this.useExistingInhibition === true) {
+
+      // Otherwise, if there are existing inhibitions that satisfy the user's needs,
+      // then use those existing inhibition IDs when building the extraction objects in the client.
+
+    }
+
     alert("extract wiz finuto!")
 
-    // Needs: 
+    // Needs:
 
     // 1: Info for new Inhibition if being done that way, must await response
 
@@ -413,9 +454,9 @@ export class AnalysisBatchesComponent implements OnInit {
 
     // 3: Build an object for creating the Extract worksheet (including the Aliquot selections)
 
-    // 4: 
+    // 4:
 
-    // set the analysis batch ID 
+    // set the analysis batch ID
     // this.extractionBatchSubmission.analysis_batch = abID;
     // this.extractionBatchSubmission.extraction_method = extractFormValue.extraction_method;
     // this.extractionBatchSubmission.extraction_volume = extractFormValue.extraction_volume;
@@ -438,6 +479,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   showApplyExistingCard() {
     this.useExistingInhibition = true;
+
   }
 
   onUnitChange() {
