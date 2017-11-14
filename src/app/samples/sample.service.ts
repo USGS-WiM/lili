@@ -8,6 +8,7 @@ import 'rxjs/add/operator/catch';
 import { APP_SETTINGS } from '../app.settings';
 
 import { ISample } from './sample';
+import { IInhibition } from '../inhibitions/inhibition';
 
 @Injectable()
 export class SampleService {
@@ -29,6 +30,10 @@ export class SampleService {
       // .do(data => console.log('Samples data: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
+
+  // public getInhibitions(): Observable<IInhibition[]> {
+
+  // }
 
   public create(formValue: ISample): Observable<ISample> {
 
