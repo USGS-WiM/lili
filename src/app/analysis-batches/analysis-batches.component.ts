@@ -40,6 +40,7 @@ export class AnalysisBatchesComponent implements OnInit {
   sampleListEditLocked: boolean = false;
 
   inhibitionsExist: boolean = false;
+  submitLoading: boolean = false;
 
   extractWizardOpen: boolean = false;
   useExistingInhibition: boolean = false;
@@ -61,6 +62,10 @@ export class AnalysisBatchesComponent implements OnInit {
 
   abSampleList: ISample[] = [];
   abSampleIDList: number[] = [];
+
+  showABEditError: boolean = false;
+  showABEditSuccess: boolean = false;
+
 
   extractionBatchArray: IExtractionBatch[];
 
@@ -103,7 +108,8 @@ export class AnalysisBatchesComponent implements OnInit {
   editABForm = new FormGroup({
     id: new FormControl(''),
     analysis_batch_description: new FormControl(''),
-    analysis_batch_notes: new FormControl('')
+    analysis_batch_notes: new FormControl(''),
+    samples: new FormControl('')
   });
 
 
@@ -351,54 +357,61 @@ export class AnalysisBatchesComponent implements OnInit {
       .subscribe(
       (analysisBatchDetail) => {
         console.log(analysisBatchDetail);
-        this.selectedAnalysisBatchData = analysisBatchDetail;
+        // this.selectedAnalysisBatchData = analysisBatchDetail;
 
         // get sample id for each sample in the AB
         // add those to abSampleList array
-        for (let sampleSummary of this.selectedAnalysisBatchData.samples) {
-          for (let sample of this.allSamples) {
-            if (sampleSummary.id === sample.id) {
-              this.abSampleList.push(sample);
-              this.abSampleIDList.push(sample.id);
-              this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.id + '-1' });
-            }
-          }
-        }
+        if (analysisBatchDetail.samples.length > 0) {
 
-        // TODO: get inhibitions for each sample in this AB and build an array with all the inhibitions
-        this._analysisBatchService.getSampleInhibitions(this.abSampleIDList)
-          .subscribe(
-          (abSampleInhibitions) => {
-            console.log(abSampleInhibitions);
-
-            // check if any of the samples in the list have inhibitions
-            // if so set inhibitionsExists var to true
-            for (let sample of abSampleInhibitions) {
-              if (sample.inhibitions.length > 0) {
-                this.inhibitionsExist = true;
-                break;
+          for (let sampleSummary of analysisBatchDetail.samples) {
+            for (let sample of this.allSamples) {
+              if (sampleSummary.id === sample.id) {
+                this.abSampleList.push(sample);
+                this.abSampleIDList.push(sample.id);
+                this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.id + '-1' });
               }
             }
-          },
-          error => {
-            this.errorMessage = <any>error
           }
-          )
+
+          // TODO: get inhibitions for each sample in this AB and build an array with all the inhibitions
+          this._analysisBatchService.getSampleInhibitions(this.abSampleIDList)
+            .subscribe(
+            (abSampleInhibitions) => {
+              console.log(abSampleInhibitions);
+
+              // check if any of the samples in the list have inhibitions
+              // if so set inhibitionsExists var to true
+              for (let sample of abSampleInhibitions) {
+                if (sample.inhibitions.length > 0) {
+                  this.inhibitionsExist = true;
+                  break;
+                }
+              }
+            },
+            error => {
+              this.errorMessage = <any>error
+            }
+            )
 
 
-        // check the this.inhibitionsPerSample for inhibitions(temporary hard-coded approach)
-        for (let sample of this.inhibitionsPerSample) {
-          // this.abInhibitionCount += sample.inhibitions.length;
-          for (let inhibition of sample.inhibitions) {
-            this.abInhibitions.push(inhibition);
+          // check the this.inhibitionsPerSample for inhibitions(temporary hard-coded approach)
+          for (let sample of this.inhibitionsPerSample) {
+            // this.abInhibitionCount += sample.inhibitions.length;
+            for (let inhibition of sample.inhibitions) {
+              this.abInhibitions.push(inhibition);
+            }
           }
-        }
-        if (this.abInhibitions.length > 0) {
-          this.inhibitionsExist = true;
-        }
-        /////////////////////////////////////////////////////////////////////////////////////////////
+          if (this.abInhibitions.length > 0) {
+            this.inhibitionsExist = true;
+          }
+          /////////////////////////////////////////////////////////////////////////////////////////////
 
-        this.extractWizardOpen = true;
+          this.extractWizardOpen = true;
+
+        } else {
+
+          alert("No samples in this analysis batch. Please add samples before extracting.");
+        }
 
       },
       error => {
@@ -487,8 +500,45 @@ export class AnalysisBatchesComponent implements OnInit {
   }
 
   onSubmit(formID, formValue) {
+    switch (formID) {
+      case 'editAB': {
+        this.submitLoading = true;
+        this._analysisBatchService.update(formValue)
+          .subscribe(
+          (ab) => {
+            // TODO: make this work so all AB table updates
+            // this.updateSamplesArray(formValue);
+            this.editABForm.reset();
+            this.submitLoading = false;
+            this.showABEditSuccess = true;
+          },
+          error => {
+            this.errorMessage = <any>error;
+            this.submitLoading = false;
+            this.showABEditError = true;
+          }
+
+          )
+      }
+    }
+
+
 
   }
+
+  //TODO: adjust this function to update the AB Summary array that populates the AB table
+  // private updateABArray(newItem) {
+  //   let updateItem = this.allSamples.find(this.findIndexToUpdate, newItem.id);
+
+  //   let index = this.allSamples.indexOf(updateItem);
+
+  //   this.allSamples[index] = newItem;
+  // }
+
+  // private findIndexToUpdate(newItem) {
+  //   return newItem.id === this;
+  // }
+
 
   openTargetDetails(abID) {
 
@@ -518,14 +568,16 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
-  updateABSampleList(abID, abSamples) {
-    let abUpdateObject = [];
-    for (let sample of abSamples) {
-      abUpdateObject.push({ "sample": sample.id, "analysis_batch": abID });
+  updateABSampleList(editABFormValue, selected) {
+    // grab the selected array and patch it in as the samples array for the editABForm
+    let samples = [];
+    for (let sample of selected) {
+      samples.push(sample.id);
     }
-    // use this to make service call to update the AB sample list
-    console.log(abUpdateObject);
-
+    this.editABForm.patchValue({
+      samples: samples
+    });
+    this.onSubmit('editAB', this.editABForm.value);
   }
 
   editAB(selectedAB) {
@@ -535,34 +587,50 @@ export class AnalysisBatchesComponent implements OnInit {
       this.sampleListEditLocked = true;
     }
 
-    this.editABForm.setValue({
-      id: selectedAB.id,
-      analysis_batch_description: selectedAB.analysis_batch_description,
-      analysis_batch_notes: selectedAB.analysis_batch_notes
-    });
+
     // call to retrieve AB detail data
-    this.selectedAnalysisBatchData = this.retrieveABData(selectedAB.id);
 
-    // get sample id for each sample in the AB
-    // add those to selected array
-    for (let sampleSummary of this.selectedAnalysisBatchData.samples) {
-      for (let sample of this.allSamples) {
-        if (sampleSummary.id === sample.id) {
-          this.abSampleList.push(sample);
+
+    this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
+      .subscribe(
+      (analysisBatchDetail) => {
+        console.log(analysisBatchDetail);
+        this.selectedAnalysisBatchData = analysisBatchDetail;
+
+        if (this.selectedAnalysisBatchData.samples.length > 0) {
+          // get sample id for each sample in the AB
+          // add those to selected array
+          for (let sampleSummary of this.selectedAnalysisBatchData.samples) {
+            for (let sample of this.allSamples) {
+              if (sampleSummary.id === sample.id) {
+                this.abSampleList.push(sample);
+                this.abSampleIDList.push(sample.id);
+              }
+            }
+          }
+        } else {
+
         }
+        this.selected = this.abSampleList;
+
+        this.editABForm.setValue({
+          id: selectedAB.id,
+          analysis_batch_description: selectedAB.analysis_batch_description,
+          analysis_batch_notes: selectedAB.analysis_batch_notes,
+          samples: this.abSampleIDList
+        });
+
+        // show the edit analysis batch modal if not showing already
+        if (this.showHideEdit === false) {
+          this.showHideEdit = true;
+        }
+      },
+      error => {
+        this.errorMessage = <any>error
       }
-    }
+      );
 
-    // get target if for each target in the AB
-    // add
 
-    // console.log(this.abSampleList);
-    // this.selected = this.abSampleList;
-    this.selected = this.abSampleList;
 
-    // show the edit analysis batch modal if not showing already
-    if (this.showHideEdit === false) {
-      this.showHideEdit = true;
-    }
   }
 }

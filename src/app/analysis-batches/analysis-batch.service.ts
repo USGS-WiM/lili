@@ -55,7 +55,7 @@ export class AnalysisBatchService {
       headers: APP_SETTINGS.AUTH_JSON_HEADERS
     });
 
-    return this._http.get(APP_SETTINGS.SAMPLE_INHIBITIONS_URL, options)
+    return this._http.get(APP_SETTINGS.SAMPLE_INHIBITIONS_URL + '?id=' + sampleList, options)
       .map((response: Response) => <any[]>response.json())
       .catch(this.handleError);
   }
