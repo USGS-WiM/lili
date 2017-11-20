@@ -57,6 +57,7 @@
     "tslint": "^5.7.0",
     "typescript": "^2.3.4",
     "typings": "^2.1.1",
-    "webdriver-manager": "^12.0.6"
+    "webdriver-manager": "^12.0.6",
+    "wangular": "git+https://github.com/USGS-WiM/wangular.git#master"
   }
 }

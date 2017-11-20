@@ -5,6 +5,7 @@ import { IUnit } from '../units/unit';
 import { IExtractionMethod } from '../extractions/extraction-method';
 import { IFilterType } from '../SHARED/filter-type';
 import { IMatrix } from 'app/SHARED/matrix';
+import { ISampleType } from 'app/SHARED/sample-type';
 
 @Component({
   selector: 'app-admin',
@@ -17,6 +18,7 @@ export class AdminComponent implements OnInit {
   public extractions: Array<IExtractionMethod>;
   public filters: Array<IFilterType>;
   public matrices: Array<IMatrix>;
+  public stypes: Array<ISampleType>;
   
   constructor(private _route: ActivatedRoute) { }
 
@@ -36,6 +38,10 @@ export class AdminComponent implements OnInit {
 
     this._route.data.subscribe((data: { matrixTypes: Array<IMatrix> }) => {
       this.matrices = data.matrixTypes;  
+    });
+
+    this._route.data.subscribe((data: { sampleTypes: Array<IMatrix> }) => {
+      this.stypes = data.sampleTypes;  
     });
   }
 

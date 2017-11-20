@@ -46,8 +46,11 @@ import { ExtractionMethodService } from "./extractions/extraction-method.service
 import { ExtractionResolve } from "./extractions/extraction-method.resolve";
 import { FilterTypeService } from "./SHARED/filter-type.service";
 import { FilterResolve } from "./SHARED/filter-type.resolve";
-import { MatrixResolve } from "app/SHARED/matrix.resolve";
-import { MatrixService } from "app/SHARED/matrix.service";
+import { MatrixResolve } from "./SHARED/matrix.resolve";
+import { MatrixService } from "./SHARED/matrix.service";
+import { WangularModule } from 'wangular/src/app/wangular';
+import { SampleTypeResolve } from "./SHARED/sample-type.resolve";
+import { SampleTypeService } from "./SHARED/sample-type.service";
 
 @NgModule({
     declarations: [
@@ -89,10 +92,12 @@ import { MatrixService } from "app/SHARED/matrix.service";
         ReactiveFormsModule,
         HttpModule,
         ClarityModule.forRoot(),
-        ROUTING
+        ROUTING,
+        WangularModule
     ],
+    exports: [WangularModule],
     providers: [ConcentrationTypeService, ConcentrationResolve, UnitService, UnitResolve, ExtractionMethodService, ExtractionResolve,
-        FilterTypeService, FilterResolve, MatrixService, MatrixResolve],
+        FilterTypeService, FilterResolve, MatrixService, MatrixResolve, SampleTypeService, SampleTypeResolve],
     bootstrap: [AppComponent]
 })
 export class AppModule {

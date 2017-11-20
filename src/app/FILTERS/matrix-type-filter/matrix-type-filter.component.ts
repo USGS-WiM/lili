@@ -26,7 +26,8 @@ export class MatrixTypeFilter implements OnInit, Filter<any> {
   changes: EventEmitter<any> = new EventEmitter<any>(false);
   
   accepts(sample: any){
-      return (this.selectedMatrix === sample.matrix_type);
+    return (this.selectedMatrix === sample.matrix);
+//      return (this.selectedMatrix === sample.matrix_type.id);
   }
 
   isActive():boolean {

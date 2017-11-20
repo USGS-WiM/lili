@@ -21,7 +21,7 @@ import { ConcentrationTypeService } from './concentration-types/concentration-ty
         StudyService,
         SampleService,
         AnalysisBatchService,
-        SampleTypeService,
+      //  SampleTypeService,
        // FilterTypeService,
        // MatrixService,
        // UnitService,

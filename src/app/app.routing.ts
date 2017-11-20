@@ -17,7 +17,8 @@ import { ConcentrationResolve } from './concentration-types/concentration-types.
 import { UnitResolve } from './units/unit.resolve';
 import { ExtractionResolve } from './extractions/extraction-method.resolve';
 import { FilterResolve } from './SHARED/filter-type.resolve';
-import { MatrixResolve } from 'app/SHARED/matrix.resolve';
+import { MatrixResolve } from './SHARED/matrix.resolve';
+import { SampleTypeResolve } from './SHARED/sample-type.resolve';
 
 
 export const ROUTES: Routes = [
@@ -36,8 +37,8 @@ export const ROUTES: Routes = [
             units: UnitResolve,
             extractionMethods: ExtractionResolve,
             filterTypes: FilterResolve,
-            matrixTypes: MatrixResolve
-
+            matrixTypes: MatrixResolve,
+            sampleTypes: SampleTypeResolve
         }
     }
 ];

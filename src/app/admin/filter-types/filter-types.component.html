@@ -108,7 +108,7 @@
               <clr-dg-row *clrDgItems="let ft of FilterTypes" [clrDgItem]="ft">
                 <clr-dg-cell>{{ft.id}}</clr-dg-cell>
                 <clr-dg-cell>{{ft.name}}</clr-dg-cell>
-                <clr-dg-cell>{{ft.matrix}}</clr-dg-cell>
+                <clr-dg-cell><span *ngFor="let m of Matrices | filterById: {id : ft.matrix}">{{ m.name }}</span></clr-dg-cell>
               </clr-dg-row>
             </clr-datagrid>
           </div>
