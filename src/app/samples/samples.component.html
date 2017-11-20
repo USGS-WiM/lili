@@ -145,12 +145,6 @@
                                 <input id="collectEndTime" type="text" formControlName="collection_end_time">
                             </div>
 
-
-                            <div class="form-group">
-                                <label for="pumpRateInput">Pump Flow rate</label>
-                                <input id="pumpRateInput" type="text" formControlName="pump_flow_rate">
-                            </div>
-
                             <div class="form-group">
                                 <label for="imrInput">Initial Meter Reading</label>
                                 <input type="text" id="imrInput" formControlName="meter_reading_initial">
@@ -202,11 +196,6 @@
                             <div class="form-group">
                                 <label for="dissVolInput">Dissolution Volume</label>
                                 <input id="dissVolInput" type="text" formControlName="dissolution_volume"><span>mL</span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="eluteDateInput">Elution Date</label>
-                                <input type="date" id="eluteDateInput" formControlName="elution_date">
                             </div>
 
                             <div class="form-group">
@@ -397,11 +386,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="pumpRateInput">Pump Flow rate</label>
-                            <input id="pumpRateInput" type="text" formControlName="pump_flow_rate">
-                        </div>
-
-                        <div class="form-group">
                             <label for="imrInput">Initial Meter Reading</label>
                             <input type="text" id="imrInput" formControlName="meter_reading_initial">
                             <div class="select">
@@ -457,11 +441,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="eluteDateInput">Elution Date</label>
-                            <input type="date" id="eluteDateInput" formControlName="elution_date">
-                        </div>
-
-                        <div class="form-group">
                             <label for="eluteNotesInput">Elution Notes</label>
                             <textarea id="eluteNotesInput" rows="2" formControlName="elution_notes" style="max-width:25em"></textarea>
                         </div>
@@ -475,7 +454,6 @@
                             <label for="eluteVolInput">Eluent/Backflush Volume Used</label>
                             <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                         </div>
-
 
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleEditError">
                             <div clr-alert-item class="alert-item">
