@@ -21,7 +21,6 @@ export class ExtractionMethodService {
   }
 
   getExtractionMethods(): Observable<IExtractionMethod[]> {
-
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
     return this._http.get(APP_SETTINGS.EXTRACTION_METHODS_URL, options)
@@ -31,28 +30,27 @@ export class ExtractionMethodService {
 
   }
 
-  public create(formValue: IExtractionMethod): Observable<IExtractionMethod[]> {
-
-    let options = new RequestOptions({
-      headers: APP_SETTINGS.AUTH_JSON_HEADERS
-    });
+  public create(formValue: IExtractionMethod): Observable<IExtractionMethod> {
+    let options = new RequestOptions({ headers: APP_SETTINGS.AUTH_JSON_HEADERS });
 
     return this._http.post(APP_SETTINGS.EXTRACTION_METHODS_URL, formValue, options)
-      .map(this.extractData)
-      .catch(this.handleError)
-
+      .map((response: Response) => <IExtractionMethod>response.json())
+      .catch(this.handleError);
   }
 
   public update(formValue: IExtractionMethod): Observable<IExtractionMethod> {
-
-    let options = new RequestOptions({
-      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
-    });
+    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
     return this._http.put(APP_SETTINGS.EXTRACTION_METHODS_URL + formValue.id + '/', formValue, options)
-      .map(this.extractData)
-      .catch(this.handleError);
+    .map((response: Response) => <IExtractionMethod>response.json())
+    .catch(this.handleError);
+  }
 
+  public delete(id: number): Observable<IExtractionMethod> {
+    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
+
+    return this._http.delete(APP_SETTINGS.EXTRACTION_METHODS_URL + id, options)
+      .catch(this.handleError);
   }
 
   private handleError(error: Response) {

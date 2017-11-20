@@ -22,13 +22,13 @@ import { ConcentrationTypeService } from './concentration-types/concentration-ty
         SampleService,
         AnalysisBatchService,
         SampleTypeService,
-        FilterTypeService,
-        MatrixService,
-        UnitService,
+       // FilterTypeService,
+       // MatrixService,
+       // UnitService,
         UserService,
         TargetService,
-        ExtractionMethodService,
-        ConcentrationTypeService
+        //ExtractionMethodService,
+      //  ConcentrationTypeService
     ]
 })
 export class AppComponent {

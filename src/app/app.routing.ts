@@ -13,6 +13,11 @@ import { AnalysisBatchesComponent} from './analysis-batches/analysis-batches.com
 import { ResultsComponent } from './results/results.component';
 import { ReportsComponent } from './reports/reports.component';
 import { AdminComponent } from './admin/admin.component';
+import { ConcentrationResolve } from './concentration-types/concentration-types.resolve';
+import { UnitResolve } from './units/unit.resolve';
+import { ExtractionResolve } from './extractions/extraction-method.resolve';
+import { FilterResolve } from './SHARED/filter-type.resolve';
+import { MatrixResolve } from 'app/SHARED/matrix.resolve';
 
 
 export const ROUTES: Routes = [
@@ -23,7 +28,18 @@ export const ROUTES: Routes = [
     {path: 'analysisbatches', component: AnalysisBatchesComponent},
     {path: 'results', component: ResultsComponent},
     {path: 'reports', component: ReportsComponent},
-    {path: 'admin', component: AdminComponent}
+    {
+        path: 'admin', 
+        component: AdminComponent,
+        resolve: {
+            concentrationTypes: ConcentrationResolve,
+            units: UnitResolve,
+            extractionMethods: ExtractionResolve,
+            filterTypes: FilterResolve,
+            matrixTypes: MatrixResolve
+
+        }
+    }
 ];
 
 export const ROUTING: ModuleWithProviders = RouterModule.forRoot(ROUTES);

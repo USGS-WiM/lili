@@ -38,9 +38,9 @@
                             <div class="form-group">
                                 <label>Name</label>
                                 <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addStudyForm.get('name').invalid && (addStudyForm.get('name').dirty || addStudyForm.get('name').touched)">
-                        <input id="name" type="text" formControlName="name" size="40">
-                        <span class="tooltip-content">Name is required.</span>
-                    </label>
+                                    <input id="name" type="text" formControlName="name" size="40">
+                                    <span class="tooltip-content">Name is required.</span>
+                                </label>
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
@@ -77,13 +77,13 @@
                     </clr-alert>
 
                     <clr-alert [clrAlertType]="'alert-success'" *ngIf="showStudyEditSuccess">
-                            <div clr-alert-item class="alert-item">
-                                <span class="alert-text">Study successfully edited</span>
-                                <div class="alert-actions">
-                                    <a class="alert-action" (click)="showHideEdit = false; showStudyEditSuccess = false">Close</a>
-                                </div>
+                        <div clr-alert-item class="alert-item">
+                            <span class="alert-text">Study successfully edited</span>
+                            <div class="alert-actions">
+                                <a class="alert-action" (click)="showHideEdit = false; showStudyEditSuccess = false">Close</a>
                             </div>
-                        </clr-alert>
+                        </div>
+                    </clr-alert>
 
                     <form id="editStudyForm" class="compact" [formGroup]="editStudyForm" (ngSubmit)="onSubmitStudy('edit', editStudyForm.value)">
                         <section class="form-block">
@@ -133,7 +133,8 @@
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedStudy" (click)="editStudy(selectedStudy)"><clr-icon shape="note-edit"size="16"></clr-icon> Edit Study</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedStudy" (click)="editStudy(selectedStudy)">
+                                    <clr-icon shape="note-edit" size="16"></clr-icon> Edit Study</button>
                             </div>
                         </clr-dg-action-bar>
 

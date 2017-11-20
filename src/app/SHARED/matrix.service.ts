@@ -16,14 +16,36 @@ export class MatrixService {
   constructor(private _http: Http) { }
 
    getMatrices(): Observable<IMatrix[]> {
-
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
     return this._http.get(APP_SETTINGS.MATRIX_TYPES_URL, options)
     //return this._http.get(this._matricesUrl)
-                .map((response: Response) => <IMatrix[]>response.json())
-                //.do(data => console.log('Matricies data: ' + JSON.stringify(data)))
-                .catch(this.handleError);
+      .map((response: Response) => <IMatrix[]>response.json())
+      //.do(data => console.log('Matricies data: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+  }
+
+  public create(formValue: IMatrix): Observable<IMatrix> {
+    let options = new RequestOptions({ headers: APP_SETTINGS.AUTH_JSON_HEADERS });
+
+    return this._http.post(APP_SETTINGS.MATRIX_TYPES_URL, formValue, options)
+      .map((response: Response) => <IMatrix>response.json())
+      .catch(this.handleError);
+  }
+
+  public update(formValue: IMatrix): Observable<IMatrix> {
+    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
+
+    return this._http.put(APP_SETTINGS.MATRIX_TYPES_URL + formValue.id + '/', formValue, options)
+      .map((response: Response) => <IMatrix>response.json())
+      .catch(this.handleError);
+  }
+
+  public delete(id: number): Observable<IMatrix> {
+    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS});
+
+    return this._http.delete(APP_SETTINGS.MATRIX_TYPES_URL + id, options)
+      .catch(this.handleError);
   }
 
   private handleError (error: Response) {

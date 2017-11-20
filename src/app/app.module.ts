@@ -29,6 +29,25 @@ import { FilterBornOnDateFilter } from './FILTERS/filter-born-on-date-filter/fil
 import { DateAddedFilter} from './FILTERS/date-added-filter/date-added-filter.component';
 import { DateUpdatedFilter } from './FILTERS/date-updated-filter/date-updated-filter.component';
 import { AnalysisBatchDetailComponent } from './analysis-batches/analysis-batch-detail/analysis-batch-detail.component';
+import { ConcentrationTypesComponent } from './admin/concentration-types/concentration-types.component';
+import { ConcentrationResolve } from "./concentration-types/concentration-types.resolve";
+import { ConcentrationTypeService } from "app/concentration-types/concentration-types.service";
+import { ControlTypesComponent } from './admin/control-types/control-types.component';
+import { UnitsComponent } from './admin/units/units.component';
+import { ExtractionMethodsComponent } from './admin/extraction-methods/extraction-methods.component';
+import { MatrixTypesComponent } from './admin/matrix-types/matrix-types.component';
+import { SampleTypesComponent } from './admin/sample-types/sample-types.component';
+import { FilterTypesComponent } from './admin/filter-types/filter-types.component';
+import { TargetsComponent } from './admin/targets/targets.component';
+import { UsersComponent } from './admin/users/users.component';
+import { UnitResolve } from "./units/unit.resolve";
+import { UnitService } from "./units/unit.service";
+import { ExtractionMethodService } from "./extractions/extraction-method.service";
+import { ExtractionResolve } from "./extractions/extraction-method.resolve";
+import { FilterTypeService } from "./SHARED/filter-type.service";
+import { FilterResolve } from "./SHARED/filter-type.resolve";
+import { MatrixResolve } from "app/SHARED/matrix.resolve";
+import { MatrixService } from "app/SHARED/matrix.service";
 
 @NgModule({
     declarations: [
@@ -52,7 +71,16 @@ import { AnalysisBatchDetailComponent } from './analysis-batches/analysis-batch-
         FilterBornOnDateFilter,
         DateAddedFilter,
         DateUpdatedFilter,
-        AnalysisBatchDetailComponent
+        AnalysisBatchDetailComponent,
+        ConcentrationTypesComponent,
+        ControlTypesComponent,
+        UnitsComponent,
+        ExtractionMethodsComponent,
+        MatrixTypesComponent,
+        SampleTypesComponent,
+        FilterTypesComponent,
+        TargetsComponent,
+        UsersComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -63,7 +91,8 @@ import { AnalysisBatchDetailComponent } from './analysis-batches/analysis-batch-
         ClarityModule.forRoot(),
         ROUTING
     ],
-    providers: [],
+    providers: [ConcentrationTypeService, ConcentrationResolve, UnitService, UnitResolve, ExtractionMethodService, ExtractionResolve,
+        FilterTypeService, FilterResolve, MatrixService, MatrixResolve],
     bootstrap: [AppComponent]
 })
 export class AppModule {
