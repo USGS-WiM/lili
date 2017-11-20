@@ -433,6 +433,9 @@ export class AnalysisBatchesComponent implements OnInit {
       analysis_batch: abID
     })
 
+    // establish local variables to stoe the rna and dna inhibition IDs that the server returns
+    let rnaInhibitionID;
+    let dnaInhibitionID;
 
     if (this.useExistingInhibition === false) {
       // creating a new inhibition then
@@ -441,6 +444,14 @@ export class AnalysisBatchesComponent implements OnInit {
       // Those new inhibition IDs should be used to populate the local (client-side) extractions.
 
       // createInhibitionFormValue: {rna: true, dna: false, inhibition_date:"2017-11-14"}
+
+      if (this.createInhibitionForm.value.rna === true) {
+        
+      }
+
+      if (this.createInhibitionForm.value.dna === true) {
+
+      }
 
 
 
