@@ -113,7 +113,7 @@
                                 </div>
                             </div>
 
-<!-- 
+                            <!-- 
                             <table formArrayName="replicates">
                                 <tr>
                                     <th>Target</th>
@@ -420,7 +420,7 @@
                         <button clrTabLink>Details</button>
                         <ng-template [(clrIfActive)]="detailsActive">
                             <clr-tab-content>
-                                <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('edit', editABForm.value)">
+                                <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('editAB', editABForm.value)">
                                     <section class="form-block">
                                         <div class="form-group">
                                             <label for="studyId">Analysis Batch ID</label>
@@ -437,7 +437,25 @@
                                             <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
                                         </div>
 
-                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid">Save Edits</button>
+                                        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABEditError">
+                                            <div clr-alert-item class="alert-item">
+                                                <span class="alert-text">Submission error. Analysis Batch not updated.</span>
+                                                <div class="alert-actions">
+                                                    <a class="alert-action" (click)="onSubmitSample('add', editSampleForm.value)">Try again</a>
+                                                </div>
+                                            </div>
+                                        </clr-alert>
+
+                                        <clr-alert [clrAlertType]="'alert-success'" *ngIf="showABEditSuccess">
+                                            <div clr-alert-item class="alert-item">
+                                                <span class="alert-text">Analysis successfully updated</span>
+                                                <div class="alert-actions">
+                                                    <a class="alert-action" (click)="showHideEdit = false; showABEditSuccess = false">Close</a>
+                                                </div>
+                                            </div>
+                                        </clr-alert>
+
+                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
                                         <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
 
                                     </section>
@@ -453,7 +471,8 @@
                             <clr-tab-content>
                                 <div class="row">
                                     <div class="col-lg-4">
-                                        <form [formGroup]="abSampleListForm">
+                                        <!-- form tags used here strictly for formatting convenience. no actual form contained within. -->
+                                        <form>
                                             <section class="form-block">
                                                 <label>Samples in this Analysis Batch
                                                     <span class="badge badge-light-blue">{{abSampleList.length}}</span>
@@ -461,14 +480,6 @@
                                                 <ul class="list">
                                                     <li *ngFor="let sample of abSampleList">{{sample.id}} ({{sample.study.name}})</li>
                                                 </ul>
-                                                <!-- <div class="btn-group">
-                                                    <button type="button" class="btn btn-sm btn-secondary remove-sample" (click)="removeSample(this.abSampleListForm.value)"><clr-icon shape="close"></clr-icon> Remove Selected</button>
-                                                </div>
-                                                <div class="select multiple study-list-select">
-                                                    <select multiple formControlName="abSamples">
-                                                        <option *ngFor="let sample of abSampleList" value="{{sample.id}}">{{sample.id}} ({{sample.study.name}})</option>
-                                                     </select>
-                                                </div> -->
                                             </section>
                                         </form>
                                     </div>
@@ -554,7 +565,26 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid || sampleListEditLocked" (click)="updateABSampleList(editABForm.value.id,selected)">Save Edits</button>
+                                        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABEditError">
+                                            <div clr-alert-item class="alert-item">
+                                                <span class="alert-text">Submission error. Analysis Batch not updated.</span>
+                                                <div class="alert-actions">
+                                                    <a class="alert-action" (click)="onSubmitSample('add', editSampleForm.value)">Try again</a>
+                                                </div>
+                                            </div>
+                                        </clr-alert>
+
+                                        <clr-alert [clrAlertType]="'alert-success'" *ngIf="showABEditSuccess">
+                                            <div clr-alert-item class="alert-item">
+                                                <span class="alert-text">Analysis Batch successfully updated</span>
+                                                <div class="alert-actions">
+                                                    <a class="alert-action" (click)="showHideEdit = false; showABEditSuccess = false">Close</a>
+                                                </div>
+                                            </div>
+                                        </clr-alert>
+
+                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid || sampleListEditLocked" (click)="updateABSampleList(editABForm.value,selected)"
+                                            [clrLoading]="submitLoading">Save Edits</button>
                                         <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
                                     </div>
                                 </div>
