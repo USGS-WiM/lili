@@ -10,7 +10,7 @@ import { ConcentrationTypeService } from '../../concentration-types/concentratio
   styleUrls: ['./concentration-types.component.scss']
 })
 export class ConcentrationTypesComponent implements OnInit {
-  @Input() concentrationTypes: Array<IConcentrationType>;
+  @Input() ConcentrationTypes: Array<IConcentrationType>;
   public showHideAdd: boolean;
   public showHideEdit: boolean;
   public showHideDelete: boolean;
@@ -71,9 +71,9 @@ export class ConcentrationTypesComponent implements OnInit {
   }
 
   private updateCTArray(newItem) {
-    let updateItem = this.concentrationTypes.find(this.findIndexToUpdate, newItem.id);
-    let index = this.concentrationTypes.indexOf(updateItem);
-    this.concentrationTypes[index] = newItem;
+    let updateItem = this.ConcentrationTypes.find(this.findIndexToUpdate, newItem.id);
+    let index = this.ConcentrationTypes.indexOf(updateItem);
+    this.ConcentrationTypes[index] = newItem;
   }
 
   private findIndexToUpdate(newItem) {
@@ -110,7 +110,7 @@ export class ConcentrationTypesComponent implements OnInit {
         this._concentrationService.create(formValue)
           .subscribe(
           (newConcentration) => {
-            this.concentrationTypes.push(newConcentration);
+            this.ConcentrationTypes.push(newConcentration);
             this.addCTForm.reset();
             this.submitLoading = false;
             this.showCTCreateSuccess = true;
@@ -142,7 +142,7 @@ export class ConcentrationTypesComponent implements OnInit {
   public submitDelete(){
     //get the index to be deleted by the id
     let ind: number;
-    this.concentrationTypes.some((pdh, index, _ary) => {
+    this.ConcentrationTypes.some((pdh, index, _ary) => {
       if (pdh.id === this.selectedCTId) ind = index;
       return pdh.id === this.selectedCTId;
     });
@@ -150,7 +150,7 @@ export class ConcentrationTypesComponent implements OnInit {
     .subscribe(
       () => {
       this.selectedCTName = ""; 
-      this.concentrationTypes.splice(ind,1);
+      this.ConcentrationTypes.splice(ind,1);
       this.selectedConcentration = undefined; // the radio button becomes unselected upon save, but Edit this One is still enabled. This disables the edit button
       //this.editCTForm.reset(); // don't want to reset it. keep the content they just saved in the inputs rather than empty inputs
       this.submitLoading = false;

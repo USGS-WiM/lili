@@ -1,7 +1,12 @@
 export interface ITarget {
     id: number;
     name: string;
-    code: string;
+    code?: string;
     nucleic_acid_type: string;
-    replicates: number;
+    notes: string;
+}
+
+enum TypeEnum {
+    RNA,
+    DNA
 }

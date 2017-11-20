@@ -19,6 +19,9 @@ import { ExtractionResolve } from './extractions/extraction-method.resolve';
 import { FilterResolve } from './SHARED/filter-type.resolve';
 import { MatrixResolve } from './SHARED/matrix.resolve';
 import { SampleTypeResolve } from './SHARED/sample-type.resolve';
+import { ControlResolve } from './control-types/control-types.resolve';
+import { TargetResolve } from './targets/target.resolve';
+import { UserResolve } from './SHARED/user.resolve';
 
 
 export const ROUTES: Routes = [
@@ -38,7 +41,10 @@ export const ROUTES: Routes = [
             extractionMethods: ExtractionResolve,
             filterTypes: FilterResolve,
             matrixTypes: MatrixResolve,
-            sampleTypes: SampleTypeResolve
+            sampleTypes: SampleTypeResolve,
+            controlTypes: ControlResolve,
+            targets: TargetResolve,
+            users: UserResolve
         }
     }
 ];

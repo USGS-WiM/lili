@@ -6,54 +6,43 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 
 import { APP_SETTINGS } from '../app.settings';
+import { IControlType } from 'app/control-types/control-type';
 
-import { ITarget } from './target';
 
 @Injectable()
-export class TargetService {
+export class ControlTypeService {
 
   constructor(private _http: Http) { }
 
-  private extractData(res: Response) {
-    let body = res.json();
-    return body.data || {};
-  }
-
-
-  // public getTargetsData(){}
-
-
-  public getTargets(): Observable<ITarget[]> {
+  getControlTypes(): Observable<IControlType[]> {
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
-    return this._http.get(APP_SETTINGS.TARGETS_URL, options)
-      .map((response: Response) => <ITarget[]>response.json())
-      // .do(data => console.log('Targets data: ' + JSON.stringify(data)))
+    return this._http.get(APP_SETTINGS.CONTROL_TYPES_URL, options)
+      .map((response: Response) => <IControlType[]>response.json())
+      // .do(data => console.log('Sample types data: ' + JSON.stringify(data)))
       .catch(this.handleError);
-
   }
 
-  public create(formValue: ITarget): Observable<ITarget> {
+  public create(formValue: IControlType): Observable<IControlType> {
     let options = new RequestOptions({ headers: APP_SETTINGS.AUTH_JSON_HEADERS });
 
-    return this._http.post(APP_SETTINGS.TARGETS_URL, formValue, options)
-      .map((response: Response) => <ITarget>response.json())
+    return this._http.post(APP_SETTINGS.CONTROL_TYPES_URL, formValue, options)
+      .map((response: Response) => <IControlType>response.json())
       .catch(this.handleError);
   }
 
-  public update(formValue: ITarget): Observable<ITarget> {
+  public update(formValue: IControlType): Observable<IControlType> {
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
-    return this._http.put(APP_SETTINGS.TARGETS_URL + formValue.id + '/', formValue, options)
-      .map((response: Response) => <ITarget>response.json())
+    return this._http.put(APP_SETTINGS.CONTROL_TYPES_URL + formValue.id + '/', formValue, options)
+      .map((response: Response) => <IControlType>response.json())
       .catch(this.handleError);
   }
 
-
-  public delete(id: number): Observable<ITarget> {
+  public delete(id: number): Observable<IControlType> {
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
-    return this._http.delete(APP_SETTINGS.TARGETS_URL + id, options)
+    return this._http.delete(APP_SETTINGS.CONTROL_TYPES_URL + id, options)
       .catch(this.handleError);
   }
 
@@ -63,3 +52,4 @@ export class TargetService {
   }
 
 }
+

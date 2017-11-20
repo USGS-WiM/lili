@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+.card {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-block {
+    border: none;
+    flex: 1 1 auto;
+  }
+  
+  .card-footer {
+    border-top: 1px solid #eee;
+  }
+  
+  .col-lg-5,
+  .col-md-8,
+  .col-sm-12,
+  .col-xs-12 {
+    display: flex;
+  }

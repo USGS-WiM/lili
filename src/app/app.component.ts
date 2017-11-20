@@ -25,8 +25,8 @@ import { ConcentrationTypeService } from './concentration-types/concentration-ty
        // FilterTypeService,
        // MatrixService,
        // UnitService,
-        UserService,
-        TargetService,
+       // UserService,
+       // TargetService,
         //ExtractionMethodService,
       //  ConcentrationTypeService
     ]

@@ -1,3 +1,256 @@
-<p>
-  targets works!
-</p>
+<!--<div class="row">-->
+<!-- Target table -->
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  <div class="card">
+    <div class="card-block">
+      <div class="card-title">All Targets</div>
+      <div class="card-text">
+        <!-- add Target button -->
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="btn-group">
+              <button class="btn btn-sm" (click)="showAddModal()">Add Target</button>
+            </div>
+          </div>
+        </div>
+        <!-- add Target card -->
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="showHideAdd">
+            <div class="card">
+              <form id="addTargetForm" class="compact" [formGroup]="addTargetForm" (ngSubmit)="onSubmitTarget('add', addTargetForm.value)">
+                <div class="card-block">
+                  <div class="card-title">Add Target</div>
+                  <div class="card-text">
+                    <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showTargetCreateError">
+                      <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Submission error. Target not submitted. {{errorMessage}}</span>
+                        <div class="alert-actions">
+                          <a class="alert-action" (click)="onSubmitTarget('add', addTargetForm.value)">Try again</a>
+                        </div>
+                      </div>
+                    </clr-alert>
+
+                    <clr-alert [clrAlertType]="'alert-success'" *ngIf="showTargetCreateSuccess">
+                      <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Target successfully submitted</span>
+                        <div class="alert-actions">
+                          <a class="alert-action" (click)="showHideAdd = false; showTargetCreateSuccess = false">Close</a>
+                        </div>
+                      </div>
+                    </clr-alert>
+
+
+                    <section class="form-block">
+                      <div class="form-group">
+                        <label>Name</label>
+                        <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addTargetForm.get('name').invalid && (addTargetForm.get('name').dirty || addTargetForm.get('name').touched)">
+                          <input id="name" type="text" class="form-control" formControlName="name" size="30">
+                          <span class="tooltip-content">Name is required.</span>
+                        </label>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Code</label>
+                        <label for="code" aria-haspopup="true" role="tooltip" class="tooltip tooltip-sm">
+                          <input id="code" type="text" class="form-control" formControlName="code" size="30">
+                        </label>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Nucleic Acid Type</label>
+                        <label for="nucleic_acid_type" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addTargetForm.get('nucleic_acid_type').invalid && (addTargetForm.get('nucleic_acid_type').dirty || addTargetForm.get('nucleic_acid_type').touched)">
+                          <select class="form-control" id="nucleic_acid_type" formControlName="nucleic_acid_type">
+                            <option value=""></option>
+                            <option value="DNA">DNA</option>
+                            <option value="RNA">RNA</option>
+                          </select>
+                          <span class="tooltip-content">Nucleic Acid Type is required.</span>
+                        </label>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Notes</label>
+                        <label for="notes" aria-haspopup="true" role="tooltip" class="tooltip tooltip-sm">
+                          <textarea id="notes" type="text" formControlName="notes" rows="2" style="max-width:25em"></textarea>
+                        </label>
+                      </div>
+
+                    </section>
+
+                    <br clear="all" />
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-primary" type="submit" [disabled]="addTargetForm.invalid" [clrLoading]="submitLoading">Submit</button>
+                  <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <clr-datagrid [(clrDgSingleSelected)]="selectedTarget">
+          <!-- edit and delete Target buttons -->
+          <clr-dg-action-bar>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedTarget" (click)="editTarget(selectedTarget)">
+                <clr-icon shape="note-edit" size="16"></clr-icon> Edit Target</button>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedTarget" (click)="deleteTarget(selectedTarget)">
+                <clr-icon shape="trash" size="16"></clr-icon> Delete Target</button>
+            </div>
+          </clr-dg-action-bar>
+
+          <!-- table of all CTs -->
+          <clr-dg-column [clrDgField]="'id'">
+            <ng-container *clrDgHideableColumn="{hidden: false}">
+              Target ID
+            </ng-container>
+          </clr-dg-column>
+
+          <clr-dg-column [clrDgField]="'name'">
+            <ng-container *clrDgHideableColumn="{hidden: false}">
+              Target Name
+            </ng-container>
+          </clr-dg-column>
+
+          <clr-dg-column [clrDgField]="'description'">
+            <ng-container *clrDgHideableColumn="{hidden: false}">
+              Target Code
+            </ng-container>
+          </clr-dg-column>
+
+          <clr-dg-column [clrDgField]="'description'">
+            <ng-container *clrDgHideableColumn="{hidden: false}">
+              Target Nucleic Acid Type
+            </ng-container>
+          </clr-dg-column>
+
+          <clr-dg-column [clrDgField]="'description'">
+            <ng-container *clrDgHideableColumn="{hidden: false}">
+              Target Notes
+            </ng-container>
+          </clr-dg-column>
+
+          <clr-dg-row *clrDgItems="let target of Targets" [clrDgItem]="target">
+            <clr-dg-cell>{{target.id}}</clr-dg-cell>
+            <clr-dg-cell>{{target.name}}</clr-dg-cell>
+            <clr-dg-cell>{{target.code}}</clr-dg-cell>
+            <clr-dg-cell>{{target.nucleic_acid_type}}</clr-dg-cell>
+            <clr-dg-cell>{{target.notes}}</clr-dg-cell>
+          </clr-dg-row>
+        </clr-datagrid>
+      </div>
+      <!-- end main target card text -->
+    </div>
+    <!-- end main target card block -->
+  </div>
+  <!-- end main target card -->
+</div>
+
+<!-- edit target Modal -->
+<clr-modal [(clrModalOpen)]="showHideEdit">
+  <h3 class="modal-title">Edit Target</h3>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showTargetEditError">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Submission error. Target not edited.</span>
+            <div class="alert-actions">
+              <a class="alert-action" (click)="onSubmitTarget('edit', editTargetForm.value)">Try again</a>
+            </div>
+          </div>
+        </clr-alert>
+
+        <clr-alert [clrAlertType]="'alert-success'" *ngIf="showTargetEditSuccess">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Target successfully edited</span>
+          </div>
+        </clr-alert>
+
+        <form id="editTargetForm" class="compact" [formGroup]="editTargetForm" (ngSubmit)="onSubmitTarget('edit', editTargetForm.value)">
+          <section class="form-block">
+            <label>Selected Target: {{selectedTargetName}}</label>
+            <div class="form-group">
+              <label for="TargetId">Target ID</label>
+              <input type="text" id="TargetId" size="35" formControlName="id" readonly>
+            </div>
+
+            <div class="form-group">
+              <label>Name</label>
+              <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editTargetForm.get('name').invalid && (editTargetForm.get('name').dirty || editTargetForm.get('name').touched)">
+                <input id="name" type="text" formControlName="name" size="40">
+                <span class="tooltip-content">Name is required.</span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>Code</label>
+              <label for="code" aria-haspopup="true" role="tooltip" class="tooltip tooltip-sm">
+                <input id="code" type="text" formControlName="code" size="40">
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>Nucleic Acid Type</label>
+              <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editTargetForm.get('name').invalid && (editTargetForm.get('name').dirty || editTargetForm.get('name').touched)">
+                <select class="form-control" id="nucleic_acid_type" formControlName="nucleic_acid_type">
+                  <option value=""></option>
+                  <option value="DNA">DNA</option>
+                  <option value="RNA">RNA</option>
+                </select>
+                <span class="tooltip-content">Nucleic Acid Type is required.</span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>Notes</label>
+              <label for="notes" aria-haspopup="true" role="tooltip" class="tooltip tooltip-sm">
+                <textarea id="notes" type="text" formControlName="notes" rows="2" style="max-width:25em"></textarea>
+              </label>
+            </div>
+
+            <button class="btn btn-primary" type="submit" [disabled]="editTargetForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
+            <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+
+          </section>
+        </form>
+      </div>
+    </div>
+  </div>
+</clr-modal>
+
+<!-- delete Unit type Modal -->
+<clr-modal [(clrModalOpen)]="showHideDelete">
+  <h3 class="modal-title">Delete Target</h3>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showTargetDeleteError">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Submission error. Target not deleted.</span>
+            <div class="alert-actions">
+              <a class="alert-action" (click)="submitDelete()">Try again</a>
+            </div>
+          </div>
+        </clr-alert>
+
+        <clr-alert [clrAlertType]="'alert-success'" *ngIf="showTargetDeleteSuccess">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Target successfully deleted.</span>
+          </div>
+        </clr-alert>
+
+        <div *ngIf="!showTargetDeleteSuccess">
+          <p>Are you sure you want to delete {{selectedTargetName}}</p>
+
+          <button class="btn btn-primary" type="button" (click)="submitDelete()" [clrLoading]="submitLoading">Delete</button>
+          <button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</clr-modal>
+<!--</div>-->

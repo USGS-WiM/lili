@@ -1,9 +1,41 @@
 <div class="row">
-    <concentrationtypes [concentrationTypes]="ctypes"></concentrationtypes>
-    <units [Units]="units"></units>
-</div>  
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <concentrationtypes [ConcentrationTypes]="ctypes"></concentrationtypes>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <controltypes [ControlTypes]="conttypes"></controltypes>
+    </div>
+</div>
 
-<extractionmethods [ExtractionMethods]="extractions"></extractionmethods>
-<filtertypes [FilterTypes]="filters" [Matrices]="matrices"></filtertypes>
-<matrices [MatrixTypes]="matrices"></matrices>
-<sampletypes [SampleTypes]="stypes"></sampletypes>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <extractionmethods [ExtractionMethods]="extractions"></extractionmethods>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <filtertypes [FilterTypes]="filters" [Matrices]="matrices"></filtertypes>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <matrices [MatrixTypes]="matrices"></matrices>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <sampletypes [SampleTypes]="stypes"></sampletypes>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <targets [Targets]="targets"></targets>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <units [Units]="units"></units>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <users [Users]="users"></users>
+    </div>
+</div>

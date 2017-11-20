@@ -31,7 +31,7 @@ import { DateUpdatedFilter } from './FILTERS/date-updated-filter/date-updated-fi
 import { AnalysisBatchDetailComponent } from './analysis-batches/analysis-batch-detail/analysis-batch-detail.component';
 import { ConcentrationTypesComponent } from './admin/concentration-types/concentration-types.component';
 import { ConcentrationResolve } from "./concentration-types/concentration-types.resolve";
-import { ConcentrationTypeService } from "app/concentration-types/concentration-types.service";
+import { ConcentrationTypeService } from "./concentration-types/concentration-types.service";
 import { ControlTypesComponent } from './admin/control-types/control-types.component';
 import { UnitsComponent } from './admin/units/units.component';
 import { ExtractionMethodsComponent } from './admin/extraction-methods/extraction-methods.component';
@@ -48,9 +48,14 @@ import { FilterTypeService } from "./SHARED/filter-type.service";
 import { FilterResolve } from "./SHARED/filter-type.resolve";
 import { MatrixResolve } from "./SHARED/matrix.resolve";
 import { MatrixService } from "./SHARED/matrix.service";
-import { WangularModule } from 'wangular/src/app/wangular';
 import { SampleTypeResolve } from "./SHARED/sample-type.resolve";
 import { SampleTypeService } from "./SHARED/sample-type.service";
+import { ControlTypeService } from "./control-types/control-types.service";
+import { ControlResolve } from "./control-types/control-types.resolve";
+import { TargetService } from "./targets/target.service";
+import { TargetResolve } from "./targets/target.resolve";
+import { UserService } from "./SHARED/user.service";
+import { UserResolve } from "./SHARED/user.resolve";
 
 @NgModule({
     declarations: [
@@ -92,12 +97,11 @@ import { SampleTypeService } from "./SHARED/sample-type.service";
         ReactiveFormsModule,
         HttpModule,
         ClarityModule.forRoot(),
-        ROUTING,
-        WangularModule
+        ROUTING
     ],
-    exports: [WangularModule],
     providers: [ConcentrationTypeService, ConcentrationResolve, UnitService, UnitResolve, ExtractionMethodService, ExtractionResolve,
-        FilterTypeService, FilterResolve, MatrixService, MatrixResolve, SampleTypeService, SampleTypeResolve],
+        FilterTypeService, FilterResolve, MatrixService, MatrixResolve, SampleTypeService, SampleTypeResolve, ControlTypeService, ControlResolve,
+        TargetService, TargetResolve, UserService, UserResolve ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
