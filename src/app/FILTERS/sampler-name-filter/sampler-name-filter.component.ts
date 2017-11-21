@@ -28,7 +28,7 @@ export class SamplerNameFilter implements OnInit, Filter<any> {
   changes: EventEmitter<any> = new EventEmitter<any>(false);
   
   accepts(sample: any){
-      return (this.selectedUser === sample.sampler_name);
+      return (this.selectedUser === sample.sampler_name.id);
   }
 
   isActive():boolean {

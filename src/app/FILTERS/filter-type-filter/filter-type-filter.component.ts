@@ -26,7 +26,7 @@ export class FilterTypeFilter implements OnInit, Filter<any> {
   changes: EventEmitter<any> = new EventEmitter<any>(false);
   
   accepts(sample: any){
-      return (this.selectedFilterType === sample.filter_type);
+      return (this.selectedFilterType === sample.filter_type.id);
   }
 
   isActive():boolean {

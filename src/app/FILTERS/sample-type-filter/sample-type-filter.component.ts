@@ -26,7 +26,7 @@ export class SampleTypeFilter implements OnInit, Filter<any> {
   changes: EventEmitter<any> = new EventEmitter<any>(false);
   
   accepts(sample: any){
-      return (this.selectedSampleType === sample.sample_type);
+      return (this.selectedSampleType === sample.sample_type.id);
   }
 
   isActive():boolean {

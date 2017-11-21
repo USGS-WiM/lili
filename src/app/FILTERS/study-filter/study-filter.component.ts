@@ -27,7 +27,7 @@ export class StudyFilter implements OnInit, Filter<any> {
   changes: EventEmitter<any> = new EventEmitter<any>(false);
   
   accepts(sample: any){
-      return (this.selectedStudy === sample.study);
+      return (this.selectedStudy === sample.study.id);
   }
 
   isActive():boolean {
