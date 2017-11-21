@@ -30,13 +30,13 @@ export class UnitsComponent implements OnInit {
     // add Unit form - declare a reactive form with appropriate Unit fields
     addUnitForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required)
+      description: new FormControl('')
     });
     // edit Unit form - declare a reactive form
     editUnitForm = new FormGroup({
       id: new FormControl(''),
       name: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required)
+      description: new FormControl('')
     });
   
     constructor(private _route: ActivatedRoute, private _unitService: UnitService, private _cdr: ChangeDetectorRef) { }
@@ -102,7 +102,7 @@ export class UnitsComponent implements OnInit {
               this.selectedUnit = undefined; 
               this.submitLoading = false;
               this.showUnitEditSuccess = true;
-              this._cdr.detectChanges(); //fix for ExpressionChangedAfterItHasBeenCheckedError (see https://github.com/angular/angular/issues/17572 )
+              this._cdr.detectChanges(); 
             },
             error => {
               this.errorMessage = <any>error;
@@ -156,7 +156,7 @@ export class UnitsComponent implements OnInit {
         () => {
         this.selectedUnitName = ""; 
         this.Units.splice(ind,1);
-        this.selectedUnit = undefined; // the radio button becomes unselected upon save, but Edit this One is still enabled. This disables the edit button        
+        this.selectedUnit = undefined; 
         this.submitLoading = false;
         this.showUnitDeleteSuccess = true;
         this._cdr.detectChanges();

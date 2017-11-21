@@ -42,19 +42,20 @@
   
                         <section class="form-block">
                           <div class="form-group">
-                            <label>Name</label>
+                            <label class="required">Name</label>
                             <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addFilterForm.get('name').invalid && (addFilterForm.get('name').dirty || addFilterForm.get('name').touched)">
                               <input id="name" type="text" class="form-control" formControlName="name" size="30">
                               <span class="tooltip-content">Name is required.</span>
                             </label>
                           </div>
                           <div class="form-group">
-                            <label>Matrix</label>
+                            <label class="required">Matrix</label>
                             <label for="matrix" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addFilterForm.get('matrix').invalid && (addFilterForm.get('matrix').dirty || addFilterForm.get('matrix').touched)">
                               <select class="form-control" id="matrix" formControlName="matrix">
                                 <option value=""></option>
                                 <option *ngFor="let m of Matrices" [ngValue]="m.id">{{m.name}}</option>
                             </select>  
+                            <span class="tooltip-content">Matrix is required.</span>
                             </label>
                           </div>
                         </section>
@@ -108,7 +109,7 @@
               <clr-dg-row *clrDgItems="let ft of FilterTypes" [clrDgItem]="ft">
                 <clr-dg-cell>{{ft.id}}</clr-dg-cell>
                 <clr-dg-cell>{{ft.name}}</clr-dg-cell>
-                <clr-dg-cell>{{this.matrix | displayValue:'name':this.Matrices}}</clr-dg-cell>
+                <clr-dg-cell>{{ft.matrix | displayValue:'name': Matrices}}</clr-dg-cell>
               </clr-dg-row>
             </clr-datagrid>
           </div>
@@ -149,7 +150,7 @@
                 </div>
   
                 <div class="form-group">
-                  <label>Name</label>
+                  <label class="required">Name</label>
                   <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editFilterForm.get('name').invalid && (editFilterForm.get('name').dirty || editFilterForm.get('name').touched)">
                     <input id="name" type="text" formControlName="name" size="40">
                     <span class="tooltip-content">Name is required.</span>
@@ -157,7 +158,7 @@
                 </div>
   
                 <div class="form-group">
-                  <label>Matrix</label>
+                  <label class="required">Matrix</label>
                   <label for="matrix" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editFilterForm.get('matrix').invalid && (editFilterForm.get('matrix').dirty || editFilterForm.get('matrix').touched)">
                     <select id="matrixSelect" name="matrix" formControlName="matrix">
                       <option *ngFor="let m of Matrices" [ngValue]="m.id">{{m.name}}</option>
