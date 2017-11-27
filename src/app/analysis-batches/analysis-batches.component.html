@@ -254,7 +254,14 @@
                     <div class="card">
                         <div class="card-header">
                             Create New Inhibition
+                            <clr-signpost>
+                                <clr-signpost-content *clrIfOpen>
+                                    <p>This option allows you to create one or two new inhibition records. If you choose one type, an inhibition of that type will be created and associated with every
+                                        replicate from the batch regardless of target type. If you choose both types, two inhibition records will be created and associated with replicates of the corresponding targets. </p>
+                                </clr-signpost-content>
+                            </clr-signpost>
                         </div>
+
                         <div class="card-block">
                             <div class="card-text">
                                 <form id="createInhibitionForm" class="compact" [formGroup]="createInhibitionForm" (ngSubmit)="onSubmit('add', createInhibitionForm.value)">
@@ -313,7 +320,7 @@
                                 Batch Level
                                 <clr-signpost>
                                     <clr-signpost-content *clrIfOpen>
-                                        <p>Make a single selection from exhisting inhibitions to apply to every DNA target and
+                                        <p>Make a single selection from existing inhibitions to apply to every DNA target and
                                             every RNA target for every sample in this batch. </p>
                                     </clr-signpost-content>
                                 </clr-signpost>
@@ -341,10 +348,10 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label for="inhibitionDateInput">Inhibition Date (for new Inhibitions)</label>
                                             <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
-                                        </div>
+                                        </div> -->
 
                                     </section>
                                 </form>
@@ -361,6 +368,28 @@
                                 </clr-signpost>
                             </div>
                             <div class="card-text">
+
+
+
+                                <form id="createInhibitionForm" class="compact" [formGroup]="createInhibitionForm" (ngSubmit)="onSubmit('add', createInhibitionForm.value)">
+                                    <section class="form-block">
+
+                                        <div class="form-group">
+                                            <label>Create New Inhibition </label>
+                                            <div class="checkbox">
+                                                <input type="checkbox" formControlName="dna" id="dnaCheck">
+                                                <label for="dnaCheck">DNA targets</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" formControlName="rna" id="rnaCheck" checked>
+                                                <label for="rnaCheck">RNA targets</label>
+                                            </div>
+                                        </div>
+
+
+                                    </section>
+                                </form>
+
                                 <clr-datagrid>
                                     <clr-dg-column>Sample</clr-dg-column>
                                     <clr-dg-column>Inhibition for DNA Targets</clr-dg-column>
@@ -372,7 +401,6 @@
                                             <div class="select">
                                                 <select id="" name="dnaInhibition">
                                                     <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
-                                                    <option>Create New Inhibition</option>
                                                 </select>
                                             </div>
                                         </clr-dg-cell>
@@ -380,7 +408,6 @@
                                             <div class="select">
                                                 <select id="" name="dnaInhibition">
                                                     <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
-                                                    <option>Create New Inhibition</option>
                                                 </select>
                                             </div>
                                         </clr-dg-cell>
