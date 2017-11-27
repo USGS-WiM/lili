@@ -436,6 +436,14 @@ export class AnalysisBatchesComponent implements OnInit {
     // establish local variables to stoe the rna and dna inhibition IDs that the server returns
     let rnaInhibitionID;
     let dnaInhibitionID;
+    // establish local variable for POST to inhibition endpoint
+    // Needed because the format of the submission object is distinct from the createInhibitionForm object
+    let inhibitionSubmission: Object = {
+      "sample": null,
+      "analysis_batch": null,
+      "inhibition_date": null,
+      "nucleic_acid_type": null
+  }
 
     if (this.useExistingInhibition === false) {
       // creating a new inhibition then
@@ -445,8 +453,13 @@ export class AnalysisBatchesComponent implements OnInit {
 
       // createInhibitionFormValue: {rna: true, dna: false, inhibition_date:"2017-11-14"}
 
+      // inhibitionSubmission.sample
+
       if (this.createInhibitionForm.value.rna === true) {
-        
+
+
+
+
       }
 
       if (this.createInhibitionForm.value.dna === true) {
