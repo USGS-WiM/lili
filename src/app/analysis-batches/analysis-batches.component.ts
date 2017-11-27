@@ -346,6 +346,10 @@ export class AnalysisBatchesComponent implements OnInit {
     this.sampleListEditLocked = false;
   }
 
+  createWorksheet() {
+
+  }
+
 
   extractAB(selectedAB) {
 
@@ -443,7 +447,7 @@ export class AnalysisBatchesComponent implements OnInit {
       "analysis_batch": null,
       "inhibition_date": null,
       "nucleic_acid_type": null
-  }
+    }
 
     if (this.useExistingInhibition === false) {
       // creating a new inhibition then

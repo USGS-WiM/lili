@@ -256,8 +256,11 @@
                             Create New Inhibition
                             <clr-signpost>
                                 <clr-signpost-content *clrIfOpen>
-                                    <p>This option allows you to create one or two new inhibition records. If you choose one type, an inhibition of that type will be created and associated with every
-                                        replicate from the batch regardless of target type. If you choose both types, two inhibition records will be created and associated with replicates of the corresponding targets. </p>
+                                    <p>This option allows you to create one or two new inhibition records. If you choose one
+                                        type, an inhibition of that type will be created and associated with every replicate
+                                        from the batch regardless of target type. If you choose both types, two inhibition
+                                        records will be created and associated with replicates of the corresponding targets.
+                                        </p>
                                 </clr-signpost-content>
                             </clr-signpost>
                         </div>
@@ -425,6 +428,8 @@
         </div>
 
         <ng-template clrPageButtons>
+
+            <clr-wizard-button (click)="createWorksheet()">Create Worksheet</clr-wizard-button>
             <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
             <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
