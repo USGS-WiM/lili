@@ -100,7 +100,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   extractForm: FormGroup;
   replicateArray: FormArray;
-  extractionArray: FormArray;
+  sampleArray: FormArray;
 
   x: boolean = false;
 
@@ -130,7 +130,7 @@ export class AnalysisBatchesComponent implements OnInit {
     rt_date: new FormControl(''),
     // TODO: make these formarrays(?)
     replicates: new FormControl(''),
-    extractions: new FormControl('')
+    samples: new FormControl('')
   });
 
   addRTForm = new FormGroup({
@@ -181,7 +181,7 @@ export class AnalysisBatchesComponent implements OnInit {
           count: '2'
         })
       ]),
-      extractions: this.formBuilder.array([
+      samples: this.formBuilder.array([
         this.formBuilder.group({
           sample: '',
           inhibition: ''
@@ -190,6 +190,7 @@ export class AnalysisBatchesComponent implements OnInit {
     });
 
     this.replicateArray = this.extractForm.get('replicates') as FormArray;
+    this.sampleArray = this.extractForm.get('samples') as FormArray;
 
 
   }
@@ -355,6 +356,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
     this.resetAB();
     this.selectedAnalysisBatchID = selectedAB.id;
+    // reset the sample form array controls to a blank array so it doesnt get populated twice
+    this.sampleArray.controls = [];
 
     // get the AB detail
     this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
@@ -381,14 +384,20 @@ export class AnalysisBatchesComponent implements OnInit {
           this._analysisBatchService.getSampleInhibitions(this.abSampleIDList)
             .subscribe(
             (abSampleInhibitions) => {
-              console.log(abSampleInhibitions);
 
-              // check if any of the samples in the list have inhibitions
-              // if so set inhibitionsExists var to true
               for (let sample of abSampleInhibitions) {
+
+                // populate sampleArray with sample IDs for the selected AB and null inhibition ID value (TBD by user)
+                let formGroup: FormGroup = this.formBuilder.group({
+                  sample: this.formBuilder.control(sample.id),
+                  inhibition: this.formBuilder.control(null)
+                });
+                this.sampleArray.push(formGroup);
+
+                // check if any of the samples in the list have inhibitions
+                // if so set inhibitionsExists var to true
                 if (sample.inhibitions.length > 0) {
                   this.inhibitionsExist = true;
-                  break;
                 }
               }
             },
@@ -396,7 +405,6 @@ export class AnalysisBatchesComponent implements OnInit {
               this.errorMessage = <any>error
             }
             )
-
 
           // check the this.inhibitionsPerSample for inhibitions(temporary hard-coded approach)
           for (let sample of this.inhibitionsPerSample) {
@@ -460,6 +468,9 @@ export class AnalysisBatchesComponent implements OnInit {
       // inhibitionSubmission.sample
 
       if (this.createInhibitionForm.value.rna === true) {
+        // submit an array of inhibition records, one for each sample, with RNA as nucleic acid type to the inhibition endpoint
+
+
 
 
 
