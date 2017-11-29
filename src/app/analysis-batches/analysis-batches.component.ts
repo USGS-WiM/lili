@@ -76,6 +76,7 @@ export class AnalysisBatchesComponent implements OnInit {
   // may not need this abInhibitionCount var, consider removing
   abInhibitionCount = 0;
   abInhibitions: IInhibition[];
+  sampleInhibitions: IInhibition[];
 
   showHideEdit: boolean = false;
   showHideExtractionDetailModal: boolean = false;
@@ -100,7 +101,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   extractForm: FormGroup;
   replicateArray: FormArray;
-  sampleArray: FormArray;
+  extractionArray: FormArray;
 
   x: boolean = false;
 
@@ -130,7 +131,7 @@ export class AnalysisBatchesComponent implements OnInit {
     rt_date: new FormControl(''),
     // TODO: make these formarrays(?)
     replicates: new FormControl(''),
-    samples: new FormControl('')
+    extractions: new FormControl('')
   });
 
   addRTForm = new FormGroup({
@@ -181,16 +182,17 @@ export class AnalysisBatchesComponent implements OnInit {
           count: '2'
         })
       ]),
-      samples: this.formBuilder.array([
+      extractions: this.formBuilder.array([
         this.formBuilder.group({
           sample: '',
-          inhibition: ''
+          inhibition_dna: '',
+          inhibition_rna: ''
         })
       ])
     });
 
     this.replicateArray = this.extractForm.get('replicates') as FormArray;
-    this.sampleArray = this.extractForm.get('samples') as FormArray;
+    this.extractionArray = this.extractForm.get('extractions') as FormArray;
 
 
   }
@@ -230,7 +232,7 @@ export class AnalysisBatchesComponent implements OnInit {
       error => this.errorMessage = <any>error);
 
     // grab temporary hard-coded inhibitionsPerSample object (until web service endpoint is up-to-date)
-    this.inhibitionsPerSample = APP_UTILITIES.INHIBITIONS_PER_SAMPLE_ENDPOINT;
+    // this.inhibitionsPerSample = APP_UTILITIES.INHIBITIONS_PER_SAMPLE_ENDPOINT;
 
     // on init, call getAnalysisBatchSummaries function of the AnalysisBatchService, set results to the allAnalysisBatches var
     this._analysisBatchService.getAnalysisBatchSummaries()
@@ -343,6 +345,7 @@ export class AnalysisBatchesComponent implements OnInit {
     this.abSampleList = [];
     this.abInhibitionCount = 0;
     this.abInhibitions = [];
+    this.sampleInhibitions = [];
 
     this.sampleListEditLocked = false;
   }
@@ -357,7 +360,7 @@ export class AnalysisBatchesComponent implements OnInit {
     this.resetAB();
     this.selectedAnalysisBatchID = selectedAB.id;
     // reset the sample form array controls to a blank array so it doesnt get populated twice
-    this.sampleArray.controls = [];
+    this.extractionArray.controls = [];
 
     // get the AB detail
     this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
@@ -380,19 +383,37 @@ export class AnalysisBatchesComponent implements OnInit {
             }
           }
 
-          // TODO: get inhibitions for each sample in this AB and build an array with all the inhibitions
+          // build the abInhbition array: all inhibitions in the current analysis batch
+          // used for the batch level apply select dropdowns
+          if (analysisBatchDetail.extractionbatches.length > 0) {
+            for (let extractionBatch of analysisBatchDetail.extractionbatches) {
+              if (extractionBatch.inhibitions.length > 0) {
+                for (let inhibition of extractionBatch.inhibitions) {
+                  this.abInhibitions.push(inhibition)
+                }
+
+              }
+            }
+          }
+
+          // call to services to retrieve a list of all inhibitions for each sample in this AB
           this._analysisBatchService.getSampleInhibitions(this.abSampleIDList)
             .subscribe(
             (abSampleInhibitions) => {
 
               for (let sample of abSampleInhibitions) {
 
-                // populate sampleArray with sample IDs for the selected AB and null inhibition ID value (TBD by user)
+                // populate extractionArray with sample IDs for the selected AB and null inhibition ID value (TBD by user)
                 let formGroup: FormGroup = this.formBuilder.group({
                   sample: this.formBuilder.control(sample.id),
-                  inhibition: this.formBuilder.control(null)
+                  inhibition_dna: this.formBuilder.control(null),
+                  inhibition_rna: this.formBuilder.control(null)
                 });
-                this.sampleArray.push(formGroup);
+                this.extractionArray.push(formGroup);
+
+                // populate sampleInhibitions with inhibitions per sample
+                // used for the sample level apply select dropdowns
+                this.sampleInhibitions = abSampleInhibitions;
 
                 // check if any of the samples in the list have inhibitions
                 // if so set inhibitionsExists var to true
@@ -406,18 +427,6 @@ export class AnalysisBatchesComponent implements OnInit {
             }
             )
 
-          // check the this.inhibitionsPerSample for inhibitions(temporary hard-coded approach)
-          for (let sample of this.inhibitionsPerSample) {
-            // this.abInhibitionCount += sample.inhibitions.length;
-            for (let inhibition of sample.inhibitions) {
-              this.abInhibitions.push(inhibition);
-            }
-          }
-          if (this.abInhibitions.length > 0) {
-            this.inhibitionsExist = true;
-          }
-          /////////////////////////////////////////////////////////////////////////////////////////////
-
           this.extractWizardOpen = true;
 
         } else {
@@ -430,9 +439,6 @@ export class AnalysisBatchesComponent implements OnInit {
         this.errorMessage = <any>error
       }
       );
-
-    // call to retrieve AB detail data
-    // this.selectedAnalysisBatchData = this.retrieveABData(selectedAB.id);
   }
 
   resetExtractWizard() {

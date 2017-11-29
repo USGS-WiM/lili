@@ -260,7 +260,7 @@
                                         type, an inhibition of that type will be created and associated with every replicate
                                         from the batch regardless of target type. If you choose both types, two inhibition
                                         records will be created and associated with replicates of the corresponding targets.
-                                        </p>
+                                    </p>
                                 </clr-signpost-content>
                             </clr-signpost>
                         </div>
@@ -360,6 +360,8 @@
                                 </form>
                             </div>
                         </div>
+
+
                         <div class="card-block">
                             <div class="card-title">
                                 Sample Level
@@ -371,8 +373,6 @@
                                 </clr-signpost>
                             </div>
                             <div class="card-text">
-
-
 
                                 <form id="createInhibitionForm" class="compact" [formGroup]="createInhibitionForm" (ngSubmit)="onSubmit('add', createInhibitionForm.value)">
                                     <section class="form-block">
@@ -393,30 +393,45 @@
                                     </section>
                                 </form>
 
-                                <clr-datagrid>
-                                    <clr-dg-column>Sample</clr-dg-column>
-                                    <clr-dg-column>Inhibition for DNA Targets</clr-dg-column>
-                                    <clr-dg-column>Inhibition for RNA Targets</clr-dg-column>
+                                <form id="extractForm" class="compact" [formGroup]="extractForm">
+                                    <section class="form-block">
+                                        <div formArrayName="extractions">
 
-                                    <clr-dg-row *clrDgItems="let sample of inhibitionsPerSample">
-                                        <clr-dg-cell>Sample {{sample.id}}</clr-dg-cell>
-                                        <clr-dg-cell>
-                                            <div class="select">
-                                                <select id="" name="dnaInhibition">
-                                                    <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
-                                                </select>
+                                            <div>
+
+                                                <!-- <label>{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
+                                                <input formControlName="count" type="number" class="target-count-input"> -->
+
+                                                <clr-datagrid>
+                                                    <clr-dg-column>Sample</clr-dg-column>
+                                                    <clr-dg-column>Inhibition for DNA Targets</clr-dg-column>
+                                                    <clr-dg-column>Inhibition for RNA Targets</clr-dg-column>
+
+                                                    <clr-dg-row *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
+                                                        <clr-dg-cell>Sample {{extraction.controls.sample.value}}</clr-dg-cell>
+                                                        <clr-dg-cell>
+                                                            <div class="select">
+                                                                <select id="" name="dnaInhibition">
+                                                                    <option *ngFor="let inhibition of sampleInhibitions.inhibitions" [value]="extraction.inhibition_dna">Inh {{inhibition.id}} ({{sample.sample_type}})</option>
+                                                                </select>
+                                                            </div>
+                                                        </clr-dg-cell>
+                                                        <clr-dg-cell>
+                                                            <div class="select">
+                                                                <select id="" name="rnaInhibition">
+                                                                    <option *ngFor="let inhibition of sampleInhibitions.inhibitions" [value]="extraction.inhibition_dna">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type}})</option>
+                                                                </select>
+                                                            </div>
+                                                        </clr-dg-cell>
+                                                    </clr-dg-row>
+                                                    <clr-dg-footer>{{inhibitionsPerSample.length}} samples</clr-dg-footer>
+                                                </clr-datagrid>
+
                                             </div>
-                                        </clr-dg-cell>
-                                        <clr-dg-cell>
-                                            <div class="select">
-                                                <select id="" name="dnaInhibition">
-                                                    <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
-                                                </select>
-                                            </div>
-                                        </clr-dg-cell>
-                                    </clr-dg-row>
-                                    <clr-dg-footer>{{inhibitionsPerSample.length}} samples</clr-dg-footer>
-                                </clr-datagrid>
+                                        </div>
+                                    </section>
+                                </form>
+
                             </div>
                         </div>
                         <div class="card-footer">
