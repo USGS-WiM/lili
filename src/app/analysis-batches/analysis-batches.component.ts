@@ -26,6 +26,7 @@ import { ExtractionMethodService } from '../extractions/extraction-method.servic
 import { UnitService } from '../units/unit.service';
 import { APP_UTILITIES } from '../app.utilities';
 import { AnalysisBatchWorksheetComponent } from '../analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-analysis-batches',
@@ -34,7 +35,9 @@ import { AnalysisBatchWorksheetComponent } from '../analysis-batches/analysis-ba
 })
 export class AnalysisBatchesComponent implements OnInit {
   @ViewChild("wizardExtract") wizardExtract: Wizard;
+  public showWorksheet:boolean = false;
   public showWarning = false;
+  public nativeWindow: any;
   rnaTargetsSelected: boolean = false;
   sampleListEditLocked: boolean = false;
 
@@ -212,7 +215,8 @@ export class AnalysisBatchesComponent implements OnInit {
     private _analysisBatchService: AnalysisBatchService,
     private _targetService: TargetService,
     private _extractionMethodService: ExtractionMethodService,
-    private _unitService: UnitService
+    private _unitService: UnitService,
+    private _router: Router
   ) {
     this.buildExtractForm();
   }
@@ -654,5 +658,17 @@ export class AnalysisBatchesComponent implements OnInit {
 
 
 
+  }
+
+  createWorksheet(){
+    this._analysisBatchService.setExtractionFormValues(this.extractForm.value);
+    this.showWorksheet = true;
+    //need to do this in the component so that other things can happen too, like storing the form values in the services so that
+    // the worksheet can access them.
+    /*this causes a loss of connection to the services and getting the form values 
+    this.nativeWindow = this._analysisBatchService.getNativeWindow();    
+    let newWindow = this.nativeWindow.open('/analysisbatchworksheet/'+ this.selectedAnalysisBatchID);
+    */
+    //this._router.navigate(['/analysisbatchworksheet'], {queryParams: {formVals: this.extractionForm}, skipLocationChange: true });
   }
 }

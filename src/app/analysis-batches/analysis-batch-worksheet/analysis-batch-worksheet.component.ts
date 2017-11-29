@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AnalysisBatchService } from '../../analysis-batches/analysis-batch.service';
 
 declare let jsPDF: any; // Important
+
 //import * as jsPDF from 'jspdf';
 //import * as html2canvas from 'html2canvas';
 
@@ -10,16 +13,27 @@ declare let jsPDF: any; // Important
   styleUrls: ['./analysis-batch-worksheet.component.scss']
 })
 export class AnalysisBatchWorksheetComponent implements OnInit {
+  
   @ViewChild('batchWorksheet') pdfWorksheet;
   public worksheetElement: any;
   public nowDate: Date;
-
-  constructor() { }
+  public batchId: number;
+  public formValues: any;
+  constructor(private _router: Router, private _route: ActivatedRoute, private _batchServices: AnalysisBatchService) {    
+   }
 
   ngOnInit() {
     this.worksheetElement = this.pdfWorksheet.nativeElement;
     this.nowDate = new Date();
+    this._route.params.subscribe((x)=> {
+      this.batchId = x.id;
+    });
+    this._batchServices.ExtractionFormValues.subscribe((values) =>{
+      this.formValues = values;
+    });
+
   }
+
   public printPDF() {
     let options = {
      pagesplit: true
@@ -34,9 +48,9 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
         })
       }
     });*/
-    let pdf = new jsPDF('p', 'pt', 'letter');  
-    pdf.internal.scaleFactor = 2.25;
-    
+    let pdf = new jsPDF('p', 'pt', 'a4');  
+ /*   pdf.text()*/
+    pdf.internal.scaleFactor = 1.25;
     pdf.addHTML(this.worksheetElement, 0, 0, options, () => {
       pdf.save("worksheet.pdf");
     });

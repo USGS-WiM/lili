@@ -236,7 +236,6 @@
     <clr-wizard-page>
         <ng-template clrPageTitle>Inhibition</ng-template>
         <div>
-
             <clr-alert [clrAlertClosable]="false" *ngIf="inhibitionsExist">
                 <div clr-alert-item class="alert-item">
                     <span class="alert-text">
@@ -426,19 +425,23 @@
                 </div>
             </div>
         </div>
-
+        <!--<analysis-batch-worksheet #batchWorksheet [hidden]="hideWorksheet"></analysis-batch-worksheet>-->
         <ng-template clrPageButtons>
-
-            <clr-wizard-button><a [routerLink]="['/analysisbatchworksheet']" target="_blank">Create Worksheet</a></clr-wizard-button>
+            <clr-wizard-button (click)="createWorksheet()">Create Worksheet</clr-wizard-button>
             <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
             <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
         </ng-template>
-        <div [hidden]="'true'"><analysis-batch-worksheet #batchWorksheet></analysis-batch-worksheet></div> 
     </clr-wizard-page>
     <!-- end Inhibition page -->
 </clr-wizard>
 
+<clr-modal [(clrModalOpen)]="showWorksheet" [clrModalSize]="'xl'">
+    <h3 class="modal-title">Worksheet</h3>
+    <div class="modal-body">
+        <analysis-batch-worksheet #batchWorksheet></analysis-batch-worksheet>
+    </div>
+</clr-modal>
 
 <!-- edit analysis batch modal -->
 <clr-modal [(clrModalOpen)]="showHideEdit" [clrModalSize]="'xl'">

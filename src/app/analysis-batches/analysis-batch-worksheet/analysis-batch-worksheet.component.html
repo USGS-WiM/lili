@@ -1,9 +1,9 @@
 <button class="btn btn-primary" (click)="printPDF()">Download Spreadsheet as PDF</button>
 <div #batchWorksheet id="batchWorksheet">
 
-  <div style="margin:12px">
+  <div>
     <!-- date title -->
-    <div class="row" style="margin-top: 15px;">
+    <div id="row1" class="row" style="margin-top: 15px;">
       <div class="col-sm-12">
         <span class="col-sm-4" style="padding-top:15px;">{{nowDate | date: 'MM/dd/yyyy'}}</span>
         <h3 class="text-center">Analaysis Batch Worksheet</h3>
@@ -11,13 +11,13 @@
     </div>
 
     <!-- top section -->
-    <div class="row">
+    <div id="row2" class="row">
       <!-- Top Left Table -->
       <div class="col-md-6 pull-left">
         <table id="topLeftTable" class="col-md-8 table">
           <tr>
             <td>Analysis Batch:</td>
-            <td>analysisBatch</td>
+            <td>{{batchId}}</td>
           </tr>
           <tr>
             <td>Creation Date:</td>
@@ -38,29 +38,28 @@
         <table id="topRightTable" class="col-md-8 table">
           <tr>
             <td>Extraction No.:</td>
-            <td>number</td>
+            <td>{{number}}</td>
             <td></td>
             <td></td>
           </tr>
           <tr>
             <td>Extraction date:</td>
-            <td>aDate</td>
+            <td>{{formValues?.extraction_date}}</td>
             <td>Extraction sample volume:</td>
-            <td>extVol</td>
+            <td>{{formValues?.extraction_volume}}</td>
           </tr>
           <tr>
             <td>Extraction method:</td>
-            <td>someMethod</td>
+            <td>{{formValues?.extraction_method}}</td>
             <td>Eluted extracted volume:</td>
             <td>eludVol</td>
           </tr>
         </table>
       </div>
     </div>
-    <br clear="all" />
-    <br/>
+    <br clear="all" />    
     <!-- middle section -->
-    <div class="row">
+    <div id="row3" class="row">
       <!-- sample location table -->
       <div class="col-md-6 pull-left">
         <div class="col-md-11">
@@ -186,7 +185,7 @@
     </div> <!-- end middle 2 tables -->
 
     <!-- bottom section -->
-    <div class="row">
+    <div id="row4" class="row">
         <div class="col-md-6 pull-left" style="margin-bottom:15px;">
             <table id="bottomTable" class="col-md-8 table">
               <tr>
@@ -211,7 +210,7 @@
             </table>
           </div>
     </div>
-    <div class="row" id="notes">
+    <div id="row5" class="row" id="notes">
       <div class="col-md-6">Notes:</div> 
       <br clear="all"/>
       <hr class="line_break">

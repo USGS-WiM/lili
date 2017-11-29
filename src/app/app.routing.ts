@@ -31,7 +31,7 @@ export const ROUTES: Routes = [
     {path: 'studies', component: StudiesComponent},
     {path: 'samples', component: SamplesComponent},
     {path: 'analysisbatches', component: AnalysisBatchesComponent},
-    {path: 'analysisbatchworksheet', component: AnalysisBatchWorksheetComponent},
+    {path: 'analysisbatchworksheet/:id', component: AnalysisBatchWorksheetComponent},
     {path: 'results', component: ResultsComponent},
     {path: 'reports', component: ReportsComponent},
     {

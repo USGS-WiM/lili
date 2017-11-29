@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-
+import { Subject } from "rxjs/Subject";
 import { APP_SETTINGS } from '../app.settings';
 
 import { IAnalysisBatch } from './analysis-batch';
@@ -22,9 +22,16 @@ export class AnalysisBatchService {
     let body = res.json();
     return body.data || {};
   }
-
-
-
+  // need for analysis-batches.component to open worksheet in new window
+  getNativeWindow(){
+    return window;
+  }
+  //subject, getter,setter for extraction form values
+  private _extractionFormValues: Subject<any> = new Subject<any>();
+  public get ExtractionFormValues(): Observable<any> { return this._extractionFormValues.asObservable(); }
+  public setExtractionFormValues(extractionFormValues: any) {
+    this._extractionFormValues.next(extractionFormValues);
+  }
   // get Analysis Batch Detail - for individual AB record retrieval 
   public getAnalysisBatchDetail(abID: number): Observable<IAnalysisBatchDetail> {
     let options = new RequestOptions({
