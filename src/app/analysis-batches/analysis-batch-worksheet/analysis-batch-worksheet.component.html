@@ -1,0 +1,222 @@
+<button class="btn btn-primary" (click)="printPDF()">Download Spreadsheet as PDF</button>
+<div #batchWorksheet id="batchWorksheet">
+
+  <div style="margin:12px">
+    <!-- date title -->
+    <div class="row" style="margin-top: 15px;">
+      <div class="col-sm-12">
+        <span class="col-sm-4" style="padding-top:15px;">{{nowDate | date: 'MM/dd/yyyy'}}</span>
+        <h3 class="text-center">Analaysis Batch Worksheet</h3>
+      </div>
+    </div>
+
+    <!-- top section -->
+    <div class="row">
+      <!-- Top Left Table -->
+      <div class="col-md-6 pull-left">
+        <table id="topLeftTable" class="col-md-8 table">
+          <tr>
+            <td>Analysis Batch:</td>
+            <td>analysisBatch</td>
+          </tr>
+          <tr>
+            <td>Creation Date:</td>
+            <td>createDate</td>
+          </tr>
+          <tr>
+            <td>Studies:</td>
+            <td>studies</td>
+          </tr>
+          <tr>
+            <td>Description:</td>
+            <td>desc</td>
+          </tr>
+        </table>
+      </div>
+      <!-- Top Right Table -->
+      <div class="col-md-6 pull-right">
+        <table id="topRightTable" class="col-md-8 table">
+          <tr>
+            <td>Extraction No.:</td>
+            <td>number</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Extraction date:</td>
+            <td>aDate</td>
+            <td>Extraction sample volume:</td>
+            <td>extVol</td>
+          </tr>
+          <tr>
+            <td>Extraction method:</td>
+            <td>someMethod</td>
+            <td>Eluted extracted volume:</td>
+            <td>eludVol</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <br clear="all" />
+    <br/>
+    <!-- middle section -->
+    <div class="row">
+      <!-- sample location table -->
+      <div class="col-md-6 pull-left">
+        <div class="col-md-11">
+          <table class="table" id="sampleTable">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Sample ID</th>
+                <th>Rack</th>
+                <th>Box</th>
+                <th>Row</th>
+                <th>Spot</th>
+                <th>DNA Inhibition Dilution Factor</th>
+                <th>RNA Inhibition Dilution Factor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>00001</td>
+                <td>12</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>00002</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>4</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>00003</td>
+                <td>12</td>
+                <td>1</td>
+                <td>2</td>
+                <td>7</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="font-weight:bold;">
+            <div>Ext Neg:</div>
+            <div>Ext Pos:</div>
+          </div>
+        </div>
+      </div>
+      <!-- target table -->
+      <div class="col-md-6 pull-right">
+        <div class="col-md-11">
+          <table class="table" id="targetTable">
+            <thead>
+              <tr>
+                <th>Target&nbsp;</th>
+                <th>Date&nbsp;</th>
+                <th>Positive ID</th>
+                <th>Cq &nbsp;</th>
+                <th>Detections</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>AA</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>E</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>G1</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>G2</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>HP</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>PV</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> <!-- end middle 2 tables -->
+
+    <!-- bottom section -->
+    <div class="row">
+        <div class="col-md-6 pull-left" style="margin-bottom:15px;">
+            <table id="bottomTable" class="col-md-8 table">
+              <tr>
+                <td>Reverse transcription No.:</td>
+                <td>2</td>
+                <td colspan="2"></td>                
+              </tr>
+              <tr>
+                <td>RT reaction volume:</td>
+                <td>50</td>
+                <td style="width:20%">Date:</td>
+                <td>11/11/2011</td>
+              </tr>
+              <tr>
+                <td colspan="4">
+              </tr>
+              <tr>
+                <td>qPCR replicas:</td>
+                <td>2</td>
+                <td colspan="2"></td>
+              </tr>
+            </table>
+          </div>
+    </div>
+    <div class="row" id="notes">
+      <div class="col-md-6">Notes:</div> 
+      <br clear="all"/>
+      <hr class="line_break">
+      <div id="notesSpace"></div>
+    </div>
+
+  </div>
+</div>

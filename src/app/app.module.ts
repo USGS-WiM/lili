@@ -56,6 +56,7 @@ import { TargetService } from "./targets/target.service";
 import { TargetResolve } from "./targets/target.resolve";
 import { UserService } from "./SHARED/user.service";
 import { UserResolve } from "./SHARED/user.resolve";
+import { AnalysisBatchWorksheetComponent } from './analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
 
 @NgModule({
     declarations: [
@@ -88,7 +89,8 @@ import { UserResolve } from "./SHARED/user.resolve";
         SampleTypesComponent,
         FilterTypesComponent,
         TargetsComponent,
-        UsersComponent
+        UsersComponent,
+        AnalysisBatchWorksheetComponent
     ],
     imports: [
         BrowserAnimationsModule,

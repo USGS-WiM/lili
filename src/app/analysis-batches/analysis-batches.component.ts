@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from "@angular/forms/";
 import { Wizard } from "clarity-angular";
 
@@ -24,8 +24,8 @@ import { AnalysisBatchService } from './analysis-batch.service';
 import { TargetService } from '../targets/target.service';
 import { ExtractionMethodService } from '../extractions/extraction-method.service';
 import { UnitService } from '../units/unit.service';
-
 import { APP_UTILITIES } from '../app.utilities';
+import { AnalysisBatchWorksheetComponent } from '../analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
 
 @Component({
   selector: 'app-analysis-batches',
@@ -34,7 +34,6 @@ import { APP_UTILITIES } from '../app.utilities';
 })
 export class AnalysisBatchesComponent implements OnInit {
   @ViewChild("wizardExtract") wizardExtract: Wizard;
-
   public showWarning = false;
   rnaTargetsSelected: boolean = false;
   sampleListEditLocked: boolean = false;
@@ -346,11 +345,6 @@ export class AnalysisBatchesComponent implements OnInit {
     this.sampleListEditLocked = false;
   }
 
-  createWorksheet() {
-
-  }
-
-
   extractAB(selectedAB) {
 
     this.resetAB();
@@ -566,7 +560,7 @@ export class AnalysisBatchesComponent implements OnInit {
   // private findIndexToUpdate(newItem) {
   //   return newItem.id === this;
   // }
-
+  
 
   openTargetDetails(abID) {
 

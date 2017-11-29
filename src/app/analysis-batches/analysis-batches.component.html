@@ -429,12 +429,12 @@
 
         <ng-template clrPageButtons>
 
-            <clr-wizard-button (click)="createWorksheet()">Create Worksheet</clr-wizard-button>
+            <clr-wizard-button><a [routerLink]="['/analysisbatchworksheet']" target="_blank">Create Worksheet</a></clr-wizard-button>
             <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
             <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
         </ng-template>
-
+        <div [hidden]="'true'"><analysis-batch-worksheet #batchWorksheet></analysis-batch-worksheet></div> 
     </clr-wizard-page>
     <!-- end Inhibition page -->
 </clr-wizard>
