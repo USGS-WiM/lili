@@ -412,14 +412,14 @@
                                                         <clr-dg-cell>
                                                             <div class="select">
                                                                 <select id="" name="dnaInhibition">
-                                                                    <option *ngFor="let inhibition of sampleInhibitions.inhibitions" [value]="extraction.inhibition_dna">Inh {{inhibition.id}} ({{sample.sample_type}})</option>
+                                                                    <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type}}) - Sample {{inhibition.sample}}</option>
                                                                 </select>
                                                             </div>
                                                         </clr-dg-cell>
                                                         <clr-dg-cell>
                                                             <div class="select">
                                                                 <select id="" name="rnaInhibition">
-                                                                    <option *ngFor="let inhibition of sampleInhibitions.inhibitions" [value]="extraction.inhibition_dna">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type}})</option>
+                                                                    <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type}}) - Sample {{inhibition.sample}}</option>
                                                                 </select>
                                                             </div>
                                                         </clr-dg-cell>

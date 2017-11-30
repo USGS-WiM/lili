@@ -411,9 +411,11 @@ export class AnalysisBatchesComponent implements OnInit {
                 });
                 this.extractionArray.push(formGroup);
 
-                // populate sampleInhibitions with inhibitions per sample
+                // populate sampleInhibitions with all the inhibitions associated with any sample in this AB
                 // used for the sample level apply select dropdowns
-                this.sampleInhibitions = abSampleInhibitions;
+                for (let inhibition of sample.inhibitions) {
+                  this.sampleInhibitions.push(inhibition)
+                }
 
                 // check if any of the samples in the list have inhibitions
                 // if so set inhibitionsExists var to true
@@ -421,13 +423,15 @@ export class AnalysisBatchesComponent implements OnInit {
                   this.inhibitionsExist = true;
                 }
               }
+
+              this.extractWizardOpen = true;
+
+
             },
             error => {
               this.errorMessage = <any>error
             }
             )
-
-          this.extractWizardOpen = true;
 
         } else {
 
