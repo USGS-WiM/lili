@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="col-lg-12 col-md-12 col-sm-12">
                 <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
 
                     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
@@ -79,7 +79,7 @@
         <ng-template clrPageTitle>qPCR Details</ng-template>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <form id="extractForm" class="compact" [formGroup]="extractForm" (ngSubmit)="onSubmit('add', extractionForm.value)">
+                <form id="extractForm" class="compact" [formGroup]="extractForm" (ngSubmit)="onSubmit('add', extractForm.value)">
                     <section class="form-block">
 
                         <div class="form-group">
@@ -101,40 +101,16 @@
                     </section>
 
                     <section class="form-block" *ngIf="x">
-
                         <p>Select desired number of PCR replicates for each selected target. To update the targets list, return
                             to Target Selection page.
-
                             <div formArrayName="replicates">
                                 <div class="form-group" *ngFor="let target of replicateArray.controls; let i = index" [formGroupName]="i">
                                     <label>{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
                                     <input formControlName="count" type="number" class="target-count-input">
-
                                 </div>
                             </div>
-
-                            <!-- 
-                            <table formArrayName="replicates">
-                                <tr>
-                                    <th>Target</th>
-                                    <th>Count</th>
-                                </tr>
-                                <tr *ngFor="let target of replicateArray.controls; let i = index" [formGroupName]="i">
-                                    <td>
-                                        <label>{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
-                                    </td>
-                                    <td>
-                                        <input formControlName="count" type="number" size="5">
-                                    </td>
-                                </tr>
-                            </table> -->
-
                     </section>
                 </form>
-                <!-- <div class="form-group" *ngFor="let target of selected">
-                     <label>{{target.name}} ({{target.code}})</label>
-                 <input type="number" class="target-count-input" [(ngModel)]="target.count" name="targetCount">
-                </div> -->
             </div>
         </div>
     </clr-wizard-page>
@@ -236,214 +212,128 @@
     <clr-wizard-page>
         <ng-template clrPageTitle>Inhibition</ng-template>
         <div>
-
-            <clr-alert [clrAlertClosable]="false" *ngIf="inhibitionsExist">
-                <div clr-alert-item class="alert-item">
-                    <span class="alert-text">
-                        lili has detected an existing inhibition for this Analysis Batch
-                    </span>
-                    <div class="alert-actions">
-                        <a class="alert-actions" (click)="showApplyExistingCard()">Apply Existing Inhibition</a>
-                    </div>
-
-                </div>
-            </clr-alert>
-
             <div class="row">
-                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" *ngIf="!useExistingInhibition">
-                    <div class="card">
-                        <div class="card-header">
-                            Create New Inhibition
-                            <clr-signpost>
-                                <clr-signpost-content *clrIfOpen>
-                                    <p>This option allows you to create one or two new inhibition records. If you choose one
-                                        type, an inhibition of that type will be created and associated with every replicate
-                                        from the batch regardless of target type. If you choose both types, two inhibition
-                                        records will be created and associated with replicates of the corresponding targets.
-                                    </p>
-                                </clr-signpost-content>
-                            </clr-signpost>
+                <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                    <clr-alert [clrAlertClosable]="false" *ngIf="inhibitionsExist">
+                        <div clr-alert-item class="alert-item">
+                            <span class="alert-text">
+                                lili has detected existing inhibitions for samples in this Analysis Batch.
+                            </span>
+                            <!-- <div class="alert-actions">
+                                <a class="alert-actions" (click)="showApplyExistingCard()">Apply Existing Inhibition</a>
+                            </div> -->
                         </div>
-
-                        <div class="card-block">
-                            <div class="card-text">
-                                <form id="createInhibitionForm" class="compact" [formGroup]="createInhibitionForm" (ngSubmit)="onSubmit('add', createInhibitionForm.value)">
-                                    <section class="form-block">
-
-                                        <div class="form-group">
-                                            <label>Inhibition Type</label>
-                                            <div class="checkbox">
-                                                <input type="checkbox" formControlName="dna" id="dnaCheck">
-                                                <label for="dnaCheck">DNA</label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <input type="checkbox" formControlName="rna" id="rnaCheck" checked>
-                                                <label for="rnaCheck">RNA</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
-                                        </div>
-
-                                    </section>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="card-footer" *ngIf="inhibitionsExist">
-                            <button class="btn btn-sm btn-link" (click)="showApplyExistingCard()">Apply Existing Inhibition Instead</button>
-                        </div>
-                    </div>
+                    </clr-alert>
                 </div>
             </div>
-
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="useExistingInhibition">
+                <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
                     <div class="card">
-                        <div class="card-header">
-                            Apply Existing Inhibition
-                        </div>
-                        <div class="card-block">
-                            <div class="card-text">
-                                <form id="extractionForm" class="compact" [formGroup]="applyInhibition_batchForm" (ngSubmit)="onSubmit('add', applyInhibition_batchForm.value)">
-                                    <section class="form-block">
-
-                                        <div class="form-group">
-                                            <label for="inhibitionDateInput">Inhibition Date (for new Inhibitions)</label>
-                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
-                                        </div>
-
-                                    </section>
-                                </form>
-
-                            </div>
-                        </div>
                         <div class="card-block">
                             <div class="card-title">
-                                Batch Level
+                                Create New Inhibitions
                                 <clr-signpost>
                                     <clr-signpost-content *clrIfOpen>
-                                        <p>Make a single selection from existing inhibitions to apply to every DNA target and
-                                            every RNA target for every sample in this batch. </p>
+                                        <p>This option allows you to create new inhibitions for all DNA targets in the batch,
+                                            all RNA targets in the batch, or both.
+                                        </p>
                                     </clr-signpost-content>
                                 </clr-signpost>
                             </div>
                             <div class="card-text">
-                                <form id="extractionForm" class="compact" [formGroup]="applyInhibition_batchForm" (ngSubmit)="onSubmit('add', applyInhibition_batchForm.value)">
-                                    <section class="form-block">
-                                        <div class="form-group">
-                                            <label for="elutionVol">Inhibition for DNA targets</label>
-                                            <div class="select">
-                                                <select id="inhibitionSelect_batchDNA" name="dnaInhibition" formControlName="dnaInhibition">
-                                                    <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh-{{inhibition.id}} ({{inhibition.type}})</option>
-                                                    <option [value]="0">Create New Inhibition</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="elutionVol">Inhibition for RNA targets</label>
-                                            <div class="select">
-                                                <select id="inhibitionSelect_batchRNA" name="rnaInhibition" formControlName="rnaInhibition">
-                                                    <option *ngFor="let inhibition of abInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.type}})</option>
-                                                    <option>Create New Inhibition</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- <div class="form-group">
-                                            <label for="inhibitionDateInput">Inhibition Date (for new Inhibitions)</label>
-                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date">
-                                        </div> -->
-
-                                    </section>
-                                </form>
-                            </div>
-                        </div>
-
-
-                        <div class="card-block">
-                            <div class="card-title">
-                                Sample Level
-                                <clr-signpost>
-                                    <clr-signpost-content *clrIfOpen>
-                                        <p>Select existing inhibitions to apply to every DNA target and every RNA target for
-                                            each sample individually. </p>
-                                    </clr-signpost-content>
-                                </clr-signpost>
-                            </div>
-                            <div class="card-text">
-
                                 <form id="createInhibitionForm" class="compact" [formGroup]="createInhibitionForm" (ngSubmit)="onSubmit('add', createInhibitionForm.value)">
                                     <section class="form-block">
-
+                                        <label>DNA Targets</label>
                                         <div class="form-group">
-                                            <label>Create New Inhibition </label>
+                                            <label>Create new DNA Inhibitions</label>
                                             <div class="checkbox">
                                                 <input type="checkbox" formControlName="dna" id="dnaCheck">
-                                                <label for="dnaCheck">DNA targets</label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <input type="checkbox" formControlName="rna" id="rnaCheck" checked>
-                                                <label for="rnaCheck">RNA targets</label>
+                                                <label for="dnaCheck"></label>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label>DNA Inhibition Date</label>
+                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date_dna">
+                                        </div>
+                                    </section>
 
+                                    <section class="form-block">
+                                        <label>RNA Targets</label>
+                                        <div class="form-group">
+                                            <label>Create new RNA Inhibitions</label>
+                                            <div class="checkbox">
+                                                <input type="checkbox" formControlName="rna" id="rnaCheck">
+                                                <label for="rnaCheck"></label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>RNA Inhibition Date</label>
+                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date_rna">
+                                        </div>
 
                                     </section>
                                 </form>
+                            </div>
+
+                        </div>
+
+                        <div class="card-block" *ngIf="inhibitionsExist">
+                            <div class="card-title">
+                                Apply Existing Inhibitions
+                                <clr-signpost>
+                                    <clr-signpost-content *clrIfOpen>
+                                        <p>Select existing inhibitions to apply to DNA targets and RNA targets for each sample
+                                            individually. </p>
+                                    </clr-signpost-content>
+                                </clr-signpost>
+                            </div>
+                            <div class="card-text">
 
                                 <form id="extractForm" class="compact" [formGroup]="extractForm">
                                     <section class="form-block">
                                         <div formArrayName="extractions">
-
                                             <div>
-
-                                                <!-- <label>{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
-                                                <input formControlName="count" type="number" class="target-count-input"> -->
-
-                                                <clr-datagrid>
-                                                    <clr-dg-column>Sample</clr-dg-column>
-                                                    <clr-dg-column>Inhibition for DNA Targets</clr-dg-column>
-                                                    <clr-dg-column>Inhibition for RNA Targets</clr-dg-column>
-
-                                                    <clr-dg-row *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
-                                                        <clr-dg-cell>Sample {{extraction.controls.sample.value}}</clr-dg-cell>
-                                                        <clr-dg-cell>
-                                                            <div class="select">
-                                                                <select id="" name="dnaInhibition">
-                                                                    <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type}}) - Sample {{inhibition.sample}}</option>
-                                                                </select>
-                                                            </div>
-                                                        </clr-dg-cell>
-                                                        <clr-dg-cell>
-                                                            <div class="select">
-                                                                <select id="" name="rnaInhibition">
-                                                                    <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type}}) - Sample {{inhibition.sample}}</option>
-                                                                </select>
-                                                            </div>
-                                                        </clr-dg-cell>
-                                                    </clr-dg-row>
-                                                    <clr-dg-footer>{{inhibitionsPerSample.length}} samples</clr-dg-footer>
-                                                </clr-datagrid>
-
+                                                <table class="table table-noborder">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="left">Sample</th>
+                                                            <th class="left">Inhibition for DNA Targets</th>
+                                                            <th class="left">Inhibition for RNA Targets</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
+                                                            <td class="left">Sample {{extraction.controls.sample.value}}</td>
+                                                            <td>
+                                                                <div class="select">
+                                                                    <select id="" name="dnaInhibition">
+                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type}})
+                                                                            - Sample {{inhibition.sample}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="select">
+                                                                    <select id="" name="rnaInhibition">
+                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type}})
+                                                                            - Sample {{inhibition.sample}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </section>
                                 </form>
-
                             </div>
-                        </div>
-                        <div class="card-footer">
-                            <button class="btn btn-sm btn-link" (click)="useExistingInhibition = false">Create New Inhibition Batch-Wide</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <ng-template clrPageButtons>
-
             <clr-wizard-button (click)="createWorksheet()">Create Worksheet</clr-wizard-button>
             <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
@@ -693,7 +583,7 @@
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)">
                                     <clr-icon shape="note-edit" size="16"></clr-icon> Edit Analysis Batch</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)">
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)" [clrLoading]="submitLoading">
                                     <clr-icon shape="login"></clr-icon> Extract</button>
                                 <!--<button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
                                 <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>
