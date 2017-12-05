@@ -1,3 +1,4 @@
+import { IAliquot } from '../aliquots/aliquot';
 export interface ISample {
     id: number;
     sample_type: Object;
@@ -36,7 +37,7 @@ export interface ISample {
     final_concentrated_sample_volume: number;
     final_concentrated_sample_volume_type: number;
     final_concentrated_sample_volume_notes: string;
-    aliquots: Object[];
+    aliquots: IAliquot[];
     created_date: string;
     created_by: string;
     modified_date: string;
