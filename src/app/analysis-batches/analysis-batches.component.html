@@ -1,5 +1,5 @@
 <!-- Extract wizard -->
-<clr-wizard #wizardExtract [(clrWizardOpen)]="extractWizardOpen" (clrWizardOnFinish)="finishExtractWizard(selectedAnalysisBatchID, extractionForm.value, addRTForm.value, createInhibitionForm.value)"
+<clr-wizard #wizardExtract [(clrWizardOpen)]="extractWizardOpen" (clrWizardOnFinish)="finishExtractWizard(selectedAnalysisBatchID, extractForm.value, createInhibitionForm.value)"
     (clrWizardOnCancel)="resetExtractWizard()" clrWizardSize="xl">
     <clr-wizard-title>Extract Samples in Analysis Batch {{selectedAnalysisBatchID}}</clr-wizard-title>
 
@@ -23,14 +23,32 @@
 
                                 <span *ngIf="sample.aliquots.length === 0">No aliquots recorded</span>
                                 <div class="select" *ngIf="sample.aliquots.length > 0">
-                                    <select id="" name="aliquot_select" (change)="onAliquotSelect(sample.id, $event.target.value)">
-                                        <option *ngFor="let aliquot of sample.aliquots" [value]="aliquot.aliquot_string">{{aliquot.aliquot_string}}</option>
+                                    <select  name="aliquot_select"  (change)="onAliquotSelect(sample.id, $event.target.value)">
+                                        <option *ngFor="let aliquot of sample.aliquots" [value]="aliquot.id">{{aliquot.aliquot_string}}</option>
                                     </select>
                                 </div>
                             </div>
 
                         </section>
                     </form>
+
+                    <!-- alternative method using the embedded aliquots form array -->
+                    <!-- <form class="compact" [formGroup]="extractForm">
+                        <section class="form-block">
+                            <p>Select desired number of PCR replicates for each selected target. To update the targets list,
+                                return to Target Selection page.
+                                <div formArrayName="extractions" *ngIf="extractionArray.controls.length > 0">
+                                    <div class="form-group" *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
+                                        <label>Sample {{extraction.controls.sample.value}}</label>
+                                        <div class="select" formArrayName="aliquots">
+                                            <select formControlName="selected_aliquot">
+                                                <option *ngFor="let aliquot of extraction.controls.aliquots.controls" [value]="aliquot.controls.aliquot_string.value">{{aliquot.controls.aliquot_string.value}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                        </section>
+                    </form> -->
 
             </div>
             <div class="col-lg-2 col-md-2"></div>
@@ -39,7 +57,7 @@
     <!-- end Aliquot selection page -->
 
     <!-- Target selection page -->
-    <clr-wizard-page [clrWizardPageNextDisabled]="selected.length < 1" (clrWizardPageCustomButton)="doCustomClick($event)">
+    <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
         <ng-template clrPageTitle>Target Selection</ng-template>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -57,7 +75,7 @@
                     <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
                         <clr-dg-cell>{{target.name}}</clr-dg-cell>
                         <clr-dg-cell>{{target.code}}</clr-dg-cell>
-                        <clr-dg-cell>{{target.nucleic_acid_type }}</clr-dg-cell>
+                        <clr-dg-cell>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes }}</clr-dg-cell>
                     </clr-dg-row>
 
                     <clr-dg-footer>{{allTargets.length}} targets</clr-dg-footer>
@@ -69,7 +87,7 @@
         <ng-template clrPageButtons>
             <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
-            <clr-wizard-button [type]="'custom-next'">Next</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-next'" >Next</clr-wizard-button>
         </ng-template>
 
     </clr-wizard-page>
@@ -80,7 +98,7 @@
         <ng-template clrPageTitle>qPCR Details</ng-template>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <form id="extractForm" class="compact" [formGroup]="extractForm" (ngSubmit)="onSubmit('add', extractForm.value)">
+                <form class="compact" [formGroup]="extractForm" (ngSubmit)="onSubmit('add', extractForm.value)">
                     <section class="form-block">
 
                         <div class="form-group">
@@ -121,7 +139,7 @@
     <clr-wizard-page>
         <ng-template clrPageTitle>Extraction Details</ng-template>
 
-        <form id="extractionForm" class="compact" [formGroup]="extractForm" (ngSubmit)="onSubmit('add', extractionForm.value)">
+        <form class="compact" [formGroup]="extractForm" (ngSubmit)="onSubmit('add', extractionForm.value)">
             <section class="form-block">
 
                 <div class="form-group">
@@ -180,7 +198,7 @@
             </div>
         </clr-alert>
 
-        <form id="addRTForm" class="compact" [formGroup]="extractForm" (ngSubmit)="onSubmit('add', addRTForm.value)" *ngIf="rnaTargetsSelected">
+        <form class="compact" [formGroup]="extractForm" *ngIf="rnaTargetsSelected">
             <section class="form-block">
 
                 <div formGroupName="rt">
@@ -251,6 +269,7 @@
                                                 <input type="checkbox" formControlName="dna" id="dnaCheck">
                                                 <label for="dnaCheck"></label>
                                             </div>
+                                            
                                         </div>
                                         <div class="form-group">
                                             <label>DNA Inhibition Date</label>
@@ -278,7 +297,7 @@
 
                         </div>
 
-                        <div class="card-block" *ngIf="inhibitionsExist">
+                        <div class="card-block" *ngIf="inhibitionsExist && (createInhibitionForm.value.dna === false || createInhibitionForm.value.rna === false)">
                             <div class="card-title">
                                 Apply Existing Inhibitions
                                 <clr-signpost>
@@ -290,7 +309,7 @@
                             </div>
                             <div class="card-text">
 
-                                <form id="extractForm" class="compact" [formGroup]="extractForm">
+                                <form class="compact" [formGroup]="extractForm">
                                     <section class="form-block">
                                         <div formArrayName="extractions">
                                             <div>
@@ -298,25 +317,25 @@
                                                     <thead>
                                                         <tr>
                                                             <th class="left">Sample</th>
-                                                            <th class="left">Inhibition for DNA Targets</th>
-                                                            <th class="left">Inhibition for RNA Targets</th>
+                                                            <th class="left" *ngIf="createInhibitionForm.value.dna === false">Inhibition for DNA Targets</th>
+                                                            <th class="left" *ngIf="createInhibitionForm.value.rna === false">Inhibition for RNA Targets</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
                                                             <td class="left">Sample {{extraction.controls.sample.value}}</td>
-                                                            <td>
+                                                            <td *ngIf="createInhibitionForm.value.dna === false">
                                                                 <div class="select">
-                                                                    <select id="" name="dnaInhibition">
-                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type}})
+                                                                    <select name="dnaInhibition" formControlName="inhibition_dna">
+                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}})
                                                                             - Sample {{inhibition.sample}}</option>
                                                                     </select>
                                                                 </div>
                                                             </td>
-                                                            <td>
+                                                            <td *ngIf="createInhibitionForm.value.rna === false">
                                                                 <div class="select">
-                                                                    <select id="" name="rnaInhibition">
-                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type}})
+                                                                    <select name="rnaInhibition" formControlName="inhibition_rna">
+                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}})
                                                                             - Sample {{inhibition.sample}}</option>
                                                                     </select>
                                                                 </div>
