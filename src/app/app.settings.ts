@@ -24,10 +24,11 @@ export class APP_SETTINGS {
     public static get ANALYSIS_BATCH_DETAIL_URL(): string { return this._API_ENDPOINT + 'analysisbatchdetail/' };
     public static get ANALYSIS_BATCH_SUMMARY_URL(): string { return this._API_ENDPOINT + 'analysisbatchsummary/' };
     public static get EXTRACTIONS_URL(): string { return this._API_ENDPOINT + 'extractions/'; };
+    public static get EXTRACTION_BATCHES_URL(): string { return this._API_ENDPOINT + 'extractionbatches/'};
     public static get EXTRACTION_METHODS_URL(): string { return this._API_ENDPOINT + 'extractionmethods/' };
     public static get INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'inhibitions/' };
-    public static get SAMPLE_INHIBITIONS_URL(): string {return this._API_ENDPOINT + 'sampleinhibitions'};
-    public static get CONCENTRATION_TYPES_URL(): string { return this._API_ENDPOINT + 'concentrationtype/'};
+    public static get SAMPLE_INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'sampleinhibitions' };
+    public static get CONCENTRATION_TYPES_URL(): string { return this._API_ENDPOINT + 'concentrationtype/' };
     public static get RT_URL(): string { return this._API_ENDPOINT + 'reversetranscriptions/' };
     public static get REPLICATES_URL(): string { return this._API_ENDPOINT + 'pcrreplicates/' };
     public static get STANDARD_CURVES_URL(): string { return this._API_ENDPOINT + 'standardcurves/' };
@@ -36,6 +37,13 @@ export class APP_SETTINGS {
     public static get CONTROLS_URL(): string { return this._API_ENDPOINT + 'controls/' };
     public static get OTHER_ANALYSES_URL(): string { return this._API_ENDPOINT + 'otheranalyses/' };
     public static get USERS_URL(): string { return this._API_ENDPOINT + 'users/' };
+
+    public static get NUCLEIC_ACID_TYPES() {
+        return [
+        { "id": 1, "name": "DNA" },
+        { "id": 2, "name": "RNA" }
+        ]
+    };
 
     public static get MIN_JSON_HEADERS() { return new Headers({ 'Accept': 'application/json' }) };
     public static get JSON_HEADERS() { return new Headers({ 'Accept': 'application/json', 'Content-Type': 'application/json' }) };

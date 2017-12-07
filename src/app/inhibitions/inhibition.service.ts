@@ -16,7 +16,7 @@ export class InhibitionService {
 
   constructor(private _http: Http) { }
 
-  public create(formValue: IInhibition): Observable<IInhibition> {
+  public create(formValue): Observable<IInhibition[]> {
 
 
     let options = new RequestOptions({

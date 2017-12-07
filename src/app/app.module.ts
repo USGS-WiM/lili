@@ -56,6 +56,7 @@ import { TargetService } from "./targets/target.service";
 import { TargetResolve } from "./targets/target.resolve";
 import { UserService } from "./SHARED/user.service";
 import { UserResolve } from "./SHARED/user.resolve";
+import { InhibitionService } from "./inhibitions/inhibition.service";
 
 @NgModule({
     declarations: [
@@ -99,7 +100,7 @@ import { UserResolve } from "./SHARED/user.resolve";
         ClarityModule.forRoot(),
         ROUTING
     ],
-    providers: [ConcentrationTypeService, ConcentrationResolve, UnitService, UnitResolve, ExtractionMethodService, ExtractionResolve,
+    providers: [ConcentrationTypeService, ConcentrationResolve, UnitService, UnitResolve, InhibitionService, ExtractionMethodService, ExtractionResolve,
         FilterTypeService, FilterResolve, MatrixService, MatrixResolve, SampleTypeService, SampleTypeResolve, ControlTypeService, ControlResolve,
         TargetService, TargetResolve, UserService, UserResolve ],
     bootstrap: [AppComponent]

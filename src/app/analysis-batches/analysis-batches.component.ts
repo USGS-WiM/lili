@@ -5,7 +5,6 @@ import { Wizard } from "clarity-angular";
 import { IAnalysisBatchSummary } from './analysis-batch-summary';
 import { IAnalysisBatch } from './analysis-batch';
 import { IAnalysisBatchDetail } from './analysis-batch-detail';
-import { IAliquotSelection } from './aliquot-selection';
 
 import { IStudy } from '../studies/study';
 import { ISample } from '../samples/sample';
@@ -16,16 +15,21 @@ import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcr
 import { ITarget } from '../targets/target';
 import { IExtractionMethod } from '../extractions/extraction-method';
 import { IUnit } from '../units/unit';
+import { IAliquot } from '../aliquots/aliquot';
+import { IFreezerLocation } from '../aliquots/freezer-location';
 import { IExtractionBatchSubmission } from '../extractions/extraction-batch-submission';
 
 import { StudyService } from '../studies/study.service';
 import { SampleService } from '../samples/sample.service';
 import { AnalysisBatchService } from './analysis-batch.service';
 import { TargetService } from '../targets/target.service';
+import { InhibitionService } from '../inhibitions/inhibition.service';
 import { ExtractionMethodService } from '../extractions/extraction-method.service';
+import { ExtractionBatchService } from '../extractions/extraction-batch.service';
 import { UnitService } from '../units/unit.service';
 
 import { APP_UTILITIES } from '../app.utilities';
+import { APP_SETTINGS } from '../app.settings';
 
 @Component({
   selector: 'app-analysis-batches',
@@ -66,16 +70,17 @@ export class AnalysisBatchesComponent implements OnInit {
   showABEditError: boolean = false;
   showABEditSuccess: boolean = false;
 
+  nucleicAcidTypes = [];
 
   extractionBatchArray: IExtractionBatch[];
 
-
-  aliquotSelectionArray: IAliquotSelection[] = [];
+  // aliquotSelectionArray: IAliquotSelection[] = [];
 
   inhibitionsPerSample = [];
   // may not need this abInhibitionCount var, consider removing
   abInhibitionCount = 0;
   abInhibitions: IInhibition[];
+  sampleInhibitions: IInhibition[];
 
   showHideEdit: boolean = false;
   showHideExtractionDetailModal: boolean = false;
@@ -101,6 +106,7 @@ export class AnalysisBatchesComponent implements OnInit {
   extractForm: FormGroup;
   replicateArray: FormArray;
   extractionArray: FormArray;
+  aliquotsArray: FormArray;
 
   x: boolean = false;
 
@@ -112,48 +118,12 @@ export class AnalysisBatchesComponent implements OnInit {
     samples: new FormControl('')
   });
 
-
-  // extraction form
-  extractionForm = new FormGroup({
-    analysis_batch: new FormControl(''),
-    extraction_volume: new FormControl(''),
-    elution_volume: new FormControl(''),
-    extraction_method: new FormControl(''),
-    extraction_date: new FormControl(''),
-    reextraction: new FormControl(''),
-    sample_dilution_factor: new FormControl(''),
-    qpcr_template_volume: new FormControl('6'),
-    qpcr_reaction_volume: new FormControl('20'),
-    qpcr_date: new FormControl(''),
-    rt_template_volume: new FormControl(''),
-    rt_reaction_volume: new FormControl(''),
-    rt_date: new FormControl(''),
-    // TODO: make these formarrays(?)
-    replicates: new FormControl(''),
-    extractions: new FormControl('')
-  });
-
-  addRTForm = new FormGroup({
-    template_volume: new FormControl(''),
-    // set the default units to microliters
-    // template_volume_units: new FormControl('4'),
-    reaction_volume: new FormControl(''),
-    // set the default units to microliters
-    // reaction_volume_units: new FormControl('4'),
-    rt_date: new FormControl('')
-  })
-
   // add inhibition form
   createInhibitionForm = new FormGroup({
-    dna: new FormControl(''),
-    rna: new FormControl(''),
-    inhibition_date: new FormControl('')
-  })
-
-  applyInhibition_batchForm = new FormGroup({
-    dnaInhibition: new FormControl(''),
-    rnaInhibition: new FormControl(''),
-    inhibition_date: new FormControl('')
+    dna: new FormControl(false),
+    rna: new FormControl(false),
+    inhibition_date_dna: new FormControl(''),
+    inhibition_date_rna: new FormControl('')
   })
 
   buildExtractForm() {
@@ -184,26 +154,43 @@ export class AnalysisBatchesComponent implements OnInit {
       extractions: this.formBuilder.array([
         this.formBuilder.group({
           sample: '',
-          inhibition: ''
+          inhibition_dna: '',
+          inhibition_rna: '',
+          aliquot_string: '',
+          rack: '',
+          box: '',
+          row: '',
+          spot: '',
+          aliquots: this.formBuilder.array([])
         })
       ])
     });
 
     this.replicateArray = this.extractForm.get('replicates') as FormArray;
-
-
+    this.extractionArray = this.extractForm.get('extractions') as FormArray;
   }
 
+  onAliquotSelect(sampleID, aliquotID) {
 
-  onAliquotSelect(sampleID, aliquotString) {
+    for (let extraction of this.extractionArray.controls) {
+      if (sampleID === extraction.get('sample').value) {
 
-    for (let sample of this.aliquotSelectionArray) {
-      if (sampleID === sample.id) {
-        sample.aliquot = aliquotString;
+        for (let sample of this.abSampleList) {
+          if (sampleID === sample.id) {
+            for (let aliquot of sample.aliquots) {
+              if (aliquot.id === (parseInt(aliquotID, 10))) {
+                extraction.get('aliquot_string').setValue(aliquot.aliquot_string);
+                extraction.get('rack').setValue(aliquot.freezer_location.rack);
+                extraction.get('box').setValue(aliquot.freezer_location.box);
+                extraction.get('row').setValue(aliquot.freezer_location.row);
+                extraction.get('spot').setValue(aliquot.freezer_location.spot);
+              }
+            }
+
+          }
+        }
       }
     }
-
-    console.log(this.aliquotSelectionArray);
   }
 
   constructor(
@@ -212,7 +199,9 @@ export class AnalysisBatchesComponent implements OnInit {
     private _sampleService: SampleService,
     private _analysisBatchService: AnalysisBatchService,
     private _targetService: TargetService,
+    private _inhibitionService: InhibitionService,
     private _extractionMethodService: ExtractionMethodService,
+    private _extractionBatchService: ExtractionBatchService,
     private _unitService: UnitService
   ) {
     this.buildExtractForm();
@@ -220,8 +209,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   ngOnInit() {
 
-    // grab temporary hard-coded sample analysis batch summary data (until web service endpoint is up-to-date)
-    // this.allAnalysisBatchSummaries = APP_UTILITIES.ANALYSIS_BATCH_SUMMARY_ENDPOINT;
+    this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
 
     // on init, call getTargets function of the TargetService, set results to allTargets var
     this._targetService.getTargets()
@@ -229,7 +217,7 @@ export class AnalysisBatchesComponent implements OnInit {
       error => this.errorMessage = <any>error);
 
     // grab temporary hard-coded inhibitionsPerSample object (until web service endpoint is up-to-date)
-    this.inhibitionsPerSample = APP_UTILITIES.INHIBITIONS_PER_SAMPLE_ENDPOINT;
+    // this.inhibitionsPerSample = APP_UTILITIES.INHIBITIONS_PER_SAMPLE_ENDPOINT;
 
     // on init, call getAnalysisBatchSummaries function of the AnalysisBatchService, set results to the allAnalysisBatches var
     this._analysisBatchService.getAnalysisBatchSummaries()
@@ -266,34 +254,43 @@ export class AnalysisBatchesComponent implements OnInit {
   public doCustomClick(buttonType: string): void {
     if ("custom-next" === buttonType) {
 
-      // add the 'count' property to the selected (targets) object
-      // set the default count to 2
-      this.selected.map((target) => {
-        target.count = 2;
-        return target;
-      });
-      // check for RNA targets, set rnaTargetsSelected var to true
-      for (let target of this.selected) {
-        if (target.nucleic_acid_type === "RNA") {
-          this.rnaTargetsSelected = true;
-          break;
-        }
-      }
+      if (this.selected.length < 1) {
+        alert("Please select at least one target to continue.")
 
-      // reset the replicate form array controls to a blank array so it doesnt get populated twice
-      this.replicateArray.controls = [];
-      // loop through selected to create replicates form
-      for (let target of this.selected) {
+      } else {
 
-        let formGroup: FormGroup = this.formBuilder.group({
-          target: this.formBuilder.control(target.id),
-          count: this.formBuilder.control(target.count)
+        // add the 'count' property to the selected (targets) object
+        // set the default count to 2
+        this.selected.map((target) => {
+          target.count = 2;
+          return target;
         });
-        this.replicateArray.push(formGroup);
+        // check for RNA targets, set rnaTargetsSelected var to true
+        for (let target of this.selected) {
+          if (target.nucleic_acid_type === 2) {
+            this.rnaTargetsSelected = true;
+            break;
+          }
+        }
+
+        // reset the replicate form array controls to a blank array so it doesnt get populated twice
+        this.replicateArray.controls = [];
+        // loop through selected to create replicates form
+        for (let target of this.selected) {
+
+          let formGroup: FormGroup = this.formBuilder.group({
+            target: this.formBuilder.control(target.id),
+            count: this.formBuilder.control(target.count)
+          });
+          this.replicateArray.push(formGroup);
+        }
+
+        this.x = true;
+        this.wizardExtract.next();
+
       }
 
-      this.x = true;
-      this.wizardExtract.next();
+
     }
 
     if ("custom-previous" === buttonType) {
@@ -342,6 +339,9 @@ export class AnalysisBatchesComponent implements OnInit {
     this.abSampleList = [];
     this.abInhibitionCount = 0;
     this.abInhibitions = [];
+    this.sampleInhibitions = [];
+    this.abSampleIDList = [];
+
 
     this.sampleListEditLocked = false;
   }
@@ -350,70 +350,136 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
+  buildAliquotArray(index, sampleID, aliquots) {
+
+    let aliquotsArray = this.formBuilder.array([]);
+
+    for (let aliquot of aliquots) {
+      let aliquotFormGroup: FormGroup = this.formBuilder.group({
+        aliquot_id: this.formBuilder.control(aliquot.id),
+        aliquot_string: this.formBuilder.control(aliquot.aliquot_string),
+        rack: this.formBuilder.control(aliquot.freezer_location.rack),
+        box: this.formBuilder.control(aliquot.freezer_location.box),
+        row: this.formBuilder.control(aliquot.freezer_location.row),
+        spot: this.formBuilder.control(aliquot.freezer_location.spot)
+      });
+      aliquotsArray.push(aliquotFormGroup);
+    }
+    return aliquotsArray;
+  }
 
   extractAB(selectedAB) {
 
+    this.submitLoading = true;
     this.resetAB();
     this.selectedAnalysisBatchID = selectedAB.id;
 
-    // get the AB detail
+    this.extractForm.patchValue({
+      analysis_batch: selectedAB.id
+    })
+
+    // get the AB detail from web services
     this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
       .subscribe(
       (analysisBatchDetail) => {
-        console.log(analysisBatchDetail);
-        // this.selectedAnalysisBatchData = analysisBatchDetail;
+        console.log("Selected Analysis Batch detail data: ", analysisBatchDetail);
 
-        // get sample id for each sample in the AB
-        // add those to abSampleList array
+        this.selectedAnalysisBatchData = analysisBatchDetail;
+
+        // get sample id for each sample in the AB, add those to abSampleList array and abSampleIDList
         if (analysisBatchDetail.samples.length > 0) {
-
           for (let sampleSummary of analysisBatchDetail.samples) {
             for (let sample of this.allSamples) {
               if (sampleSummary.id === sample.id) {
                 this.abSampleList.push(sample);
                 this.abSampleIDList.push(sample.id);
-                this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.id + '-1' });
+                // deprecated variable
+                // this.aliquotSelectionArray.push({ "id": sample.id, "aliquot": sample.id + '-1' });
               }
             }
           }
 
-          // TODO: get inhibitions for each sample in this AB and build an array with all the inhibitions
+          // reset the extraction form array controls to a blank array
+          this.extractionArray.controls = [];
+
+          // for (let sample of this.abSampleList) {
+
+          // NEED TO PASS THE INDEX TO THE buildAliquotArray FUNC
+
+          // populate extractionArray with sample IDs for the selected AB and null inhibition ID value (TBD by user)
+          // let extractionFormGroup: FormGroup = this.formBuilder.group({
+          //   sample: this.formBuilder.control(sample.id),
+          //   inhibition_dna: this.formBuilder.control(null),
+          //   inhibition_rna: this.formBuilder.control(null),
+          //   aliquots: this.buildAliquotArray(sample.id, sample.aliquots)
+          // });
+          // this.extractionArray.push(extractionFormGroup);
+
+          //}
+
+          for (let i = 0; i < this.abSampleList.length; i++) {
+
+            let extractionFormGroup: FormGroup = this.formBuilder.group({
+              sample: this.formBuilder.control(this.abSampleList[i].id),
+              inhibition_dna: this.formBuilder.control(null),
+              inhibition_rna: this.formBuilder.control(null),
+              aliquot_string: this.formBuilder.control(null),
+              rack: this.formBuilder.control(null),
+              box: this.formBuilder.control(null),
+              row: this.formBuilder.control(null),
+              spot: this.formBuilder.control(null),
+              aliquots: this.buildAliquotArray(i, this.abSampleList[i].id, this.abSampleList[i].aliquots)
+            });
+
+            this.extractionArray.push(extractionFormGroup);
+
+          }
+          console.log("extractionArray.controls: ", this.extractionArray.controls)
+          console.log("Aliquots for first extraction: ", (<FormGroup>this.extractionArray.controls[0]).controls['aliquots'])
+          // build the abInhbition array: all inhibitions in the current analysis batch
+          // used for the batch level apply select dropdowns
+          // TEMPORARILY COMMENTED OUT: may not need this because batch level application not in use. Revisit.
+          // if (analysisBatchDetail.extractionbatches.length > 0) {
+          //   for (let extractionBatch of analysisBatchDetail.extractionbatches) {
+          //     if (extractionBatch.inhibitions.length > 0) {
+          //       for (let inhibition of extractionBatch.inhibitions) {
+          //         this.abInhibitions.push(inhibition)
+          //       }
+
+          //     }
+          //   }
+          // }
+
+          // call to services to retrieve a list of all inhibitions for each sample in this AB
           this._analysisBatchService.getSampleInhibitions(this.abSampleIDList)
             .subscribe(
             (abSampleInhibitions) => {
-              console.log(abSampleInhibitions);
 
-              // check if any of the samples in the list have inhibitions
-              // if so set inhibitionsExists var to true
               for (let sample of abSampleInhibitions) {
+
+                // populate sampleInhibitions var with all the inhibitions associated with any sample in this AB
+                // used for the sample level apply select dropdowns
+                for (let inhibition of sample.inhibitions) {
+                  this.sampleInhibitions.push(inhibition)
+                }
+
+                // check if any of the samples in the list have inhibitions, for inhibitions exist alert
+                // if so set inhibitionsExists var to true
                 if (sample.inhibitions.length > 0) {
                   this.inhibitionsExist = true;
-                  break;
                 }
               }
+
+              this.submitLoading = false;
+              this.extractWizardOpen = true;
             },
             error => {
               this.errorMessage = <any>error
             }
             )
 
-
-          // check the this.inhibitionsPerSample for inhibitions(temporary hard-coded approach)
-          for (let sample of this.inhibitionsPerSample) {
-            // this.abInhibitionCount += sample.inhibitions.length;
-            for (let inhibition of sample.inhibitions) {
-              this.abInhibitions.push(inhibition);
-            }
-          }
-          if (this.abInhibitions.length > 0) {
-            this.inhibitionsExist = true;
-          }
-          /////////////////////////////////////////////////////////////////////////////////////////////
-
-          this.extractWizardOpen = true;
-
         } else {
-
+          this.submitLoading = false;
           alert("No samples in this analysis batch. Please add samples before extracting.");
         }
 
@@ -422,109 +488,200 @@ export class AnalysisBatchesComponent implements OnInit {
         this.errorMessage = <any>error
       }
       );
-
-    // call to retrieve AB detail data
-    // this.selectedAnalysisBatchData = this.retrieveABData(selectedAB.id);
   }
 
-  resetExtractWizard() {
-    this.wizardExtract.reset();
-  }
 
-  finishExtractWizard(abID, extractFormValue, rtFormValue, createInhibitionFormValue) {
+  finishExtractWizard(abID, extractFormValue, createInhibitionFormValue) {
 
-    this.extractForm.patchValue({
-      analysis_batch: abID
-    })
+    // arrays for batch POST to inhibition endpoint
+    let inhibitionSubmissionArrayDNA = [];
+    let inhibitionSubmissionArrayRNA = [];
 
-    // establish local variables to stoe the rna and dna inhibition IDs that the server returns
-    let rnaInhibitionID;
-    let dnaInhibitionID;
-    // establish local variable for POST to inhibition endpoint
-    // Needed because the format of the submission object is distinct from the createInhibitionForm object
-    let inhibitionSubmission: Object = {
-      "sample": null,
-      "analysis_batch": null,
-      "inhibition_date": null,
-      "nucleic_acid_type": null
-    }
+    // create DNA inhibition records
+    if (createInhibitionFormValue.dna === true || createInhibitionFormValue.rna === true) {
 
-    if (this.useExistingInhibition === false) {
-      // creating a new inhibition then
-      // send a POST to the InhibitionBatch endpoint.The response will contain the new batch record
-      // and its children inhibition records (which will each include the sample ID to which they relate).
-      // Those new inhibition IDs should be used to populate the local (client-side) extractions.
+      if (createInhibitionFormValue.dna === true && createInhibitionFormValue.rna === false) {
+        // create DNA inhibitions only
+        // submit array of inhibition records, one per sample, with DNA as nucleic acid type to inhibition endpoint (1 = DNA, 2 = RNA)
+        for (let sampleID of this.abSampleIDList) {
+          inhibitionSubmissionArrayDNA.push({
+            "sample": sampleID,
+            "analysis_batch": abID,
+            "inhibition_date": this.createInhibitionForm.value.inhibition_date_dna,
+            "nucleic_acid_type": 1
+          })
+        }
 
-      // createInhibitionFormValue: {rna: true, dna: false, inhibition_date:"2017-11-14"}
+        this._inhibitionService.create(inhibitionSubmissionArrayDNA)
+          .subscribe(
+          (dnaInhibitions) => {
+            console.log("DNA Inhibitions created: ", dnaInhibitions);
 
-      // inhibitionSubmission.sample
+            for (let inhibition of dnaInhibitions) {
+              for (let extraction of extractFormValue.extractions) {
+                if (extraction.sample === inhibition.sample) {
+                  extraction.inhibition_dna = inhibition.id;
+                }
+              }
+            }
 
-      if (this.createInhibitionForm.value.rna === true) {
+            this.submitExtractionBatch(extractFormValue);
+          },
+          error => { alert("DNA inhibitions not created") }
+          )
+      } else if (createInhibitionFormValue.dna === false && createInhibitionFormValue.rna === true) {
+        // create RNA inhibitions only
+        // submit array of inhibition records, one per sample, with DRA as nucleic acid type to inhibition endpoint (1 = DNA, 2 = RNA)
+        for (let sampleID of this.abSampleIDList) {
+          inhibitionSubmissionArrayRNA.push({
+            "sample": sampleID,
+            "analysis_batch": abID,
+            "inhibition_date": this.createInhibitionForm.value.inhibition_date_rna,
+            "nucleic_acid_type": 2
+          })
+        }
 
+        this._inhibitionService.create(inhibitionSubmissionArrayRNA)
+          .subscribe(
+          (rnaInhibitions) => {
+            console.log("RNA Inhibitions created: ", rnaInhibitions);
 
+            for (let inhibition of rnaInhibitions) {
+              for (let extraction of extractFormValue.extractions) {
+                if (extraction.sample === inhibition.sample) {
+                  extraction.inhibition_rna = inhibition.id;
+                }
+              }
+            }
 
+            this.submitExtractionBatch(extractFormValue);
+          },
+          error => { alert("RNA inhibitions not created") }
+          )
+
+      } else if (createInhibitionFormValue.dna === true && createInhibitionFormValue.rna === true) {
+        // create DNA *and* RNA inhibitions
+        // submit array of inhibition records, one per sample, with RDA as nucleic acid type to inhibition endpoint (1 = DNA, 2 = RNA)
+        for (let sampleID of this.abSampleIDList) {
+          inhibitionSubmissionArrayDNA.push({
+            "sample": sampleID,
+            "analysis_batch": abID,
+            "inhibition_date": this.createInhibitionForm.value.inhibition_date_dna,
+            "nucleic_acid_type": 1
+          })
+        }
+
+        this._inhibitionService.create(inhibitionSubmissionArrayDNA)
+          .subscribe(
+          (dnaInhibitions) => {
+            console.log("DNA Inhibitions created: ", dnaInhibitions);
+
+            for (let inhibition of dnaInhibitions) {
+              for (let extraction of extractFormValue.extractions) {
+                if (extraction.sample === inhibition.sample) {
+                  extraction.inhibition_rna = inhibition.id;
+                }
+              }
+            }
+
+            for (let sampleID of this.abSampleIDList) {
+              inhibitionSubmissionArrayRNA.push({
+                "sample": sampleID,
+                "analysis_batch": abID,
+                "inhibition_date": this.createInhibitionForm.value.inhibition_date_rna,
+                "nucleic_acid_type": 2
+              })
+            }
+
+            this._inhibitionService.create(inhibitionSubmissionArrayRNA)
+              .subscribe(
+              (rnaInhibitions) => {
+                console.log("RNA Inhibitions created: ", rnaInhibitions);
+
+                for (let inhibition of rnaInhibitions) {
+                  for (let extraction of extractFormValue.extractions) {
+                    if (extraction.sample === inhibition.sample) {
+                      extraction.inhibition_rna = inhibition.id;
+                    }
+                  }
+                }
+                this.submitExtractionBatch(extractFormValue);
+              },
+              error => { alert("RNA inhibitions not created") }
+              )
+          },
+          error => { alert("RNA inhibitions not created") }
+          )
 
       }
 
-      if (this.createInhibitionForm.value.dna === true) {
+    } else {
 
-      }
+      this.submitExtractionBatch(extractFormValue);
+    }
+    // end finishExtractWizard func
+  }
 
+  submitExtractionBatch(extractFormValue) {
 
-
-
-
-
-
-    } else if (this.useExistingInhibition === true) {
-
-      // Otherwise, if there are existing inhibitions that satisfy the user's needs,
-      // then use those existing inhibition IDs when building the extraction objects in the client.
-
+    // convert all inhibition IDs to numbers from strings(select forms return strings)
+    for (let extraction of extractFormValue.extractions ) {
+        extraction.inhibition_dna = parseInt(extraction.inhibition_dna, 10)
+        extraction.inhibition_rna = parseInt(extraction.inhibition_rna, 10)
     }
 
-    alert("extract wiz finuto!")
+    this._extractionBatchService.create(extractFormValue)
+    .subscribe(
+      (extractionBatch) => {
 
-    // Needs:
+      },
+      error => {
+        this.errorMessage = <any>error
+      }
+      )
 
-    // 1: Info for new Inhibition if being done that way, must await response
+    let targetNameArray;
+    for (let replicate of extractFormValue.replicates) {
+      for (let target of this.allTargets){
+        if (replicate.target === target.id){
+          targetNameArray.push(target.name)
+        }
+      }
+    }
 
-    // 2: Object for POST to the extraction batch endpoint with:
-    // extraction data, replicates object (target and count),
-    // and extractions object (sample id, inhibition, rt)
+     // local var to hold extraction number
+     let extractionNumber;
+     // add 1 to length of extractionBatches array to get current extraction number
+     extractionNumber = (this.selectedAnalysisBatchData.extractionbatches.length) + 1
 
-    // 3: Build an object for creating the Extract worksheet (including the Aliquot selections)
+     // details for AB worksheet:
+     // analysis batch: extractFormValue.analysisBatch
+     // creation_date: this.selectedAnalysisBatchData.created_date
+     // studies: this.selectedAnalysisBatchData.studies
+     // description: this.selectedAnalysisBatchData.description
 
-    // 4:
+     // extraction no: extractionNumber
+     // extraction date: extractFormValue.extraction_date
+     // extraction method: extractFormValue.extraction_method (pipe for display)
+     // extraction sample volume: extractFormValue.extraction_volume
+     // eluted extraction volume: extractFormValue.elution_volume
+     // Left TABLE:
+     // each row is an extraction from extractFormValue.extractions
+     // sample column: extractFormValue.extractions.aliquot_string
+     // and so on for rack, box, row, spot.
+     // DNA Inhibition Dilution Factor and RNA Inhibition Dilution Factor leave blank (for now)
+     // Right TABLE:
+     // each row is a target from targetNameArray, the rest of the columns are blank
+     // Ext Neg: blank
+     // Ext Pos: blank
+    // Reverse transcription No.: extractionNumber
+    // RT reaction volume: extractForm.rt.reaction_volume
+    // RT date: extractForm.rt.reaction_volume.rt_date
+    // NOTES: userID (not ready for this yet), blank space for writing
 
-    // set the analysis batch ID
-    // this.extractionBatchSubmission.analysis_batch = abID;
-    // this.extractionBatchSubmission.extraction_method = extractFormValue.extraction_method;
-    // this.extractionBatchSubmission.extraction_volume = extractFormValue.extraction_volume;
-    // this.extractionBatchSubmission.elution_volume = extractFormValue.elution_volume;
-    // this.extractionBatchSubmission.
-    // this.extractionBatchSubmission.
-
-    // this.extractionBatchSubmission.reextraction
-
-
-
-
-
-
-  }
-
-  removeSample(samplesToRemove) {
-    console.log(samplesToRemove);
-  }
-
-  showApplyExistingCard() {
-    this.useExistingInhibition = true;
-
-  }
-
-  onUnitChange() {
-
+     this.wizardExtract.reset();
+     alert("extract wiz finuto!")
+     console.log("Extract form value: ", extractFormValue);
   }
 
   onSubmit(formID, formValue) {
@@ -549,9 +706,6 @@ export class AnalysisBatchesComponent implements OnInit {
           )
       }
     }
-
-
-
   }
 
   //TODO: adjust this function to update the AB Summary array that populates the AB table
@@ -566,7 +720,6 @@ export class AnalysisBatchesComponent implements OnInit {
   // private findIndexToUpdate(newItem) {
   //   return newItem.id === this;
   // }
-
 
   openTargetDetails(abID) {
 
@@ -615,10 +768,7 @@ export class AnalysisBatchesComponent implements OnInit {
       this.sampleListEditLocked = true;
     }
 
-
     // call to retrieve AB detail data
-
-
     this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
       .subscribe(
       (analysisBatchDetail) => {
@@ -657,8 +807,5 @@ export class AnalysisBatchesComponent implements OnInit {
         this.errorMessage = <any>error
       }
       );
-
-
-
   }
 }
