@@ -24,6 +24,7 @@ export class APP_SETTINGS {
     public static get ANALYSIS_BATCH_DETAIL_URL(): string { return this._API_ENDPOINT + 'analysisbatchdetail/' };
     public static get ANALYSIS_BATCH_SUMMARY_URL(): string { return this._API_ENDPOINT + 'analysisbatchsummary/' };
     public static get EXTRACTIONS_URL(): string { return this._API_ENDPOINT + 'extractions/'; };
+    public static get EXTRACTION_BATCHES_URL(): string { return this._API_ENDPOINT + 'extractionbatches/'};
     public static get EXTRACTION_METHODS_URL(): string { return this._API_ENDPOINT + 'extractionmethods/' };
     public static get INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'inhibitions/' };
     public static get SAMPLE_INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'sampleinhibitions' };

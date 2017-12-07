@@ -25,6 +25,7 @@ import { AnalysisBatchService } from './analysis-batch.service';
 import { TargetService } from '../targets/target.service';
 import { InhibitionService } from '../inhibitions/inhibition.service';
 import { ExtractionMethodService } from '../extractions/extraction-method.service';
+import { ExtractionBatchService } from '../extractions/extraction-batch.service';
 import { UnitService } from '../units/unit.service';
 
 import { APP_UTILITIES } from '../app.utilities';
@@ -125,12 +126,6 @@ export class AnalysisBatchesComponent implements OnInit {
     inhibition_date_rna: new FormControl('')
   })
 
-  // applyInhibition_batchForm = new FormGroup({
-  //   dnaInhibition: new FormControl(''),
-  //   rnaInhibition: new FormControl(''),
-  //   inhibition_date: new FormControl('')
-  // })
-
   buildExtractForm() {
     this.extractForm = this.formBuilder.group({
       analysis_batch: ['', Validators.required],
@@ -206,6 +201,7 @@ export class AnalysisBatchesComponent implements OnInit {
     private _targetService: TargetService,
     private _inhibitionService: InhibitionService,
     private _extractionMethodService: ExtractionMethodService,
+    private _extractionBatchService: ExtractionBatchService,
     private _unitService: UnitService
   ) {
     this.buildExtractForm();
@@ -634,6 +630,25 @@ export class AnalysisBatchesComponent implements OnInit {
         extraction.inhibition_rna = parseInt(extraction.inhibition_rna, 10)
     }
 
+    this._extractionBatchService.create(extractFormValue)
+    .subscribe(
+      (extractionBatch) => {
+
+      },
+      error => {
+        this.errorMessage = <any>error
+      }
+      )
+
+    let targetNameArray;
+    for (let replicate of extractFormValue.replicates) {
+      for (let target of this.allTargets){
+        if (replicate.target === target.id){
+          targetNameArray.push(target.name)
+        }
+      }
+    }
+
      // local var to hold extraction number
      let extractionNumber;
      // add 1 to length of extractionBatches array to get current extraction number
@@ -650,31 +665,23 @@ export class AnalysisBatchesComponent implements OnInit {
      // extraction method: extractFormValue.extraction_method (pipe for display)
      // extraction sample volume: extractFormValue.extraction_volume
      // eluted extraction volume: extractFormValue.elution_volume
-     // TABLE: 
+     // Left TABLE:
      // each row is an extraction from extractFormValue.extractions
-     // 
-
+     // sample column: extractFormValue.extractions.aliquot_string
+     // and so on for rack, box, row, spot.
+     // DNA Inhibition Dilution Factor and RNA Inhibition Dilution Factor leave blank (for now)
+     // Right TABLE:
+     // each row is a target from targetNameArray, the rest of the columns are blank
+     // Ext Neg: blank
+     // Ext Pos: blank
+    // Reverse transcription No.: extractionNumber
+    // RT reaction volume: extractForm.rt.reaction_volume
+    // RT date: extractForm.rt.reaction_volume.rt_date
+    // NOTES: userID (not ready for this yet), blank space for writing
 
      this.wizardExtract.reset();
      alert("extract wiz finuto!")
-     // Needs:
-
-     // 1: Info for new Inhibition if being done that way, must await response
-
-     // 2: Object for POST to the extraction batch endpoint with:
-     // extraction data, replicates object (target and count),
-     // and extractions object (sample id, inhibition, rt) (this is the extractFormValue)
-
      console.log("Extract form value: ", extractFormValue);
-
-     // 3: Build an object for creating the Extract worksheet (including the Aliquot selections)
-
-  }
-
-
-
-  onUnitChange() {
-
   }
 
   onSubmit(formID, formValue) {
@@ -699,9 +706,6 @@ export class AnalysisBatchesComponent implements OnInit {
           )
       }
     }
-
-
-
   }
 
   //TODO: adjust this function to update the AB Summary array that populates the AB table
