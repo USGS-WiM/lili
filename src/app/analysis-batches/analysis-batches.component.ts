@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from "@angular/forms/";
+import { FormBuilder, FormControl, FormGroup, FormArray, Validators, PatternValidator } from "@angular/forms/";
 import { Wizard } from "clarity-angular";
 
 import { IAnalysisBatchSummary } from './analysis-batch-summary';
@@ -128,19 +128,19 @@ export class AnalysisBatchesComponent implements OnInit {
 
   buildExtractForm() {
     this.extractForm = this.formBuilder.group({
-      analysis_batch: ['', Validators.required],
-      extraction_volume: ['', Validators.required],
-      elution_volume: ['', Validators.required],
+      analysis_batch: '',
+      extraction_volume: ['', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+      elution_volume: ['', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
       extraction_method: ['', Validators.required],
       extraction_date: ['', Validators.required],
       reextraction: '',
       sample_dilution_factor: ['', Validators.required],
-      qpcr_template_volume: ['6', Validators.required],
-      qpcr_reaction_volume: ['20', Validators.required],
+      qpcr_template_volume: ['6', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+      qpcr_reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
       qpcr_date: ['', Validators.required],
       rt: this.formBuilder.group({
-        template_volume: ['6', Validators.required],
-        reaction_volume: ['20', Validators.required],
+        template_volume: ['6', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+        reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
         rt_date: ['', Validators.required],
         re_rt: '',
         re_rt_note: ''
@@ -169,6 +169,8 @@ export class AnalysisBatchesComponent implements OnInit {
     this.replicateArray = this.extractForm.get('replicates') as FormArray;
     this.extractionArray = this.extractForm.get('extractions') as FormArray;
   }
+
+
 
   onAliquotSelect(sampleID, aliquotID) {
 
@@ -415,7 +417,7 @@ export class AnalysisBatchesComponent implements OnInit {
           // });
           // this.extractionArray.push(extractionFormGroup);
 
-          //}
+          // }
 
           for (let i = 0; i < this.abSampleList.length; i++) {
 
@@ -630,9 +632,12 @@ export class AnalysisBatchesComponent implements OnInit {
         extraction.inhibition_rna = parseInt(extraction.inhibition_rna, 10)
     }
 
+    // submit the extractFormValue to the extraction batch service
     this._extractionBatchService.create(extractFormValue)
     .subscribe(
       (extractionBatch) => {
+
+        console.log(extractionBatch);
 
       },
       error => {
@@ -643,7 +648,7 @@ export class AnalysisBatchesComponent implements OnInit {
     let targetNameArray;
     for (let replicate of extractFormValue.replicates) {
       for (let target of this.allTargets){
-        if (replicate.target === target.id){
+        if (replicate.target === target.id) {
           targetNameArray.push(target.name)
         }
       }
@@ -708,7 +713,7 @@ export class AnalysisBatchesComponent implements OnInit {
     }
   }
 
-  //TODO: adjust this function to update the AB Summary array that populates the AB table
+  // TODO: adjust this function to update the AB Summary array that populates the AB table
   // private updateABArray(newItem) {
   //   let updateItem = this.allSamples.find(this.findIndexToUpdate, newItem.id);
 

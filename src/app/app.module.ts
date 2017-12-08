@@ -26,7 +26,7 @@ import { RangeFilter } from './FILTERS/range-filter/range-filter.component';
 import { CollectionStartDateFilter } from './FILTERS/collection-start-date-filter/collection-start-date-filter.component';
 import { CollectionEndDateFilter } from './FILTERS/collection-end-date-filter/collection-end-date-filter.component';
 import { FilterBornOnDateFilter } from './FILTERS/filter-born-on-date-filter/filter-born-on-date-filter.component';
-import { DateAddedFilter} from './FILTERS/date-added-filter/date-added-filter.component';
+import { DateAddedFilter } from './FILTERS/date-added-filter/date-added-filter.component';
 import { DateUpdatedFilter } from './FILTERS/date-updated-filter/date-updated-filter.component';
 import { AnalysisBatchDetailComponent } from './analysis-batches/analysis-batch-detail/analysis-batch-detail.component';
 import { ConcentrationTypesComponent } from './admin/concentration-types/concentration-types.component';
@@ -57,6 +57,7 @@ import { TargetResolve } from "./targets/target.resolve";
 import { UserService } from "./SHARED/user.service";
 import { UserResolve } from "./SHARED/user.resolve";
 import { InhibitionService } from "./inhibitions/inhibition.service";
+import { ExtractionBatchService } from "app/extractions/extraction-batch.service";
 
 @NgModule({
     declarations: [
@@ -100,9 +101,27 @@ import { InhibitionService } from "./inhibitions/inhibition.service";
         ClarityModule.forRoot(),
         ROUTING
     ],
-    providers: [ConcentrationTypeService, ConcentrationResolve, UnitService, UnitResolve, InhibitionService, ExtractionMethodService, ExtractionResolve,
-        FilterTypeService, FilterResolve, MatrixService, MatrixResolve, SampleTypeService, SampleTypeResolve, ControlTypeService, ControlResolve,
-        TargetService, TargetResolve, UserService, UserResolve ],
+    providers: [ConcentrationTypeService,
+        ConcentrationResolve,
+        UnitService,
+        UnitResolve,
+        InhibitionService,
+        ExtractionMethodService,
+        ExtractionBatchService,
+        ExtractionResolve,
+        FilterTypeService,
+        FilterResolve,
+        MatrixService,
+        MatrixResolve,
+        SampleTypeService,
+        SampleTypeResolve,
+        ControlTypeService,
+        ControlResolve,
+        TargetService,
+        TargetResolve,
+        UserService,
+        UserResolve
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

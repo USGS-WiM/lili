@@ -23,7 +23,7 @@
 
                                 <span *ngIf="sample.aliquots.length === 0">No aliquots recorded</span>
                                 <div class="select" *ngIf="sample.aliquots.length > 0">
-                                    <select  name="aliquot_select"  (change)="onAliquotSelect(sample.id, $event.target.value)">
+                                    <select name="aliquot_select" (change)="onAliquotSelect(sample.id, $event.target.value)">
                                         <option *ngFor="let aliquot of sample.aliquots" [value]="aliquot.id">{{aliquot.aliquot_string}}</option>
                                     </select>
                                 </div>
@@ -87,7 +87,7 @@
         <ng-template clrPageButtons>
             <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
-            <clr-wizard-button [type]="'custom-next'" >Next</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-next'">Next</clr-wizard-button>
         </ng-template>
 
     </clr-wizard-page>
@@ -102,21 +102,36 @@
                     <section class="form-block">
 
                         <div class="form-group">
-                            <label for="qpcrTemplateVol">qPCR Template Volume</label>
-                            <input id="qpcrTemplateVol" type="text" size="5" formControlName="qpcr_template_volume">
-                            <span>µL</span>
+                            <label class="required">qPCR Template Volume (µL)</label>
+                            <label for="qpcrTemplateVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                                [class.invalid]="extractForm.get('qpcr_template_volume').invalid && (extractForm.get('qpcr_template_volume').dirty || extractForm.get('qpcr_template_volume').touched)">
+                                <input id="qpcrTemplateVol" type="text" size="5" formControlName="qpcr_template_volume">
+                                <span class="tooltip-content">
+                                    This field cannot be empty!
+                                </span>
+                            </label>
                         </div>
 
                         <div class="form-group">
-                            <label for="qpcrReactionVol">qPCR Reaction Volume</label>
-                            <input id="qpcrReactionVol" type="text" size="5" formControlName="qpcr_reaction_volume">
-                            <span>µL</span>
+                            <label class="required">qPCR Reaction Volume(µL)</label>
+                            <label for="qpcrReactionVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                                [class.invalid]="extractForm.get('qpcr_reaction_volume').invalid && (extractForm.get('qpcr_reaction_volume').dirty || extractForm.get('qpcr_reaction_volume').touched)">
+                                <input id="qpcrReactionVol" type="text" size="5" formControlName="qpcr_reaction_volume">
+                                <span class="tooltip-content">
+                                    This field cannot be empty!
+                                </span>
+                            </label>
                         </div>
 
                         <div class="form-group">
-                            <label for="qpcrDateInput">qPCR Date</label>
-                            <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
+                            <label class="required">qPCR Date</label>
+                            <label for="qpcrDateInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                                [class.invalid]="extractForm.get('qpcr_reaction_volume').invalid && (extractForm.get('qpcr_reaction_volume').dirty || extractForm.get('qpcr_reaction_volume').touched)">
+                                <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
+
+                            </label>
                         </div>
+
                     </section>
 
                     <section class="form-block" *ngIf="x">
@@ -143,34 +158,64 @@
             <section class="form-block">
 
                 <div class="form-group">
-                    <label for="extractVol">Extraction Volume</label>
-                    <input id="extractVol" type="text" size="10" formControlName="extraction_volume">
-                    <span>µL</span>
+                    <label class="required">Extraction Volume (µL)</label>
+                    <label for="extractVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                        [class.invalid]="extractForm.get('extraction_volume').invalid && (extractForm.get('extraction_volume').dirty || extractForm.get('extraction_volume').touched)">
+                        <input id="extractVol" type="text" size="10" formControlName="extraction_volume">
+                        <span class="tooltip-content">
+                            This field cannot be empty and must be a number!
+                        </span>
+                    </label>
+
                 </div>
 
                 <div class="form-group">
-                    <label for="elutionVol">Elution Volume</label>
-                    <input id="elutionVol" type="text" size="10" formControlName="elution_volume">
-                    <span>µL</span>
+                    <label class="required">Elution Volume (µL)</label>
+                    <label for="elutionVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                        [class.invalid]="extractForm.get('elution_volume').invalid && (extractForm.get('elution_volume').dirty || extractForm.get('elution_volume').touched)">
+                        <input id="elutionVol" type="text" size="10" formControlName="elution_volume">
+                        <span class="tooltip-content">
+                            This field cannot be empty and must be a number!
+                        </span>
+                    </label>
+
                 </div>
 
                 <div class="form-group">
-                    <label for="elutionVol">Extraction Method</label>
-                    <div class="select">
-                        <select id="extractionMethodSelect" name="extraction_method" formControlName="extraction_method">
-                            <option *ngFor="let method of allExtractionMethods" [value]="method.id">{{method.name}}</option>
-                        </select>
-                    </div>
+                    <label class="required">Extraction Method</label>
+                    <label for="extractionMethodSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                        [class.invalid]="extractForm.get('extraction_method').invalid && (extractForm.get('extraction_method').dirty || extractForm.get('extraction_method').touched)">
+                        <div class="select">
+                            <select id="extractionMethodSelect" name="extraction_method" formControlName="extraction_method">
+                                <option *ngFor="let method of allExtractionMethods" [value]="method.id">{{method.name}}</option>
+                            </select>
+                        </div>
+                        <span class="tooltip-content">
+                            This field cannot be empty!
+                        </span>
+                    </label>
                 </div>
 
                 <div class="form-group">
-                    <label for="sampleDilution">Dilution factor of Sample</label>
-                    <input id="sampleDilution" type="text" size="10" formControlName="sample_dilution_factor">
+                    <label class="required">Dilution factor of Sample</label>
+                    <label for="sampleDilution" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                    [class.invalid]="extractForm.get('sample_dilution_factor').invalid && (extractForm.get('sample_dilution_factor').dirty || extractForm.get('sample_dilution_factor').touched)">
+                        <input id="sampleDilution" type="number" size="10" formControlName="sample_dilution_factor">
+                        <span class="tooltip-content">
+                            This field cannot be empty!
+                        </span>
+                    </label>
                 </div>
 
                 <div class="form-group">
-                    <label for="extractionDateInput">Extraction Date</label>
-                    <input type="date" id="extractionDateInput" formControlName="extraction_date">
+                    <label class="required">Extraction Date</label>
+                    <label for="extractionDateInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                        [class.invalid]="extractForm.get('extraction_date').invalid && (extractForm.get('extraction_date').dirty || extractForm.get('extraction_date').touched)">
+                        <input type="date" id="extractionDateInput" formControlName="extraction_date">
+                        <span class="tooltip-content">
+                            This field cannot be empty!
+                        </span>
+                    </label>
                 </div>
             </section>
         </form>
@@ -202,24 +247,38 @@
             <section class="form-block">
 
                 <div formGroupName="rt">
-
                     <div class="form-group">
-                        <label for="templateVol">Template Volume</label>
-                        <input id="templateVol" type="text" size="10" formControlName="template_volume">
-                        <span>µL</span>
+                        <label class="required">Template Volume (µL)</label>
+                        <label for="rtTemplateVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                            [class.invalid]="extractForm.get('rt').get('template_volume').invalid && (extractForm.get('rt').get('template_volume').dirty || extractForm.get('rt').get('template_volume').touched)">
+                            <input id="rTtemplateVol" type="text" size="10" formControlName="template_volume">
+                            <span class="tooltip-content">
+                                This field cannot be empty and must be a number!
+                            </span>
+                        </label>
                     </div>
 
                     <div class="form-group">
-                        <label for="reactionVol">Reaction Volume</label>
-                        <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
-                        <span>µL</span>
+                        <label class="required">Reaction Volume (µL)</label>
+                        <label for="rtReactionVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                            [class.invalid]="extractForm.get('rt').get('reaction_volume').invalid && (extractForm.get('rt').get('reaction_volume').dirty || extractForm.get('rt').get('reaction_volume').touched)">
+                            <input id="rtReactionVol" type="text" size="10" formControlName="reaction_volume">
+                            <span class="tooltip-content">
+                                This field cannot be empty and must be a number!
+                            </span>
+                        </label>
                     </div>
 
                     <div class="form-group">
-                        <label for="rtDateInput" class="required">RT Date</label>
-                        <input type="date" id="rtDateInput" formControlName="rt_date">
+                        <label class="required">RT Date</label>
+                        <label for="rtDateInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                            [class.invalid]="extractForm.get('rt').get('rt_date').invalid && (extractForm.get('rt').get('rt_date').dirty || extractForm.get('rt').get('rt_date').touched)">
+                            <input type="date" id="rtDateInput" formControlName="rt_date">
+                            <span class="tooltip-content">
+                                This field cannot be empty!
+                            </span>
+                        </label>
                     </div>
-
                 </div>
 
             </section>
@@ -269,7 +328,7 @@
                                                 <input type="checkbox" formControlName="dna" id="dnaCheck">
                                                 <label for="dnaCheck"></label>
                                             </div>
-                                            
+
                                         </div>
                                         <div class="form-group">
                                             <label>DNA Inhibition Date</label>
@@ -327,7 +386,8 @@
                                                             <td *ngIf="createInhibitionForm.value.dna === false">
                                                                 <div class="select">
                                                                     <select name="dnaInhibition" formControlName="inhibition_dna">
-                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}})
+                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
+                                                                            | displayValue:'name':this.nucleicAcidTypes}})
                                                                             - Sample {{inhibition.sample}}</option>
                                                                     </select>
                                                                 </div>
@@ -335,7 +395,8 @@
                                                             <td *ngIf="createInhibitionForm.value.rna === false">
                                                                 <div class="select">
                                                                     <select name="rnaInhibition" formControlName="inhibition_rna">
-                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}})
+                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
+                                                                            | displayValue:'name':this.nucleicAcidTypes}})
                                                                             - Sample {{inhibition.sample}}</option>
                                                                     </select>
                                                                 </div>
@@ -353,6 +414,7 @@
                 </div>
             </div>
         </div>
+        extractFormStatus: {{extractForm.status}}
         <ng-template clrPageButtons>
             <clr-wizard-button (click)="createWorksheet()">Create Worksheet</clr-wizard-button>
             <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
