@@ -37,7 +37,7 @@
                         <section class="form-block">
                             <p>Select desired number of PCR replicates for each selected target. To update the targets list,
                                 return to Target Selection page.
-                                <div formArrayName="extractions" *ngIf="extractionArray.controls.length > 0">
+                                <div formArrayName="new_extractions" *ngIf="extractionArray.controls.length > 0">
                                     <div class="form-group" *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
                                         <label>Sample {{extraction.controls.sample.value}}</label>
                                         <div class="select" formArrayName="aliquots">
@@ -137,7 +137,7 @@
                     <section class="form-block" *ngIf="x">
                         <p>Select desired number of PCR replicates for each selected target. To update the targets list, return
                             to Target Selection page.
-                            <div formArrayName="replicates">
+                            <div formArrayName="new_replicates">
                                 <div class="form-group" *ngFor="let target of replicateArray.controls; let i = index" [formGroupName]="i">
                                     <label>{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
                                     <input formControlName="count" type="number" class="target-count-input">
@@ -199,7 +199,7 @@
                 <div class="form-group">
                     <label class="required">Dilution factor of Sample</label>
                     <label for="sampleDilution" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
-                    [class.invalid]="extractForm.get('sample_dilution_factor').invalid && (extractForm.get('sample_dilution_factor').dirty || extractForm.get('sample_dilution_factor').touched)">
+                        [class.invalid]="extractForm.get('sample_dilution_factor').invalid && (extractForm.get('sample_dilution_factor').dirty || extractForm.get('sample_dilution_factor').touched)">
                         <input id="sampleDilution" type="number" size="10" formControlName="sample_dilution_factor">
                         <span class="tooltip-content">
                             This field cannot be empty!
@@ -246,11 +246,11 @@
         <form class="compact" [formGroup]="extractForm" *ngIf="rnaTargetsSelected">
             <section class="form-block">
 
-                <div formGroupName="rt">
+                <div formGroupName="new_rt">
                     <div class="form-group">
                         <label class="required">Template Volume (µL)</label>
                         <label for="rtTemplateVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
-                            [class.invalid]="extractForm.get('rt').get('template_volume').invalid && (extractForm.get('rt').get('template_volume').dirty || extractForm.get('rt').get('template_volume').touched)">
+                            [class.invalid]="extractForm.get('new_rt').get('template_volume').invalid && (extractForm.get('new_rt').get('template_volume').dirty || extractForm.get('new_rt').get('template_volume').touched)">
                             <input id="rTtemplateVol" type="text" size="10" formControlName="template_volume">
                             <span class="tooltip-content">
                                 This field cannot be empty and must be a number!
@@ -261,7 +261,7 @@
                     <div class="form-group">
                         <label class="required">Reaction Volume (µL)</label>
                         <label for="rtReactionVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
-                            [class.invalid]="extractForm.get('rt').get('reaction_volume').invalid && (extractForm.get('rt').get('reaction_volume').dirty || extractForm.get('rt').get('reaction_volume').touched)">
+                            [class.invalid]="extractForm.get('new_rt').get('reaction_volume').invalid && (extractForm.get('new_rt').get('reaction_volume').dirty || extractForm.get('new_rt').get('reaction_volume').touched)">
                             <input id="rtReactionVol" type="text" size="10" formControlName="reaction_volume">
                             <span class="tooltip-content">
                                 This field cannot be empty and must be a number!
@@ -272,7 +272,7 @@
                     <div class="form-group">
                         <label class="required">RT Date</label>
                         <label for="rtDateInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
-                            [class.invalid]="extractForm.get('rt').get('rt_date').invalid && (extractForm.get('rt').get('rt_date').dirty || extractForm.get('rt').get('rt_date').touched)">
+                            [class.invalid]="extractForm.get('new_rt').get('rt_date').invalid && (extractForm.get('new_rt').get('rt_date').dirty || extractForm.get('new_rt').get('rt_date').touched)">
                             <input type="date" id="rtDateInput" formControlName="rt_date">
                             <span class="tooltip-content">
                                 This field cannot be empty!
@@ -370,7 +370,7 @@
 
                                 <form class="compact" [formGroup]="extractForm">
                                     <section class="form-block">
-                                        <div formArrayName="extractions">
+                                        <div formArrayName="new_extractions">
                                             <div>
                                                 <table class="table table-noborder">
                                                     <thead>
@@ -415,6 +415,61 @@
             </div>
         </div>
         extractFormStatus: {{extractForm.status}}
+        <!-- <ng-template clrPageButtons>
+            <clr-wizard-button (click)="createWorksheet()">Create Worksheet</clr-wizard-button>
+            <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+            <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+            <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+        </ng-template> -->
+
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Confirmation</ng-template>
+
+        <clr-alert *ngIf=!extractForm.valid [clrAlertType]="'alert-danger'">
+            <div class="alert-item">
+                There are required values missing. Please return to previous pages and fill in required fields. 
+            </div>
+        </clr-alert>
+        <div *ngIf="extractForm.valid">
+
+            <p>You are about to extract Analysis Batch {{selectedAnalysisBatchID}}. This includes the following samples: Please
+                confirm the details below.
+
+                <p>
+                    <ul class="list">
+                        <li>Extraction Volume: {{extractForm.value.extraction_volume}} µL</li>
+                        <li>Elution Volume: {{extractForm.value.elution_volume}} µL</li>
+                        <li>Extraction Method: {{extractForm.value.extraction_method | displayValue:'name':this.allExtractionMethods
+                            }}
+                        </li>
+                        <li>Extraction Date: {{extractForm.value.extraction_date | date:'shortDate'}}</li>
+                        <li>Re-Extraction: {{(extractForm.value.reextraction) === null ? 'No' : 'Yes'}}</li>
+                        <li>Sample Dilution Factor: {{extractForm.value.sample_dilution_factor}}</li>
+                        <li>qPCR Template Volume: {{extractForm.value.qpcr_template_volume}} µL</li>
+                        <li>qPCR Reaction Volume: {{extractForm.value.qpcr_reaction_volume}} µL</li>
+                        <li>qPCR Date: {{extractForm.value.qpcr_date | date:'shortDate'}}</li>
+                    </ul>
+                    <ul class="list">
+                        <label>Reverse Transcription</label>
+                        <li>Template Volume: {{extractForm.value.new_rt.template_volume}} µL</li>
+                        <li>Reaction Volume: {{extractForm.value.new_rt.reaction_volume}} µL</li>
+                        <li>RT Date: {{extractForm.value.new_rt.rt_date | date:'shortDate' }}</li>
+                        <li>Re-RT: {{ extractForm.value.new_rt.re_rt === null ? 'No' : 'Yes'}}</li>
+                    </ul>
+
+                    <p>
+                        <label>Analyzing for the following targets:</label>
+                        <ul>
+                            <li *ngFor="let replicate of extractForm.value.new_replicates">{{replicate.count}} replicates {{replicate.target | displayValue:'name':this.allTargets }}</li>
+                        </ul>
+
+        </div>
+
+
+
+
         <ng-template clrPageButtons>
             <clr-wizard-button (click)="createWorksheet()">Create Worksheet</clr-wizard-button>
             <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
