@@ -87,7 +87,7 @@
         <ng-template clrPageButtons>
             <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
-            <clr-wizard-button [type]="'custom-next'">Next</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-next-targetPage'">Next</clr-wizard-button>
         </ng-template>
 
     </clr-wizard-page>
@@ -287,26 +287,47 @@
     <!-- end Reverse Transcription page -->
 
     <!-- Inhibition page -->
-    <clr-wizard-page>
+    <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
         <ng-template clrPageTitle>Inhibition</ng-template>
         <div>
             <div class="row">
                 <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                    <clr-alert [clrAlertClosable]="false" *ngIf="inhibitionsExist">
+
+
+                    <clr-alert *ngIf="inhibitionErrorFlag" [clrAlertType]="'alert-danger'">
+                        <div class="alert-item">
+                            New inhibition submission failed. Please try again.
+                        </div>
+                    </clr-alert>
+
+                    <clr-alert *ngIf="inhibitionFinished && !inhibitionErrorFlag" [clrAlertType]="'alert-success'">
+                        <div clr-alert-item class="alert-item">
+                            <span class="alert-text">New inhibitions successfully created</span>
+                        </div>
+                    </clr-alert>
+
+                    <div class="spinner" *ngIf="loadingFlag">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                    <clr-alert [clrAlertClosable]="false" *ngIf="inhibitionsExist && !loadingFlag">
                         <div clr-alert-item class="alert-item">
                             <span class="alert-text">
                                 lili has detected existing inhibitions for samples in this Analysis Batch.
                             </span>
                             <!-- <div class="alert-actions">
-                                <a class="alert-actions" (click)="showApplyExistingCard()">Apply Existing Inhibition</a>
-                            </div> -->
+                                        <a class="alert-actions" (click)="showApplyExistingCard()">Apply Existing Inhibition</a>
+                                    </div> -->
                         </div>
                     </clr-alert>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                    <div class="card">
+                    <div class="card" *ngIf="!loadingFlag">
                         <div class="card-block">
                             <div class="card-title">
                                 Create New Inhibitions
@@ -382,7 +403,9 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
-                                                            <td class="left">Sample {{extraction.controls.sample.value}}</td>
+                                                            <td class="left">
+                                                                <label class="required">Sample {{extraction.controls.sample.value}}</label>
+                                                            </td>
                                                             <td *ngIf="createInhibitionForm.value.dna === false">
                                                                 <div class="select">
                                                                     <select name="dnaInhibition" formControlName="inhibition_dna">
@@ -415,12 +438,13 @@
             </div>
         </div>
         extractFormStatus: {{extractForm.status}}
-        <!-- <ng-template clrPageButtons>
-            <clr-wizard-button (click)="createWorksheet()">Create Worksheet</clr-wizard-button>
-            <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
-            <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
-            <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-        </ng-template> -->
+
+        <ng-template clrPageButtons>
+            <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-next-inhPage'"> {{ inhibitionFinished ? "Next" : createInhibitionForm.value.dna === false && createInhibitionForm.value.rna ===
+                false ? "Next" : "Create Inhibitions" }}</clr-wizard-button>
+        </ng-template>
 
     </clr-wizard-page>
 
@@ -429,7 +453,7 @@
 
         <clr-alert *ngIf=!extractForm.valid [clrAlertType]="'alert-danger'">
             <div class="alert-item">
-                There are required values missing. Please return to previous pages and fill in required fields. 
+                There are required values missing. Please return to previous pages and fill in required fields.
             </div>
         </clr-alert>
         <div *ngIf="extractForm.valid">
@@ -438,6 +462,7 @@
                 confirm the details below.
 
                 <p>
+                    <label>Extraction</label>
                     <ul class="list">
                         <li>Extraction Volume: {{extractForm.value.extraction_volume}} µL</li>
                         <li>Elution Volume: {{extractForm.value.elution_volume}} µL</li>
@@ -451,19 +476,35 @@
                         <li>qPCR Reaction Volume: {{extractForm.value.qpcr_reaction_volume}} µL</li>
                         <li>qPCR Date: {{extractForm.value.qpcr_date | date:'shortDate'}}</li>
                     </ul>
+                    <br>
+
+                    <label>Reverse Transcription</label>
                     <ul class="list">
-                        <label>Reverse Transcription</label>
                         <li>Template Volume: {{extractForm.value.new_rt.template_volume}} µL</li>
                         <li>Reaction Volume: {{extractForm.value.new_rt.reaction_volume}} µL</li>
                         <li>RT Date: {{extractForm.value.new_rt.rt_date | date:'shortDate' }}</li>
                         <li>Re-RT: {{ extractForm.value.new_rt.re_rt === null ? 'No' : 'Yes'}}</li>
                     </ul>
+                    <br>
+                    <label>Inhibitions</label>
+                    <p *ngIf="createInhibitionForm.value.dna">Creating new inhibitions for all DNA targets, with inhibition date {{createInhibitionForm.value.inhibition_date_dna
+                        | date:'shortDate'}}
 
-                    <p>
-                        <label>Analyzing for the following targets:</label>
-                        <ul>
-                            <li *ngFor="let replicate of extractForm.value.new_replicates">{{replicate.count}} replicates {{replicate.target | displayValue:'name':this.allTargets }}</li>
-                        </ul>
+                        <p *ngIf="createInhibitionForm.value.rna">Creating new inhibitions for all RNA targets, with inhibition date {{createInhibitionForm.value.inhibition_date_rna
+                            | date:'shortDate'}}
+
+                            <p *ngIf="!createInhibitionForm.value.dna">Applying existing inhibitions for DNA targets
+
+                                <p *ngIf="!createInhibitionForm.value.rna">Applying existing inhibitions for RNA targets
+
+
+                                    <p>
+                                        <label>Analyzing for the following targets:</label>
+                                        <ul>
+                                            <li *ngFor="let replicate of extractForm.value.new_replicates">{{replicate.count}} replicates {{replicate.target | displayValue:'name':this.allTargets
+                                                }}
+                                            </li>
+                                        </ul>
 
         </div>
 

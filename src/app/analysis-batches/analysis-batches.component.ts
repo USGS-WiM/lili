@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators, PatternValidator } from "@angular/forms/";
-import { Wizard } from "clarity-angular";
+import { Wizard, WizardPage, BUTTON_GROUP_DIRECTIVES } from "clarity-angular";
 
 import { IAnalysisBatchSummary } from './analysis-batch-summary';
 import { IAnalysisBatch } from './analysis-batch';
@@ -38,6 +38,16 @@ import { APP_SETTINGS } from '../app.settings';
 })
 export class AnalysisBatchesComponent implements OnInit {
   @ViewChild("wizardExtract") wizardExtract: Wizard;
+  @ViewChild("inhibitionPage") inhibitionPage: WizardPage;
+
+  // testing
+  loadingFlag: boolean = false;
+  inhibitionErrorFlag: boolean = false;
+  extractionErrorFlag: boolean = false;
+  checked = false;
+  inhibitionFinished = false;
+  extractionFinished = false;
+  // testing
 
   public showWarning = false;
   rnaTargetsSelected: boolean = false;
@@ -248,13 +258,8 @@ export class AnalysisBatchesComponent implements OnInit {
       error => this.errorMessage = <any>error);
   }
 
-  // wizard button handlers
-  public handleDangerClick(): void {
-    this.wizardExtract.finish();
-  }
-
   public doCustomClick(buttonType: string): void {
-    if ("custom-next" === buttonType) {
+    if ("custom-next-targetPage" === buttonType) {
 
       if (this.selected.length < 1) {
         alert("Please select at least one target to continue.")
@@ -292,15 +297,20 @@ export class AnalysisBatchesComponent implements OnInit {
 
       }
 
+    }
 
+    if ("custom-next-inhPage" === buttonType) {
+      if ((this.createInhibitionForm.value.dna === false && this.createInhibitionForm.value.rna === false) ||
+        this.inhibitionFinished === true) {
+        this.wizardExtract.next();
+      } else if ((this.createInhibitionForm.value.dna === true || this.createInhibitionForm.value.rna === true) &&
+        this.inhibitionFinished === false) {
+        this.submitInhibitions();
+      }
     }
 
     if ("custom-previous" === buttonType) {
       this.wizardExtract.previous();
-    }
-
-    if ("custom-danger" === buttonType) {
-      this.showWarning = true;
     }
 
     if ("custom-cancel" === buttonType) {
@@ -494,8 +504,14 @@ export class AnalysisBatchesComponent implements OnInit {
       );
   }
 
+  submitInhibitions() {
 
-  finishExtractWizard(abID, extractFormValue, createInhibitionFormValue) {
+    let createInhibitionFormValue = this.createInhibitionForm.value;
+    let extractFormValue = this.extractForm.value;
+    let abID = this.selectedAnalysisBatchID;
+
+    this.loadingFlag = true;
+    this.inhibitionErrorFlag = false;
 
     // arrays for batch POST to inhibition endpoint
     let inhibitionSubmissionArrayDNA = [];
@@ -528,10 +544,16 @@ export class AnalysisBatchesComponent implements OnInit {
                 }
               }
             }
-            this.wizardExtract.finish();
-            this.submitExtractionBatch(extractFormValue);
+            //this.wizardExtract.finish();
+            this.inhibitionFinished = true;
+            this.loadingFlag = false;
+            //this.submitExtractionBatch(extractFormValue);
           },
-          error => { alert("DNA inhibitions not created") }
+          error => {
+            alert("DNA inhibitions not created");
+            this.inhibitionPage.completed = false;
+            this.inhibitionErrorFlag = true;
+          }
           )
       } else if (createInhibitionFormValue.dna === false && createInhibitionFormValue.rna === true) {
         // create RNA inhibitions only
@@ -557,10 +579,16 @@ export class AnalysisBatchesComponent implements OnInit {
                 }
               }
             }
-            this.wizardExtract.finish();
-            this.submitExtractionBatch(extractFormValue);
+            //this.wizardExtract.finish();
+            this.inhibitionFinished = true;
+            this.loadingFlag = false;
+            //this.submitExtractionBatch(extractFormValue);
           },
-          error => { alert("RNA inhibitions not created") }
+          error => {
+            alert("RNA inhibitions not created")
+            this.inhibitionPage.completed = false;
+            this.inhibitionErrorFlag = true;
+          }
           )
 
       } else if (createInhibitionFormValue.dna === true && createInhibitionFormValue.rna === true) {
@@ -609,22 +637,37 @@ export class AnalysisBatchesComponent implements OnInit {
                     }
                   }
                 }
-                this.wizardExtract.finish();
-                this.submitExtractionBatch(extractFormValue);
+                //this.wizardExtract.finish();
+                this.inhibitionFinished = true;
+                this.loadingFlag = false;
+                //this.submitExtractionBatch(extractFormValue);
               },
-              error => { alert("RNA inhibitions not created") }
+              error => {
+                alert("RNA inhibitions not created")
+                this.inhibitionPage.completed = false;
+                this.inhibitionErrorFlag = true;
+              }
               )
           },
-          error => { alert("RNA inhibitions not created") }
+          error => {
+            alert("RNA inhibitions not created")
+            this.inhibitionPage.completed = false;
+            this.inhibitionErrorFlag = true;
+          }
           )
 
       }
 
     } else {
-
-      this.wizardExtract.finish();
-      this.submitExtractionBatch(extractFormValue);
+      // No new inhibitions being created. This is just a fail-safe catch. Code should not reach this block.
+      this.wizardExtract.next();
     }
+  }
+
+
+  finishExtractWizard(abID, extractFormValue, createInhibitionFormValue) {
+
+
     // end finishExtractWizard func
   }
 
