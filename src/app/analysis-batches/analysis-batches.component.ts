@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from "@angular/forms/";
-import { Wizard } from "clarity-angular";
+import { FormBuilder, FormControl, FormGroup, FormArray, Validators, PatternValidator } from "@angular/forms/";
+import { Wizard, WizardPage, BUTTON_GROUP_DIRECTIVES } from "clarity-angular";
 
 import { IAnalysisBatchSummary } from './analysis-batch-summary';
 import { IAnalysisBatch } from './analysis-batch';
@@ -38,6 +38,16 @@ import { APP_SETTINGS } from '../app.settings';
 })
 export class AnalysisBatchesComponent implements OnInit {
   @ViewChild("wizardExtract") wizardExtract: Wizard;
+  @ViewChild("inhibitionPage") inhibitionPage: WizardPage;
+
+  // testing
+  loadingFlag: boolean = false;
+  inhibitionErrorFlag: boolean = false;
+  extractionErrorFlag: boolean = false;
+  checked = false;
+  inhibitionFinished = false;
+  extractionFinished = false;
+  // testing
 
   public showWarning = false;
   rnaTargetsSelected: boolean = false;
@@ -128,34 +138,34 @@ export class AnalysisBatchesComponent implements OnInit {
 
   buildExtractForm() {
     this.extractForm = this.formBuilder.group({
-      analysis_batch: ['', Validators.required],
-      extraction_volume: ['', Validators.required],
-      elution_volume: ['', Validators.required],
+      analysis_batch: '',
+      extraction_volume: ['', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+      elution_volume: ['', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
       extraction_method: ['', Validators.required],
       extraction_date: ['', Validators.required],
-      reextraction: '',
+      reextraction: null,
       sample_dilution_factor: ['', Validators.required],
-      qpcr_template_volume: ['6', Validators.required],
-      qpcr_reaction_volume: ['20', Validators.required],
+      qpcr_template_volume: ['6', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+      qpcr_reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
       qpcr_date: ['', Validators.required],
-      rt: this.formBuilder.group({
-        template_volume: ['6', Validators.required],
-        reaction_volume: ['20', Validators.required],
+      new_rt: this.formBuilder.group({
+        template_volume: ['6', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+        reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
         rt_date: ['', Validators.required],
-        re_rt: '',
+        re_rt: null,
         re_rt_note: ''
       }),
-      replicates: this.formBuilder.array([
+      new_replicates: this.formBuilder.array([
         this.formBuilder.group({
           target: '',
           count: '2'
         })
       ]),
-      extractions: this.formBuilder.array([
+      new_extractions: this.formBuilder.array([
         this.formBuilder.group({
-          sample: '',
-          inhibition_dna: '',
-          inhibition_rna: '',
+          sample: ['', Validators.required],
+          inhibition_dna: [null, Validators.required],
+          inhibition_rna: [null, Validators.required],
           aliquot_string: '',
           rack: '',
           box: '',
@@ -165,16 +175,13 @@ export class AnalysisBatchesComponent implements OnInit {
         })
       ])
     });
-
-    this.replicateArray = this.extractForm.get('replicates') as FormArray;
-    this.extractionArray = this.extractForm.get('extractions') as FormArray;
+    this.replicateArray = this.extractForm.get('new_replicates') as FormArray;
+    this.extractionArray = this.extractForm.get('new_extractions') as FormArray;
   }
 
   onAliquotSelect(sampleID, aliquotID) {
-
     for (let extraction of this.extractionArray.controls) {
       if (sampleID === extraction.get('sample').value) {
-
         for (let sample of this.abSampleList) {
           if (sampleID === sample.id) {
             for (let aliquot of sample.aliquots) {
@@ -186,7 +193,6 @@ export class AnalysisBatchesComponent implements OnInit {
                 extraction.get('spot').setValue(aliquot.freezer_location.spot);
               }
             }
-
           }
         }
       }
@@ -246,13 +252,8 @@ export class AnalysisBatchesComponent implements OnInit {
       error => this.errorMessage = <any>error);
   }
 
-  // wizard button handlers
-  public handleDangerClick(): void {
-    this.wizardExtract.finish();
-  }
-
   public doCustomClick(buttonType: string): void {
-    if ("custom-next" === buttonType) {
+    if ("custom-next-targetPage" === buttonType) {
 
       if (this.selected.length < 1) {
         alert("Please select at least one target to continue.")
@@ -272,39 +273,102 @@ export class AnalysisBatchesComponent implements OnInit {
             break;
           }
         }
-
         // reset the replicate form array controls to a blank array so it doesnt get populated twice
         this.replicateArray.controls = [];
         // loop through selected to create replicates form
         for (let target of this.selected) {
-
           let formGroup: FormGroup = this.formBuilder.group({
             target: this.formBuilder.control(target.id),
             count: this.formBuilder.control(target.count)
           });
           this.replicateArray.push(formGroup);
         }
-
         this.x = true;
         this.wizardExtract.next();
-
       }
+    }
 
+    if ("custom-next-inhPage" === buttonType) {
+      if ((this.createInhibitionForm.value.dna === false && this.createInhibitionForm.value.rna === false) ||
+        this.inhibitionFinished === true) {
+        if (this.createInhibitionForm.value.dna === false) {
+          for (let extraction of this.extractForm.value.new_extractions) {
+            if (extraction.inhibition_dna === null) {
+              alert("Please select a DNA inhibition to apply for each sample, or click to create new.")
+              return;
+            }
+          }
+        }
+        if (this.createInhibitionForm.value.rna === false) {
+          for (let extraction of this.extractForm.value.new_extractions) {
+            if (extraction.inhibition_rna === null) {
+              alert("Please select a RNA inhibition to apply for each sample, or click to create new.")
+              return;
+            }
+          }
+        }
+        this.wizardExtract.next();
+      } else if ((this.createInhibitionForm.value.dna === true || this.createInhibitionForm.value.rna === true) &&
+        this.inhibitionFinished === false) {
 
+        if (this.createInhibitionForm.value.dna === false) {
+          for (let extraction of this.extractForm.value.new_extractions) {
+            if (extraction.inhibition_dna === null) {
+              alert("Please select a DNA inhibition for all samples.")
+              return;
+            }
+          }
+        }
+        if (this.createInhibitionForm.value.rna === false) {
+          for (let extraction of this.extractForm.value.new_extractions) {
+            if (extraction.inhibition_rna === null) {
+              alert("Please select a RNA inhibition for all samples.")
+              return;
+            }
+          }
+        }
+        if (this.createInhibitionForm.value.dna === true && this.createInhibitionForm.value.inhibition_date_dna === '') {
+          alert("Please select a date for DNA inhibitions");
+          return;
+        }
+        if (this.createInhibitionForm.value.rna === true && this.createInhibitionForm.value.inhibition_date_rna === '') {
+          alert("Please select a date for RNA inhibitions");
+          return;
+        }
+        this.submitInhibitions();
+      }
+    }
+
+    if ("custom-finish-confirmPage" === buttonType) {
+      if (this.extractionFinished) {
+        this.wizardExtract.finish();
+        this.resetExtractWizard();
+        return;
+      }
+      this.submitExtractionBatch();
     }
 
     if ("custom-previous" === buttonType) {
       this.wizardExtract.previous();
     }
 
-    if ("custom-danger" === buttonType) {
-      this.showWarning = true;
-    }
-
     if ("custom-cancel" === buttonType) {
       this.wizardExtract.cancel();
-      this.wizardExtract.reset();
+      this.resetExtractWizard();
     }
+  }
+
+  resetExtractWizard() {
+    // reset extract form, specifying default values for neccesary fields
+    this.extractForm.reset({ qpcr_template_volume: 6, qpcr_reaction_volume: 20, new_rt: { template_volume: 6, reaction_volume: 20 } });
+    // reset createInhibition form
+    this.createInhibitionForm.reset({ dna: false, rna: false });
+    // set the extractionFinished var back to false
+    this.extractionFinished = false;
+    // set the inhibitionFinished var back to false
+    this.inhibitionFinished = false;
+    // reset the extract wizard
+    this.wizardExtract.reset();
   }
 
   retrieveABData(abID) {
@@ -327,13 +391,6 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
-  retrieveSampleData(sampleID) {
-    // this._sampleService.read(sampleID)
-    // .subscribe(sampleData =>  this.abSampleList = sampleData,
-    // error => this.errorMessage = <any>error);
-    // return
-  }
-
   resetAB() {
     this.selected = [];
     this.abSampleList = [];
@@ -341,8 +398,6 @@ export class AnalysisBatchesComponent implements OnInit {
     this.abInhibitions = [];
     this.sampleInhibitions = [];
     this.abSampleIDList = [];
-
-
     this.sampleListEditLocked = false;
   }
 
@@ -415,7 +470,7 @@ export class AnalysisBatchesComponent implements OnInit {
           // });
           // this.extractionArray.push(extractionFormGroup);
 
-          //}
+          // }
 
           for (let i = 0; i < this.abSampleList.length; i++) {
 
@@ -490,8 +545,14 @@ export class AnalysisBatchesComponent implements OnInit {
       );
   }
 
+  submitInhibitions() {
 
-  finishExtractWizard(abID, extractFormValue, createInhibitionFormValue) {
+    let createInhibitionFormValue = this.createInhibitionForm.value;
+    let extractFormValue = this.extractForm.value;
+    let abID = this.selectedAnalysisBatchID;
+
+    this.loadingFlag = true;
+    this.inhibitionErrorFlag = false;
 
     // arrays for batch POST to inhibition endpoint
     let inhibitionSubmissionArrayDNA = [];
@@ -518,16 +579,20 @@ export class AnalysisBatchesComponent implements OnInit {
             console.log("DNA Inhibitions created: ", dnaInhibitions);
 
             for (let inhibition of dnaInhibitions) {
-              for (let extraction of extractFormValue.extractions) {
+              for (let extraction of extractFormValue.new_extractions) {
                 if (extraction.sample === inhibition.sample) {
                   extraction.inhibition_dna = inhibition.id;
                 }
               }
             }
-
-            this.submitExtractionBatch(extractFormValue);
+            this.inhibitionFinished = true;
+            this.loadingFlag = false;
           },
-          error => { alert("DNA inhibitions not created") }
+          error => {
+            alert("DNA inhibitions not created");
+            this.inhibitionPage.completed = false;
+            this.inhibitionErrorFlag = true;
+          }
           )
       } else if (createInhibitionFormValue.dna === false && createInhibitionFormValue.rna === true) {
         // create RNA inhibitions only
@@ -547,16 +612,20 @@ export class AnalysisBatchesComponent implements OnInit {
             console.log("RNA Inhibitions created: ", rnaInhibitions);
 
             for (let inhibition of rnaInhibitions) {
-              for (let extraction of extractFormValue.extractions) {
+              for (let extraction of extractFormValue.new_extractions) {
                 if (extraction.sample === inhibition.sample) {
                   extraction.inhibition_rna = inhibition.id;
                 }
               }
             }
-
-            this.submitExtractionBatch(extractFormValue);
+            this.inhibitionFinished = true;
+            this.loadingFlag = false;
           },
-          error => { alert("RNA inhibitions not created") }
+          error => {
+            alert("RNA inhibitions not created")
+            this.inhibitionPage.completed = false;
+            this.inhibitionErrorFlag = true;
+          }
           )
 
       } else if (createInhibitionFormValue.dna === true && createInhibitionFormValue.rna === true) {
@@ -577,7 +646,7 @@ export class AnalysisBatchesComponent implements OnInit {
             console.log("DNA Inhibitions created: ", dnaInhibitions);
 
             for (let inhibition of dnaInhibitions) {
-              for (let extraction of extractFormValue.extractions) {
+              for (let extraction of extractFormValue.new_extractions) {
                 if (extraction.sample === inhibition.sample) {
                   extraction.inhibition_rna = inhibition.id;
                 }
@@ -599,89 +668,124 @@ export class AnalysisBatchesComponent implements OnInit {
                 console.log("RNA Inhibitions created: ", rnaInhibitions);
 
                 for (let inhibition of rnaInhibitions) {
-                  for (let extraction of extractFormValue.extractions) {
+                  for (let extraction of extractFormValue.new_extractions) {
                     if (extraction.sample === inhibition.sample) {
                       extraction.inhibition_rna = inhibition.id;
                     }
                   }
                 }
-                this.submitExtractionBatch(extractFormValue);
+                this.inhibitionFinished = true;
+                this.loadingFlag = false;
               },
-              error => { alert("RNA inhibitions not created") }
+              error => {
+                alert("RNA inhibitions not created")
+                this.inhibitionPage.completed = false;
+                this.inhibitionErrorFlag = true;
+              }
               )
           },
-          error => { alert("RNA inhibitions not created") }
+          error => {
+            alert("RNA inhibitions not created")
+            this.inhibitionPage.completed = false;
+            this.inhibitionErrorFlag = true;
+          }
           )
 
       }
 
     } else {
-
-      this.submitExtractionBatch(extractFormValue);
+      // No new inhibitions being created. This is just a fail-safe catch. Code should not reach this block.
+      this.wizardExtract.next();
     }
+  }
+
+
+  finishExtractWizard(abID, extractFormValue, createInhibitionFormValue) {
     // end finishExtractWizard func
   }
 
-  submitExtractionBatch(extractFormValue) {
+  submitExtractionBatch() {
 
+    this.loadingFlag = true;
+    this.extractionErrorFlag = false;
+
+    let extractFormValue = this.extractForm.value;
     // convert all inhibition IDs to numbers from strings(select forms return strings)
-    for (let extraction of extractFormValue.extractions ) {
-        extraction.inhibition_dna = parseInt(extraction.inhibition_dna, 10)
-        extraction.inhibition_rna = parseInt(extraction.inhibition_rna, 10)
+    for (let extraction of extractFormValue.new_extractions) {
+      extraction.inhibition_dna = parseInt(extraction.inhibition_dna, 10)
+      extraction.inhibition_rna = parseInt(extraction.inhibition_rna, 10)
     }
 
-    this._extractionBatchService.create(extractFormValue)
-    .subscribe(
-      (extractionBatch) => {
+    let extractFormValueCopy = extractFormValue;
+    for (let extraction of extractFormValueCopy.new_extractions) {
+      delete extraction.aliquot_string;
+      delete extraction.rack;
+      delete extraction.box;
+      delete extraction.row;
+      delete extraction.spot;
+      delete extraction.aliquots;
+    }
 
-      },
-      error => {
-        this.errorMessage = <any>error
-      }
-      )
+    this.extractionBatchSubmission = extractFormValueCopy;
 
-    let targetNameArray;
-    for (let replicate of extractFormValue.replicates) {
-      for (let target of this.allTargets){
-        if (replicate.target === target.id){
-          targetNameArray.push(target.name)
+      // submit the extractFormValue to the extraction batch service
+      this._extractionBatchService.create(this.extractionBatchSubmission)
+        .subscribe(
+        (extractionBatch) => {
+          console.log(extractionBatch);
+          this.loadingFlag = false;
+          this.extractionFinished = true;
+        },
+        error => {
+          this.errorMessage = <any>error
+          this.extractionErrorFlag = true;
         }
-      }
-    }
+        )
 
-     // local var to hold extraction number
-     let extractionNumber;
-     // add 1 to length of extractionBatches array to get current extraction number
-     extractionNumber = (this.selectedAnalysisBatchData.extractionbatches.length) + 1
+    // below this can go in separate function
 
-     // details for AB worksheet:
-     // analysis batch: extractFormValue.analysisBatch
-     // creation_date: this.selectedAnalysisBatchData.created_date
-     // studies: this.selectedAnalysisBatchData.studies
-     // description: this.selectedAnalysisBatchData.description
+    // let targetNameArray = [];
+    // for (let replicate of extractFormValue.new_replicates) {
+    //   for (let target of this.allTargets) {
+    //     if (replicate.target === target.id) {
+    //       targetNameArray.push(target.name)
+    //     }
+    //   }
+    // }
 
-     // extraction no: extractionNumber
-     // extraction date: extractFormValue.extraction_date
-     // extraction method: extractFormValue.extraction_method (pipe for display)
-     // extraction sample volume: extractFormValue.extraction_volume
-     // eluted extraction volume: extractFormValue.elution_volume
-     // Left TABLE:
-     // each row is an extraction from extractFormValue.extractions
-     // sample column: extractFormValue.extractions.aliquot_string
-     // and so on for rack, box, row, spot.
-     // DNA Inhibition Dilution Factor and RNA Inhibition Dilution Factor leave blank (for now)
-     // Right TABLE:
-     // each row is a target from targetNameArray, the rest of the columns are blank
-     // Ext Neg: blank
-     // Ext Pos: blank
+    // // local var to hold extraction number
+    // let extractionNumber;
+    // // add 1 to length of extractionBatches array to get current extraction number
+    // extractionNumber = (this.selectedAnalysisBatchData.extractionbatches.length) + 1
+
+    // details for AB worksheet:
+    // analysis batch: extractFormValue.analysisBatch
+    // creation_date: this.selectedAnalysisBatchData.created_date
+    // studies: this.selectedAnalysisBatchData.studies
+    // description: this.selectedAnalysisBatchData.description
+
+    // extraction no: extractionNumber
+    // extraction date: extractFormValue.extraction_date
+    // extraction method: extractFormValue.extraction_method (pipe for display)
+    // extraction sample volume: extractFormValue.extraction_volume
+    // eluted extraction volume: extractFormValue.elution_volume
+    // Left TABLE:
+    // each row is an extraction from extractFormValue.new_extractions
+    // sample column: extractFormValue.new_extractions.aliquot_string
+    // and so on for rack, box, row, spot.
+    // DNA Inhibition Dilution Factor and RNA Inhibition Dilution Factor leave blank (for now)
+    // Right TABLE:
+    // each row is a target from targetNameArray, the rest of the columns are blank
+    // Ext Neg: blank
+    // Ext Pos: blank
     // Reverse transcription No.: extractionNumber
-    // RT reaction volume: extractForm.rt.reaction_volume
-    // RT date: extractForm.rt.reaction_volume.rt_date
+    // RT reaction volume: extractForm.new_rt.reaction_volume
+    // RT date: extractForm.new_rt.rt_date
     // NOTES: userID (not ready for this yet), blank space for writing
 
-     this.wizardExtract.reset();
-     alert("extract wiz finuto!")
-     console.log("Extract form value: ", extractFormValue);
+    //console.log("Extract form value: ", extractFormValue);
+
+
   }
 
   onSubmit(formID, formValue) {
@@ -708,15 +812,12 @@ export class AnalysisBatchesComponent implements OnInit {
     }
   }
 
-  //TODO: adjust this function to update the AB Summary array that populates the AB table
+  // TODO: adjust this function to update the AB Summary array that populates the AB table
   // private updateABArray(newItem) {
   //   let updateItem = this.allSamples.find(this.findIndexToUpdate, newItem.id);
-
   //   let index = this.allSamples.indexOf(updateItem);
-
   //   this.allSamples[index] = newItem;
   // }
-
   // private findIndexToUpdate(newItem) {
   //   return newItem.id === this;
   // }
@@ -746,7 +847,6 @@ export class AnalysisBatchesComponent implements OnInit {
     if (this.showHideTargetDetailModal === false) {
       this.showHideTargetDetailModal = true;
     }
-
   }
 
   updateABSampleList(editABFormValue, selected) {

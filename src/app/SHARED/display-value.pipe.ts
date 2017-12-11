@@ -20,7 +20,7 @@ export class DisplayValuePipe implements PipeTransform {
 
     let displayValue;
     for (var i = 0; i < sourceArray.length; i++) {
-        if (sourceArray[i].id === value) {
+        if (sourceArray[i].id === parseInt(value, 10)) {
           displayValue = sourceArray[i][displayProperty];
         }  
     }
