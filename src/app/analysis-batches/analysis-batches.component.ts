@@ -163,9 +163,9 @@ export class AnalysisBatchesComponent implements OnInit {
       ]),
       new_extractions: this.formBuilder.array([
         this.formBuilder.group({
-          sample: '',
-          inhibition_dna: '',
-          inhibition_rna: '',
+          sample: ['', Validators.required],
+          inhibition_dna: [null, Validators.required],
+          inhibition_rna: [null, Validators.required],
           aliquot_string: '',
           rack: '',
           box: '',
@@ -175,18 +175,13 @@ export class AnalysisBatchesComponent implements OnInit {
         })
       ])
     });
-
     this.replicateArray = this.extractForm.get('new_replicates') as FormArray;
     this.extractionArray = this.extractForm.get('new_extractions') as FormArray;
   }
 
-
-
   onAliquotSelect(sampleID, aliquotID) {
-
     for (let extraction of this.extractionArray.controls) {
       if (sampleID === extraction.get('sample').value) {
-
         for (let sample of this.abSampleList) {
           if (sampleID === sample.id) {
             for (let aliquot of sample.aliquots) {
@@ -198,7 +193,6 @@ export class AnalysisBatchesComponent implements OnInit {
                 extraction.get('spot').setValue(aliquot.freezer_location.spot);
               }
             }
-
           }
         }
       }
@@ -279,34 +273,79 @@ export class AnalysisBatchesComponent implements OnInit {
             break;
           }
         }
-
         // reset the replicate form array controls to a blank array so it doesnt get populated twice
         this.replicateArray.controls = [];
         // loop through selected to create replicates form
         for (let target of this.selected) {
-
           let formGroup: FormGroup = this.formBuilder.group({
             target: this.formBuilder.control(target.id),
             count: this.formBuilder.control(target.count)
           });
           this.replicateArray.push(formGroup);
         }
-
         this.x = true;
         this.wizardExtract.next();
-
       }
-
     }
 
     if ("custom-next-inhPage" === buttonType) {
       if ((this.createInhibitionForm.value.dna === false && this.createInhibitionForm.value.rna === false) ||
         this.inhibitionFinished === true) {
+        if (this.createInhibitionForm.value.dna === false) {
+          for (let extraction of this.extractForm.value.new_extractions) {
+            if (extraction.inhibition_dna === null) {
+              alert("Please select a DNA inhibition to apply for each sample, or click to create new.")
+              return;
+            }
+          }
+        }
+        if (this.createInhibitionForm.value.rna === false) {
+          for (let extraction of this.extractForm.value.new_extractions) {
+            if (extraction.inhibition_rna === null) {
+              alert("Please select a RNA inhibition to apply for each sample, or click to create new.")
+              return;
+            }
+          }
+        }
         this.wizardExtract.next();
       } else if ((this.createInhibitionForm.value.dna === true || this.createInhibitionForm.value.rna === true) &&
         this.inhibitionFinished === false) {
+
+        if (this.createInhibitionForm.value.dna === false) {
+          for (let extraction of this.extractForm.value.new_extractions) {
+            if (extraction.inhibition_dna === null) {
+              alert("Please select a DNA inhibition for all samples.")
+              return;
+            }
+          }
+        }
+        if (this.createInhibitionForm.value.rna === false) {
+          for (let extraction of this.extractForm.value.new_extractions) {
+            if (extraction.inhibition_rna === null) {
+              alert("Please select a RNA inhibition for all samples.")
+              return;
+            }
+          }
+        }
+        if (this.createInhibitionForm.value.dna === true && this.createInhibitionForm.value.inhibition_date_dna === '') {
+          alert("Please select a date for DNA inhibitions");
+          return;
+        }
+        if (this.createInhibitionForm.value.rna === true && this.createInhibitionForm.value.inhibition_date_rna === '') {
+          alert("Please select a date for RNA inhibitions");
+          return;
+        }
         this.submitInhibitions();
       }
+    }
+
+    if ("custom-finish-confirmPage" === buttonType) {
+      if (this.extractionFinished) {
+        this.wizardExtract.finish();
+        this.resetExtractWizard();
+        return;
+      }
+      this.submitExtractionBatch();
     }
 
     if ("custom-previous" === buttonType) {
@@ -315,17 +354,19 @@ export class AnalysisBatchesComponent implements OnInit {
 
     if ("custom-cancel" === buttonType) {
       this.wizardExtract.cancel();
-      // reset form, specifying default values for neccesary fields
-      this.extractForm.reset({ qpcr_template_volume: 6, qpcr_reaction_volume: 20, new_rt: { template_volume: 6, reaction_volume: 20 } });
-      // reset the extract wizard
-      this.wizardExtract.reset();
-
+      this.resetExtractWizard();
     }
   }
 
   resetExtractWizard() {
-    // reset form, specifying default values for neccesary fields
+    // reset extract form, specifying default values for neccesary fields
     this.extractForm.reset({ qpcr_template_volume: 6, qpcr_reaction_volume: 20, new_rt: { template_volume: 6, reaction_volume: 20 } });
+    // reset createInhibition form
+    this.createInhibitionForm.reset({ dna: false, rna: false });
+    // set the extractionFinished var back to false
+    this.extractionFinished = false;
+    // set the inhibitionFinished var back to false
+    this.inhibitionFinished = false;
     // reset the extract wizard
     this.wizardExtract.reset();
   }
@@ -544,10 +585,8 @@ export class AnalysisBatchesComponent implements OnInit {
                 }
               }
             }
-            //this.wizardExtract.finish();
             this.inhibitionFinished = true;
             this.loadingFlag = false;
-            //this.submitExtractionBatch(extractFormValue);
           },
           error => {
             alert("DNA inhibitions not created");
@@ -579,10 +618,8 @@ export class AnalysisBatchesComponent implements OnInit {
                 }
               }
             }
-            //this.wizardExtract.finish();
             this.inhibitionFinished = true;
             this.loadingFlag = false;
-            //this.submitExtractionBatch(extractFormValue);
           },
           error => {
             alert("RNA inhibitions not created")
@@ -637,10 +674,8 @@ export class AnalysisBatchesComponent implements OnInit {
                     }
                   }
                 }
-                //this.wizardExtract.finish();
                 this.inhibitionFinished = true;
                 this.loadingFlag = false;
-                //this.submitExtractionBatch(extractFormValue);
               },
               error => {
                 alert("RNA inhibitions not created")
@@ -666,45 +701,62 @@ export class AnalysisBatchesComponent implements OnInit {
 
 
   finishExtractWizard(abID, extractFormValue, createInhibitionFormValue) {
-
-
     // end finishExtractWizard func
   }
 
-  submitExtractionBatch(extractFormValue) {
+  submitExtractionBatch() {
 
+    this.loadingFlag = true;
+    this.extractionErrorFlag = false;
+
+    let extractFormValue = this.extractForm.value;
     // convert all inhibition IDs to numbers from strings(select forms return strings)
     for (let extraction of extractFormValue.new_extractions) {
       extraction.inhibition_dna = parseInt(extraction.inhibition_dna, 10)
       extraction.inhibition_rna = parseInt(extraction.inhibition_rna, 10)
     }
 
-    // submit the extractFormValue to the extraction batch service
-    this._extractionBatchService.create(extractFormValue)
-      .subscribe(
-      (extractionBatch) => {
-
-        console.log(extractionBatch);
-
-      },
-      error => {
-        this.errorMessage = <any>error
-      }
-      )
-
-    let targetNameArray = [];
-    for (let replicate of extractFormValue.new_replicates) {
-      for (let target of this.allTargets) {
-        if (replicate.target === target.id) {
-          targetNameArray.push(target.name)
-        }
-      }
+    let extractFormValueCopy = extractFormValue;
+    for (let extraction of extractFormValueCopy.new_extractions) {
+      delete extraction.aliquot_string;
+      delete extraction.rack;
+      delete extraction.box;
+      delete extraction.row;
+      delete extraction.spot;
+      delete extraction.aliquots;
     }
 
-    // local var to hold extraction number
-    let extractionNumber;
-    // add 1 to length of extractionBatches array to get current extraction number
-    extractionNumber = (this.selectedAnalysisBatchData.extractionbatches.length) + 1
+    this.extractionBatchSubmission = extractFormValueCopy;
+
+      // submit the extractFormValue to the extraction batch service
+      this._extractionBatchService.create(this.extractionBatchSubmission)
+        .subscribe(
+        (extractionBatch) => {
+          console.log(extractionBatch);
+          this.loadingFlag = false;
+          this.extractionFinished = true;
+        },
+        error => {
+          this.errorMessage = <any>error
+          this.extractionErrorFlag = true;
+        }
+        )
+
+    // below this can go in separate function
+
+    // let targetNameArray = [];
+    // for (let replicate of extractFormValue.new_replicates) {
+    //   for (let target of this.allTargets) {
+    //     if (replicate.target === target.id) {
+    //       targetNameArray.push(target.name)
+    //     }
+    //   }
+    // }
+
+    // // local var to hold extraction number
+    // let extractionNumber;
+    // // add 1 to length of extractionBatches array to get current extraction number
+    // extractionNumber = (this.selectedAnalysisBatchData.extractionbatches.length) + 1
 
     // details for AB worksheet:
     // analysis batch: extractFormValue.analysisBatch
@@ -730,12 +782,10 @@ export class AnalysisBatchesComponent implements OnInit {
     // RT reaction volume: extractForm.new_rt.reaction_volume
     // RT date: extractForm.new_rt.rt_date
     // NOTES: userID (not ready for this yet), blank space for writing
-    // reset form, specifying default values for neccesary fields
-    this.extractForm.reset({ qpcr_template_volume: 6, qpcr_reaction_volume: 20, new_rt: { template_volume: 6, reaction_volume: 20 } });
-    // reset the extract wizard
-    this.wizardExtract.reset();
-    alert("extract wiz finuto!")
-    console.log("Extract form value: ", extractFormValue);
+
+    //console.log("Extract form value: ", extractFormValue);
+
+
   }
 
   onSubmit(formID, formValue) {
@@ -765,12 +815,9 @@ export class AnalysisBatchesComponent implements OnInit {
   // TODO: adjust this function to update the AB Summary array that populates the AB table
   // private updateABArray(newItem) {
   //   let updateItem = this.allSamples.find(this.findIndexToUpdate, newItem.id);
-
   //   let index = this.allSamples.indexOf(updateItem);
-
   //   this.allSamples[index] = newItem;
   // }
-
   // private findIndexToUpdate(newItem) {
   //   return newItem.id === this;
   // }
@@ -800,7 +847,6 @@ export class AnalysisBatchesComponent implements OnInit {
     if (this.showHideTargetDetailModal === false) {
       this.showHideTargetDetailModal = true;
     }
-
   }
 
   updateABSampleList(editABFormValue, selected) {
