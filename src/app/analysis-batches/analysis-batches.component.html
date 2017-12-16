@@ -318,9 +318,6 @@
                             <span class="alert-text">
                                 lili has detected existing inhibitions for samples in this Analysis Batch.
                             </span>
-                            <!-- <div class="alert-actions">
-                                        <a class="alert-actions" (click)="showApplyExistingCard()">Apply Existing Inhibition</a>
-                                    </div> -->
                         </div>
                     </clr-alert>
                 </div>
@@ -342,35 +339,32 @@
                             <div class="card-text">
                                 <form id="createInhibitionForm" class="compact" [formGroup]="createInhibitionForm" (ngSubmit)="onSubmit('add', createInhibitionForm.value)">
                                     <section class="form-block">
-                                        <label>DNA Targets</label>
+                                        <label>Create new for all samples in this Analysis Batch</label>
                                         <div class="form-group">
-                                            <label>Create new DNA Inhibitions</label>
+                                            <label>DNA Inhibitions (DNA targets)</label>
                                             <div class="checkbox">
                                                 <input type="checkbox" formControlName="dna" id="dnaCheck">
                                                 <label for="dnaCheck"></label>
                                             </div>
-
                                         </div>
                                         <div class="form-group">
-                                            <label>DNA Inhibition Date</label>
-                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date_dna">
-                                        </div>
-                                    </section>
-
-                                    <section class="form-block">
-                                        <label>RNA Targets</label>
-                                        <div class="form-group">
-                                            <label>Create new RNA Inhibitions</label>
+                                            <label>RNA Inhibitions (RNA targets)</label>
                                             <div class="checkbox">
                                                 <input type="checkbox" formControlName="rna" id="rnaCheck">
                                                 <label for="rnaCheck"></label>
                                             </div>
                                         </div>
+                                    </section>
+                                    <section class="form-block">
+                                        <label>Inhibition date for new inhibitions</label>
                                         <div class="form-group">
-                                            <label>RNA Inhibition Date</label>
+                                            <label>New DNA Inhibitions Date</label>
+                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date_dna">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>New RNA Inhibitions Date</label>
                                             <input type="date" id="inhibitionDateInput" formControlName="inhibition_date_rna">
                                         </div>
-
                                     </section>
                                 </form>
                             </div>
@@ -409,6 +403,7 @@
                                                             <td *ngIf="createInhibitionForm.value.dna === false">
                                                                 <div class="select">
                                                                     <select name="dnaInhibition" formControlName="inhibition_dna">
+                                                                        <option [value]="'new'">Create New</option>
                                                                         <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
                                                                             | displayValue:'name':this.nucleicAcidTypes}})
                                                                             - Sample {{inhibition.sample}}</option>
@@ -418,6 +413,7 @@
                                                             <td *ngIf="createInhibitionForm.value.rna === false">
                                                                 <div class="select">
                                                                     <select name="rnaInhibition" formControlName="inhibition_rna">
+                                                                        <option [value]="'new'">Create New</option>
                                                                         <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
                                                                             | displayValue:'name':this.nucleicAcidTypes}})
                                                                             - Sample {{inhibition.sample}}</option>
@@ -442,8 +438,7 @@
         <ng-template clrPageButtons>
             <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
-            <clr-wizard-button [type]="'custom-next-inhPage'"> {{ inhibitionFinished ? "Next" : createInhibitionForm.value.dna === false && createInhibitionForm.value.rna ===
-                false ? "Next" : "Create Inhibitions" }}</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-next-inhPage'">Next</clr-wizard-button>
         </ng-template>
 
     </clr-wizard-page>
@@ -453,7 +448,7 @@
 
         <clr-alert *ngIf=!extractForm.valid [clrAlertType]="'alert-danger'">
             <div class="alert-item">
-                There are required values missing. Please return to previous pages and fill in required fields.
+                There are required values missing. Please return to previous pages and enter all required fields.
             </div>
         </clr-alert>
 
@@ -475,7 +470,7 @@
 
         <div *ngIf="extractForm.valid && !loadingFlag">
 
-            <div>You are about to extract Analysis Batch {{selectedAnalysisBatchID}}. This includes the following samples: Please
+            <div>You are about to extract Analysis Batch {{selectedAnalysisBatchID}}. Please
                 confirm the details below.</div>
 
             <div>
@@ -512,9 +507,17 @@
             <div *ngIf="createInhibitionForm.value.rna">Creating new inhibitions for all RNA targets, with inhibition date {{createInhibitionForm.value.inhibition_date_rna
                 | date:'shortDate'}}</div>
 
-            <div *ngIf="!createInhibitionForm.value.dna">Applying existing inhibitions for DNA targets</div>
+            <div *ngIf="!createInhibitionForm.value.dna">Applying existing inhibitions for DNA targets for the following samples:
+                <ul>
+                    <li *ngFor="let sample of dnaApplyList">{{sample}}</li>
+                </ul>
+            </div>
 
-            <div *ngIf="!createInhibitionForm.value.rna">Applying existing inhibitions for RNA targets</div>
+            <div *ngIf="!createInhibitionForm.value.rna">Applying existing inhibitions for RNA targets for the following samples:
+                <ul>
+                    <li *ngFor="let sample of rnaApplyList">{{sample}}</li>
+                </ul>
+            </div>
 
             <div>
                 <label>Analyzing for the following targets:</label>
