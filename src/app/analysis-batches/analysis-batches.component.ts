@@ -30,6 +30,7 @@ import { UnitService } from '../units/unit.service';
 
 import { APP_UTILITIES } from '../app.utilities';
 import { APP_SETTINGS } from '../app.settings';
+import { RegExp } from 'core-js/library/web/timers';
 
 @Component({
   selector: 'app-analysis-batches',
@@ -119,6 +120,9 @@ export class AnalysisBatchesComponent implements OnInit {
   aliquotsArray: FormArray;
 
   x: boolean = false;
+
+  rnaApplyList = [];
+  dnaApplyList = [];
 
   // edit AB form
   editABForm = new FormGroup({
@@ -307,7 +311,6 @@ export class AnalysisBatchesComponent implements OnInit {
             }
           }
         }
-        this.wizardExtract.next();
       } else if ((this.createInhibitionForm.value.dna === true || this.createInhibitionForm.value.rna === true) &&
         this.inhibitionFinished === false) {
 
@@ -335,8 +338,8 @@ export class AnalysisBatchesComponent implements OnInit {
           alert("Please select a date for RNA inhibitions");
           return;
         }
-        this.submitInhibitions();
       }
+      this.populateInhibitions();
     }
 
     if ("custom-finish-confirmPage" === buttonType) {
@@ -545,6 +548,44 @@ export class AnalysisBatchesComponent implements OnInit {
       );
   }
 
+  populateInhibitions() {
+
+    let isNumberPattern: RegExp = (/^[0-9]*$/);
+    this.dnaApplyList = [];
+    this.rnaApplyList = [];
+
+    let createInhibitionFormValue = this.createInhibitionForm.value;
+    let extractFormValue = this.extractForm.value;
+    if (createInhibitionFormValue.dna === true) {
+      for (let extraction of this.extractForm.value.new_extractions) {
+        extraction.inhibition_dna = createInhibitionFormValue.inhibition_date_dna;
+      }
+    }
+    if (createInhibitionFormValue.rna === true) {
+      for (let extraction of extractFormValue.new_extractions) {
+        extraction.inhibition_rna = createInhibitionFormValue.inhibition_date_rna;
+      }
+    }
+    for (let extraction of extractFormValue.new_extractions) {
+      if (isNumberPattern.test(extraction.inhibition_dna)) {
+        extraction.inhibition_dna = parseInt(extraction.inhibition_dna, 10)
+        this.dnaApplyList.push(extraction.sample)
+      }
+      if (isNumberPattern.test(extraction.inhibition_rna)) {
+        extraction.inhibition_rna = parseInt(extraction.inhibition_rna, 10)
+        this.rnaApplyList.push(extraction.sample);
+      }
+      if (extraction.inhibition_dna === 'new') {
+        extraction.inhibition_dna = createInhibitionFormValue.inhibition_date_dna;
+      }
+      if (extraction.inhibition_rna === 'new') {
+        extraction.inhibition_rna = createInhibitionFormValue.inhibition_date_rna;
+      }
+    }
+    this.wizardExtract.next();
+  }
+
+  // submitInhibitions no longer in use
   submitInhibitions() {
 
     let createInhibitionFormValue = this.createInhibitionForm.value;
@@ -728,19 +769,19 @@ export class AnalysisBatchesComponent implements OnInit {
 
     this.extractionBatchSubmission = extractFormValueCopy;
 
-      // submit the extractFormValue to the extraction batch service
-      this._extractionBatchService.create(this.extractionBatchSubmission)
-        .subscribe(
-        (extractionBatch) => {
-          console.log(extractionBatch);
-          this.loadingFlag = false;
-          this.extractionFinished = true;
-        },
-        error => {
-          this.errorMessage = <any>error
-          this.extractionErrorFlag = true;
-        }
-        )
+    // submit the extractFormValue to the extraction batch service
+    this._extractionBatchService.create(this.extractionBatchSubmission)
+      .subscribe(
+      (extractionBatch) => {
+        console.log(extractionBatch);
+        this.loadingFlag = false;
+        this.extractionFinished = true;
+      },
+      error => {
+        this.errorMessage = <any>error
+        this.extractionErrorFlag = true;
+      }
+      )
 
     // below this can go in separate function
 
