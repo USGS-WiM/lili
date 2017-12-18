@@ -467,8 +467,11 @@
                 <span class="alert-text">New extraction successfully created!</span>
             </div>
         </clr-alert>
+        <div *ngIf="extractionFinished && !extractionErrorFlag">
+            <button class="btn btn-primary" (click)="createWorksheet()">Create Extraction Worksheet</button>
+        </div>
 
-        <div *ngIf="extractForm.valid && !loadingFlag">
+        <div *ngIf="extractForm.valid && !loadingFlag && !extractionFinished">
 
             <div>You are about to extract Analysis Batch {{selectedAnalysisBatchID}}. Please
                 confirm the details below.</div>

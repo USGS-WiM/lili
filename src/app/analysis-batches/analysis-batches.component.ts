@@ -85,6 +85,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   extractionBatchArray: IExtractionBatch[];
 
+  worksheetData;
+
   // aliquotSelectionArray: IAliquotSelection[] = [];
 
   inhibitionsPerSample = [];
@@ -123,6 +125,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   rnaApplyList = [];
   dnaApplyList = [];
+
+  isNumberPattern: RegExp = (/^[0-9]*$/);
 
   // edit AB form
   editABForm = new FormGroup({
@@ -432,6 +436,8 @@ export class AnalysisBatchesComponent implements OnInit {
     this.resetAB();
     this.selectedAnalysisBatchID = selectedAB.id;
 
+    this.worksheetData = {};
+
     this.extractForm.patchValue({
       analysis_batch: selectedAB.id
     })
@@ -550,7 +556,6 @@ export class AnalysisBatchesComponent implements OnInit {
 
   populateInhibitions() {
 
-    let isNumberPattern: RegExp = (/^[0-9]*$/);
     this.dnaApplyList = [];
     this.rnaApplyList = [];
 
@@ -567,11 +572,11 @@ export class AnalysisBatchesComponent implements OnInit {
       }
     }
     for (let extraction of extractFormValue.new_extractions) {
-      if (isNumberPattern.test(extraction.inhibition_dna)) {
+      if (this.isNumberPattern.test(extraction.inhibition_dna)) {
         extraction.inhibition_dna = parseInt(extraction.inhibition_dna, 10)
         this.dnaApplyList.push(extraction.sample)
       }
-      if (isNumberPattern.test(extraction.inhibition_rna)) {
+      if (this.isNumberPattern.test(extraction.inhibition_rna)) {
         extraction.inhibition_rna = parseInt(extraction.inhibition_rna, 10)
         this.rnaApplyList.push(extraction.sample);
       }
@@ -585,7 +590,7 @@ export class AnalysisBatchesComponent implements OnInit {
     this.wizardExtract.next();
   }
 
-  // submitInhibitions no longer in use
+  // submitInhibitions function no longer in use
   submitInhibitions() {
 
     let createInhibitionFormValue = this.createInhibitionForm.value;
@@ -750,12 +755,18 @@ export class AnalysisBatchesComponent implements OnInit {
     this.loadingFlag = true;
     this.extractionErrorFlag = false;
 
+    // copy the extractForm value to the worksheetdata var before altering the extractForm value schema
+    // not working - need to use a deep copy appropriate for a nested object
+    this.worksheetData = Object.assign({}, this.extractForm.value)
     let extractFormValue = this.extractForm.value;
-    // convert all inhibition IDs to numbers from strings(select forms return strings)
-    for (let extraction of extractFormValue.new_extractions) {
-      extraction.inhibition_dna = parseInt(extraction.inhibition_dna, 10)
-      extraction.inhibition_rna = parseInt(extraction.inhibition_rna, 10)
-    }
+
+    extractFormValue.elution_volume = parseInt(extractFormValue.elution_volume, 10)
+    extractFormValue.extraction_method = parseInt(extractFormValue.extraction_method, 10)
+    extractFormValue.extraction_volume = parseInt(extractFormValue.extraction_volume, 10)
+    extractFormValue.qpcr_reaction_volume = parseInt(extractFormValue.qpcr_reaction_volume, 10)
+    extractFormValue.qpcr_template_volume = parseInt(extractFormValue.qpcr_template_volume, 10)
+    extractFormValue.new_rt.reaction_volume = parseInt(extractFormValue.new_rt.reaction_volume, 10)
+    extractFormValue.new_rt.template_volume = parseInt(extractFormValue.new_rt.template_volume, 10)
 
     let extractFormValueCopy = extractFormValue;
     for (let extraction of extractFormValueCopy.new_extractions) {
