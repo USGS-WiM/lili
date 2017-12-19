@@ -24,6 +24,7 @@
                                 <span *ngIf="sample.aliquots.length === 0">No aliquots recorded</span>
                                 <div class="select" *ngIf="sample.aliquots.length > 0">
                                     <select name="aliquot_select" (change)="onAliquotSelect(sample.id, $event.target.value)">
+                                        <option [value]="">Select</option>
                                         <option *ngFor="let aliquot of sample.aliquots" [value]="aliquot.id">{{aliquot.aliquot_string}}</option>
                                     </select>
                                 </div>

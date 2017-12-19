@@ -410,6 +410,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   createWorksheet() {
 
+    // use this.worksheetData, which was populated by submitExtractions()
+
   }
 
   buildAliquotArray(index, sampleID, aliquots) {
@@ -757,8 +759,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
     // copy the extractForm value to the worksheetdata var before altering the extractForm value schema
     // not working - need to use a deep copy appropriate for a nested object
-    this.worksheetData = Object.assign({}, this.extractForm.value)
     let extractFormValue = this.extractForm.value;
+    this.worksheetData = JSON.parse (JSON.stringify(extractFormValue));
 
     extractFormValue.elution_volume = parseInt(extractFormValue.elution_volume, 10)
     extractFormValue.extraction_method = parseInt(extractFormValue.extraction_method, 10)
@@ -790,6 +792,7 @@ export class AnalysisBatchesComponent implements OnInit {
       },
       error => {
         this.errorMessage = <any>error
+        this.loadingFlag = false;
         this.extractionErrorFlag = true;
       }
       )
