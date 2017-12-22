@@ -220,7 +220,6 @@
                 </div>
             </section>
         </form>
-
     </clr-wizard-page>
     <!-- extraction (batch) details page -->
 
@@ -435,15 +434,15 @@
             </div>
         </div>
         extractFormStatus: {{extractForm.status}}
-
         <ng-template clrPageButtons>
             <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
             <clr-wizard-button [type]="'custom-next-inhPage'">Next</clr-wizard-button>
         </ng-template>
-
     </clr-wizard-page>
+    <!-- end Inhibition page -->
 
+    <!-- Confirmation page -->
     <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
         <ng-template clrPageTitle>Confirmation</ng-template>
 
@@ -474,8 +473,7 @@
 
         <div *ngIf="extractForm.valid && !loadingFlag && !extractionFinished">
 
-            <div>You are about to extract Analysis Batch {{selectedAnalysisBatchID}}. Please
-                confirm the details below.</div>
+            <div>You are about to extract Analysis Batch {{selectedAnalysisBatchID}}. Please confirm the details below.</div>
 
             <div>
                 <label>Extraction</label>
@@ -532,15 +530,47 @@
         </div>
 
         <ng-template clrPageButtons>
-            <clr-wizard-button (click)="createWorksheet()">Create Worksheet</clr-wizard-button>
             <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
             <clr-wizard-button [type]="'custom-finish-confirmPage'"> {{ extractionFinished ? "Finish" : "Submit Extraction" }}</clr-wizard-button>
         </ng-template>
 
     </clr-wizard-page>
-    <!-- end Inhibition page -->
+    <!-- end Confirmation page -->
 </clr-wizard>
+<!-- end Extract Wizard -->
+
+<!-- begin print worksheet modal -->
+<clr-modal [(clrModalOpen)]="showHidePrintModal" [clrModalSize]="'xl'">
+    <h3 class="modal-title">Re-print Analysis Batch Worksheet</h3>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div *ngIf="noExtractionsFlag">
+                    There are no extractions for this Analysis Batch.
+                </div>
+
+                <div *ngIf="oneExtractionFlag">
+                    There is one extraction for this analysis batch.
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="createWorksheet()"
+                        [clrLoading]="printSubmitLoading">
+                        <clr-icon shape="clipboard"></clr-icon> Print Worksheet</button>
+                </div>
+
+                <div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--<div class="modal-footer">
+            <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
+            <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
+        </div>-->
+</clr-modal>
+<!-- end print worksheet modal -->
 
 
 <!-- edit analysis batch modal -->
@@ -727,8 +757,6 @@
                         </ng-template>
                     </clr-tab>
 
-
-
                 </clr-tabs>
             </div>
         </div>
@@ -779,14 +807,13 @@
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)" [clrLoading]="submitLoading">
+                                    <clr-icon shape="upload"></clr-icon> Extract</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)">
                                     <clr-icon shape="note-edit" size="16"></clr-icon> Edit Analysis Batch</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)" [clrLoading]="submitLoading">
-                                    <clr-icon shape="login"></clr-icon> Extract</button>
-                                <!--<button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="printer"></clr-icon> Go</button>
-                                <button type="button" class="btn btn-sm btn-secondary" > <clr-icon shape="trash"></clr-icon> Up</button>
-                                <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="note-edit"size="16"></clr-icon> Here</button> -->
-
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="reprintWorksheet(selectedAB)"
+                                    [clrLoading]="printSubmitLoading">
+                                    <clr-icon shape="clipboard"></clr-icon> Print Worksheet</button>
                             </div>
                         </clr-dg-action-bar>
 
