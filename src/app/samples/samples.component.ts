@@ -117,7 +117,7 @@ export class SamplesComponent implements OnInit {
     filter_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
     secondary_concentration_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
     elution_notes: new FormControl({ value: '', disabled: true }),
-    technician_initials: new FormControl({ value: '', disabled: true }), 
+    technician_initials: new FormControl({ value: '', disabled: true }),
     dissolution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
     post_dilution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
   });
@@ -162,7 +162,7 @@ export class SamplesComponent implements OnInit {
     dissolution_volume: new FormControl(''), // required when not disabled
     post_dilution_volume: new FormControl(''), // required when not disabled
 
-    //the following controls do not appear in create sample form
+    // the following controls do not appear in create sample form
     final_concentrated_sample_volume: new FormControl(''),
     final_concentrated_sample_volume_type: new FormControl(''),
     final_concentrated_sample_volume_notes: new FormControl(''),

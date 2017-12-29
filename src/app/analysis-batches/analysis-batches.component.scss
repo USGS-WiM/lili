@@ -34,3 +34,11 @@ select[multiple], select[size] {
     padding: 0px
 
 }
+
+
+label.required:after{
+    content: "*";
+    font-size: 1.1em;
+    color: #c92100;
+    margin-left: 6px;
+}
