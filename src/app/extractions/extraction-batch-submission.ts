@@ -2,16 +2,19 @@ import {IReverseTranscriptionSubmission} from '../reverse-transcriptions/reverse
 
 export interface IExtractionBatchSubmission {
     analysis_batch: number;
+    extraction_volume: number;
+    elution_volume: number;
     extraction_method: number;
-    extraction_volume: number
-    elution_volume: number
+    extraction_date: string;
+    reextraction: number;
     sample_dilution_factor: number;
-    extraction_date: string
-    template_volume: number;
-    reaction_volume: number;
-    pcr_date: string;
-    reextraction: number
-    rt: IReverseTranscriptionSubmission;
-    replicates: Object[],
-    extractions: Object[]
+    qpcr_template_volume: number;
+    qpcr_reaction_volume: number;
+    qpcr_date: string;
+    new_rt: Object;
+    new_replicates: {
+        target: number;
+        count: number;
+    }[];
+    new_extractions: Object[];
 }

@@ -468,7 +468,7 @@
             </div>
         </clr-alert>
         <div *ngIf="extractionFinished && !extractionErrorFlag">
-            <button class="btn btn-primary" (click)="createWorksheet()">Create Extraction Worksheet</button>
+            <button class="btn btn-primary" (click)="createWorksheet(false)">Create Extraction Worksheet</button>
         </div>
 
         <div *ngIf="extractForm.valid && !loadingFlag && !extractionFinished">
@@ -541,7 +541,7 @@
 <!-- end Extract Wizard -->
 
 <!-- begin print worksheet modal -->
-<clr-modal [(clrModalOpen)]="showHidePrintModal" [clrModalSize]="'xl'">
+<clr-modal [(clrModalOpen)]="showHidePrintModal" [clrModalSize]="'md'">
     <h3 class="modal-title">Re-print Analysis Batch Worksheet</h3>
     <div class="modal-body">
         <div class="row">
@@ -553,15 +553,32 @@
 
                 <div *ngIf="oneExtractionFlag">
                     There is one extraction for this analysis batch.
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="createWorksheet()"
-                        [clrLoading]="printSubmitLoading">
-                        <clr-icon shape="clipboard"></clr-icon> Print Worksheet</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="createWorksheet()" [clrLoading]="printSubmitLoading">
+                        <clr-icon shape="clipboard"></clr-icon> Re-Print Worksheet</button>
                 </div>
 
-                <div>
-
+                <div *ngIf="multipleExtractionsFlag">
+                    There are multiple extractions of this Analysis Batch. Please select the extraction data you would like to print.
+                    <form class="compact" [formGroup]="extractionBatchSelectForm">
+                        <div class="form-group">
+                            <label class="required">Selection</label>
+                            <label for="extractionBatchSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                                [class.invalid]="extractionBatchSelectForm.get('extraction_batch').invalid && (extractionBatchSelectForm.get('extraction_batch').dirty || extractionBatchSelectForm.get('extraction_batch').touched)">
+                                <div class="select">
+                                    <select id="extractionBatchSelect" name="extraction_batch" formControlName="extraction_batch">
+                                        <option *ngFor="let eb of extractionBatchArray" [value]="eb.id">Extraction {{eb.extraction_number}}</option>
+                                    </select>
+                                </div>
+                                <span class="tooltip-content">
+                                    This field cannot be empty!
+                                </span>
+                            </label>
+                        </div>
+                    </form>
+                    <div>
+                        <button class="btn btn-primary" (click)="createWorksheet(true)" [disabled]="extractionBatchSelectForm.invalid">Create Extraction Worksheet</button>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -811,9 +828,8 @@
                                     <clr-icon shape="upload"></clr-icon> Extract</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)">
                                     <clr-icon shape="note-edit" size="16"></clr-icon> Edit Analysis Batch</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="reprintWorksheet(selectedAB)"
-                                    [clrLoading]="printSubmitLoading">
-                                    <clr-icon shape="clipboard"></clr-icon> Print Worksheet</button>
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="reprintWorksheet(selectedAB)" [clrLoading]="printSubmitLoading">
+                                    <clr-icon shape="clipboard"></clr-icon> Re-Print Worksheet</button>
                             </div>
                         </clr-dg-action-bar>
 

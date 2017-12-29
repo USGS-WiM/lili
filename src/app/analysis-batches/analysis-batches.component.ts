@@ -60,6 +60,7 @@ export class AnalysisBatchesComponent implements OnInit {
   // for print modal
   printSubmitLoading: boolean = false;
   noExtractionsFlag: boolean = false;
+  oneExtractionFlag: boolean = false;
   multipleExtractionsFlag: boolean = false;
 
   extractWizardOpen: boolean = false;
@@ -90,7 +91,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   extractionBatchArray: IExtractionBatch[];
 
-  worksheetData;
+  rePrintWorksheetData: IExtractionBatch;
+  extractWizWorksheetData: IExtractionBatchSubmission;
 
   showHidePrintModal: boolean = false;
 
@@ -149,6 +151,11 @@ export class AnalysisBatchesComponent implements OnInit {
     rna: new FormControl(false),
     inhibition_date_dna: new FormControl(''),
     inhibition_date_rna: new FormControl('')
+  })
+
+  // extractionBatch select form
+  extractionBatchSelectForm = new FormGroup({
+    extraction_batch: new FormControl('', Validators.required)
   })
 
   buildExtractForm() {
@@ -430,9 +437,11 @@ export class AnalysisBatchesComponent implements OnInit {
         if (analysisBatchDetail.extractionbatches.length === 0) {
           this.noExtractionsFlag = true;
         } else if (analysisBatchDetail.extractionbatches.length === 1) {
-
+          this.rePrintWorksheetData = analysisBatchDetail.extractionbatches[0];
+          this.oneExtractionFlag = true;
         } else if (analysisBatchDetail.extractionbatches.length > 1) {
-
+          this.extractionBatchArray = analysisBatchDetail.extractionbatches;
+          this.multipleExtractionsFlag = true;
         }
       },
       error => {
@@ -442,50 +451,92 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
-  createWorksheet() {
-
-    // use this.worksheetData, which was populated by submitExtractions() or by reprintWorksheet()
-    console.log(this.worksheetData);
-
+  createWorksheet(isReprint) {
     let targetNameArray = [];
-    for (let replicate of this.worksheetData.new_replicates) {
-      for (let target of this.allTargets) {
-        if (replicate.target === target.id) {
-          targetNameArray.push(target.name)
+    // if the function has been called from the re-print modal, look up the
+    // extractionBatch within the selected AB data that matches the id selected from the dropdown.
+    // set the worksheetData var equal to that
+    if (isReprint) {
+      for (let extractionBatch of this.selectedAnalysisBatchData.extractionbatches) {
+        if (extractionBatch.id === this.extractionBatchSelectForm.value.extraction_batch) {
+          this.rePrintWorksheetData = extractionBatch;
         }
       }
+      // console.log(this.rePrintWorksheetData);
+      for (let item of this.rePrintWorksheetData.targets) {
+        for (let target of this.allTargets) {
+          if (item.id === target.id) {
+            targetNameArray.push(target.name)
+          }
+        }
+      }
+
+      // use this.rePrintWorksheetData, populated by the logic above
+      // details for AB worksheet:
+      // analysis batch: this.rePrintWorksheetData.analysisBatch
+      // creation_date: this.selectedAnalysisBatchData.created_date
+      // studies: this.selectedAnalysisBatchData.studies
+      // description: this.selectedAnalysisBatchData.description
+
+      // extraction no: extractionNumber
+      // extraction date: this.rePrintWorksheetData.extraction_date
+      // extraction method: this.rePrintWorksheetData.extraction_method (pipe for display)
+      // extraction sample volume: this.rePrintWorksheetData.extraction_volume
+      // eluted extraction volume: this.rePrintWorksheetData.elution_volume
+      // Left TABLE:
+      // each row is an extraction from this.rePrintWorksheetData.new_extractions
+      // sample column: this.rePrintWorksheetData.new_extractions.aliquot_string
+      // and so on for rack, box, row, spot.
+      // DNA Inhibition Dilution Factor and RNA Inhibition Dilution Factor leave blank (for now)
+      // Right TABLE:
+      // each row is a target from targetNameArray, the rest of the columns are blank
+      // Ext Neg: blank
+      // Ext Pos: blank
+      // Reverse transcription No.: extractionNumber
+      // RT reaction volume: extractForm.new_rt.reaction_volume
+      // RT date: extractForm.new_rt.rt_date
+      // NOTES: userID (not ready for this yet), blank space for writing
+    } else if (!isReprint) {
+
+      // use this.extractWizWorksheetData, which was populated by submitExtractions()
+      for (let replicate of this.extractWizWorksheetData.new_replicates) {
+        for (let target of this.allTargets) {
+          if (replicate.target === target.id) {
+            targetNameArray.push(target.name)
+          }
+        }
+      }
+      // local var to hold extraction number
+      let extractionNumber;
+      // add 1 to length of extractionBatches array to get current extraction number
+      extractionNumber = (this.selectedAnalysisBatchData.extractionbatches.length) + 1
+
+      // details for AB worksheet:
+      // analysis batch: this.extractWizWorksheetData.analysisBatch
+      // creation_date: this.selectedAnalysisBatchData.created_date
+      // studies: this.selectedAnalysisBatchData.studies
+      // description: this.selectedAnalysisBatchData.description
+
+      // extraction no: extractionNumber
+      // extraction date: this.extractWizWorksheetData.extraction_date
+      // extraction method: this.extractWizWorksheetData.extraction_method (pipe for display)
+      // extraction sample volume: this.extractWizWorksheetData.extraction_volume
+      // eluted extraction volume: this.extractWizWorksheetData.elution_volume
+      // Left TABLE:
+      // each row is an extraction from this.extractWizWorksheetData.new_extractions
+      // sample column: this.extractWizWorksheetData.new_extractions.aliquot_string
+      // and so on for rack, box, row, spot.
+      // DNA Inhibition Dilution Factor and RNA Inhibition Dilution Factor leave blank (for now)
+      // Right TABLE:
+      // each row is a target from targetNameArray, the rest of the columns are blank
+      // Ext Neg: blank
+      // Ext Pos: blank
+      // Reverse transcription No.: extractionNumber
+      // RT reaction volume: extractForm.new_rt.reaction_volume
+      // RT date: extractForm.new_rt.rt_date
+      // NOTES: userID (not ready for this yet), blank space for writing
+
     }
-
-    // local var to hold extraction number
-    let extractionNumber;
-    // add 1 to length of extractionBatches array to get current extraction number
-    extractionNumber = (this.selectedAnalysisBatchData.extractionbatches.length) + 1
-
-    // details for AB worksheet:
-    // analysis batch: this.worksheetData.analysisBatch
-    // creation_date: this.selectedAnalysisBatchData.created_date
-    // studies: this.selectedAnalysisBatchData.studies
-    // description: this.selectedAnalysisBatchData.description
-
-    // extraction no: extractionNumber
-    // extraction date: this.worksheetData.extraction_date
-    // extraction method: this.worksheetData.extraction_method (pipe for display)
-    // extraction sample volume: this.worksheetData.extraction_volume
-    // eluted extraction volume: this.worksheetData.elution_volume
-    // Left TABLE:
-    // each row is an extraction from this.worksheetData.new_extractions
-    // sample column: this.worksheetData.new_extractions.aliquot_string
-    // and so on for rack, box, row, spot.
-    // DNA Inhibition Dilution Factor and RNA Inhibition Dilution Factor leave blank (for now)
-    // Right TABLE:
-    // each row is a target from targetNameArray, the rest of the columns are blank
-    // Ext Neg: blank
-    // Ext Pos: blank
-    // Reverse transcription No.: extractionNumber
-    // RT reaction volume: extractForm.new_rt.reaction_volume
-    // RT date: extractForm.new_rt.rt_date
-    // NOTES: userID (not ready for this yet), blank space for writing
-
   }
 
   buildAliquotArray(index, sampleID, aliquots) {
@@ -511,8 +562,6 @@ export class AnalysisBatchesComponent implements OnInit {
     this.submitLoading = true;
     this.resetAB();
     this.selectedAnalysisBatchID = selectedAB.id;
-
-    this.worksheetData = {};
 
     this.extractForm.patchValue({
       analysis_batch: selectedAB.id
@@ -542,7 +591,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
           // for (let sample of this.abSampleList) {
 
-          // NEED TO PASS THE INDEX TO THE buildAliquotArray FUNC
+          // NEED TO PASS THE INDEX TO THE buildAliquotArray function
 
           // populate extractionArray with sample IDs for the selected AB and null inhibition ID value (TBD by user)
           // let extractionFormGroup: FormGroup = this.formBuilder.group({
@@ -676,7 +725,7 @@ export class AnalysisBatchesComponent implements OnInit {
     // copy the extractForm value to the worksheetdata var before altering the extractForm value schema
     // not working - need to use a deep copy appropriate for a nested object
     let extractFormValue = this.extractForm.value;
-    this.worksheetData = JSON.parse(JSON.stringify(extractFormValue));
+    this.extractWizWorksheetData = JSON.parse(JSON.stringify(extractFormValue));
 
     extractFormValue.elution_volume = parseInt(extractFormValue.elution_volume, 10)
     extractFormValue.extraction_method = parseInt(extractFormValue.extraction_method, 10)
