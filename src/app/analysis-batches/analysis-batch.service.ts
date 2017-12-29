@@ -27,10 +27,10 @@ export class AnalysisBatchService {
     return window;
   }
   //subject, getter,setter for extraction form values
-  private _extractionFormValues: Subject<any> = new Subject<any>();
-  public get ExtractionFormValues(): Observable<any> { return this._extractionFormValues.asObservable(); }
-  public setExtractionFormValues(extractionFormValues: any) {
-    this._extractionFormValues.next(extractionFormValues);
+  private _ExtractionWorksheetObj: Subject<any> = new Subject<any>();
+  public get WorksheetObject(): Observable<any> { return this._ExtractionWorksheetObj.asObservable(); }
+  public setWorksheetObject(worksheetObj: any) {
+    this._ExtractionWorksheetObj.next(worksheetObj);
   }
   // get Analysis Batch Detail - for individual AB record retrieval 
   public getAnalysisBatchDetail(abID: number): Observable<IAnalysisBatchDetail> {

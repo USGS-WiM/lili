@@ -18,7 +18,7 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
   public worksheetElement: any;
   public nowDate: Date;
   public batchId: number;
-  public formValues: any;
+  public abWorksheet: any;
   constructor(private _router: Router, private _route: ActivatedRoute, private _batchServices: AnalysisBatchService) {    
    }
 
@@ -28,8 +28,13 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
     this._route.params.subscribe((x)=> {
       this.batchId = x.id;
     });
-    this._batchServices.ExtractionFormValues.subscribe((values) =>{
-      this.formValues = values;
+    this._batchServices.WorksheetObject.subscribe((values) =>{
+      this.abWorksheet = values;
+      let studyArray = []
+      values.studies.forEach(study => {
+        studyArray.push(study.name);
+      });
+      this.abWorksheet.studies = studyArray.join(", ");
     });
 
   }

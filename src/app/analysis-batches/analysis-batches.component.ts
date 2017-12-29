@@ -462,7 +462,7 @@ export class AnalysisBatchesComponent implements OnInit {
     // set the worksheetData var equal to that
     if (isReprint) {
       for (let extractionBatch of this.selectedAnalysisBatchData.extractionbatches) {
-        if (extractionBatch.id === this.extractionBatchSelectForm.value.extraction_batch) {
+        if (extractionBatch.id === Number(this.extractionBatchSelectForm.value.extraction_batch)) {
           this.rePrintWorksheetData = extractionBatch;
         }
       }
@@ -474,10 +474,24 @@ export class AnalysisBatchesComponent implements OnInit {
           }
         }
       }
+      let ABWorksheetObj = {
+        analysis_batch: this.selectedAnalysisBatchData.id,
+        creation_date: this.selectedAnalysisBatchData.created_date,
+        studies: this.selectedAnalysisBatchData.studies,
+        description: this.selectedAnalysisBatchData.analysis_batch_description,
+        extraction_no: (this.selectedAnalysisBatchData.extractionbatches.length) + 1,
+        extraction_date: this.rePrintWorksheetData.extraction_date,
+        extraction_method: this.rePrintWorksheetData.extraction_method,// (pipe for display)
+        extraction_sample_volume: this.rePrintWorksheetData.extraction_volume,
+        eluted_extraction_volume: this.rePrintWorksheetData.elution_volume
+      };
+
+      this._analysisBatchService.setWorksheetObject(ABWorksheetObj);
+      this.showWorksheet = true;
 
       // use this.rePrintWorksheetData, populated by the logic above
       // details for AB worksheet:
-      // analysis batch: this.rePrintWorksheetData.analysisBatch
+      // analysis batch: this.selectedAnalysisBatchData.id
       // creation_date: this.selectedAnalysisBatchData.created_date
       // studies: this.selectedAnalysisBatchData.studies
       // description: this.selectedAnalysisBatchData.description
@@ -539,7 +553,21 @@ export class AnalysisBatchesComponent implements OnInit {
       // RT reaction volume: extractForm.new_rt.reaction_volume
       // RT date: extractForm.new_rt.rt_date
       // NOTES: userID (not ready for this yet), blank space for writing
+      let ABWorksheetObj = {
+      // description: 
+        analysis_batch: this.extractWizWorksheetData.analysis_batch,
+        creation_date: this.selectedAnalysisBatchData.created_date,
+        studies: this.selectedAnalysisBatchData.studies,
+        description: this.selectedAnalysisBatchData.analysis_batch_description,
+        extraction_no: extractionNumber,
+        extraction_date: this.extractWizWorksheetData.extraction_date,
+        extraction_method: this.allExtractionMethods.filter(em=> {return em.id == this.extractWizWorksheetData.extraction_method})[0],// (pipe for display)
+        extraction_sample_volume: this.extractWizWorksheetData.extraction_volume,
+        eluted_extraction_volume: this.extractWizWorksheetData.elution_volume
+      };
 
+      this._analysisBatchService.setWorksheetObject(ABWorksheetObj);
+      this.showWorksheet = true;
     }
   }
 

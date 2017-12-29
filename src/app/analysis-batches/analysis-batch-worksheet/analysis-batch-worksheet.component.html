@@ -17,19 +17,19 @@
         <table id="topLeftTable" class="col-md-8 table">
           <tr>
             <td>Analysis Batch:</td>
-            <td>{{batchId}}</td>
+            <td>{{abWorksheet?.analysis_batch}}</td>
           </tr>
           <tr>
             <td>Creation Date:</td>
-            <td>createDate</td>
+            <td>{{abWorksheet?.creation_date}}</td>
           </tr>
           <tr>
             <td>Studies:</td>
-            <td>studies</td>
+            <td>{{abWorksheet?.studies}}</td>
           </tr>
           <tr>
             <td>Description:</td>
-            <td>desc</td>
+            <td>{{abWorksheet?.description}}</td>
           </tr>
         </table>
       </div>
@@ -38,21 +38,21 @@
         <table id="topRightTable" class="col-md-8 table">
           <tr>
             <td>Extraction No.:</td>
-            <td>{{number}}</td>
+            <td>{{abWorksheet?.extraction_no}}</td>
             <td></td>
             <td></td>
           </tr>
           <tr>
             <td>Extraction date:</td>
-            <td>{{formValues?.extraction_date}}</td>
+            <td>{{abWorksheet?.extraction_date}}</td>
             <td>Extraction sample volume:</td>
-            <td>{{formValues?.extraction_volume}}</td>
+            <td>{{abWorksheet?.extraction_sample_volume}}</td>
           </tr>
           <tr>
             <td>Extraction method:</td>
-            <td>{{formValues?.extraction_method}}</td>
+            <td>{{abWorksheet?.extraction_method?.name}}</td>
             <td>Eluted extracted volume:</td>
-            <td>eludVol</td>
+            <td>{{abWorksheet?.eluted_extraction_volume}}</td>
           </tr>
         </table>
       </div>
