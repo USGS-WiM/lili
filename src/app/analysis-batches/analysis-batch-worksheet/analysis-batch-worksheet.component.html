@@ -21,11 +21,11 @@
           </tr>
           <tr>
             <td>Creation Date:</td>
-            <td>{{abWorksheet?.creation_date}}</td>
+            <td>{{abWorksheet?.creation_date | date: 'MM/dd/yyyy'}}</td>
           </tr>
           <tr>
             <td>Studies:</td>
-            <td>{{abWorksheet?.studies}}</td>
+            <td>{{abWorksheet?.str_studies}}</td>
           </tr>
           <tr>
             <td>Description:</td>
@@ -44,7 +44,7 @@
           </tr>
           <tr>
             <td>Extraction date:</td>
-            <td>{{abWorksheet?.extraction_date}}</td>
+            <td>{{abWorksheet?.extraction_date | date: 'MM/dd/yyyy'}}</td>
             <td>Extraction sample volume:</td>
             <td>{{abWorksheet?.extraction_sample_volume}}</td>
           </tr>
@@ -57,56 +57,36 @@
         </table>
       </div>
     </div>
+
     <br clear="all" />    
     <!-- middle section -->
     <div id="row3" class="row">
       <!-- sample location table -->
       <div class="col-md-6 pull-left">
         <div class="col-md-11">
-          <table class="table" id="sampleTable">
+          <table class="table table-collapse" id="sampleTable">
             <thead>
               <tr>
                 <th></th>
-                <th>Sample ID</th>
+                <th>Sample (LIMS ID-aliquot #)</th>
                 <th>Rack</th>
                 <th>Box</th>
                 <th>Row</th>
                 <th>Spot</th>
-                <th>DNA Inhibition Dilution Factor</th>
-                <th>RNA Inhibition Dilution Factor</th>
+                <th>Inhibition</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>00001</td>
-                <td>12</td>
-                <td>1</td>
-                <td>2</td>
-                <td>1</td>
+              <tr *ngFor="let extraction of abWorksheet?.extraction_submission; let i = index">
+                <!-- aliquot_string?: string; aliquots?: any; box?: number; rack?: number; row?: number; sample: number; spot?: number;-->
+                <td>{{i+1}}</td>
+                <td>{{extraction.aliquot_string}}</td>
+                <td>{{extraction.rack}}</td>
+                <td>{{extraction.box}}</td>
+                <td>{{extraction.row}}</td>
+                <td>{{extraction.spot}}</td>
                 <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>00002</td>
-                <td>2</td>
-                <td>1</td>
-                <td>2</td>
-                <td>4</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>00003</td>
-                <td>12</td>
-                <td>1</td>
-                <td>2</td>
-                <td>7</td>
-                <td></td>
-                <td></td>
-              </tr>
+              </tr>              
             </tbody>
           </table>
           <div style="font-weight:bold;">
@@ -129,50 +109,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>A</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr>
-                <td>AA</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr>
-                <td>E</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr>
-                <td>G1</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr>
-                <td>G2</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr>
-                <td>HP</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr>
-                <td>PV</td>
+              <tr *ngFor="let target of abWorksheet?.targetNames">
+                <td>{{target}}</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -190,31 +128,31 @@
             <table id="bottomTable" class="col-md-8 table">
               <tr>
                 <td>Reverse transcription No.:</td>
-                <td>2</td>
+                <td>{{abWorksheet?.reverse_extraction_no}}</td>
                 <td colspan="2"></td>                
               </tr>
               <tr>
                 <td>RT reaction volume:</td>
-                <td>50</td>
+                <td>{{abWorksheet?.rt_reaction_volume}}</td>
                 <td style="width:20%">Date:</td>
-                <td>11/11/2011</td>
+                <td>{{rt_date | date: 'MM/dd/yyyy'}}</td>
               </tr>
               <tr>
                 <td colspan="4">
               </tr>
               <tr>
                 <td>qPCR replicas:</td>
-                <td>2</td>
+                <td></td>
                 <td colspan="2"></td>
               </tr>
             </table>
           </div>
     </div>
-    <div id="row5" class="row" id="notes">
-      <div class="col-md-6">Notes:</div> 
+    
+    <div id="row5" class="row col-md-12" id="notes">
+      <div class="col-md-12 line_break">Notes:</div> 
       <br clear="all"/>
-      <hr class="line_break">
-      <div id="notesSpace"></div>
+      <div id="notesSpace">&nbsp;</div>
     </div>
 
   </div>
