@@ -101,7 +101,8 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 		this.targetColumns = [
 			{ title: "Target", dataKey: "Target" },
 			{ title: "Date", dataKey: "Date" },
-			{ title: "Positive Cq", dataKey: "Positive Cq" },
+			{ title: "Positive\nID", dataKey: "Positive ID" },
+			{ title: "Cq", dataKey: "Cq" },
 			{ title: "Detections", dataKey: "Detections" }
 		];
 		this.targetRows = [];
@@ -210,17 +211,8 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 			margin: 10,
 			theme: 'grid',
 			tableWidth: 315,
-			headerStyles: this.headerStyle,
-			columnStyles: {			
-				0: { columnWidth: 10 }, // "index" 
-				1: { columnWidth: 80 },// "Sample"
-				2: { columnWidth: 30 }, // "Rack"
-				3: { columnWidth: 30 }, // "Box"
-				4: { columnWidth: 30 }, // "Row"
-				5: { columnWidth: 30 }, // "Spot"			
-				6: { columnWidth: 100 },// "DNA Inhibition Dilution Factor"
-				7: { columnWidth: 100 } // "RNA Inhibition Dilution Factor"
-			}
+			headerStyles: this.headerStyle
+		
 		});
 		pdf.text('Ext Neg:', 20 ,pdf.autoTable.previous.finalY + 10);
 		pdf.text('Ext Pos:', 20 ,pdf.autoTable.previous.finalY + 20);
@@ -232,10 +224,17 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 		
 		pdf.autoTable(this.targetColumns, this.targetRows, {			
 			startY: 120,
-			margin: {left: 340},
+			margin: {left: 338},
 			theme: 'grid',
-			tableWidth: 240,
-			headerStyles: this.headerStyle			
+			tableWidth: 245,
+			headerStyles: this.headerStyle,
+			columnStyles: {
+				Target: { columnWidth: 70 },
+				Date: { columnWidth: 60 },
+				'Positive ID': { columnWidth: 42 },
+				Cq: { columnWidth: 24 },
+				Detections: { columnWidth: 51 }
+			}
 		});
 		this.targetEndingY = pdf.autoTable.previous.finalY+20;
 		// END Target middle Table //////////////////////////////////
