@@ -428,8 +428,10 @@ export class AnalysisBatchesComponent implements OnInit {
 	}
 
 	reprintWorksheet(selectedAB) {
-
 		this.printSubmitLoading = true;
+		this.noExtractionsFlag = false; 
+		this.oneExtractionFlag = false; 
+		this.multipleExtractionsFlag = false;
 		// get the AB detail from web services
 		this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
 			.subscribe(
@@ -508,24 +510,27 @@ export class AnalysisBatchesComponent implements OnInit {
 			// TODO: need to look up the first aliquot of every sample in this analysis batch
 			this._sampleService.getSampleSelection(sampleList)
 				.subscribe((sampleSelection) => {
-					let matchingSample: ISample;
 					for (let extraction of this.rePrintWorksheetData.extractions) {
-						matchingSample = sampleSelection.filter(s => { return s.id == extraction.sample })[0];
-					}
-					if (matchingSample) {
-						if (matchingSample.aliquots) {
-							// create an extractionSubmission from it
-							let extractionSubmit: IExtractionSubmission = {
-								aliquot_string: matchingSample.aliquots[0].aliquot_string,
-								box: matchingSample.aliquots[0].freezer_location.box,
-								rack: matchingSample.aliquots[0].freezer_location.rack,
-								row: matchingSample.aliquots[0].freezer_location.row,
-								sample: matchingSample.aliquots[0].sample,
-								spot: matchingSample.aliquots[0].freezer_location.spot,
-							};
-							extractionSubmission.push(extractionSubmit);
-						};// end if matchingSample.aliquots
-					} // end if matchingSample
+						for (let sample of sampleSelection) {
+							if (sample.id === extraction.sample) {
+								// place the aliquot freezer location data into the extraction_submission								
+								if (sample.aliquots) {
+									if (sample.aliquots.length > 0) { 
+										// create an extractionSubmission from it
+										let extractionSubmit: IExtractionSubmission = {
+											aliquot_string: sample.aliquots[0].aliquot_string,
+											box: sample.aliquots[0].freezer_location.box,
+											rack: sample.aliquots[0].freezer_location.rack,
+											row: sample.aliquots[0].freezer_location.row,
+											sample: sample.aliquots[0].sample,
+											spot: sample.aliquots[0].freezer_location.spot,
+										};
+										extractionSubmission.push(extractionSubmit);
+									}// end if aliquots.length
+								}// end if sample.aliquots
+							}
+						}
+					}					
 					// proceed in opening worksheet modal with the extractionsubmission
 					this.buildReprintWorksheetObj(extractionSubmission, targetNameArray );
 				},

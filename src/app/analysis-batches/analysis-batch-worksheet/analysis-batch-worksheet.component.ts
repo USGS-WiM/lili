@@ -1,57 +1,59 @@
 import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { AnalysisBatchService } from '../../analysis-batches/analysis-batch.service';
 import { Iabworksheet } from '../../analysis-batches/analysis-batch-worksheet/ab-worksheet';
+import { fakeAsync } from '@angular/core/testing';
 
 declare let jsPDF: any;
 //declare let html2pdf: any;
 
+// used for right-aligning the text added to pdf
 var splitRegex = /\r\n|\r|\n/g;
 jsPDF.API.textEx = function (text: any, x: number, y: number, hAlign?: string, vAlign?: string) {
-    var fontSize = this.internal.getFontSize()
-        / this.internal.scaleFactor;
+	var fontSize = this.internal.getFontSize()
+		/ this.internal.scaleFactor;
 
-    // As defined in jsPDF source code
-    var lineHeightProportion = 1.15;
+	// As defined in jsPDF source code
+	var lineHeightProportion = 1.15;
 
-    var splittedText: string[];
-    var lineCount: number = 1;
-    if (vAlign === 'middle' || vAlign === 'bottom'
-        || hAlign === 'center' || hAlign === 'right') {
+	var splittedText: string[];
+	var lineCount: number = 1;
+	if (vAlign === 'middle' || vAlign === 'bottom'
+		|| hAlign === 'center' || hAlign === 'right') {
 
-        splittedText = typeof text === 'string'
-        ? text.split(splitRegex)
-        : text;
+		splittedText = typeof text === 'string'
+			? text.split(splitRegex)
+			: text;
 
-        lineCount = splittedText.length || 1;
-    }
+		lineCount = splittedText.length || 1;
+	}
 
-    // Align the top
-    y += fontSize * (2 - lineHeightProportion);
+	// Align the top
+	y += fontSize * (2 - lineHeightProportion);
 
-    if (vAlign === 'middle') y -= (lineCount / 2) * fontSize;
-    else if (vAlign === 'bottom') y -= lineCount * fontSize;
+	if (vAlign === 'middle') y -= (lineCount / 2) * fontSize;
+	else if (vAlign === 'bottom') y -= lineCount * fontSize;
 
 
-    if (hAlign === 'center'
-        || hAlign === 'right') {
+	if (hAlign === 'center'
+		|| hAlign === 'right') {
 
-        var alignSize = fontSize;
-        if (hAlign === 'center') alignSize *= 0.5;
+		var alignSize = fontSize;
+		if (hAlign === 'center') alignSize *= 0.5;
 
-        if (lineCount > 1) {
-            for (var iLine = 0; iLine < splittedText.length; iLine++) {
-                this.text(splittedText[iLine],
-                    x - this.getStringUnitWidth(splittedText[iLine]) * alignSize,
-                    y);
-                y += fontSize;
-            }
-            return this;
-        }
-        x -= this.getStringUnitWidth(text) * alignSize;
-    }
+		if (lineCount > 1) {
+			for (var iLine = 0; iLine < splittedText.length; iLine++) {
+				this.text(splittedText[iLine],
+					x - this.getStringUnitWidth(splittedText[iLine]) * alignSize,
+					y);
+				y += fontSize;
+			}
+			return this;
+		}
+		x -= this.getStringUnitWidth(text) * alignSize;
+	}
 
-    this.text(text, x, y);
-    return this;
+	this.text(text, x, y);
+	return this;
 };
 
 @Component({
@@ -60,24 +62,52 @@ jsPDF.API.textEx = function (text: any, x: number, y: number, hAlign?: string, v
 	styleUrls: ['./analysis-batch-worksheet.component.scss']
 })
 export class AnalysisBatchWorksheetComponent implements OnInit {
-
 	@ViewChild('batchWorksheet') pdfWorksheet;
 	@ViewChild('sampleTable') sampleTable: ElementRef;
 	@ViewChild('targetTable') targetTable: ElementRef;
 
 	public worksheetElement: any;
-	public nowDate: Date;
-	public batchId: number;
 	public abWorksheet: Iabworksheet;
+	private headerStyle: Object;
+	public sampleColumns: Object[];
+	public sampleRows: any[];
+	public targetColumns: Object[];
+	public targetRows: any[];
+	private sampleEndingY: number; //used to track starting position after dynamic table is added
+	private targetEndingY: number; //used to track starting position after dynamic table is added
+
 	constructor(private _batchServices: AnalysisBatchService) {
 	}
 
 	ngOnInit() {
-		this.worksheetElement = this.pdfWorksheet.nativeElement;
-		this.nowDate = new Date();
+		this.worksheetElement = this.pdfWorksheet.nativeElement;		
+		// header style for the tables in the pdf
+		this.headerStyle = { fillColor: [211, 211, 211], fontSize: 8, textColor: [0, 0, 0] };
+		// table header row for samples
+		this.sampleColumns = [
+			{ title: "", dataKey: "index" }, 
+			{ title: "Sample", dataKey: "Sample" }, 
+			{ title: "Rack", dataKey: "Rack" },
+			{ title: "Box", dataKey: "Box" },
+			{ title: "Row", dataKey: "Row" },
+			{ title: "Spot", dataKey: "Spot" },
+			{ title: "DNA Inhibition\nDilution Factor", dataKey: "DNA Inhibition Dilution Factor" },
+			{ title: "RNA Inhibition\nDilution Factor", dataKey: "RNA Inhibition Dilution Factor" }
+		];
+		this.sampleRows = [];
+		this.sampleEndingY = 0;
+		this.targetEndingY = 0;
+		// table header row for targets
+		this.targetColumns = [
+			{ title: "Target", dataKey: "Target" },
+			{ title: "Date", dataKey: "Date" },
+			{ title: "Positive Cq", dataKey: "Positive Cq" },
+			{ title: "Detections", dataKey: "Detections" }
+		];
+		this.targetRows = [];
 
 		this._batchServices.WorksheetObject.subscribe((values) => {
-			this.abWorksheet = values;
+			this.abWorksheet = values;			
 			let studyArray = []
 			values.studies.forEach(study => {
 				studyArray.push(study.name);
@@ -85,17 +115,9 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 			this.abWorksheet.str_studies = studyArray.join(", ");
 		});
 	}
-
-	public printPDF() {
-		let options = {
-			pagesplit: true
-		};
-
-		let pdf = new jsPDF('p', 'pt', 'a4', true);
-		/*pdf.internal.scaleFactor = 1.25;
-		pdf.addHTML(this.worksheetElement, 0, 0, options, () => {
-		  pdf.save("worksheet.pdf");
-		});*/
+	
+	public printPDF() {		
+		let pdf = new jsPDF('p', 'pt', 'a4', true);		
 		pdf.setFontSize(8);
 		pdf.setFontType("normal");
 		pdf.text(10, 20, new Date().toLocaleDateString());
@@ -108,150 +130,219 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 			pdf.text(200, 20, 'Analysis Batch Worksheet');
 		}
 		pdf.setFontSize(8);
-		pdf.setFontType("normal");
+		pdf.setFontType("bold");
+
 		// .textEx(string, over, down, )
 		// Top left Table /////////////////////////////
-		pdf.textEx('Analysis Batch:', 70, 50, 'right', 'middle'); 
+		pdf.textEx('Analysis batch:', 70, 50, 'right', 'middle');
+		pdf.setFontType("normal");
 		pdf.textEx(this.abWorksheet.analysis_batch.toString(), 75, 50, 'left', 'middle');
-
-		pdf.textEx('Creation Date:', 70, 60, 'right', 'middle');
+		pdf.setFontType("bold");
+		pdf.textEx('Creation date:', 70, 60, 'right', 'middle');
+		pdf.setFontType("normal");
 		pdf.textEx(this.abWorksheet.creation_date, 75, 60, 'left', 'middle');
-		
-		let studySplit = pdf.splitTextToSize(this.abWorksheet.str_studies, 160);
+
+		// split the studies comma separated string in case too long.
+		let studySplit = pdf.splitTextToSize(this.abWorksheet.str_studies, 240);
 		let studyRows = studySplit.length;
 
-		if (studyRows > 1){
+		if (studyRows > 1) {
+			// multiple rows, bump down more
+			pdf.setFontType("bold");
 			pdf.textEx('Studies:', 70, 70, 'right', 'middle');
+			pdf.setFontType("normal");
 			pdf.text(75, 72, studySplit);
 
-			pdf.textEx('Description:', 70, 85+studyRows, 'right', 'middle');
-			pdf.textEx(this.abWorksheet.description, 75, 85+studyRows, 'left', 'middle');
+			pdf.setFontType("bold");
+			pdf.textEx('Description:', 70, 85 + studyRows, 'right', 'middle');
+			pdf.setFontType("normal");
+			pdf.textEx(this.abWorksheet.description, 75, 85 + studyRows, 'left', 'middle');
 		} else {
+			// only 1 row, proceed as normal
+			pdf.setFontType("bold");
 			pdf.textEx('Studies:', 70, 70, 'right', 'middle');
+			pdf.setFontType("normal");
 			pdf.textEx(studySplit[0], 75, 70, 'left', 'middle');
 
+			pdf.setFontType("bold");
 			pdf.textEx('Description:', 70, 80, 'right', 'middle');
+			pdf.setFontType("normal");
 			pdf.textEx(this.abWorksheet.description, 75, 80, 'left', 'middle');
 		}
 		// END Top left Table /////////////////////////////
 
 		// Top right Table /////////////////////////////
-		pdf.textEx('Extraction No.:', 380, 50, 'right', 'middle'); 
-		pdf.textEx(this.abWorksheet.extraction_no.toString(), 385, 50, 'left', 'middle');
+		pdf.setFontType("bold");
+		pdf.textEx('Extraction No.:', 405, 50, 'right', 'middle');
+		pdf.setFontType("normal");
+		pdf.textEx(this.abWorksheet.extraction_no.toString(), 410, 50, 'left', 'middle');
 
-		pdf.textEx('Extraction date:', 380, 60, 'right', 'middle');
-		pdf.textEx(this.abWorksheet.extraction_date, 385, 60, 'left', 'middle');
-		pdf.textEx('Extraction sample volume:', 540, 60, 'right', 'middle');
-		pdf.textEx(this.abWorksheet.extraction_sample_volume.toString(), 545, 60, 'left', 'middle');
+		pdf.setFontType("bold");
+		pdf.textEx('Extraction date:', 405, 60, 'right', 'middle');
+		pdf.setFontType("normal");
+		pdf.textEx(this.abWorksheet.extraction_date, 410, 60, 'left', 'middle');
+		pdf.setFontType("bold");
+		pdf.textEx('Extraction sample volume:', 560, 60, 'right', 'middle');
+		pdf.setFontType("normal");
+		pdf.textEx(this.abWorksheet.extraction_sample_volume.toString(), 565, 60, 'left', 'middle');
 
-		pdf.textEx('Extraction method:', 380, 70, 'right', 'middle');
-		pdf.textEx(this.abWorksheet.extraction_method["name"], 385, 70, 'left', 'middle');
-		pdf.textEx('Eluted extracted volume:', 540, 70, 'right', 'middle');
-		pdf.textEx(this.abWorksheet.eluted_extraction_volume.toString(), 545, 70, 'left', 'middle');
+		pdf.setFontType("bold");
+		pdf.textEx('Extraction method:', 405, 70, 'right', 'middle');
+		pdf.setFontType("normal");
+		pdf.textEx(this.abWorksheet.extraction_method["name"], 410, 70, 'left', 'middle');
+		pdf.setFontType("bold");
+		pdf.textEx('Eluted extracted volume:', 560, 70, 'right', 'middle');
+		pdf.setFontType("normal");
+		pdf.textEx(this.abWorksheet.eluted_extraction_volume.toString(), 565, 70, 'left', 'middle');
 		// END Top right Table /////////////////////////////
-
-
-	/*	let specialElementHandlers = {
-			'#bypassme': (element, renderer) => {
-				return true;
-			}
-		}*/
+	
 		// Sample middle Table /////////////////////////////
-		let SampleColumns = [ 
-			{title: "Index", dataKey: "index"}, 
-			{title: "Sample (LIMS ID-aliquot #)", dataKey: "Sample (LIMS ID-aliquot #)"}, 
-			{title: "Rack", dataKey: "Rack"}, 
-			{title: "Box", dataKey: "Box"}, 
-			{title: "Row", dataKey: "Row"}, 
-			{title: "Spot", dataKey: "Spot"}, 
-			{title: "Inhibition", dataKey: "Inhibition"}
-		];
-		let SampleRows = this.tableToJson(this.sampleTable.nativeElement);
-		SampleRows.forEach((r, i) => {
-			r['index'] = i+1;
+		this.sampleRows = this.tableToJson(this.sampleTable.nativeElement);
+		
+		this.sampleRows.forEach((r, i) => {
+			r['index'] = i + 1;
 		});
 		if (this.abWorksheet.isReprint) {
 			pdf.text("This is a reprint. Aliquot listed is first aliquot of sample.", 20, 115);
 		}
-		pdf.autoTable(SampleColumns, SampleRows, {
-			startY: 120, 
-			margin: 20,
-			theme: 'grid', 
-			tableWidth: 300,
-			headerStyles: {
-				fillColor:[211,211,211], 
-				fontSize: 8, 
-				textColor: [0,0,0]
-			},
-			columnStyles: {
-				1: {columnWidth: 10},
-				2: {columnWidth: 120},
-				3: {columnWidth: 30},
-				4: {columnWidth: 30},
-				5: {columnWidth: 30},
-				6: {columnWidth: 30},
-				7: {columnWidth: 30}
+		pdf.autoTable(this.sampleColumns, this.sampleRows, {
+			startY: 120,
+			margin: 10,
+			theme: 'grid',
+			tableWidth: 315,
+			headerStyles: this.headerStyle,
+			columnStyles: {			
+				0: { columnWidth: 10 }, // "index" 
+				1: { columnWidth: 80 },// "Sample"
+				2: { columnWidth: 30 }, // "Rack"
+				3: { columnWidth: 30 }, // "Box"
+				4: { columnWidth: 30 }, // "Row"
+				5: { columnWidth: 30 }, // "Spot"			
+				6: { columnWidth: 100 },// "DNA Inhibition Dilution Factor"
+				7: { columnWidth: 100 } // "RNA Inhibition Dilution Factor"
 			}
 		});
+		pdf.text('Ext Neg:', 20 ,pdf.autoTable.previous.finalY + 10);
+		pdf.text('Ext Pos:', 20 ,pdf.autoTable.previous.finalY + 20);
+		this.sampleEndingY = pdf.autoTable.previous.finalY+20;
 		// END Sample middle Table //////////////////////////////////
-		
-		// Target middle Table /////////////////////////////
-		let TargetColumns = [ 
-			{title: "Target", dataKey: "Target"}, 
-			{title: "Date", dataKey: "Date"}, 
-			{title: "Positive Cq", dataKey: "Positive Cq"}, 
-			{title: "Detections", dataKey: "Detections"}
-		];
-		let TargetRows = this.tableToJson(this.targetTable.nativeElement);
-		
-		pdf.autoTable(TargetColumns, TargetRows, {
-			startY: 120, 
-			margin: 340,
-			theme: 'grid', 
-			tableWidth: 240,
-			headerStyles: {
-				fillColor:[211,211,211], 
-				fontSize: 8, 
-				textColor: [0,0,0]
-			},
-			columnStyles: {
-				1: {columnWidth: 40},
-				2: {columnWidth: 40},
-				3: {columnWidth: 120},
-				4: {columnWidth: 80}
-			}
-		});
-		// END Target middle Table //////////////////////////////////
-		
 
+		// Target middle Table /////////////////////////////
+		this.targetRows = this.tableToJson(this.targetTable.nativeElement);
+		
+		pdf.autoTable(this.targetColumns, this.targetRows, {			
+			startY: 120,
+			margin: {left: 340},
+			theme: 'grid',
+			tableWidth: 240,
+			headerStyles: this.headerStyle			
+		});
+		this.targetEndingY = pdf.autoTable.previous.finalY+20;
+		// END Target middle Table //////////////////////////////////
+
+		// Lower section //////////////////////////////////////
+		let nextNewStartingY = 0;
+		// which table is longer, need this info to go under both middle tables
+		if (this.targetEndingY > this.sampleEndingY) {
+			nextNewStartingY = this.targetEndingY;
+		} else {
+			nextNewStartingY = this.sampleEndingY;
+		}
+		
+		pdf.textEx('Reverse transcription No.:', 110, nextNewStartingY + 20, 'right', 'middle');
+		pdf.textEx(this.abWorksheet.reverse_extraction_no.toString(), 115, nextNewStartingY + 20, 'left', 'middle');
+
+		pdf.textEx('RT reaction volume:', 110, nextNewStartingY + 30, 'right', 'middle');
+		pdf.textEx(this.abWorksheet.rt_reaction_volume.toString(), 115, nextNewStartingY + 30, 'left', 'middle');
+
+		/*pdf.textEx('qPCR replicates:', 110, nextNewStartingY + 40, 'right', 'middle');
+		pdf.textEx('---', 115, nextNewStartingY + 40, 'left', 'middle');*/
+
+		pdf.text('Notes:', 20, nextNewStartingY + 70);
+		pdf.line(15, nextNewStartingY + 75, 580, nextNewStartingY + 75);
+				
 		pdf.save("worksheet.pdf");
 	}
 
+	// convert table element to json for the .autoTable()
 	private tableToJson(table) {
-		var data = [];
+		let data = [];
 
 		// first row needs to be headers
-		var headers = [];
-		for (var i = 0; i < table.rows[0].cells.length; i++) {
+		let headers = [];
+		for (let i = 0; i < table.rows[0].cells.length; i++) {
 			headers[i] = table.rows[0].cells[i].innerHTML;
 		}
 
 		// go through cells
-		for (var i = 1; i < table.rows.length; i++) {
-
-			var tableRow = table.rows[i];
-			var rowData = {};
-
-			for (var j = 0; j < tableRow.cells.length; j++) {
-
+		for (let i = 1; i < table.rows.length; i++) {
+			let tableRow = table.rows[i];
+			let rowData = {};
+			for (let j = 0; j < tableRow.cells.length; j++) {
 				rowData[headers[j]] = tableRow.cells[j].innerHTML;
-
 			}
-
 			data.push(rowData);
 		}
-
 		return data;
 	}
-	
+
+	// for testing only
+	private fakeObject(): Iabworksheet {
+		let fakeObj: Iabworksheet = {
+			analysis_batch: 14,
+			creation_date: "2017-11-03",
+			description: "test AB",
+			eluted_extraction_volume: 4000,
+			extraction_date: "2017-12-27",
+			extraction_method: { id: 1, name: "Manual" },
+			extraction_no: 12,
+			extraction_sample_volume: 5000,
+			extraction_submission: [
+				{ aliquot_string: "7-1", box: 1, rack: 1, row: 1, sample: 7, spot: 5 },// 1
+				{ aliquot_string: "7-1", box: 1, rack: 1, row: 1, sample: 7, spot: 5 },// 2
+				{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 3
+				{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 4
+				{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 5
+			/*	{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 6
+				{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 7 
+				{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 8
+				{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 9 
+				{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 10 
+				{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 11
+				{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5}*/// 12
+			],
+			isReprint: true,
+			reverse_extraction_no: 12,
+			rt_date: "",
+			rt_reaction_volume: "20",
+			studies: [
+				{ id: 4, description: "Minnesota urban runoff study test", name: "Minnesota urban runoff study" },
+				{ id: 3, description: "With MDH and U of MN.  First samples Oct 2016", name: "MDH Storm Water Irrigation" }
+			],
+			targetNames: [
+				"Enterovirus", //1
+				"G1 Norovirus", //2
+				"A", //3
+				"AA",//4
+				"E",//5
+				"G1",//6
+				"G2",//7
+				"HP",//8
+				"PV",//9
+				"RVA",//10
+				"S",//11
+				"TTR",//12
+				"A", //13
+				"AA",//14
+				"E",//15
+				"G1",//16
+				"G2",//17
+				"HP"//18
+			/*	"PV",//19
+				"RVA"//20*/
+			]
+		}
+		return fakeObj;
+	}
+
 }
