@@ -458,7 +458,7 @@ export class AnalysisBatchesComponent implements OnInit {
     // set the worksheetData var equal to that
     if (isReprint) {
       for (let extractionBatch of this.selectedAnalysisBatchData.extractionbatches) {
-        if (extractionBatch.id === this.extractionBatchSelectForm.value.extraction_batch) {
+        if (extractionBatch.id === Number(this.extractionBatchSelectForm.value.extraction_batch)) {
           this.rePrintWorksheetData = extractionBatch;
         }
       }
@@ -470,6 +470,29 @@ export class AnalysisBatchesComponent implements OnInit {
           }
         }
       }
+
+      let sampleList = [];
+      for (let sample of this.selectedAnalysisBatchData.samples) {
+        sampleList.push(sample.id)
+      }
+
+      // TODO: need to look up the first aliquot of every sample in this analysis batch
+      this._sampleService.getSampleSelection(sampleList)
+      .subscribe(
+        (sampleSelection) => {
+
+          for (let extraction of this.rePrintWorksheetData.extractions ) {
+            for (let sample of sampleSelection) {
+              if (sample.id === extraction.sample) {
+                // place the aliquot freezer location data into the extraction_submission
+              }
+            }
+          }
+        },
+        error => {
+          this.errorMessage = <any>error
+        }
+        );
 
       // use this.rePrintWorksheetData, populated by the logic above
       // details for AB worksheet:

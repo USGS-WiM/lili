@@ -1,15 +1,37 @@
 <div class="row">
-    <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12">
+    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
         <div class="card">
             <div class="card-block">
                 <div class="card-title">
-                    Results
+                    Inhibition Results
                 </div>
                 <div class="card-text">
-                    Results page does not exist yet.
-                    <br><br> (╯°□°)╯︵ ┻━┻
-                    <br> <br>For now, look at this bear.&nbsp;&nbsp;&nbsp;ʕ •ᴥ•ʔ
+                    <!-- Load Inhibition File -->
+
+                    <label class="btn btn-link">
+                        <input type="file" (change)="loadFile($event)" placeholder="Upload file" accept="*">
+                    </label>
+
+                    <button class="btn btn-primary" (click)="parseJSON()" >Parse Data</button>
+
+                    <div class="alert alert-danger" *ngIf="inhFileNameErrorFlag">
+                        <div class="alert-items">
+                            <div class="alert-item static">
+                                <div class="alert-icon-wrapper">
+                                    <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                                </div>
+                                <span class="alert-text">
+                                    Incorrect file name or extension chosen. Inhibition files have the following name convention: [Analysis Batch ID]-[Extraction Number]-I[First letter of nucleic acid type]. Example: 10045-2-IR
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-sm btn-link">Footer Action 1</button>
+                <button class="btn btn-sm btn-link">Footer Action 2</button>
             </div>
         </div>
     </div>
