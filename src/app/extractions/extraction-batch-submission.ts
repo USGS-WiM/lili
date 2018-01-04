@@ -1,4 +1,5 @@
 import {IReverseTranscriptionSubmission} from '../reverse-transcriptions/reverse-transcription-submission'
+import { IExtractionSubmission } from '../extractions/extraction-submission';
 
 export interface IExtractionBatchSubmission {
     analysis_batch: number;
@@ -16,5 +17,5 @@ export interface IExtractionBatchSubmission {
         target: number;
         count: number;
     }[];
-    new_extractions: Object[];
+    new_extractions: IExtractionSubmission[];
 }

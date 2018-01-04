@@ -1,35 +1,32 @@
-<div class="row">
-    <div class="col-lg-6 col-md-6 col-xs-12">
+<div class="masonry-layout-2">
+    <div class="masonry-block">
         <concentrationtypes [ConcentrationTypes]="ctypes"></concentrationtypes>
     </div>
-    <div class="col-lg-6 col-md-6 col-xs-12">
+    <div class="masonry-block">
         <controltypes [ControlTypes]="conttypes"></controltypes>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-6 col-md-6 col-xs-12">
+
+    <div class="masonry-block">
         <extractionmethods [ExtractionMethods]="extractions"></extractionmethods>
     </div>
-    <div class="col-lg-6 col-md-6 col-xs-12">
+    <div class="masonry-block">
         <filtertypes [FilterTypes]="filters" [Matrices]="matrices"></filtertypes>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-6 col-md-6 col-xs-12">
+
+    <div class="masonry-block">
         <matrices [MatrixTypes]="matrices"></matrices>
     </div>
-    <div class="col-lg-6 col-md-6 col-xs-12">
+    <div class="masonry-block">
         <sampletypes [SampleTypes]="stypes"></sampletypes>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-6 col-md-6 col-xs-12">
+
+    <div class="masonry-block">
         <targets [Targets]="targets"></targets>
     </div>
-    <div class="col-lg-6 col-md-6 col-xs-12">
+    <div class="masonry-block">
         <units [Units]="units"></units>
     </div>
 </div>

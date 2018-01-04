@@ -22,6 +22,7 @@ import { SampleTypeResolve } from './SHARED/sample-type.resolve';
 import { ControlResolve } from './control-types/control-types.resolve';
 import { TargetResolve } from './targets/target.resolve';
 import { UserResolve } from './SHARED/user.resolve';
+import { AnalysisBatchWorksheetComponent } from 'app/analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
 
 
 export const ROUTES: Routes = [
@@ -30,6 +31,7 @@ export const ROUTES: Routes = [
     {path: 'studies', component: StudiesComponent},
     {path: 'samples', component: SamplesComponent},
     {path: 'analysisbatches', component: AnalysisBatchesComponent},
+    {path: 'analysisbatchworksheet/:id', component: AnalysisBatchWorksheetComponent},
     {path: 'results', component: ResultsComponent},
     {path: 'reports', component: ReportsComponent},
     {
