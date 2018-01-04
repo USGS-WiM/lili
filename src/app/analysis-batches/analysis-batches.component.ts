@@ -18,6 +18,7 @@ import { IUnit } from '../units/unit';
 import { IAliquot } from '../aliquots/aliquot';
 import { IFreezerLocation } from '../aliquots/freezer-location';
 import { IExtractionBatchSubmission } from '../extractions/extraction-batch-submission';
+import { Iabworksheet } from '../analysis-batches/analysis-batch-worksheet/ab-worksheet';
 
 import { StudyService } from '../studies/study.service';
 import { SampleService } from '../samples/sample.service';
@@ -27,10 +28,12 @@ import { InhibitionService } from '../inhibitions/inhibition.service';
 import { ExtractionMethodService } from '../extractions/extraction-method.service';
 import { ExtractionBatchService } from '../extractions/extraction-batch.service';
 import { UnitService } from '../units/unit.service';
-
 import { APP_UTILITIES } from '../app.utilities';
+import { AnalysisBatchWorksheetComponent } from '../analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
 import { APP_SETTINGS } from '../app.settings';
 import { RegExp } from 'core-js/library/web/timers';
+import { IExtractionSubmission } from 'app/extractions/extraction-submission';
+
 
 @Component({
   selector: 'app-analysis-batches',
@@ -39,6 +42,7 @@ import { RegExp } from 'core-js/library/web/timers';
 })
 export class AnalysisBatchesComponent implements OnInit {
   @ViewChild("wizardExtract") wizardExtract: Wizard;
+  public showWorksheet: boolean = false;
   @ViewChild("inhibitionPage") inhibitionPage: WizardPage;
 
   // testing
@@ -51,6 +55,7 @@ export class AnalysisBatchesComponent implements OnInit {
   // testing
 
   public showWarning = false;
+  public nativeWindow: any;
   rnaTargetsSelected: boolean = false;
   sampleListEditLocked: boolean = false;
 
@@ -423,8 +428,10 @@ export class AnalysisBatchesComponent implements OnInit {
   }
 
   reprintWorksheet(selectedAB) {
-
     this.printSubmitLoading = true;
+    this.noExtractionsFlag = false;
+    this.oneExtractionFlag = false;
+    this.multipleExtractionsFlag = false;
     // get the AB detail from web services
     this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
       .subscribe(
@@ -451,76 +458,88 @@ export class AnalysisBatchesComponent implements OnInit {
 
   }
 
+  // called from createWorksheet in success and failure to get samples to ensure worksheet obj gets populated regardless
+  private buildReprintWorksheetObj(es: IExtractionSubmission[], tn: any[]) {
+    let ABWorksheetObj: Iabworksheet;
+    ABWorksheetObj = {
+      isReprint: true,
+      // TOP TABLE:
+      analysis_batch: this.selectedAnalysisBatchData.id,
+      creation_date: this.selectedAnalysisBatchData.created_date,
+      studies: this.selectedAnalysisBatchData.studies,
+      description: this.selectedAnalysisBatchData.analysis_batch_description,
+      extraction_no: (this.selectedAnalysisBatchData.extractionbatches.length) + 1,
+      extraction_date: this.rePrintWorksheetData.extraction_date,
+      extraction_method: this.rePrintWorksheetData.extraction_method,
+      extraction_sample_volume: this.rePrintWorksheetData.extraction_volume,
+      eluted_extraction_volume: this.rePrintWorksheetData.elution_volume,
+      // Left TABLE:        
+      extraction_submission: es,
+      // Right TABLE:
+      targetNames: tn,
+      // BOTTOM TABLE:
+      reverse_extraction_no: (this.selectedAnalysisBatchData.extractionbatches.length) + 1,
+      rt_reaction_volume: this.extractForm.controls.qpcr_reaction_volume.value,
+      rt_date: this.extractForm.controls.new_rt.value.rt_date
+    };
+    this._analysisBatchService.setWorksheetObject(ABWorksheetObj);
+    this.showWorksheet = true;
+  }
+
   createWorksheet(isReprint) {
     let targetNameArray = [];
-    // if the function has been called from the re-print modal, look up the
-    // extractionBatch within the selected AB data that matches the id selected from the dropdown.
-    // set the worksheetData var equal to that
+    let ABWorksheetObj: Iabworksheet;
+    // if the function has been called from the re-print modal, look up the extractionBatch within the selected AB data that matches the id selected from the dropdown.
     if (isReprint) {
       for (let extractionBatch of this.selectedAnalysisBatchData.extractionbatches) {
         if (extractionBatch.id === Number(this.extractionBatchSelectForm.value.extraction_batch)) {
           this.rePrintWorksheetData = extractionBatch;
         }
-      }
-      // console.log(this.rePrintWorksheetData);
+      };
       for (let item of this.rePrintWorksheetData.targets) {
         for (let target of this.allTargets) {
           if (item.id === target.id) {
             targetNameArray.push(target.name)
           }
-        }
-      }
-
+        };
+      };
       let sampleList = [];
-      for (let sample of this.selectedAnalysisBatchData.samples) {
-        sampleList.push(sample.id)
-      }
+      sampleList = this.selectedAnalysisBatchData.samples.map(ab => ab.id);
 
+      let extractionSubmission: IExtractionSubmission[] = [];
       // TODO: need to look up the first aliquot of every sample in this analysis batch
       this._sampleService.getSampleSelection(sampleList)
-      .subscribe(
-        (sampleSelection) => {
-
-          for (let extraction of this.rePrintWorksheetData.extractions ) {
+        .subscribe((sampleSelection) => {
+          for (let extraction of this.rePrintWorksheetData.extractions) {
             for (let sample of sampleSelection) {
               if (sample.id === extraction.sample) {
-                // place the aliquot freezer location data into the extraction_submission
+                // place the aliquot freezer location data into the extraction_submission								
+                if (sample.aliquots) {
+                  if (sample.aliquots.length > 0) {
+                    // create an extractionSubmission from it
+                    let extractionSubmit: IExtractionSubmission = {
+                      aliquot_string: sample.aliquots[0].aliquot_string,
+                      box: sample.aliquots[0].freezer_location.box,
+                      rack: sample.aliquots[0].freezer_location.rack,
+                      row: sample.aliquots[0].freezer_location.row,
+                      sample: sample.aliquots[0].sample,
+                      spot: sample.aliquots[0].freezer_location.spot,
+                    };
+                    extractionSubmission.push(extractionSubmit);
+                  }// end if aliquots.length
+                }// end if sample.aliquots
               }
             }
           }
+          // proceed in opening worksheet modal with the extractionsubmission
+          this.buildReprintWorksheetObj(extractionSubmission, targetNameArray);
         },
         error => {
-          this.errorMessage = <any>error
-        }
-        );
-
-      // use this.rePrintWorksheetData, populated by the logic above
-      // details for AB worksheet:
-      // analysis batch: this.rePrintWorksheetData.analysisBatch
-      // creation_date: this.selectedAnalysisBatchData.created_date
-      // studies: this.selectedAnalysisBatchData.studies
-      // description: this.selectedAnalysisBatchData.description
-
-      // extraction no: extractionNumber
-      // extraction date: this.rePrintWorksheetData.extraction_date
-      // extraction method: this.rePrintWorksheetData.extraction_method (pipe for display)
-      // extraction sample volume: this.rePrintWorksheetData.extraction_volume
-      // eluted extraction volume: this.rePrintWorksheetData.elution_volume
-      // Left TABLE:
-      // each row is an extraction from this.rePrintWorksheetData.new_extractions
-      // sample column: this.rePrintWorksheetData.new_extractions.aliquot_string
-      // and so on for rack, box, row, spot.
-      // DNA Inhibition Dilution Factor and RNA Inhibition Dilution Factor leave blank (for now)
-      // Right TABLE:
-      // each row is a target from targetNameArray, the rest of the columns are blank
-      // Ext Neg: blank
-      // Ext Pos: blank
-      // Reverse transcription No.: extractionNumber
-      // RT reaction volume: extractForm.new_rt.reaction_volume
-      // RT date: extractForm.new_rt.rt_date
-      // NOTES: userID (not ready for this yet), blank space for writing
+          // proceed in opening worksheet modal without the extractionsubmission
+          this.buildReprintWorksheetObj(extractionSubmission, targetNameArray);
+          this.errorMessage = <any>error;
+        });
     } else if (!isReprint) {
-
       // use this.extractWizWorksheetData, which was populated by submitExtractions()
       for (let replicate of this.extractWizWorksheetData.new_replicates) {
         for (let target of this.allTargets) {
@@ -535,30 +554,30 @@ export class AnalysisBatchesComponent implements OnInit {
       extractionNumber = (this.selectedAnalysisBatchData.extractionbatches.length) + 1
 
       // details for AB worksheet:
-      // analysis batch: this.extractWizWorksheetData.analysisBatch
-      // creation_date: this.selectedAnalysisBatchData.created_date
-      // studies: this.selectedAnalysisBatchData.studies
-      // description: this.selectedAnalysisBatchData.description
+      ABWorksheetObj = {
+        isReprint: false,
+        // TOP TABLE:
+        analysis_batch: this.extractWizWorksheetData.analysis_batch,
+        creation_date: this.selectedAnalysisBatchData.created_date,
+        studies: this.selectedAnalysisBatchData.studies,
+        description: this.selectedAnalysisBatchData.analysis_batch_description,
+        extraction_no: extractionNumber,
+        extraction_date: this.extractWizWorksheetData.extraction_date,
+        extraction_method: this.allExtractionMethods.filter(em => { return em.id == this.extractWizWorksheetData.extraction_method })[0],
+        extraction_sample_volume: this.extractWizWorksheetData.extraction_volume,
+        eluted_extraction_volume: this.extractWizWorksheetData.elution_volume,
+        // Left TABLE:
+        extraction_submission: this.extractWizWorksheetData.new_extractions,
+        // Right TABLE:
+        targetNames: targetNameArray,
+        // BOTTOM TABLE:
+        reverse_extraction_no: extractionNumber,
+        rt_reaction_volume: this.extractForm.controls.qpcr_reaction_volume.value,
+        rt_date: this.extractForm.controls.new_rt.value.rt_date
+      };
 
-      // extraction no: extractionNumber
-      // extraction date: this.extractWizWorksheetData.extraction_date
-      // extraction method: this.extractWizWorksheetData.extraction_method (pipe for display)
-      // extraction sample volume: this.extractWizWorksheetData.extraction_volume
-      // eluted extraction volume: this.extractWizWorksheetData.elution_volume
-      // Left TABLE:
-      // each row is an extraction from this.extractWizWorksheetData.new_extractions
-      // sample column: this.extractWizWorksheetData.new_extractions.aliquot_string
-      // and so on for rack, box, row, spot.
-      // DNA Inhibition Dilution Factor and RNA Inhibition Dilution Factor leave blank (for now)
-      // Right TABLE:
-      // each row is a target from targetNameArray, the rest of the columns are blank
-      // Ext Neg: blank
-      // Ext Pos: blank
-      // Reverse transcription No.: extractionNumber
-      // RT reaction volume: extractForm.new_rt.reaction_volume
-      // RT date: extractForm.new_rt.rt_date
-      // NOTES: userID (not ready for this yet), blank space for writing
-
+      this._analysisBatchService.setWorksheetObject(ABWorksheetObj);
+      this.showWorksheet = true;
     }
   }
 
@@ -820,6 +839,7 @@ export class AnalysisBatchesComponent implements OnInit {
   //   return newItem.id === this;
   // }
 
+
   openTargetDetails(abID) {
 
     this.targetDetailArray = [];
@@ -906,4 +926,16 @@ export class AnalysisBatchesComponent implements OnInit {
       }
       );
   }
+
+	/*createWorksheet(){
+	  this._analysisBatchService.setExtractionFormValues(this.extractForm.value);
+	  this.showWorksheet = true;
+	  //need to do this in the component so that other things can happen too, like storing the form values in the services so that
+	  // the worksheet can access them.
+	  //this causes a loss of connection to the services and getting the form values 
+	  //this.nativeWindow = this._analysisBatchService.getNativeWindow();    
+	  //let newWindow = this.nativeWindow.open('/analysisbatchworksheet/'+ this.selectedAnalysisBatchID);
+	  
+	  //this._router.navigate(['/analysisbatchworksheet'], {queryParams: {formVals: this.extractionForm}, skipLocationChange: true });
+	}*/
 }

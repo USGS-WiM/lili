@@ -534,7 +534,6 @@
             <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
             <clr-wizard-button [type]="'custom-finish-confirmPage'"> {{ extractionFinished ? "Finish" : "Submit Extraction" }}</clr-wizard-button>
         </ng-template>
-
     </clr-wizard-page>
     <!-- end Confirmation page -->
 </clr-wizard>
@@ -589,6 +588,15 @@
 </clr-modal>
 <!-- end print worksheet modal -->
 
+<clr-modal [(clrModalOpen)]="showWorksheet" [clrModalSize]="'xl'">
+    <h3 class="modal-title">Worksheet Preview</h3>
+    <div class="modal-body">
+        <analysis-batch-worksheet #batchWorksheet></analysis-batch-worksheet>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showWorksheet = !showWorksheet">Cancel</button>
+    </div>
+</clr-modal>
 
 <!-- edit analysis batch modal -->
 <clr-modal [(clrModalOpen)]="showHideEdit" [clrModalSize]="'xl'">

@@ -1,0 +1,81 @@
+#topLeftTable, #topRightTable, #bottomTable {
+    border: none;
+}
+
+#topLeftTable tr td:first-child {
+    padding:2px;
+    border: none;
+    width:25%;
+    font-weight: bold;
+    text-align: right;
+}
+#topLeftTable tr td:last-child {    
+    padding:2px;
+    padding-left: 5px;
+    border: none;
+    text-align: left;
+}
+
+#topRightTable tr td:nth-child(odd) {
+    padding:2px;
+    border: none;
+    width:40%;
+    font-weight: bold;
+    text-align: right;
+}
+#topRightTable tr td:nth-child(even){
+    padding:2px;
+    padding-left: 5px;
+    border: none;
+    text-align: left;
+}
+
+#batchWorksheet {
+    background: white;
+}
+
+#bottomTable tr td:nth-child(odd) {
+    padding:2px;
+    border: none;
+    width:47%;
+    font-weight: bold;
+    text-align: right;
+}
+#bottomTable tr td:nth-child(even) {
+    padding:2px;
+    padding-left: 5px;
+    border: none;
+    text-align: left;
+}
+.noTopMargin {
+    margin-top: 0;
+}
+table {
+    border-collapse: collapse;
+}
+table thead tr th {
+    border: black 1.01px solid;
+    border: black 1.01px solid;
+}
+table tbody tr td {
+    border: black 1.01px solid;
+    border: black 1.01px solid;
+}
+#targetTable {
+    border: none;
+    border-collapse: collapse;
+    border-bottom: black 1px solid;
+}
+.line_break{    
+    width:100%;
+    color: black;
+    background-color: rgba(255,255,255,.5);
+    border: none;
+    border-bottom: 1.1px solid black;
+}
+
+#notesSpace {      
+    min-height: 400px;
+    height: 400px;
+}
+  

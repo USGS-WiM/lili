@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { IInhResults } from './inh-results';
+import { IInhResult } from './inh-result';
 
 import { RegExp } from 'core-js/library/web/timers';
 
@@ -80,19 +81,29 @@ export class ResultsComponent implements OnInit {
   }
 
   parseJSON(fileName, rawInhResults) {
-    let inhResults: IInhResults;
+    let inhResults: IInhResults = {
+      analysis_batch: null,
+      extraction_number: null,
+      nucleic_acid_type: null,
+      inh_pos_cq_value: null,
+      inhibitions: []
+    }
     let fileNameSansExtension = fileName.replace(".txt", "")
     let fileMetadata = fileNameSansExtension.split("-");
     let type = fileMetadata[2];
 
     inhResults.analysis_batch = Number(fileMetadata[0]);
     inhResults.extraction_number = Number(fileMetadata[1]);
-    if (type === "ID") {
-      inhResults.nucleic_acid_type = 1
-    } else if (type === "IR") {
-      inhResults.nucleic_acid_type = 2
-    }
+    if (type === "ID") { inhResults.nucleic_acid_type = 1 } else if (type === "IR") { inhResults.nucleic_acid_type = 2 }
 
+    for (let sample of rawInhResults) {
+      if (sample.Name === "INH CONT") {
+        inhResults.inh_pos_cq_value = Number(sample.Cp);
+      } else if (sample.Name !== "INH CONT") {
+        inhResults.inhibitions.push({ "sample": sample.Name, "cq_value": sample.Cp })
+      }
+    }
+    console.log(inhResults);
   }
 
 }

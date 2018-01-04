@@ -56,6 +56,7 @@ import { TargetService } from "./targets/target.service";
 import { TargetResolve } from "./targets/target.resolve";
 import { UserService } from "./SHARED/user.service";
 import { UserResolve } from "./SHARED/user.resolve";
+import { AnalysisBatchWorksheetComponent } from './analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
 import { InhibitionService } from "./inhibitions/inhibition.service";
 import { ExtractionBatchService } from "app/extractions/extraction-batch.service";
 
@@ -90,7 +91,8 @@ import { ExtractionBatchService } from "app/extractions/extraction-batch.service
         SampleTypesComponent,
         FilterTypesComponent,
         TargetsComponent,
-        UsersComponent
+        UsersComponent,
+        AnalysisBatchWorksheetComponent
     ],
     imports: [
         BrowserAnimationsModule,

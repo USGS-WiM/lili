@@ -1,0 +1,162 @@
+<button class="btn btn-primary" (click)="printPDF()">Download Spreadsheet as PDF</button>
+<div #batchWorksheet id="batchWorksheet">
+
+  <div>
+    <!-- date title -->
+    <div id="row1" class="row" style="margin-top: 15px;">
+      <div class="col-sm-12">
+        <span class="col-sm-4" style="padding-top:15px;">{{nowDate | date: 'MM/dd/yyyy'}}</span>
+        <h3 class="text-center">Analysis Batch Worksheet<span *ngIf="abWorksheet?.isReprint">&nbsp;Reprint</span></h3>
+      </div>
+    </div>
+
+    <!-- top section -->
+    <div id="row2" class="row">
+      <!-- Top Left Table -->
+      <div class="col-md-6 pull-left">
+        <table id="topLeftTable" #topLeftTable class="col-md-8 table">
+          <tr>
+            <td>Analysis Batch:</td>
+            <td>{{abWorksheet?.analysis_batch}}</td>
+          </tr>
+          <tr>
+            <td>Creation Date:</td>
+            <td>{{abWorksheet?.creation_date | date: 'MM/dd/yyyy'}}</td>
+          </tr>
+          <tr>
+            <td>Studies:</td>
+            <td>{{abWorksheet?.str_studies}}</td>
+          </tr>
+          <tr>
+            <td>Description:</td>
+            <td>{{abWorksheet?.description}}</td>
+          </tr>
+        </table>
+      </div>
+      <!-- Top Right Table -->
+      <div class="col-md-6 pull-right">
+        <table id="topRightTable" #topRightTable class="col-md-8 table">
+          <tr>
+            <td>Extraction No.:</td>
+            <td>{{abWorksheet?.extraction_no}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Extraction date:</td>
+            <td>{{abWorksheet?.extraction_date | date: 'MM/dd/yyyy'}}</td>
+            <td>Extraction sample volume:</td>
+            <td>{{abWorksheet?.extraction_sample_volume}}</td>
+          </tr>
+          <tr>
+            <td>Extraction method:</td>
+            <td>{{abWorksheet?.extraction_method?.name}}</td>
+            <td>Eluted extracted volume:</td>
+            <td>{{abWorksheet?.eluted_extraction_volume}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <br clear="all" />    
+    <!-- middle section -->
+    <div id="row3" class="row">
+      <!-- sample location table -->
+      
+      <div class="col-md-6 pull-left">        
+        <div class="col-md-11">
+          <span *ngIf="abWorksheet?.isReprint">This is a reprint. Aliquot listed is first aliquot of sample.</span>
+          <table class="table table-collapse" [class.noTopMargin]="abWorksheet?.isReprint" id="sampleTable" #sampleTable>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Sample</th>
+                <th>Rack</th>
+                <th>Box</th>
+                <th>Row</th>
+                <th>Spot</th>
+                <th>DNA Inhibition Dilution Factor</th>
+                <th>RNA Inhibition Dilution Factor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let extraction of abWorksheet?.extraction_submission; let i = index">
+                <!-- aliquot_string?: string; aliquots?: any; box?: number; rack?: number; row?: number; sample: number; spot?: number;-->
+                <td>{{i+1}}</td>
+                <td>{{extraction.aliquot_string}}</td>
+                <td>{{extraction.rack}}</td>
+                <td>{{extraction.box}}</td>
+                <td>{{extraction.row}}</td>
+                <td>{{extraction.spot}}</td>
+                <td></td><td></td>
+              </tr>              
+            </tbody>
+          </table>
+          <div style="font-weight:bold;">
+            <div>Ext Neg:</div>
+            <div>Ext Pos:</div>
+          </div>
+        </div>
+      </div>
+      <!-- target table -->
+      <div class="col-md-6 pull-right">
+        <div class="col-md-11">
+          <table class="table" id="targetTable" #targetTable>
+            <thead>
+              <tr>
+                <th>Target</th>
+                <th>Date</th>
+                <th>Positive ID</th>
+                <th>Cq</th>
+                <th>Detections</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let target of abWorksheet?.targetNames">
+                <td>{{target}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> <!-- end middle 2 tables -->
+
+    <!-- bottom section -->
+    <div id="row4" class="row">
+        <div class="col-md-6 pull-left" style="margin-bottom:15px;">
+            <table id="bottomTable" class="col-md-8 table">
+              <tr>
+                <td>Reverse transcription No.:</td>
+                <td>{{abWorksheet?.reverse_extraction_no}}</td>
+                <td colspan="2"></td>                
+              </tr>
+              <tr>
+                <td>RT reaction volume:</td>
+                <td>{{abWorksheet?.rt_reaction_volume}}</td>
+                <td style="width:20%">Date:</td>
+                <td>{{rt_date | date: 'MM/dd/yyyy'}}</td>
+              </tr>
+              <tr>
+                <td colspan="4">
+              </tr>
+              <tr>
+                <td>qPCR replicas:</td>
+                <td></td>
+                <td colspan="2"></td>
+              </tr>
+            </table>
+          </div>
+    </div>
+    
+    <div id="row5" class="row col-md-12" id="notes">
+      <div class="col-md-12 line_break">Notes:</div> 
+      <br clear="all"/>
+      <div id="notesSpace">&nbsp;</div>
+    </div>
+
+  </div>
+</div>
