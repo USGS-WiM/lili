@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ITarget } from '../targets/target';
 import { IInhResults } from './inh-results';
 import { IInhResult } from './inh-result';
+import { ITargetResults } from './target-results';
+import { ITargetResult } from './target-result';
+
+import { TargetService } from '../targets/target.service';
+import { InhibitionService } from '../inhibitions/inhibition.service';
 
 import { RegExp } from 'core-js/library/web/timers';
 
@@ -12,11 +18,34 @@ import { RegExp } from 'core-js/library/web/timers';
 })
 export class ResultsComponent implements OnInit {
 
+  allTargets: ITarget[] = [];
+
   inhFileNameErrorFlag: boolean = false;
+  parsedInhResults;
+  parsedTargetResults;
 
-  constructor() { }
+  inhLoadingFlag: boolean = false;
+  inhRawErrorMessage: string = '';
+  inhRawErrorFlag: boolean = false;
+  dilutionFactorsCalculated: boolean = false;
 
-  ngOnInit() { }
+  targetFileNameErrorFlag: boolean = false;
+
+  errorMessage: string;
+
+  constructor(
+    private _inhibitionService: InhibitionService,
+    private _targetService: TargetService,
+  ) { }
+
+  ngOnInit() {
+
+    // on init, call getTargets function of the TargetService, set results to allTargets var
+    this._targetService.getTargets()
+      .subscribe(targets => this.allTargets = targets,
+      error => this.errorMessage = <any>error);
+
+  }
 
   tsvJSON(tsv) {
 
@@ -44,7 +73,15 @@ export class ResultsComponent implements OnInit {
     return result;
   }
 
-  loadFile(fileInput: any) {
+  lookupTargetID(targetCode) {
+    for (let target of this.allTargets) {
+      if (targetCode === target.code) {
+        return target.id;
+      }
+    }
+  }
+
+  loadInhFile(fileInput: any) {
     this.inhFileNameErrorFlag = false;
     let self = this;
     let input = fileInput.target
@@ -75,12 +112,107 @@ export class ResultsComponent implements OnInit {
         delete item.Pos;
         delete item.Standard;
       }
-      self.parseJSON(fileName, json)
+      self.parseInhJSON(fileName, json)
     }
     fileReader.readAsText(input.files[0]);
   }
 
-  parseJSON(fileName, rawInhResults) {
+  loadTargetFile(fileInput: any) {
+    this.targetFileNameErrorFlag = false;
+    let self = this;
+    let input = fileInput.target
+    let fileName = fileInput.target.files[0].name;
+
+    let fileNamePattern: RegExp = (/\d\d\d\d\d-\d-[A-z]+-\d/);
+
+    if (!fileNamePattern.test(fileName)) {
+      this.targetFileNameErrorFlag = true;
+      return;
+    }
+
+    let tsv: string;
+    let json = [];
+    let fileReader = new FileReader();
+    fileReader.onload = function (e) {
+
+      // capture TSV string from file
+      tsv = fileReader.result;
+      // convert tsv to JSON
+      json = self.tsvJSON(tsv);
+
+      // delete superfluous fields from raw data
+      for (let item of json) {
+        delete item.Color;
+        delete item.Include;
+        delete item.Status;
+        delete item.Pos;
+        delete item.Standard;
+      }
+      self.parseTargetJSON(fileName, json)
+    }
+    fileReader.readAsText(input.files[0]);
+  }
+
+  parseTargetJSON(fileName, rawResults) {
+    let targetResults: ITargetResults = {
+      target: null,
+      analysis_batch: null,
+      extraction_number: null,
+      replicate_number: null,
+
+      ext_neg_cq_value: null,
+      ext_neg_concentration: null,
+      rt_neg_cq_value: null,
+      rt_neg_concentration: null,
+      pcr_neg_cq_value: null,
+      pcr_neg_concentration: null,
+      pcr_pos_cq_value: null,
+      pcr_pos_concentration: null,
+      pcrreplicates: []
+    }
+    let fileNameSansExtension = fileName.replace(".txt", "")
+    let fileMetadata = fileNameSansExtension.split("-");
+
+    let numbersOnlyPattern: RegExp = (/^[0-9]*$/);
+
+    targetResults.analysis_batch = Number(fileMetadata[0]);
+    targetResults.extraction_number = Number(fileMetadata[1]);
+    targetResults.target = this.lookupTargetID(fileMetadata[2]);
+    targetResults.replicate_number = Number(fileMetadata[3])
+
+    for (let rep of rawResults) {
+      if (rep.Name === "EXT NEG") {
+        targetResults.ext_neg_cq_value = Number(rep.Cp);
+        targetResults.ext_neg_concentration = Number(rep.Concentration);
+      }
+      if (rep.Name === "PCR NEG") {
+        targetResults.pcr_neg_cq_value = Number(rep.Cp);
+        targetResults.pcr_neg_concentration = Number(rep.Concentration);
+      }
+      if (rep.Name === "POS") {
+        targetResults.pcr_pos_cq_value = Number(rep.Cp);
+        targetResults.pcr_pos_concentration = Number(rep.Concentration);
+      }
+      if (rep.Name === "RT NEG") {
+        targetResults.rt_neg_cq_value = Number(rep.Cp);
+        targetResults.rt_neg_concentration = Number(rep.Concentration);
+      }
+
+      if (numbersOnlyPattern.test(rep.Name)) {
+        targetResults.pcrreplicates.push({
+          "sample": Number(rep.Name),
+          "cq_value": Number(rep.Cp),
+          "gc_reaction": Number(rep.Concentration)
+        });
+      }
+    }
+    this.parsedTargetResults = targetResults;
+
+    // TODO: awaiting web service endpoint: need to provide pcr batch ID by looking up from services.
+    // using Analysis Batch, Extraction Number, Target from fileMetadata
+  }
+
+  parseInhJSON(fileName, rawInhResults) {
     let inhResults: IInhResults = {
       analysis_batch: null,
       extraction_number: null,
@@ -100,10 +232,31 @@ export class ResultsComponent implements OnInit {
       if (sample.Name === "INH CONT") {
         inhResults.inh_pos_cq_value = Number(sample.Cp);
       } else if (sample.Name !== "INH CONT") {
-        inhResults.inhibitions.push({ "sample": sample.Name, "cq_value": sample.Cp })
+        inhResults.inhibitions.push({ "sample": Number(sample.Name), "cq_value": Number(sample.Cp) })
       }
     }
-    console.log(inhResults);
+    this.parsedInhResults = inhResults;
+  }
+
+  submitRawInhibitionResults() {
+
+    this._inhibitionService.submitRawInhibitionResults(this.parsedInhResults)
+      .subscribe(
+      (calculatedDilutions) => {
+        console.log(calculatedDilutions);
+        this.inhLoadingFlag = false;
+        this.dilutionFactorsCalculated = true;
+      },
+      error => {
+        this.inhLoadingFlag = false;
+        this.inhRawErrorMessage = <any>error
+        this.inhRawErrorFlag = true;
+      }
+      )
+  }
+
+  submitRawTargetResults() {
+
   }
 
 }
