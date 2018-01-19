@@ -16,6 +16,18 @@ export class InhibitionService {
 
   constructor(private _http: Http) { }
 
+  public submitRawInhibitionResults(rawInhResults): Observable<any> {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.post(APP_SETTINGS.INHIBITIONS_RAW_RESULTS_URL, rawInhResults, options)
+      .map((response: Response) => <any>response.json())
+      .catch(this.handleError);
+
+  }
+
   public create(formValue): Observable<IInhibition[]> {
 
 

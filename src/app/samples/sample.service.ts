@@ -31,6 +31,19 @@ export class SampleService {
       .catch(this.handleError);
   }
 
+  public getSampleSelection(sampleList: number[]): Observable<ISample[]> {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.SAMPLES_URL + '?id=' + sampleList, options)
+      .map((response: Response) => <ISample[]>response.json())
+      // .do(data => console.log('Samples data: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+
+  }
+
   // public getInhibitions(): Observable<IInhibition[]> {
 
   // }
@@ -47,19 +60,6 @@ export class SampleService {
 
   }
 
-  public getSampleSelection(sampleList: number[]): Observable<ISample[]> {
-
-    let options = new RequestOptions({
-      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
-    });
- 
-    return this._http.get(APP_SETTINGS.SAMPLES_URL + '?id=' + sampleList, options)
-      .map((response: Response) => <ISample[]>response.json())
-      // .do(data => console.log('Samples data: ' + JSON.stringify(data)))
-      .catch(this.handleError);
- 
-  }
-  
   public update(formValue: ISample): Observable<ISample> {
 
     let options = new RequestOptions({
@@ -79,8 +79,8 @@ export class SampleService {
     });
 
     return this._http.get(APP_SETTINGS.SAMPLES_URL + sampleID + '/?format=json', options)
-    .map(this.extractData)
-    .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
 
   }
 

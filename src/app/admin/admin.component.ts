@@ -6,7 +6,6 @@ import { IExtractionMethod } from '../extractions/extraction-method';
 import { IFilterType } from '../SHARED/filter-type';
 import { IMatrix } from '../SHARED/matrix';
 import { ISampleType } from '../SHARED/sample-type';
-import { IControlType } from '../control-types/control-type';
 import { ITarget } from '../targets/target';
 import { IUser } from '../SHARED/user';
 
@@ -22,7 +21,6 @@ export class AdminComponent implements OnInit {
   public filters: Array<IFilterType>;
   public matrices: Array<IMatrix>;
   public stypes: Array<ISampleType>;
-  public conttypes: Array<IControlType>;
   public targets: Array<ITarget>;
   public users: Array<IUser>;
   
@@ -49,9 +47,7 @@ export class AdminComponent implements OnInit {
     this._route.data.subscribe((data: { sampleTypes: Array<IMatrix> }) => {
       this.stypes = data.sampleTypes;  
     });
-    this._route.data.subscribe((data: { controlTypes: Array<IControlType> }) => {
-      this.conttypes = data.controlTypes;  
-    });
+
     this._route.data.subscribe((data: { targets: Array<ITarget> }) => {
       this.targets = data.targets;  
     });

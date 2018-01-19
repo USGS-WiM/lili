@@ -113,6 +113,21 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="sampleDescInput">Sample Notes</label>
+                                <textarea id="sampleDescInput" rows="2" formControlName="sample_notes" style="max-width:25em"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="collectStartDateInput">Arrival Date</label>
+                                <input type="date" id="collectStartDateInput" formControlName="arrival_date">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sampleDescInput">Arrival Notes</label>
+                                <textarea id="sampleDescInput" rows="2" formControlName="arrival_notes" style="max-width:25em"></textarea>
+                            </div>
+
+                            <div class="form-group">
                                 <label>Sampler Name</label>
                                 <label for="samplerNameSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sampler_name').invalid && (addSampleForm.get('sampler_name').dirty || addSampleForm.get('sampler_name').touched)">
                                     <div class="select">
@@ -123,6 +138,7 @@
                                 </label>
                             </div>
 
+
                             <div class="form-group">
                                 <label for="collectStartDateInput" class="required">Collection Start Date</label>
                                 <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
@@ -131,18 +147,24 @@
                             <!--begin variable display section-->
 
                             <div class="form-group">
-                                <label for="collectStartTime">Collection Start Time (HHmm)</label>
-                                <input id="collectStartTime" type="text" formControlName="collection_start_time">
+                                <label for="collectStartTime">Collection Start Time (HH:MM)</label>
+                                <label for="collectStartTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collection_start_time').invalid && (addSampleForm.get('collection_start_time').dirty || addSampleForm.get('collection_start_time').touched)">
+                                    <input id="collectStartTime" type="text" formControlName="collection_start_time">
+                                    <span class="tooltip-content">Must follow format HH:MM</span>
+                                </label>
                             </div>
 
                             <div class="form-group">
                                 <label for="collectEndDateInput">Collection End Date</label>
                                 <input type="date" id="collectEndDateInput" formControlName="collection_end_date">
                             </div>
-
+                        
                             <div class="form-group">
-                                <label for="collectEndTime">Collection End Time (HHmm)</label>
-                                <input id="collectEndTime" type="text" formControlName="collection_end_time">
+                                <label for="collectEndTime">Collection End Time (HH:MM)</label>
+                                <label for="collectEndTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collection_end_time').invalid && (addSampleForm.get('collection_end_time').dirty || addSampleForm.get('collection_end_time').touched)">
+                                    <input id="collectEndTime" type="text" formControlName="collection_end_time">
+                                    <span class="tooltip-content">Must follow format HH:MM</span>
+                                </label>
                             </div>
 
                             <div class="form-group">
@@ -178,8 +200,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Filter</label>
-                                <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('filter_type').invalid && (editSampleForm.get('filter_type').dirty || editSampleForm.get('filter_type').touched)">
+                                <label>Filter Type</label>
+                                <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('filter_type').invalid && (addSampleForm.get('filter_type').dirty || addSampleForm.get('filter_type').touched)">
                                     <div class="select">
                                         <select id="filterSelect" name="filterType" formControlName="filter_type">
                                             <option *ngFor="let filterType of filterTypes" [value]="filterType.id">{{filterType.name}}</option>
@@ -189,13 +211,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="filterBornOnDateInput">Collection Start Date</label>
+                                <label for="filterBornOnDateInput">Filter Born-on Date</label>
                                 <input type="date" id="filterBornOnDateInput" formControlName="filter_born_on_date">
                             </div>
 
                             <div class="form-group">
                                 <label for="dissVolInput">Dissolution Volume</label>
-                                <input id="dissVolInput" type="text" formControlName="dissolution_volume"><span>mL</span>
+                                <input id="dissVolInput" type="text" formControlName="dissolution_volume">
+                                <span>mL</span>
                             </div>
 
                             <div class="form-group">
@@ -325,10 +348,24 @@
                             <input id="studySiteNameInput" type="text" formControlName="study_site_name">
                         </div>
 
-
                         <div class="form-group">
                             <label for="sampleDescInput">Sample Description</label>
                             <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sampleDescInput">Sample Notes</label>
+                            <textarea id="sampleDescInput" rows="2" formControlName="sample_notes" style="max-width:25em"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="collectStartDateInput" class="required">Arrival Date</label>
+                            <input type="date" id="collectStartDateInput" formControlName="arrival_date">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sampleDescInput">Arrival Notes</label>
+                            <textarea id="sampleDescInput" rows="2" formControlName="arrival_notes" style="max-width:25em"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -350,7 +387,7 @@
                         <!--begin variable display section-->
 
                         <div class="form-group">
-                            <label for="collectStartTime">Collection Start Time (HHmm)</label>
+                            <label for="collectStartTime">Collection Start Time (HH:MM)</label>
                             <input id="collectStartTime" type="text" formControlName="collection_start_time">
                         </div>
 
@@ -360,7 +397,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="collectEndTime">Collection End Time (HHmm)</label>
+                            <label for="collectEndTime">Collection End Time (HH:MM)</label>
                             <input id="collectEndTime" type="text" formControlName="collection_end_time">
                         </div>
 
@@ -420,7 +457,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="required">Filter</label>
+                            <label class="required">Filter Type</label>
                             <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('filter_type').invalid && (editSampleForm.get('filter_type').dirty || editSampleForm.get('filter_type').touched)">
                                 <div class="select">
                                     <select id="filterSelect" name="filterType" formControlName="filter_type">
@@ -437,7 +474,8 @@
 
                         <div class="form-group">
                             <label for="dissVolInput">Dissolution Volume</label>
-                            <input id="dissVolInput" type="text" formControlName="dissolution_volume"><span>mL</span>
+                            <input id="dissVolInput" type="text" formControlName="dissolution_volume">
+                            <span>mL</span>
                         </div>
 
                         <div class="form-group">

@@ -28,12 +28,12 @@ export class APP_SETTINGS {
     public static get EXTRACTION_METHODS_URL(): string { return this._API_ENDPOINT + 'extractionmethods/' };
     public static get INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'inhibitions/' };
     public static get SAMPLE_INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'sampleinhibitions' };
+    public static get INHIBITIONS_RAW_RESULTS_URL(): string { return this._API_ENDPOINT + 'inhibitionscalculatedilutionfactor/' }; 
     public static get CONCENTRATION_TYPES_URL(): string { return this._API_ENDPOINT + 'concentrationtype/' };
     public static get RT_URL(): string { return this._API_ENDPOINT + 'reversetranscriptions/' };
     public static get REPLICATES_URL(): string { return this._API_ENDPOINT + 'pcrreplicates/' };
     public static get STANDARD_CURVES_URL(): string { return this._API_ENDPOINT + 'standardcurves/' };
     public static get TARGETS_URL(): string { return this._API_ENDPOINT + 'targets/' };
-    public static get CONTROL_TYPES_URL(): string { return this._API_ENDPOINT + 'controltypes/' };
     public static get CONTROLS_URL(): string { return this._API_ENDPOINT + 'controls/' };
     public static get OTHER_ANALYSES_URL(): string { return this._API_ENDPOINT + 'otheranalyses/' };
     public static get USERS_URL(): string { return this._API_ENDPOINT + 'users/' };

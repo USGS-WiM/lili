@@ -1,16 +1,154 @@
 <div class="row">
-    <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12">
-        <div class="card">
-            <div class="card-block">
-                <div class="card-title">
-                    Results
-                </div>
-                <div class="card-text">
-                    Results page does not exist yet.
-                    <br><br> (╯°□°)╯︵ ┻━┻
-                    <br> <br>For now, look at this bear.&nbsp;&nbsp;&nbsp;ʕ •ᴥ•ʔ
-                </div>
-            </div>
-        </div>
+    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+
+        <clr-tabs>
+            <clr-tab>
+                <button clrTabLink id="link1">Inhibition</button>
+                <clr-tab-content id="content1" *clrIfActive>
+                    <div class="card">
+                        <div class="card-header">
+                            Inhibition Results
+                        </div>
+                        <div class="card-block">
+                            <div class="card-title">Upload Inhibition File</div>
+                            <div class="card-text">
+                                <input type="file" (change)="loadInhFile($event)" placeholder="Upload file" accept="*">
+                                <!-- <button class="btn btn-primary" (click)="parseJSON()">Parse Data</button> -->
+                                <div class="alert alert-danger" *ngIf="inhFileNameErrorFlag">
+                                    <div class="alert-items">
+                                        <div class="alert-item static">
+                                            <div class="alert-icon-wrapper">
+                                                <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                                            </div>
+                                            <span class="alert-text">
+                                                Incorrect file name or extension chosen. Inhibition files should have the '.txt' file extension and have the following name
+                                                convention: [Analysis Batch ID]-[Extraction Number]-I[First letter of nucleic
+                                                acid type]. Example: 10045-2-IR.txt
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-block" *ngIf="parsedInhResults">
+                            <div class="card-title">Uploaded Inhibition Results</div>
+                            <div class="card-text">
+
+                                <table class="table table-compact" style="width: 15em">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="left">Sample</th>
+                                            <th class="left">Cq Value</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let sample of parsedInhResults.inhibitions; let i = index">
+                                            <td>{{i+1}}</td>
+                                            <td class="left">{{sample.sample}}</td>
+                                            <td class="left">{{sample.cq_value}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                                <button class="btn btn-primary" (click)="submitRawInhibitionResults()">Calculate Dilution Factors</button>
+                            </div>
+                        </div>
+                    </div>
+                </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+                <button clrTabLink>Target Organism Concentration</button>
+                <clr-tab-content *clrIfActive="true">
+                    <div class="card">
+                        <div class="card-header">
+                            Target Organism Concentration Results
+                        </div>
+                        <div class="card-block">
+                            <div class="card-title">Upload Target Organism Concentration File</div>
+                            <div class="card-text">
+                                <input type="file" (change)="loadTargetFile($event)" placeholder="Upload file" accept="*">
+                                <!-- <button class="btn btn-primary" (click)="parseJSON()">Parse Data</button> -->
+                                <div class="alert alert-danger" *ngIf="targetFileNameErrorFlag">
+                                    <div class="alert-items">
+                                        <div class="alert-item static">
+                                            <div class="alert-icon-wrapper">
+                                                <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                                            </div>
+                                            <span class="alert-text">
+                                                Incorrect file name or extension chosen. Target Organism Concentration files should have the '.txt' file extension, and have
+                                                the following name convention: [Analysis Batch ID]-[Extraction number]-[Target
+                                                code]-[Replicate number]. Example: 10001-1-PV-1.txt
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-block" *ngIf="parsedTargetResults">
+                            <div class="card-title">Uploaded Inhibition Results</div>
+                            <div class="card-text">
+
+                                <table class="table table-compact" style="width: 15em">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="left">Sample</th>
+                                            <th class="left">Cq Value</th>
+                                            <th class="left">Concentration</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let rep of parsedTargetResults.pcrreplicates; let i = index">
+                                            <td>{{i+1}}</td>
+                                            <td class="left">{{rep.sample}}</td>
+                                            <td class="left">{{rep.cq_value}}</td>
+                                            <td class="left">{{rep.gc_reaction}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                                <button class="btn btn-primary" (click)="submitRawTargetResults()">Submit Results</button>
+                            </div>
+                        </div>
+                    </div>
+                </clr-tab-content>
+            </clr-tab>
+
+            <clr-tab>
+                <button clrTabLink>Batch Submit Ext Pos Controls</button>
+                <clr-tab-content *clrIfActive="true">
+                    <div class="card">
+                        <div class="card-header">
+                            Batch Upload Extraction Positive Controls
+                        </div>
+                        <div class="card-block">
+                            <div class="card-title"></div>
+                            <div class="card-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </clr-tab-content>
+            </clr-tab>
+
+            <clr-tab>
+                <button clrTabLink>Batch Submit Negative Results</button>
+                <clr-tab-content *clrIfActive="true">
+                    <div class="card">
+                        <div class="card-header">
+                            Batch Upload Negative Results
+                        </div>
+                        <div class="card-block">
+                            <div class="card-title"></div>
+                            <div class="card-text">
+
+                            </div>
+                        </div>
+                    </div>
+                </clr-tab-content>
+            </clr-tab>
+        </clr-tabs>
     </div>
 </div>
