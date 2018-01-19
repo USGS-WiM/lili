@@ -10,6 +10,7 @@ import { TargetService } from '../targets/target.service';
 import { InhibitionService } from '../inhibitions/inhibition.service';
 
 import { RegExp } from 'core-js/library/web/timers';
+import { FormGroup } from '@angular/forms/src/model';
 
 @Component({
   selector: 'app-results',
@@ -32,6 +33,10 @@ export class ResultsComponent implements OnInit {
   targetFileNameErrorFlag: boolean = false;
 
   errorMessage: string;
+
+  // selectEBForm = new FormGroup({
+
+  // })
 
   constructor(
     private _inhibitionService: InhibitionService,
@@ -256,6 +261,8 @@ export class ResultsComponent implements OnInit {
   }
 
   submitRawTargetResults() {
+
+    // TODO: submit target results to web services
 
   }
 

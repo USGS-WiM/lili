@@ -26,7 +26,7 @@ export class AnalysisBatchService {
   getNativeWindow(){
     return window;
   }
-  //subject, getter,setter for extraction form values
+  // subject, getter,setter for extraction form values
   private _ExtractionWorksheetObj: Subject<any> = new Subject<any>();
   public get WorksheetObject(): Observable<any> { return this._ExtractionWorksheetObj.asObservable(); }
   public setWorksheetObject(worksheetObj: any) {

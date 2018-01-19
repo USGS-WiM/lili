@@ -32,7 +32,6 @@ import { AnalysisBatchDetailComponent } from './analysis-batches/analysis-batch-
 import { ConcentrationTypesComponent } from './admin/concentration-types/concentration-types.component';
 import { ConcentrationResolve } from "./concentration-types/concentration-types.resolve";
 import { ConcentrationTypeService } from "./concentration-types/concentration-types.service";
-import { ControlTypesComponent } from './admin/control-types/control-types.component';
 import { UnitsComponent } from './admin/units/units.component';
 import { ExtractionMethodsComponent } from './admin/extraction-methods/extraction-methods.component';
 import { MatrixTypesComponent } from './admin/matrix-types/matrix-types.component';
@@ -50,8 +49,6 @@ import { MatrixResolve } from "./SHARED/matrix.resolve";
 import { MatrixService } from "./SHARED/matrix.service";
 import { SampleTypeResolve } from "./SHARED/sample-type.resolve";
 import { SampleTypeService } from "./SHARED/sample-type.service";
-import { ControlTypeService } from "./control-types/control-types.service";
-import { ControlResolve } from "./control-types/control-types.resolve";
 import { TargetService } from "./targets/target.service";
 import { TargetResolve } from "./targets/target.resolve";
 import { UserService } from "./SHARED/user.service";
@@ -84,7 +81,6 @@ import { ExtractionBatchService } from "app/extractions/extraction-batch.service
         DateUpdatedFilter,
         AnalysisBatchDetailComponent,
         ConcentrationTypesComponent,
-        ControlTypesComponent,
         UnitsComponent,
         ExtractionMethodsComponent,
         MatrixTypesComponent,
@@ -117,8 +113,6 @@ import { ExtractionBatchService } from "app/extractions/extraction-batch.service
         MatrixResolve,
         SampleTypeService,
         SampleTypeResolve,
-        ControlTypeService,
-        ControlResolve,
         TargetService,
         TargetResolve,
         UserService,

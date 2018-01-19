@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, PatternValidator } from '@angular/forms';
 
 import { ISample } from './sample';
 import { ISampleType } from '../SHARED/sample-type';
@@ -99,10 +99,9 @@ export class SamplesComponent implements OnInit {
     collection_start_date: new FormControl({ value: '', disabled: true }, Validators.required),
 
     // the following controls have variable display needs based on the matrix selected
-    collection_start_time: new FormControl({ value: '', disabled: true }),
+    collection_start_time: new FormControl({ value: '', disabled: false},  Validators.pattern('\\d\\d:\\d\\d')),
     collection_end_date: new FormControl({ value: '', disabled: true }),
-    collection_end_time: new FormControl({ value: '', disabled: true }),
-
+    collection_end_time: new FormControl({ value: '', disabled: true },  Validators.pattern('\\d\\d:\\d\\d')),
     meter_reading_initial: new FormControl({ value: '', disabled: true }),
     meter_reading_final: new FormControl({ value: '', disabled: true }),
     meter_reading_unit: new FormControl({ value: '', disabled: true }),
@@ -179,7 +178,7 @@ export class SamplesComponent implements OnInit {
   });
 
   createABForm = new FormGroup({
-    samples: new FormControl([]),
+    new_samples: new FormControl([]),
     analysis_batch_description: new FormControl(''),
     analysis_batch_notes: new FormControl('')
   });
@@ -205,7 +204,7 @@ export class SamplesComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // on init, get sample form config object from App Utilities and se to local displayConfig var
+    // on init, get sample form config object from App Utilities and set to local displayConfig var
     this.displayConfig = APP_UTILITIES.SAMPLE_FORM_CONFIG;
 
     // on init, call getSamples function of the SampleService, set results to the allSamples var
@@ -265,7 +264,7 @@ export class SamplesComponent implements OnInit {
     }
 
     this.createABForm.setValue({
-      samples: sampleIDs,
+      new_samples: sampleIDs,
       analysis_batch_description: '',
       analysis_batch_notes: ''
     })
@@ -274,7 +273,7 @@ export class SamplesComponent implements OnInit {
       this.showHideABModal = true;
     }
 
-    console.log(this.createABForm.value);
+    console.log("Create AB form value: ", this.createABForm.value);
 
   }
 
@@ -377,7 +376,6 @@ export class SamplesComponent implements OnInit {
       final_concentrated_sample_volume_type: selectedSample.final_concentrated_sample_volume_type,
       final_concentrated_sample_volume_notes: selectedSample.final_concentrated_sample_volume_notes,
       sample_volume_filtered: selectedSample.sample_volume_filtered,
-      pump_flow_rate: selectedSample.pump_flow_rate,
       meter_reading_initial: selectedSample.meter_reading_initial,
       meter_reading_final: selectedSample.meter_reading_final,
       meter_reading_unit: selectedSample.meter_reading_unit,
@@ -398,8 +396,9 @@ export class SamplesComponent implements OnInit {
 
   }
 
-  onMatrixSelect(selectedMatrix) {
-    console.log("Matrix selected:" + selectedMatrix);
+  onMatrixSelect(selectedMatrixString) {
+    console.log("Matrix selected:" + selectedMatrixString);
+    let selectedMatrix = Number(selectedMatrixString);
     // loop through displayConfig variables for the selected matrix, from the config JSON file (all boolean)
     for (let i in this.displayConfig[selectedMatrix]) {
 
@@ -486,6 +485,17 @@ export class SamplesComponent implements OnInit {
     this.showSampleCreateError = false;
     this.showSampleEditError = false;
     this.submitLoading = true;
+
+    formValue.filter_type = Number(formValue.filter_type);
+    formValue.matrix_type = Number(formValue.matrix_type);
+    formValue.meter_reading_final = Number(formValue.meter_reading_final);
+    formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
+    formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
+    formValue.sample_type = Number(formValue.sample_type);
+    formValue.sample_volume_initial = Number(formValue.sample_volume_initial);
+    formValue.sampler_name = Number(formValue.sampler_name);
+    formValue.study = Number(formValue.study);
+
     switch (formId) {
       case 'edit':
         // update a record

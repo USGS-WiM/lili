@@ -34,7 +34,6 @@ export class APP_SETTINGS {
     public static get REPLICATES_URL(): string { return this._API_ENDPOINT + 'pcrreplicates/' };
     public static get STANDARD_CURVES_URL(): string { return this._API_ENDPOINT + 'standardcurves/' };
     public static get TARGETS_URL(): string { return this._API_ENDPOINT + 'targets/' };
-    public static get CONTROL_TYPES_URL(): string { return this._API_ENDPOINT + 'controltypes/' };
     public static get CONTROLS_URL(): string { return this._API_ENDPOINT + 'controls/' };
     public static get OTHER_ANALYSES_URL(): string { return this._API_ENDPOINT + 'otheranalyses/' };
     public static get USERS_URL(): string { return this._API_ENDPOINT + 'users/' };
