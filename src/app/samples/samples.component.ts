@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, PatternValidator } from '@angular/forms';
 
 import { ISample } from './sample';
+import { IFinalConcentratedSampleVolume } from '../fcsv/final-concentrated-sample-volume';
 import { ISampleType } from '../SHARED/sample-type';
 import { IFilterType } from '../SHARED/filter-type';
 import { IConcentrationType } from '../concentration-types/concentration-type';
@@ -11,6 +12,7 @@ import { IUnit } from '../units/unit';
 import { IUser } from '../SHARED/user';
 
 import { SampleService } from './sample.service';
+import { FinalConcentratedSampleVolumeService } from '../fcsv/final-concentrated-sample-volume.service'
 import { SampleTypeService } from '../SHARED/sample-type.service';
 import { FilterTypeService } from '../SHARED/filter-type.service'
 import { ConcentrationTypeService } from '../concentration-types/concentration-types.service';
@@ -87,7 +89,7 @@ export class SamplesComponent implements OnInit {
     // the following controls apply to every sample record, regardless of matrix selected
     sample_type: new FormControl({ value: '', disabled: true }, Validators.required),
     matrix_type: new FormControl('', Validators.required),
-    filter_type: new FormControl({ value: '', disabled: true }), // required when not disabled
+    filter_type: new FormControl({ value: '', disabled: true }, Validators.required), // required when not disabled
     study: new FormControl({ value: '', disabled: true }, Validators.required),  // study name, maps to study id
     study_site_name: new FormControl({ value: '', disabled: true }),
     collaborator_sample_id: new FormControl({ value: '', disabled: true }, Validators.required),
@@ -99,9 +101,9 @@ export class SamplesComponent implements OnInit {
     collection_start_date: new FormControl({ value: '', disabled: true }, Validators.required),
 
     // the following controls have variable display needs based on the matrix selected
-    collection_start_time: new FormControl({ value: '', disabled: false},  Validators.pattern('\\d\\d:\\d\\d')),
+    collection_start_time: new FormControl({ value: '', disabled: false }, Validators.pattern('\\d\\d:\\d\\d')),
     collection_end_date: new FormControl({ value: '', disabled: true }),
-    collection_end_time: new FormControl({ value: '', disabled: true },  Validators.pattern('\\d\\d:\\d\\d')),
+    collection_end_time: new FormControl({ value: '', disabled: true }, Validators.pattern('\\d\\d:\\d\\d')),
     meter_reading_initial: new FormControl({ value: '', disabled: true }),
     meter_reading_final: new FormControl({ value: '', disabled: true }),
     meter_reading_unit: new FormControl({ value: '', disabled: true }),
@@ -192,6 +194,7 @@ export class SamplesComponent implements OnInit {
 
 
   constructor(private _sampleService: SampleService,
+    private _finalConcentratedSampleVolumeService: FinalConcentratedSampleVolumeService,
     private _studyService: StudyService,
     private _sampleTypeService: SampleTypeService,
     private _filterTypeService: FilterTypeService,
@@ -222,10 +225,10 @@ export class SamplesComponent implements OnInit {
       .subscribe(filterTypes => this.filterTypes = filterTypes,
       error => this.errorMessage = <any>error);
 
-      // on init, call getConcentrationTypes function of the ConcentrationTypeService, set results to the sampleTypes var
+    // on init, call getConcentrationTypes function of the ConcentrationTypeService, set results to the sampleTypes var
     this._concentrationTypeService.getConcentrationTypes()
-    .subscribe(concentrationTypes => this.concentrationTypes = concentrationTypes,
-    error => this.errorMessage = <any>error);
+      .subscribe(concentrationTypes => this.concentrationTypes = concentrationTypes,
+      error => this.errorMessage = <any>error);
 
     // on init, call getMatrices function of the MatrixService, set results to the matrices var
     this._matrixService.getMatrices()
@@ -259,8 +262,8 @@ export class SamplesComponent implements OnInit {
 
     // grab just IDs of the selected samples
     let sampleIDs = [];
-    for (let sample of selectedSampleArray ) {
-        sampleIDs.push(sample.id);
+    for (let sample of selectedSampleArray) {
+      sampleIDs.push(sample.id);
     }
 
     this.createABForm.setValue({
@@ -281,9 +284,9 @@ export class SamplesComponent implements OnInit {
 
     let selectedSampleIDs = []
     if (selectedSamples.length > 1) {
-        for (let sample of selectedSamples) {
-          selectedSampleIDs.push(sample.id)
-        }
+      for (let sample of selectedSamples) {
+        selectedSampleIDs.push(sample.id)
+      }
     } else {
       selectedSampleIDs = [selectedSamples[0].id]
     }
@@ -449,16 +452,28 @@ export class SamplesComponent implements OnInit {
     let fcsvArray = [];
 
     for (let sample of formValue.samples) {
-        fcsvArray.push({
-          "id": sample,
-          "final_concentrated_sample_volume": formValue.final_concentrated_sample_volume,
-          "final_concentrated_sample_volume_type": formValue.final_concentrated_sample_volume_type,
-          "final_concentrated_sample_volume_notes": formValue.final_concentrated_sample_volume_notes
-        })
+      fcsvArray.push({
+        "sample": sample,
+        "final_concentrated_sample_volume": formValue.final_concentrated_sample_volume,
+        "concentration_type": formValue.final_concentrated_sample_volume_type,
+        "final_concentrated_sample_volume_notes": formValue.final_concentrated_sample_volume_notes
+      })
     }
 
-    // fcsvArray to be used to batch POST to FCSV endpoint; awaiting functioming endpoint
-    console.log(fcsvArray);
+    this._finalConcentratedSampleVolumeService.create(fcsvArray)
+      .subscribe(
+      (results) => {
+        console.log(results);
+        this.showFCSVCreateError = false;
+        this.showFCSVCreateSuccess = true;
+        this.submitLoading = false;
+      },
+      error => {
+        this.showFCSVCreateError = true;
+        this.showFCSVCreateSuccess = false;
+        this.submitLoading = false;
+      }
+      )
   }
 
   onSubmitAB(formValue) {
@@ -467,16 +482,16 @@ export class SamplesComponent implements OnInit {
     this.submitLoading = true;
     this._analysisBatchService.create(formValue)
       .subscribe(
-        (ab) => {
-          this.submitLoading = false;
-          this.showABCreateSuccess = true;
-        },
-        error => {
-          this.errorMessage = <any>error;
-          this.submitLoading = false;
-          this.showABCreateError = true;
+      (ab) => {
+        this.submitLoading = false;
+        this.showABCreateSuccess = true;
+      },
+      error => {
+        this.errorMessage = <any>error;
+        this.submitLoading = false;
+        this.showABCreateError = true;
 
-        }
+      }
       )
 
   }

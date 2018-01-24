@@ -668,7 +668,7 @@
                                                     <span class="badge badge-light-blue">{{abSampleList.length}}</span>
                                                 </label>
                                                 <ul class="list">
-                                                    <li *ngFor="let sample of abSampleList">{{sample.id}} ({{sample.study.name}})</li>
+                                                    <li *ngFor="let sample of abSampleList">{{sample.id}} ({{sample.study_string}})</li>
                                                 </ul>
                                             </section>
                                         </form>
@@ -742,8 +742,8 @@
                                                     <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
                                                         <clr-dg-cell>{{sample.id}}</clr-dg-cell>
                                                         <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
-                                                        <clr-dg-cell>{{sample.study.name}}</clr-dg-cell>
-                                                        <clr-dg-cell>{{sample.sample_type. name}}</clr-dg-cell>
+                                                        <clr-dg-cell>{{sample.study_string}}</clr-dg-cell>
+                                                        <clr-dg-cell>{{sample.sample_type_string}}</clr-dg-cell>
                                                         <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
                                                     </clr-dg-row>
 

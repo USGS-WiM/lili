@@ -18,6 +18,7 @@ export class APP_SETTINGS {
     public static get SAMPLE_ENV_URL(): string { return this._API_ENDPOINT + 'sampleenvironments/' };
     public static get UNITS_URL(): string { return this._API_ENDPOINT + 'units/' };
     public static get SAMP_LOC_URL(): string { return this._API_ENDPOINT + 'samplelocations/' };
+    public static get FCSV_URL(): string { return this._API_ENDPOINT + 'finalconcentratedsamplevolumes/' };
     public static get FILTER_TYPES_URL(): string { return this._API_ENDPOINT + 'filtertypes/' };
     public static get WATER_TYPES_URL(): string { return this._API_ENDPOINT + 'watertypes/' };
     public static get ANALYSIS_BATCH_URL(): string { return this._API_ENDPOINT + 'analysisbatches/' };
@@ -32,6 +33,7 @@ export class APP_SETTINGS {
     public static get CONCENTRATION_TYPES_URL(): string { return this._API_ENDPOINT + 'concentrationtype/' };
     public static get RT_URL(): string { return this._API_ENDPOINT + 'reversetranscriptions/' };
     public static get REPLICATES_URL(): string { return this._API_ENDPOINT + 'pcrreplicates/' };
+    public static get REPLICATE_BATCH_URL(): string { return this._API_ENDPOINT + 'pcrreplicatebatches/' };
     public static get STANDARD_CURVES_URL(): string { return this._API_ENDPOINT + 'standardcurves/' };
     public static get TARGETS_URL(): string { return this._API_ENDPOINT + 'targets/' };
     public static get CONTROLS_URL(): string { return this._API_ENDPOINT + 'controls/' };

@@ -69,7 +69,6 @@
                             <div class="card-title">Upload Target Organism Concentration File</div>
                             <div class="card-text">
                                 <input type="file" (change)="loadTargetFile($event)" placeholder="Upload file" accept="*">
-                                <!-- <button class="btn btn-primary" (click)="parseJSON()">Parse Data</button> -->
                                 <div class="alert alert-danger" *ngIf="targetFileNameErrorFlag">
                                     <div class="alert-items">
                                         <div class="alert-item static">
@@ -87,7 +86,7 @@
                             </div>
                         </div>
                         <div class="card-block" *ngIf="parsedTargetResults">
-                            <div class="card-title">Uploaded Inhibition Results</div>
+                            <div class="card-title">Results Confirmation</div>
                             <div class="card-text">
 
                                 <table class="table table-compact" style="width: 15em">
@@ -109,7 +108,37 @@
                                     </tbody>
                                 </table>
                                 <br>
-                                <button class="btn btn-primary" (click)="submitRawTargetResults()">Submit Results</button>
+
+                                <div class="alert alert-danger" *ngIf="pcrReplicateBatchIDErrorFlag">
+                                    <div class="alert-items">
+                                        <div class="alert-item static">
+                                            <div class="alert-icon-wrapper">
+                                                <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                                            </div>
+                                            <span class="alert-text">
+                                                Something went wrong. Please check the text file for proper formatting and try again.
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="resultsSubmissionErrorFlag">
+                                    <div clr-alert-item class="alert-item">
+                                        <span class="alert-text">Submission error. Results not uploaded to database.</span>
+                                        <div class="alert-actions">
+                                            <a class="alert-action" (click)="submitRawTargetResults()">Try again</a>
+                                        </div>
+                                    </div>
+                                </clr-alert>
+    
+                                <clr-alert [clrAlertType]="'alert-success'" *ngIf="resultsSubmissionSuccessFlag">
+                                    <div clr-alert-item class="alert-item">
+                                        <span class="alert-text">Results sucessfully submitted.</span>
+                                      
+                                    </div>
+                                </clr-alert>
+    
+                                <button class="btn btn-primary" [disabled]="!resultsSubmissionReady" (click)="submitRawTargetResults()">Submit Results</button>
                             </div>
                         </div>
                     </div>

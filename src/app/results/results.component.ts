@@ -8,6 +8,7 @@ import { ITargetResult } from './target-result';
 
 import { TargetService } from '../targets/target.service';
 import { InhibitionService } from '../inhibitions/inhibition.service';
+import { PcrReplicateBatchService } from '../pcr-replicates/pcr-replicate-batch.service';
 
 import { RegExp } from 'core-js/library/web/timers';
 import { FormGroup } from '@angular/forms/src/model';
@@ -24,6 +25,8 @@ export class ResultsComponent implements OnInit {
   inhFileNameErrorFlag: boolean = false;
   parsedInhResults;
   parsedTargetResults;
+  parsedTargetResults_pcrBatchID;
+  resultsSubmissionReady: boolean = false;
 
   inhLoadingFlag: boolean = false;
   inhRawErrorMessage: string = '';
@@ -31,16 +34,17 @@ export class ResultsComponent implements OnInit {
   dilutionFactorsCalculated: boolean = false;
 
   targetFileNameErrorFlag: boolean = false;
+  pcrReplicateBatchIDErrorFlag: boolean = false;
+
+  resultsSubmissionErrorFlag: boolean = false;
+  resultsSubmissionSuccessFlag: boolean = false;
 
   errorMessage: string;
-
-  // selectEBForm = new FormGroup({
-
-  // })
 
   constructor(
     private _inhibitionService: InhibitionService,
     private _targetService: TargetService,
+    private _pcrReplicateBatchService: PcrReplicateBatchService
   ) { }
 
   ngOnInit() {
@@ -153,6 +157,7 @@ export class ResultsComponent implements OnInit {
         delete item.Pos;
         delete item.Standard;
       }
+
       self.parseTargetJSON(fileName, json)
     }
     fileReader.readAsText(input.files[0]);
@@ -213,8 +218,19 @@ export class ResultsComponent implements OnInit {
     }
     this.parsedTargetResults = targetResults;
 
-    // TODO: awaiting web service endpoint: need to provide pcr batch ID by looking up from services.
-    // using Analysis Batch, Extraction Number, Target from fileMetadata
+    // TODO: finish. currently pcrreplicatebatch endpoint is broken, see https://github.com/USGS-WiM/lide/issues/72
+    this._pcrReplicateBatchService.getID(targetResults.analysis_batch, targetResults.extraction_number, targetResults.replicate_number)
+      .subscribe(
+      (pcrReplicateBatchID) => {
+        this.pcrReplicateBatchIDErrorFlag = false;
+        this.resultsSubmissionReady = true;
+        this.parsedTargetResults_pcrBatchID = pcrReplicateBatchID;
+      },
+      error => {
+        this.pcrReplicateBatchIDErrorFlag = true;
+        this.resultsSubmissionReady = false;
+      }
+      )
   }
 
   parseInhJSON(fileName, rawInhResults) {
@@ -263,7 +279,18 @@ export class ResultsComponent implements OnInit {
   submitRawTargetResults() {
 
     // TODO: submit target results to web services
-
+    this._pcrReplicateBatchService.update(this.parsedTargetResults_pcrBatchID, this.parsedTargetResults)
+      .subscribe(
+      (results) => {
+        console.log(results);
+        this.resultsSubmissionErrorFlag = true;
+        this.resultsSubmissionSuccessFlag = false;
+      },
+      error => {
+        this.resultsSubmissionErrorFlag = true;
+        this.resultsSubmissionSuccessFlag = false;
+      }
+      )
   }
 
 }
