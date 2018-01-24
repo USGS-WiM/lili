@@ -56,6 +56,8 @@ import { UserResolve } from "./SHARED/user.resolve";
 import { AnalysisBatchWorksheetComponent } from './analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
 import { InhibitionService } from "./inhibitions/inhibition.service";
 import { ExtractionBatchService } from "app/extractions/extraction-batch.service";
+import { PcrReplicateBatchService } from "app/pcr-replicates/pcr-replicate-batch.service";
+import { FinalConcentratedSampleVolumeService } from "app/fcsv/final-concentrated-sample-volume.service";
 
 @NgModule({
     declarations: [
@@ -108,6 +110,8 @@ import { ExtractionBatchService } from "app/extractions/extraction-batch.service
         ExtractionBatchService,
         ExtractionResolve,
         FilterTypeService,
+        PcrReplicateBatchService,
+        FinalConcentratedSampleVolumeService,
         FilterResolve,
         MatrixService,
         MatrixResolve,

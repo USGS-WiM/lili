@@ -200,7 +200,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Filter Type</label>
+                                <label class="required">Filter Type</label>
                                 <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('filter_type').invalid && (addSampleForm.get('filter_type').dirty || addSampleForm.get('filter_type').touched)">
                                     <div class="select">
                                         <select id="filterSelect" name="filterType" formControlName="filter_type">
@@ -1098,10 +1098,10 @@
                             <clr-dg-cell>{{sample.id}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.analysisbatches}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.studies">{{sample.study.name}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type.name}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.studies">{{sample.study_string}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type_string}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type.name}}</clr-dg-cell>
+                            <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type_string}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
 
@@ -1121,10 +1121,10 @@
                             <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
                             <clr-dg-cell *ngIf="this.users">{{sample.sampler_name.name}}</clr-dg-cell>
                             <clr-dg-cell>{{sample.sample_notes}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.insert_user}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.insert_date | date:'shortDate'}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.update_user }}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.update_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.created_by}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.created_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.modified_by }}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.modified_date | date:'shortDate'}}</clr-dg-cell>
                         </clr-dg-row>
 
                         <clr-dg-footer>

@@ -147,7 +147,7 @@ export class AnalysisBatchesComponent implements OnInit {
     id: new FormControl(''),
     analysis_batch_description: new FormControl(''),
     analysis_batch_notes: new FormControl(''),
-    samples: new FormControl('')
+    new_samples: new FormControl('')
   });
 
   // add inhibition form
@@ -874,7 +874,7 @@ export class AnalysisBatchesComponent implements OnInit {
       samples.push(sample.id);
     }
     this.editABForm.patchValue({
-      samples: samples
+      new_samples: samples
     });
     this.onSubmit('editAB', this.editABForm.value);
   }
@@ -913,7 +913,7 @@ export class AnalysisBatchesComponent implements OnInit {
           id: selectedAB.id,
           analysis_batch_description: selectedAB.analysis_batch_description,
           analysis_batch_notes: selectedAB.analysis_batch_notes,
-          samples: this.abSampleIDList
+          new_samples: this.abSampleIDList
         });
 
         // show the edit analysis batch modal if not showing already
