@@ -4,13 +4,29 @@
             <a href="#" class="nav-link">
                 <!--<span class="clr-icon ars-logo"></span>-->
                 <span class="clr-icon lili-icon"></span>
-                <span class="title"><span style="font-size:xx-large; font-weight: bold;">lili</span> <span style="font-size:x-large; font-weight: bold;">L</span>aboratory
-                for <span style="font-size:x-large; font-weight: bold;">I</span>nfectious Disease and Environment <span style="font-size:x-large; font-weight:bold;">LI</span>MS</span>
+                <span class="title">
+                    <span style="font-size:xx-large; font-weight: bold;">lili</span>
+                    <span style="font-size:x-large; font-weight: bold;">L</span>aboratory for
+                    <span style="font-size:x-large; font-weight: bold;">I</span>nfectious Disease and Environment
+                    <span style="font-size:x-large; font-weight:bold;">LI</span>MS</span>
             </a>
         </div>
         <div class="header-actions">
         </div>
     </clr-header>
+
+    <div *ngIf="servicesFailFlag" class="alert alert-app-level alert-danger" style="margin-bottom:24px">
+        <div class="alert-items">
+            <div class="alert-item static">
+                <div class="alert-icon-wrapper">
+                    <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                </div>
+                <div class="alert-text">
+                    Lili data services are not responding.
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="content-container">
         <div class="content-area">

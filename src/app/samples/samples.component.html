@@ -158,7 +158,7 @@
                                 <label for="collectEndDateInput">Collection End Date</label>
                                 <input type="date" id="collectEndDateInput" formControlName="collection_end_date">
                             </div>
-                        
+
                             <div class="form-group">
                                 <label for="collectEndTime">Collection End Time (HH:MM)</label>
                                 <label for="collectEndTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collection_end_time').invalid && (addSampleForm.get('collection_end_time').dirty || addSampleForm.get('collection_end_time').touched)">
@@ -781,6 +781,19 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="showHideFreezeWarningModal = false">Return</button>
+    </div>
+</clr-modal>
+<!-- end freeze warning modal -->
+
+<!-- begin freeze warning modal -->
+<clr-modal [(clrModalOpen)]="showHideMissingFCSVErrorModal">
+    <h3 class="modal-title">
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Missing FCSV Error</h3>
+    <div class="modal-body">
+        <p>One or more samples in your selection lacks a value for final concentrated sample volume. FCSV is a prerequisite to sample freezing. Please add an FCSV for all the samples in your selection and try again. </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showHideMissingFCSVErrorModal = false">Return</button>
     </div>
 </clr-modal>
 <!-- end freeze warning modal -->

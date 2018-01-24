@@ -83,6 +83,8 @@ export class SamplesComponent implements OnInit {
 
   selectedStudy;
 
+  showHideMissingFCSVErrorModal: boolean = false;
+
   // add sample form - declare reactive form with appropriate sample fields
   // all fields except matrix_type are disabled until matrix_type is selected (see onMatrixSelect function)
   addSampleForm = new FormGroup({
@@ -330,12 +332,18 @@ export class SamplesComponent implements OnInit {
     if (this.onlyOneStudySelected === false) {
       this.showHideFreezeWarningModal = true
     } else if (this.onlyOneStudySelected === true) {
-      // show the freeze modal if not showing already
-      if (this.showHideFreezeModal === false) {
-        this.showHideFreezeModal = true;
+
+      for (let sample of selectedSampleArray) {
+        if (sample.final_concentrated_sample_volume == null) {
+          this.showHideMissingFCSVErrorModal = true;
+        } else {
+          // show the freeze modal if not showing already
+          if (this.showHideFreezeModal === false) {
+            this.showHideFreezeModal = true;
+          }
+        }
       }
     }
-
     this.selectedStudy = this.selected[0].study;
   }
 
