@@ -665,20 +665,11 @@
 
                         <button class="btn btn-primary" type="submit" [disabled]="createFCSVForm.invalid" [clrLoading]="submitLoading">Submit</button>
                         <button class="btn btn-info" (click)="showHideFCSVModal = !showHideFCSVModal">Cancel</button>
-
-
                     </section>
                 </form>
-
             </div>
-            <!--<div class="col-lg-6">
-            </div>-->
         </div>
     </div>
-    <!--<div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
-        <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
-    </div>-->
 </clr-modal>
 <!-- end FCSV modal -->
 
@@ -686,7 +677,8 @@
 
 <!-- begin freeze modal -->
 <clr-modal [(clrModalOpen)]="showHideFreezeModal">
-    <h3 class="modal-title">Freeze Samples</h3>
+    <h3 class="modal-title">
+        <clr-icon shape="thermometer"></clr-icon> Freeze Sample</h3>
     <div class="modal-body">
 
         <div class="row">
@@ -696,14 +688,21 @@
                     <section class="form-block">
 
                         <div *ngIf="this.selectedStudy">
-                            <label>You have selected the following samples to freeze:</label>
-                            <ul class="list">
+                            <label>You have selected the following sample to freeze:</label>
+                            <ul class="list-unstyled">
                                 <li *ngFor="let sample of selected">
                                     Sample {{sample.id}}
                                 </li>
                             </ul>
                             <label>from the study
                                 <span class="label"> {{selectedStudy | displayValue:'name':this.studies}} </span>
+                            </label>
+                            <br>
+
+                            <label>Last occupied freezer location:
+                                <span class="spinner spinner-inline" *ngIf="lastOccupiedSpotLoading">Loading...</span>
+                                <span *ngIf="showLastOccupiedSpot"></span>
+                                <span *ngIf="showLastOccupiedSpotError"><clr-icon shape="error-standard"></clr-icon> Not Available</span>
                             </label>
 
                         </div>
@@ -735,20 +734,14 @@
                                 <label for="frozenToggle">{{this.freezeSampleForm.controls.frozen.value ? "Yes" : "No"}}</label>
                             </div>
                         </div>
-
-
+                        <button type="button" class="btn btn-outline" (click)="showHideFreezeModal = !showHideFreezeModal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" [disabled]="freezeSampleForm.invalid">Submit</button>
                     </section>
                 </form>
-
             </div>
-            <!--<div class="col-lg-6">
-            </div>-->
         </div>
     </div>
-    <!--<div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
-        <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
-    </div>-->
+    <div class="modal-footer"></div>
 </clr-modal>
 <!-- end freeze modal -->
 
@@ -785,15 +778,29 @@
 </clr-modal>
 <!-- end freeze warning modal -->
 
-<!-- begin freeze warning modal -->
+<!-- begin Missing FCSV Error Modal -->
 <clr-modal [(clrModalOpen)]="showHideMissingFCSVErrorModal">
     <h3 class="modal-title">
         <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Missing FCSV Error</h3>
     <div class="modal-body">
-        <p>One or more samples in your selection lacks a value for final concentrated sample volume. FCSV is a prerequisite to sample freezing. Please add an FCSV for all the samples in your selection and try again. </p>
+        <p>One or more samples in your selection lacks a value for final concentrated sample volume. FCSV is a prerequisite
+            to sample freezing. Please add an FCSV for all the samples in your selection and try again. </p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="showHideMissingFCSVErrorModal = false">Return</button>
+    </div>
+</clr-modal>
+<!-- end  Missing FCSV Error Modal-->
+
+<!-- begin Multiple SamplesErrorModal -->
+<clr-modal [(clrModalOpen)]="showHideMultipleSamplesErrorModal">
+    <h3 class="modal-title">
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Multiple Samples Error</h3>
+    <div class="modal-body">
+        <p>You many only freeze one sample at a time. Please reduce your selection to one sample and try again. </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showHideMultipleSamplesErrorModal = false">Return</button>
     </div>
 </clr-modal>
 <!-- end freeze warning modal -->

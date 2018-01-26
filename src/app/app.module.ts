@@ -58,6 +58,8 @@ import { InhibitionService } from "./inhibitions/inhibition.service";
 import { ExtractionBatchService } from "app/extractions/extraction-batch.service";
 import { PcrReplicateBatchService } from "app/pcr-replicates/pcr-replicate-batch.service";
 import { FinalConcentratedSampleVolumeService } from "app/fcsv/final-concentrated-sample-volume.service";
+import { AliquotService } from "app/aliquots/aliquot.service";
+import { FreezerLocationsService } from "app/aliquots/freezer-locations.service";
 
 @NgModule({
     declarations: [
@@ -108,6 +110,8 @@ import { FinalConcentratedSampleVolumeService } from "app/fcsv/final-concentrate
         InhibitionService,
         ExtractionMethodService,
         ExtractionBatchService,
+        AliquotService,
+        FreezerLocationsService,
         ExtractionResolve,
         FilterTypeService,
         PcrReplicateBatchService,

@@ -12,7 +12,9 @@ import { IUnit } from '../units/unit';
 import { IUser } from '../SHARED/user';
 
 import { SampleService } from './sample.service';
-import { FinalConcentratedSampleVolumeService } from '../fcsv/final-concentrated-sample-volume.service'
+import { FreezerLocationsService } from '../aliquots/freezer-locations.service';
+import { AliquotService } from 'app/aliquots/aliquot.service';
+import { FinalConcentratedSampleVolumeService } from '../fcsv/final-concentrated-sample-volume.service';
 import { SampleTypeService } from '../SHARED/sample-type.service';
 import { FilterTypeService } from '../SHARED/filter-type.service'
 import { ConcentrationTypeService } from '../concentration-types/concentration-types.service';
@@ -26,6 +28,7 @@ import { AnalysisBatchService } from '../analysis-batches/analysis-batch.service
 import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
 
 import { APP_UTILITIES } from '../app.utilities';
+
 
 @Component({
   selector: 'app-samples',
@@ -50,6 +53,7 @@ export class SamplesComponent implements OnInit {
   showHideFreezeModal: boolean = false;
   showHidePrintModal: boolean = false;
   showHideFreezeWarningModal: boolean = false;
+  showHideMultipleSamplesErrorModal: boolean = false;
 
   sampleSelected: boolean = false;
   displayConfig: Object = {};
@@ -82,6 +86,11 @@ export class SamplesComponent implements OnInit {
   showFCSVCreateSuccess: boolean = false;
 
   selectedStudy;
+
+  lastOccupiedSpot;
+  showLastOccupiedSpot;
+  showLastOccupiedSpotError;
+  lastOccupiedSpotLoading;
 
   showHideMissingFCSVErrorModal: boolean = false;
 
@@ -173,6 +182,7 @@ export class SamplesComponent implements OnInit {
   });
 
   freezeSampleForm = new FormGroup({
+    sample: new FormControl(''),
     number_of_aliquots: new FormControl('', Validators.required),
     rack: new FormControl('', Validators.required),
     box: new FormControl('', Validators.required),
@@ -199,6 +209,8 @@ export class SamplesComponent implements OnInit {
     private _finalConcentratedSampleVolumeService: FinalConcentratedSampleVolumeService,
     private _studyService: StudyService,
     private _sampleTypeService: SampleTypeService,
+    private _freezerLocationsService: FreezerLocationsService,
+    private _aliquotService: AliquotService,
     private _filterTypeService: FilterTypeService,
     private _concentrationTypeService: ConcentrationTypeService,
     private _matrixService: MatrixService,
@@ -320,31 +332,62 @@ export class SamplesComponent implements OnInit {
 
   // callback for the freeze samples button
   freezeSample(selectedSampleArray) {
-    // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
-    // checks if all the values for study are the same in the selected samples array
-    this.onlyOneStudySelected = selectedSampleArray.every(
-      function (value, _, array) {
-        return array[0].study === value.study;
-      });
 
-    // alert user they are attempting to select a set of studies for freezing that belong to more than one study
-    // show freeze warning modal if multiple studies, else show the freeze modal
-    if (this.onlyOneStudySelected === false) {
-      this.showHideFreezeWarningModal = true
-    } else if (this.onlyOneStudySelected === true) {
+    this.lastOccupiedSpotLoading = true;
+    this.showLastOccupiedSpot = false;
+    this.showLastOccupiedSpotError = false;
+    // check if more than one sample is selected. if so, alert user they can only freeze one sample at a time
+    // if not, proceed with further checks and logic
+    if (this.selected.length > 1) {
+      this.showHideMultipleSamplesErrorModal = true;
+    } else {
+      // NOTE: check logic below not neccesary if only one sample - keeping for now in the event batch sample freezing 
+      // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
+      // checks if all the values for study are the same in the selected samples array
+      this.onlyOneStudySelected = selectedSampleArray.every(
+        function (value, _, array) {
+          return array[0].study === value.study;
+        });
 
-      for (let sample of selectedSampleArray) {
-        if (sample.final_concentrated_sample_volume == null) {
-          this.showHideMissingFCSVErrorModal = true;
-        } else {
-          // show the freeze modal if not showing already
-          if (this.showHideFreezeModal === false) {
-            this.showHideFreezeModal = true;
+      // alert user they are attempting to select a set of studies for freezing that belong to more than one study
+      // show freeze warning modal if multiple studies, else show the freeze modal
+      if (this.onlyOneStudySelected === false) {
+        this.showHideFreezeWarningModal = true
+      } else if (this.onlyOneStudySelected === true) {
+
+        for (let sample of selectedSampleArray) {
+          if (sample.final_concentrated_sample_volume == null) {
+            this.showHideMissingFCSVErrorModal = true;
+          } else {
+            // show the freeze modal if not showing already
+            if (this.showHideFreezeModal === false) {
+              this.showHideFreezeModal = true;
+            }
+            this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
+
+            // request last occupied spot
+            this._freezerLocationsService.getLastOccupiedSpot()
+              .subscribe(
+              (lastOccupiedSpot) => {
+                console.log(lastOccupiedSpot);
+                this.lastOccupiedSpot = lastOccupiedSpot;
+                this.lastOccupiedSpotLoading = false;
+                this.showLastOccupiedSpot = true;
+                this.showLastOccupiedSpotError = false;
+              },
+              error => {
+                this.lastOccupiedSpotLoading = false;
+                this.showLastOccupiedSpot = false;
+                this.showLastOccupiedSpotError = true;
+              }
+              )
+
           }
         }
       }
+      this.selectedStudy = this.selected[0].study;
+
     }
-    this.selectedStudy = this.selected[0].study;
   }
 
   printLabel(selectedSampleArray) {
@@ -449,7 +492,21 @@ export class SamplesComponent implements OnInit {
   }
 
   onSubmitFreeze(formValue) {
+    //freezeSampleForm
+    formValue.rack = Number(formValue.rack);
+    formValue.box = Number(formValue.box);
+    formValue.row = Number(formValue.row);
+    formValue.spot = Number(formValue.spot);
 
+    this._aliquotService.create(formValue)
+      .subscribe(
+      (results) => {
+        console.log(results);
+      },
+      error => {
+        console.log(error);
+      }
+      )
   }
 
   onSubmitFCSV(formValue) {
