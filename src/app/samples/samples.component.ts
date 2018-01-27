@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, PatternValidator } from '@angular/forms';
 
 import { ISample } from './sample';
+import { IFreezer } from '../aliquots/freezer';
 import { IFinalConcentratedSampleVolume } from '../fcsv/final-concentrated-sample-volume';
 import { ISampleType } from '../SHARED/sample-type';
 import { IFilterType } from '../SHARED/filter-type';
@@ -12,6 +13,7 @@ import { IUnit } from '../units/unit';
 import { IUser } from '../SHARED/user';
 
 import { SampleService } from './sample.service';
+import { FreezerService } from '../aliquots/freezer.service';
 import { FreezerLocationsService } from '../aliquots/freezer-locations.service';
 import { AliquotService } from 'app/aliquots/aliquot.service';
 import { FinalConcentratedSampleVolumeService } from '../fcsv/final-concentrated-sample-volume.service';
@@ -30,6 +32,7 @@ import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
 import { APP_UTILITIES } from '../app.utilities';
 
 
+
 @Component({
   selector: 'app-samples',
   templateUrl: './samples.component.html',
@@ -37,6 +40,7 @@ import { APP_UTILITIES } from '../app.utilities';
 })
 export class SamplesComponent implements OnInit {
   allSamples: ISample[];
+  freezers: IFreezer[];
   sampleTypes: ISampleType[];
   filterTypes: IFilterType[];
   concentrationTypes: IConcentrationType[];
@@ -84,6 +88,9 @@ export class SamplesComponent implements OnInit {
 
   showFCSVCreateError: boolean = false;
   showFCSVCreateSuccess: boolean = false;
+
+  showFreezeError: boolean = false;
+  showFreezeSuccess: boolean = false;
 
   selectedStudy;
 
@@ -183,7 +190,8 @@ export class SamplesComponent implements OnInit {
 
   freezeSampleForm = new FormGroup({
     sample: new FormControl(''),
-    number_of_aliquots: new FormControl('', Validators.required),
+    freezer: new FormControl(1),
+    aliquot_count: new FormControl('', Validators.required),
     rack: new FormControl('', Validators.required),
     box: new FormControl('', Validators.required),
     row: new FormControl('', Validators.required),
@@ -209,6 +217,7 @@ export class SamplesComponent implements OnInit {
     private _finalConcentratedSampleVolumeService: FinalConcentratedSampleVolumeService,
     private _studyService: StudyService,
     private _sampleTypeService: SampleTypeService,
+    private _freezerService: FreezerService,
     private _freezerLocationsService: FreezerLocationsService,
     private _aliquotService: AliquotService,
     private _filterTypeService: FilterTypeService,
@@ -227,6 +236,11 @@ export class SamplesComponent implements OnInit {
     // on init, call getSamples function of the SampleService, set results to the allSamples var
     this._sampleService.getSamples()
       .subscribe(samples => this.allSamples = samples,
+      error => this.errorMessage = <any>error);
+
+    // on init, call getFreezers function of the FreezerService, set results to the freezers var
+    this._freezerService.getFreezers()
+      .subscribe(freezers => this.freezers = freezers,
       error => this.errorMessage = <any>error);
 
     // on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
@@ -370,7 +384,7 @@ export class SamplesComponent implements OnInit {
               .subscribe(
               (lastOccupiedSpot) => {
                 console.log(lastOccupiedSpot);
-                this.lastOccupiedSpot = lastOccupiedSpot;
+                this.lastOccupiedSpot = lastOccupiedSpot[0];
                 this.lastOccupiedSpotLoading = false;
                 this.showLastOccupiedSpot = true;
                 this.showLastOccupiedSpotError = false;
@@ -492,7 +506,8 @@ export class SamplesComponent implements OnInit {
   }
 
   onSubmitFreeze(formValue) {
-    //freezeSampleForm
+    this.submitLoading = true;
+    formValue.freezer = Number(formValue.freezer);
     formValue.rack = Number(formValue.rack);
     formValue.box = Number(formValue.box);
     formValue.row = Number(formValue.row);
@@ -501,10 +516,14 @@ export class SamplesComponent implements OnInit {
     this._aliquotService.create(formValue)
       .subscribe(
       (results) => {
-        console.log(results);
+        this.submitLoading = false;
+        this.showFreezeSuccess = true;
+        this.showFreezeError = false;
       },
       error => {
-        console.log(error);
+        this.submitLoading = false;
+        this.showFreezeSuccess = false;
+        this.showFreezeError = true;
       }
       )
   }

@@ -680,14 +680,12 @@
     <h3 class="modal-title">
         <clr-icon shape="thermometer"></clr-icon> Freeze Sample</h3>
     <div class="modal-body">
-
         <div class="row">
             <div class="col-lg-12">
-
                 <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmitFreeze(freezeSampleForm.value)">
                     <section class="form-block">
 
-                        <div *ngIf="this.selectedStudy">
+                        <!-- <div *ngIf="this.selectedStudy">
                             <label>You have selected the following sample to freeze:</label>
                             <ul class="list-unstyled">
                                 <li *ngFor="let sample of selected">
@@ -697,34 +695,56 @@
                             <label>from the study
                                 <span class="label"> {{selectedStudy | displayValue:'name':this.studies}} </span>
                             </label>
-                            <br>
+                        </div> -->
 
-                            <label>Last occupied freezer location:
-                                <span class="spinner spinner-inline" *ngIf="lastOccupiedSpotLoading">Loading...</span>
-                                <span *ngIf="showLastOccupiedSpot"></span>
-                                <span *ngIf="showLastOccupiedSpotError"><clr-icon shape="error-standard"></clr-icon> Not Available</span>
+                        <div *ngIf="this.selectedStudy">
+                            <label>You are freezing sample
+                                <span *ngFor="let sample of selected">{{sample.id}}</span> from the study
+                                <span style="font-weight:bold;">{{selectedStudy | displayValue:'name':this.studies}}</span>
                             </label>
-
+                        </div>
+                        <div *ngIf="showLastOccupiedSpot">
+                            <label for="lastOccupiedSpot" style="font-weight:bold;">Last occupied freezer location</label>
+                            <div id="lastOccupiedSpot">
+                                <span class="spinner spinner-inline" *ngIf="lastOccupiedSpotLoading">Loading...</span>
+                                <span *ngIf="showLastOccupiedSpot">
+                                    <ul class="list-unstyled">
+                                        <li>Rack {{lastOccupiedSpot.rack}}</li>
+                                        <li>Box {{lastOccupiedSpot.box}}</li>
+                                        <li>Row {{lastOccupiedSpot.row}}</li>
+                                        <li>Spot {{lastOccupiedSpot.spot}}</li>
+                                    </ul>
+                                </span>
+                                <span *ngIf="showLastOccupiedSpotError">
+                                    <clr-icon shape="error-standard"></clr-icon> Not Available</span>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="numberOfAliquots" class="required">Number of Aliquots</label>
-                            <input id="numberOfAliquots" type="number" formControlName="number_of_aliquots">
+                            <label for="freezer" class="required">Freezer</label>
+                            <select id="freezerSelect" name="freezer" formControlName="freezer">
+                                <option *ngFor="let freezer of freezers" [value]="freezer.id">{{freezer.id}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="aliquotCount" class="required">Number of Aliquots</label>
+                            <input id="aliquotCount" type="number" formControlName="aliquot_count">
                         </div>
                         <div class="form-group">
-                            <label for="rack">Rack</label>
+                            <label for="rack" class="required">Rack</label>
                             <input id="rack" type="text" formControlName="rack">
                         </div>
                         <div class="form-group">
-                            <label for="box">Box</label>
+                            <label for="box" class="required">Box</label>
                             <input id="box" type="text" formControlName="box">
                         </div>
                         <div class="form-group">
-                            <label for="row">Row</label>
+                            <label for="row" class="required">Row</label>
                             <input id="row" type="text" formControlName="row">
                         </div>
                         <div class="form-group">
-                            <label for="spot">Spot</label>
+                            <label for="spot" class="required">Spot</label>
                             <input id="spot" type="text" formControlName="spot">
                         </div>
                         <div class="form-group">
@@ -734,8 +754,28 @@
                                 <label for="frozenToggle">{{this.freezeSampleForm.controls.frozen.value ? "Yes" : "No"}}</label>
                             </div>
                         </div>
+
                         <button type="button" class="btn btn-outline" (click)="showHideFreezeModal = !showHideFreezeModal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" [disabled]="freezeSampleForm.invalid">Submit</button>
+                        <button type="submit" class="btn btn-primary"  [disabled]="freezeSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
+
+                        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFreezeError">
+                            <div clr-alert-item class="alert-item">
+                                <span class="alert-text">Submission error. Aliquot records not recorded.</span>
+                                <div class="alert-actions">
+                                    <a class="alert-action" (click)="onSubmitFreeze(freezeSampleForm.value)">Try again</a>
+                                </div>
+                            </div>
+                        </clr-alert>
+
+                        <clr-alert [clrAlertType]="'alert-success'" *ngIf="showFreezeSuccess">
+                            <div clr-alert-item class="alert-item">
+                                <span class="alert-text">Sample aliquot records and locations successfully submitted.</span>
+                                <div class="alert-actions">
+                                    <a class="alert-action" (click)="showHideFreezeModal = false; showFreezeSuccess = false">Close</a>
+                                </div>
+                            </div>
+                        </clr-alert>
+
                     </section>
                 </form>
             </div>

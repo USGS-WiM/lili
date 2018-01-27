@@ -7,27 +7,22 @@ import 'rxjs/add/operator/catch';
 import { Subject } from "rxjs/Subject";
 import { APP_SETTINGS } from '../app.settings';
 
-import { IAliquot } from './aliquot';
+import { IFreezer } from './freezer';
 
 @Injectable()
-export class AliquotService {
+export class FreezerService {
 
   constructor(private _http: Http) { }
 
-  public create(formValue): Observable<any> {
+  public getFreezers(): Observable<IFreezer[]> {
+    let options = new RequestOptions({ headers: APP_SETTINGS.AUTH_JSON_HEADERS });
 
-    let options = new RequestOptions({
-      headers: APP_SETTINGS.AUTH_JSON_HEADERS
-    });
-
-    // JSON objet submission (formValue) need to be within an array
-    return this._http.post(APP_SETTINGS.ALIQUOTS_URL, [formValue], options)
-    .map((response: Response) => <any[]>response.json())
-      .catch(this.handleError)
-
+    return this._http.get(APP_SETTINGS.FREEZERS_URL, options)
+      .map((response: Response) => <IFreezer[]>response.json())
+      .catch(this.handleError);
   }
 
-  private handleError(error: Response) {
+  private handleError (error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
   }

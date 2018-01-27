@@ -60,6 +60,7 @@ import { PcrReplicateBatchService } from "app/pcr-replicates/pcr-replicate-batch
 import { FinalConcentratedSampleVolumeService } from "app/fcsv/final-concentrated-sample-volume.service";
 import { AliquotService } from "app/aliquots/aliquot.service";
 import { FreezerLocationsService } from "app/aliquots/freezer-locations.service";
+import { FreezerService } from "app/aliquots/freezer.service";
 
 @NgModule({
     declarations: [
@@ -111,6 +112,7 @@ import { FreezerLocationsService } from "app/aliquots/freezer-locations.service"
         ExtractionMethodService,
         ExtractionBatchService,
         AliquotService,
+        FreezerService,
         FreezerLocationsService,
         ExtractionResolve,
         FilterTypeService,
