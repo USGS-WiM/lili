@@ -882,6 +882,18 @@
 </clr-modal>
 <!-- end freeze warning modal -->
 
+<!-- begin SampleLabelModal -->
+<clr-modal [(clrModalOpen)]="showLabelModal" [clrModalSize]="'xl'">
+    <h3 class="modal-title">Sample Label Preview</h3>
+    <div class="modal-body">
+        <sample-label #sampleLabel></sample-label>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showLabelModal = !showLabelModal">Cancel</button>
+    </div>
+</clr-modal>
+<!-- end SampleLabelModal -->
+
 <!-- begin samples table -->
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

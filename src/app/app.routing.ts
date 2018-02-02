@@ -21,7 +21,7 @@ import { MatrixResolve } from './SHARED/matrix.resolve';
 import { SampleTypeResolve } from './SHARED/sample-type.resolve';
 import { TargetResolve } from './targets/target.resolve';
 import { UserResolve } from './SHARED/user.resolve';
-import { AnalysisBatchWorksheetComponent } from 'app/analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
+import { AnalysisBatchWorksheetComponent } from './analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
 
 
 export const ROUTES: Routes = [

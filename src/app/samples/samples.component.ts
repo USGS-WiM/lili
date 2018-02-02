@@ -58,7 +58,7 @@ export class SamplesComponent implements OnInit {
   showHidePrintModal: boolean = false;
   showHideFreezeWarningModal: boolean = false;
   showHideMultipleSamplesErrorModal: boolean = false;
-
+  showLabelModal: boolean = false;
   sampleSelected: boolean = false;
   displayConfig: Object = {};
   selectedSampleId;
@@ -430,11 +430,10 @@ export class SamplesComponent implements OnInit {
 
   createLabelPDF() {
     let spacesToSkip = Number(this.skipLabelForm.value.count);
+    // first skip down number of spaces from spacesToSkip variable, then loop through this.aliquotLabelTextArray and if include === true,
+    // place the aliquot_string value centered on one line, and the collaborator_sample_id below it on the next line. Important to check for include === true. 
+    this.showLabelModal = true;
 
-    // Tonia: first skip down number of spaces from spacesToSkip variable,
-    // then loop through this.aliquotLabelTextArray and if include === true,
-    // place the aliquot_string value centered on one line, and the collaborator_sample_id
-    // below it on the next line. Important to check for include === true. 
   }
 
   openPrintLabelModal(selectedSampleArray) {
