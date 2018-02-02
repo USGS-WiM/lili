@@ -756,7 +756,7 @@
                         </div>
 
                         <button type="button" class="btn btn-outline" (click)="showHideFreezeModal = !showHideFreezeModal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"  [disabled]="freezeSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
+                        <button type="submit" class="btn btn-primary" [disabled]="freezeSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
 
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFreezeError">
                             <div clr-alert-item class="alert-item">
@@ -787,21 +787,58 @@
 
 <!-- begin print modal -->
 <clr-modal [(clrModalOpen)]="showHidePrintModal" [clrModalSize]="'xl'">
-    <h3 class="modal-title">Print Sample Label</h3>
+    <h3 class="modal-title">Print Aliquot Labels</h3>
     <div class="modal-body">
 
         <div class="row">
             <div class="col-lg-12">
+
+                <form [formGroup]="skipLabelForm">
+                    <section>
+                        <div>
+                            <label>Number of labels to skip:</label>
+                            <input type="number" formControlName="count" class="label-skip-input">
+                        </div>
+
+                    </section>
+                </form>
+                <form>
+                    <section class="form-block">
+                        <label>Select aliquots to print for each selected sample.</label>
+                        <div class="form-group" *ngFor="let sample of selected">
+                            <label for="">Sample {{sample.id}}</label>
+
+                            <div *ngIf="sample.aliquots.length === 0">No aliquots recorded for this sample</div>
+
+                            <div *ngIf="sample.aliquots.length > 0">
+
+                                <div class="checkbox-inline" *ngFor="let aliquot of sample.aliquots">
+                                    <input type="checkbox" checked [attr.id]="'aliquot' + aliquot.aliquot_string" [value]="aliquot.aliquot_string" (change)="includeExcludeLabel($event.target)">
+                                    <label [attr.for]="'aliquot' + aliquot.aliquot_string">{{aliquot.aliquot_string}}</label>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                </div>
+
+
+                            </div>
+
+                            <!-- <select name="aliquot_select" (change)="onAliquotSelect(sample.id, $event.target.value)">
+                                        <option [value]="">Select</option>
+                                        <option *ngFor="let aliquot of sample.aliquots" [value]="aliquot.id">{{aliquot.aliquot_string}}</option>
+                                    </select> -->
+                        </div>
+
+                    </section>
+                </form>
 
             </div>
             <!--<div class="col-lg-6">
             </div>-->
         </div>
     </div>
-    <!--<div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
-        <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
-    </div>-->
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showHidePrintModal = !showHidePrintModal">Cancel</button>
+        <button type="submit" class="btn btn-primary" (click)="createLabelPDF()">Preview Labels</button>
+    </div>
 </clr-modal>
 <!-- end print modal -->
 
@@ -864,7 +901,7 @@
                                     <clr-icon shape="plus"></clr-icon>Add FCSV</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="freezeSample(selected)">
                                     <clr-icon shape="thermometer"></clr-icon> Freeze</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="printLabel(selected)">
+                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openPrintLabelModal(selected)">
                                     <clr-icon shape="printer"></clr-icon> Print Labels</button>
                                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1">
                                     <clr-icon shape="trash"></clr-icon> Delete Sample</button>

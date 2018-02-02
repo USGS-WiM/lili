@@ -100,6 +100,8 @@ export class SamplesComponent implements OnInit {
   lastOccupiedSpotLoading;
 
   showHideMissingFCSVErrorModal: boolean = false;
+  //aliquotLabelTextArray = [{"aliquot_string": "", "collaborator_sample_id": ""}]
+  aliquotLabelTextArray = [];
 
   // add sample form - declare reactive form with appropriate sample fields
   // all fields except matrix_type are disabled until matrix_type is selected (see onMatrixSelect function)
@@ -198,6 +200,10 @@ export class SamplesComponent implements OnInit {
     spot: new FormControl('', Validators.required),
     frozen: new FormControl(true, Validators.required)
   });
+
+  skipLabelForm = new FormGroup({
+    count: new FormControl("0")
+  })
 
   createABForm = new FormGroup({
     new_samples: new FormControl([]),
@@ -404,7 +410,45 @@ export class SamplesComponent implements OnInit {
     }
   }
 
-  printLabel(selectedSampleArray) {
+  includeExcludeLabel(event) {
+
+    if (event.checked === false) {
+      for (let aliquot of this.aliquotLabelTextArray) {
+        if (event.value === aliquot.aliquot_string) {
+          aliquot.include = false;
+        }
+      }
+    } else if (event.checked === true) {
+      for (let aliquot of this.aliquotLabelTextArray) {
+        if (event.value === aliquot.aliquot_string) {
+          aliquot.include = true;
+        }
+      }
+    }
+
+  }
+
+  createLabelPDF() {
+    let spacesToSkip = Number(this.skipLabelForm.value.count);
+
+    // Tonia: first skip down number of spaces from spacesToSkip variable,
+    // then loop through this.aliquotLabelTextArray and if include === true,
+    // place the aliquot_string value centered on one line, and the collaborator_sample_id
+    // below it on the next line. Important to check for include === true. 
+  }
+
+  openPrintLabelModal(selectedSampleArray) {
+    this.aliquotLabelTextArray = [];
+    for (let sample of selectedSampleArray) {
+      for (let aliquot of sample.aliquots) {
+        this.aliquotLabelTextArray.push({
+          "include": true,
+          "aliquot_string": aliquot.aliquot_string,
+          "collaborator_sample_id": sample.collaborator_sample_id
+        });
+      }
+    }
+
     // show the print modal if not showing already
     if (this.showHidePrintModal === false) {
       this.showHidePrintModal = true;
