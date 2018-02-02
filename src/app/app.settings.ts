@@ -13,6 +13,9 @@ export class APP_SETTINGS {
     public static get AUTH_URL(): string { return this._API_ENDPOINT + 'auth/' };
     public static get STUDIES_URL(): string { return this._API_ENDPOINT + 'studies/' };
     public static get SAMPLES_URL(): string { return this._API_ENDPOINT + 'samples/' };
+    public static get FREEZERS_URL(): string { return this._API_ENDPOINT + 'freezers/' };
+    public static get FREEZER_LOCATIONS_URL(): string { return this._API_ENDPOINT + 'freezerlocations/' };
+    public static get ALIQUOTS_URL(): string { return this._API_ENDPOINT + 'aliquots/' };
     public static get SAMP_TYPES_URL(): string { return this._API_ENDPOINT + 'sampletypes/' };
     public static get MATRIX_TYPES_URL(): string { return this._API_ENDPOINT + 'matrixtypes/' };
     public static get SAMPLE_ENV_URL(): string { return this._API_ENDPOINT + 'sampleenvironments/' };

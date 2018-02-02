@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, PatternValidator } from '@angular/forms';
 
 import { ISample } from './sample';
+import { IFreezer } from '../aliquots/freezer';
 import { IFinalConcentratedSampleVolume } from '../fcsv/final-concentrated-sample-volume';
 import { ISampleType } from '../SHARED/sample-type';
 import { IFilterType } from '../SHARED/filter-type';
@@ -12,7 +13,10 @@ import { IUnit } from '../units/unit';
 import { IUser } from '../SHARED/user';
 
 import { SampleService } from './sample.service';
-import { FinalConcentratedSampleVolumeService } from '../fcsv/final-concentrated-sample-volume.service'
+import { FreezerService } from '../aliquots/freezer.service';
+import { FreezerLocationsService } from '../aliquots/freezer-locations.service';
+import { AliquotService } from 'app/aliquots/aliquot.service';
+import { FinalConcentratedSampleVolumeService } from '../fcsv/final-concentrated-sample-volume.service';
 import { SampleTypeService } from '../SHARED/sample-type.service';
 import { FilterTypeService } from '../SHARED/filter-type.service'
 import { ConcentrationTypeService } from '../concentration-types/concentration-types.service';
@@ -27,6 +31,8 @@ import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
 
 import { APP_UTILITIES } from '../app.utilities';
 
+
+
 @Component({
   selector: 'app-samples',
   templateUrl: './samples.component.html',
@@ -34,6 +40,7 @@ import { APP_UTILITIES } from '../app.utilities';
 })
 export class SamplesComponent implements OnInit {
   allSamples: ISample[];
+  freezers: IFreezer[];
   sampleTypes: ISampleType[];
   filterTypes: IFilterType[];
   concentrationTypes: IConcentrationType[];
@@ -50,6 +57,7 @@ export class SamplesComponent implements OnInit {
   showHideFreezeModal: boolean = false;
   showHidePrintModal: boolean = false;
   showHideFreezeWarningModal: boolean = false;
+  showHideMultipleSamplesErrorModal: boolean = false;
 
   sampleSelected: boolean = false;
   displayConfig: Object = {};
@@ -81,9 +89,19 @@ export class SamplesComponent implements OnInit {
   showFCSVCreateError: boolean = false;
   showFCSVCreateSuccess: boolean = false;
 
+  showFreezeError: boolean = false;
+  showFreezeSuccess: boolean = false;
+
   selectedStudy;
 
+  lastOccupiedSpot;
+  showLastOccupiedSpot;
+  showLastOccupiedSpotError;
+  lastOccupiedSpotLoading;
+
   showHideMissingFCSVErrorModal: boolean = false;
+  //aliquotLabelTextArray = [{"aliquot_string": "", "collaborator_sample_id": ""}]
+  aliquotLabelTextArray = [];
 
   // add sample form - declare reactive form with appropriate sample fields
   // all fields except matrix_type are disabled until matrix_type is selected (see onMatrixSelect function)
@@ -173,13 +191,19 @@ export class SamplesComponent implements OnInit {
   });
 
   freezeSampleForm = new FormGroup({
-    number_of_aliquots: new FormControl('', Validators.required),
+    sample: new FormControl(''),
+    freezer: new FormControl(1),
+    aliquot_count: new FormControl('', Validators.required),
     rack: new FormControl('', Validators.required),
     box: new FormControl('', Validators.required),
     row: new FormControl('', Validators.required),
     spot: new FormControl('', Validators.required),
     frozen: new FormControl(true, Validators.required)
   });
+
+  skipLabelForm = new FormGroup({
+    count: new FormControl("0")
+  })
 
   createABForm = new FormGroup({
     new_samples: new FormControl([]),
@@ -199,6 +223,9 @@ export class SamplesComponent implements OnInit {
     private _finalConcentratedSampleVolumeService: FinalConcentratedSampleVolumeService,
     private _studyService: StudyService,
     private _sampleTypeService: SampleTypeService,
+    private _freezerService: FreezerService,
+    private _freezerLocationsService: FreezerLocationsService,
+    private _aliquotService: AliquotService,
     private _filterTypeService: FilterTypeService,
     private _concentrationTypeService: ConcentrationTypeService,
     private _matrixService: MatrixService,
@@ -215,6 +242,11 @@ export class SamplesComponent implements OnInit {
     // on init, call getSamples function of the SampleService, set results to the allSamples var
     this._sampleService.getSamples()
       .subscribe(samples => this.allSamples = samples,
+      error => this.errorMessage = <any>error);
+
+    // on init, call getFreezers function of the FreezerService, set results to the freezers var
+    this._freezerService.getFreezers()
+      .subscribe(freezers => this.freezers = freezers,
       error => this.errorMessage = <any>error);
 
     // on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
@@ -320,34 +352,103 @@ export class SamplesComponent implements OnInit {
 
   // callback for the freeze samples button
   freezeSample(selectedSampleArray) {
-    // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
-    // checks if all the values for study are the same in the selected samples array
-    this.onlyOneStudySelected = selectedSampleArray.every(
-      function (value, _, array) {
-        return array[0].study === value.study;
-      });
 
-    // alert user they are attempting to select a set of studies for freezing that belong to more than one study
-    // show freeze warning modal if multiple studies, else show the freeze modal
-    if (this.onlyOneStudySelected === false) {
-      this.showHideFreezeWarningModal = true
-    } else if (this.onlyOneStudySelected === true) {
+    this.lastOccupiedSpotLoading = true;
+    this.showLastOccupiedSpot = false;
+    this.showLastOccupiedSpotError = false;
+    // check if more than one sample is selected. if so, alert user they can only freeze one sample at a time
+    // if not, proceed with further checks and logic
+    if (this.selected.length > 1) {
+      this.showHideMultipleSamplesErrorModal = true;
+    } else {
+      // NOTE: check logic below not neccesary if only one sample - keeping for now in the event batch sample freezing 
+      // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
+      // checks if all the values for study are the same in the selected samples array
+      this.onlyOneStudySelected = selectedSampleArray.every(
+        function (value, _, array) {
+          return array[0].study === value.study;
+        });
 
-      for (let sample of selectedSampleArray) {
-        if (sample.final_concentrated_sample_volume == null) {
-          this.showHideMissingFCSVErrorModal = true;
-        } else {
-          // show the freeze modal if not showing already
-          if (this.showHideFreezeModal === false) {
-            this.showHideFreezeModal = true;
+      // alert user they are attempting to select a set of studies for freezing that belong to more than one study
+      // show freeze warning modal if multiple studies, else show the freeze modal
+      if (this.onlyOneStudySelected === false) {
+        this.showHideFreezeWarningModal = true
+      } else if (this.onlyOneStudySelected === true) {
+
+        for (let sample of selectedSampleArray) {
+          if (sample.final_concentrated_sample_volume == null) {
+            this.showHideMissingFCSVErrorModal = true;
+          } else {
+            // show the freeze modal if not showing already
+            if (this.showHideFreezeModal === false) {
+              this.showHideFreezeModal = true;
+            }
+            this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
+
+            // request last occupied spot
+            this._freezerLocationsService.getLastOccupiedSpot()
+              .subscribe(
+              (lastOccupiedSpot) => {
+                console.log(lastOccupiedSpot);
+                this.lastOccupiedSpot = lastOccupiedSpot[0];
+                this.lastOccupiedSpotLoading = false;
+                this.showLastOccupiedSpot = true;
+                this.showLastOccupiedSpotError = false;
+              },
+              error => {
+                this.lastOccupiedSpotLoading = false;
+                this.showLastOccupiedSpot = false;
+                this.showLastOccupiedSpotError = true;
+              }
+              )
+
           }
         }
       }
+      this.selectedStudy = this.selected[0].study;
+
     }
-    this.selectedStudy = this.selected[0].study;
   }
 
-  printLabel(selectedSampleArray) {
+  includeExcludeLabel(event) {
+
+    if (event.checked === false) {
+      for (let aliquot of this.aliquotLabelTextArray) {
+        if (event.value === aliquot.aliquot_string) {
+          aliquot.include = false;
+        }
+      }
+    } else if (event.checked === true) {
+      for (let aliquot of this.aliquotLabelTextArray) {
+        if (event.value === aliquot.aliquot_string) {
+          aliquot.include = true;
+        }
+      }
+    }
+
+  }
+
+  createLabelPDF() {
+    let spacesToSkip = Number(this.skipLabelForm.value.count);
+
+    // Tonia: first skip down number of spaces from spacesToSkip variable,
+    // then loop through this.aliquotLabelTextArray and if include === true,
+    // place the aliquot_string value centered on one line, and the collaborator_sample_id
+    // below it on the next line. Important to check for include === true. 
+  }
+
+  openPrintLabelModal(selectedSampleArray) {
+    this.aliquotLabelTextArray = [];
+    for (let sample of selectedSampleArray) {
+      for (let aliquot of sample.aliquots) {
+        this.aliquotLabelTextArray.push({
+          "include": true,
+          "aliquot_string": aliquot.aliquot_string,
+          "collaborator_sample_id": sample.collaborator_sample_id
+        });
+      }
+    }
+
     // show the print modal if not showing already
     if (this.showHidePrintModal === false) {
       this.showHidePrintModal = true;
@@ -449,7 +550,26 @@ export class SamplesComponent implements OnInit {
   }
 
   onSubmitFreeze(formValue) {
+    this.submitLoading = true;
+    formValue.freezer = Number(formValue.freezer);
+    formValue.rack = Number(formValue.rack);
+    formValue.box = Number(formValue.box);
+    formValue.row = Number(formValue.row);
+    formValue.spot = Number(formValue.spot);
 
+    this._aliquotService.create(formValue)
+      .subscribe(
+      (results) => {
+        this.submitLoading = false;
+        this.showFreezeSuccess = true;
+        this.showFreezeError = false;
+      },
+      error => {
+        this.submitLoading = false;
+        this.showFreezeSuccess = false;
+        this.showFreezeError = true;
+      }
+      )
   }
 
   onSubmitFCSV(formValue) {
