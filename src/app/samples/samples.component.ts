@@ -430,8 +430,12 @@ export class SamplesComponent implements OnInit {
 
   createLabelPDF() {
     let spacesToSkip = Number(this.skipLabelForm.value.count);
+    let labelParts: Array<any> = [];
+    labelParts.push(spacesToSkip);
+    labelParts.push(this.aliquotLabelTextArray);
     // first skip down number of spaces from spacesToSkip variable, then loop through this.aliquotLabelTextArray and if include === true,
     // place the aliquot_string value centered on one line, and the collaborator_sample_id below it on the next line. Important to check for include === true. 
+    this._sampleService.setLabelParts(labelParts);
     this.showLabelModal = true;
 
   }

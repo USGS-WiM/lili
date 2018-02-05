@@ -1,29 +1,289 @@
-<button class="btn btn-primary" (click)="printPDF()">Print Labels</button>
+<button class="btn btn-primary" (click)="printLabelPDF()">Print Labels</button>
 <div #sampleLabel id="sampleLabel">
 
   <div>
-    <table class="table">
-      <!-- R 1  --> <!-- 1   18  35  52  69 -->
-      <!-- R 2  --> <!-- 2   19  36  53  70 -->
-      <!-- R 3  --> <!-- 3   20  37  54  71 -->
-      <!-- R 4  --> <!-- 4   21  38  55  72 -->
-      <!-- R 5  --> <!-- 5   22  39  56  73 -->
-      <!-- R 6  --> <!-- 6   23  40  57  74 -->
-      <!-- R 7  --> <!-- 7   24  41  58  75 -->
-      <!-- R 8  --> <!-- 8   25  42  59  76 -->
-      <!-- R 9  --> <!-- 9   26  43  60  77 -->
-      <!-- R 10 --> <!-- 10  27  44  61  78 -->
-      <!-- R 11 --> <!-- 11  28  45  62  79 -->
-      <!-- R 12 --> <!-- 12  29  46  63  80 -->
-      <!-- R 13 --> <!-- 13  30  47  64  81 -->
-      <!-- R 14 --> <!-- 14  31  48  65  82 -->
-      <!-- R 15 --> <!-- 15  32  49  66  83 -->
-      <!-- R 16 --> <!-- 16  33  50  67  84 -->
-      <!-- R 17 --> <!-- 17  34  51  68  85 -->
-
-      <tr > 
-        <td>1</td><td>18</td><td>35</td><td>52</td><td>69</td>
+    <table class="table" *ngIf="labelAliquots.length > 0">
+      <!-- R 1.0  -->  <!-- 1   18  35  52  69 -->
+      <tr> 
+        <td style="width:20%;">{{labelAliquots[0]?.aliquot_string || " "}}<br/>{{labelAliquots[0]?.collaborator_sample_id || " "}}</td>
+        <td style="width:20%;">{{labelAliquots[17]?.aliquot_string || " "}}<br/>{{labelAliquots[17]?.collaborator_sample_id || " "}}</td>
+        <td style="width:20%;">{{labelAliquots[34]?.aliquot_string || " "}}<br/>{{labelAliquots[34]?.collaborator_sample_id || " "}}</td>
+        <td style="width:20%;">{{labelAliquots[51]?.aliquot_string || " "}}<br/>{{labelAliquots[51]?.collaborator_sample_id || " "}}</td>
+        <td style="width:20%;">{{labelAliquots[68]?.aliquot_string|| ""}}<br/>{{labelAliquots[68]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 2.0  -->  <!-- 2   19  36  53  70 -->
+      <tr> 
+        <td>{{labelAliquots[1]?.aliquot_string || " "}}<br/>{{labelAliquots[1]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[18]?.aliquot_string || " "}}<br/>{{labelAliquots[18]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[35]?.aliquot_string || " "}}<br/>{{labelAliquots[35]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[52]?.aliquot_string || " "}}<br/>{{labelAliquots[52]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[69]?.aliquot_string || " "}}<br/>{{labelAliquots[69]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 3.0  -->  <!-- 3   20  37  54  71 -->
+      <tr> 
+        <td>{{labelAliquots[2]?.aliquot_string || " "}}<br/>{{labelAliquots[2]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[19]?.aliquot_string || " "}}<br/>{{labelAliquots[19]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[36]?.aliquot_string || " "}}<br/>{{labelAliquots[36]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[53]?.aliquot_string || " "}}<br/>{{labelAliquots[53]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[70]?.aliquot_string || " "}}<br/>{{labelAliquots[70]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 4.0  -->  <!-- 4   21  38  55  72 -->
+      <tr> 
+        <td>{{labelAliquots[3]?.aliquot_string || " "}}<br/>{{labelAliquots[3]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[20]?.aliquot_string || " "}}<br/>{{labelAliquots[20]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[37]?.aliquot_string || " "}}<br/>{{labelAliquots[37]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[54]?.aliquot_string || " "}}<br/>{{labelAliquots[54]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[71]?.aliquot_string || " "}}<br/>{{labelAliquots[71]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 5.0  -->  <!-- 5   22  39  56  73 -->
+      <tr> 
+        <td>{{labelAliquots[4]?.aliquot_string || " "}}<br/>{{labelAliquots[4]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[21]?.aliquot_string || " "}}<br/>{{labelAliquots[21]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[38]?.aliquot_string || " "}}<br/>{{labelAliquots[38]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[55]?.aliquot_string || " "}}<br/>{{labelAliquots[55]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[72]?.aliquot_string || " "}}<br/>{{labelAliquots[72]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 6.0  -->  <!-- 6   23  40  57  74 -->
+      <tr> 
+        <td>{{labelAliquots[5]?.aliquot_string || " "}}<br/>{{labelAliquots[5]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[22]?.aliquot_string || " "}}<br/>{{labelAliquots[22]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[39]?.aliquot_string || " "}}<br/>{{labelAliquots[39]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[56]?.aliquot_string || " "}}<br/>{{labelAliquots[56]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[73]?.aliquot_string || " "}}<br/>{{labelAliquots[73]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 7.0  -->  <!-- 7   24  41  58  75 -->
+      <tr> 
+        <td>{{labelAliquots[6]?.aliquot_string || " "}}<br/>{{labelAliquots[6]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[23]?.aliquot_string || " "}}<br/>{{labelAliquots[23]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[40]?.aliquot_string || " "}}<br/>{{labelAliquots[40]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[57]?.aliquot_string || " "}}<br/>{{labelAliquots[57]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[74]?.aliquot_string || " "}}<br/>{{labelAliquots[74]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 8.0  -->  <!-- 8   25  42  59  76 -->
+      <tr> 
+        <td>{{labelAliquots[7]?.aliquot_string || " "}}<br/>{{labelAliquots[7]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[24]?.aliquot_string || " "}}<br/>{{labelAliquots[24]?.collaborator_sample_id|| ""}}</td>
+        <td>{{labelAliquots[41]?.aliquot_string || " "}}<br/>{{labelAliquots[41]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[58]?.aliquot_string || " "}}<br/>{{labelAliquots[58]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[75]?.aliquot_string || " "}}<br/>{{labelAliquots[75]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 9.0  -->  <!-- 9   26  43  60  77 -->
+      <tr> 
+        <td>{{labelAliquots[8]?.aliquot_string || " "}}<br/>{{labelAliquots[8]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[25]?.aliquot_string || " "}}<br/>{{labelAliquots[25]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[42]?.aliquot_string || " "}}<br/>{{labelAliquots[42]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[59]?.aliquot_string || " "}}<br/>{{labelAliquots[59]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[76]?.aliquot_string || " "}}<br/>{{labelAliquots[76]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 10.0 -->  <!-- 10  27  44  61  78 -->
+      <tr> 
+        <td>{{labelAliquots[9]?.aliquot_string || " "}}<br/>{{labelAliquots[9]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[26]?.aliquot_string || " "}}<br/>{{labelAliquots[26]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[43]?.aliquot_string || " "}}<br/>{{labelAliquots[43]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[60]?.aliquot_string || " "}}<br/>{{labelAliquots[60]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[77]?.aliquot_string || " "}}<br/>{{labelAliquots[77]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 11.0 -->  <!-- 11  28  45  62  79 -->
+      <tr> 
+        <td>{{labelAliquots[10]?.aliquot_string || " "}}<br/>{{labelAliquots[10]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[27]?.aliquot_string || " "}}<br/>{{labelAliquots[27]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[44]?.aliquot_string || " "}}<br/>{{labelAliquots[44]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[61]?.aliquot_string || " "}}<br/>{{labelAliquots[61]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[78]?.aliquot_string || " "}}<br/>{{labelAliquots[78]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 12.0 -->  <!-- 12  29  46  63  80 -->
+      <tr> 
+        <td>{{labelAliquots[11]?.aliquot_string || " "}}<br/>{{labelAliquots[11]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[28]?.aliquot_string || " "}}<br/>{{labelAliquots[28]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[45]?.aliquot_string || " "}}<br/>{{labelAliquots[45]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[62]?.aliquot_string || " "}}<br/>{{labelAliquots[62]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[79]?.aliquot_string || " "}}<br/>{{labelAliquots[79]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 13.0 -->  <!-- 13  30  47  64  81 -->
+      <tr> 
+        <td>{{labelAliquots[12]?.aliquot_string || " "}}<br/>{{labelAliquots[12]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[29]?.aliquot_string || " "}}<br/>{{labelAliquots[29]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[46]?.aliquot_string || " "}}<br/>{{labelAliquots[46]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[63]?.aliquot_string || " "}}<br/>{{labelAliquots[63]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[80]?.aliquot_string || " "}}<br/>{{labelAliquots[80]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 14.0 -->  <!-- 14  31  48  65  82 -->
+      <tr> 
+        <td>{{labelAliquots[13]?.aliquot_string || " "}}<br/>{{labelAliquots[13]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[30]?.aliquot_string || " "}}<br/>{{labelAliquots[30]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[47]?.aliquot_string || " "}}<br/>{{labelAliquots[47]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[64]?.aliquot_string || " "}}<br/>{{labelAliquots[64]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[81]?.aliquot_string || " "}}<br/>{{labelAliquots[81]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 15.0 -->  <!-- 15  32  49  66  83 -->
+      <tr> 
+        <td>{{labelAliquots[14]?.aliquot_string || " "}}<br/>{{labelAliquots[14]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[31]?.aliquot_string || " "}}<br/>{{labelAliquots[31]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[48]?.aliquot_string || " "}}<br/>{{labelAliquots[48]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[65]?.aliquot_string || " "}}<br/>{{labelAliquots[65]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[82]?.aliquot_string || " "}}<br/>{{labelAliquots[82]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 16.0 -->  <!-- 16  33  50  67  84 -->
+      <tr> 
+        <td>{{labelAliquots[15]?.aliquot_string || " "}}<br/>{{labelAliquots[15]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[32]?.aliquot_string || " "}}<br/>{{labelAliquots[32]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[49]?.aliquot_string || " "}}<br/>{{labelAliquots[49]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[66]?.aliquot_string || " "}}<br/>{{labelAliquots[66]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[83]?.aliquot_string || " "}}<br/>{{labelAliquots[83]?.collaborator_sample_id || " "}}</td>
+      </tr>
+      <!-- R 17.0 -->  <!-- 17  34  51  68  85 -->
+      <tr> 
+        <td>{{labelAliquots[16]?.aliquot_string || " "}}<br/>{{labelAliquots[16]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[33]?.aliquot_string || " "}}<br/>{{labelAliquots[33]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[50]?.aliquot_string || " "}}<br/>{{labelAliquots[50]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[67]?.aliquot_string || " "}}<br/>{{labelAliquots[67]?.collaborator_sample_id || " "}}</td>
+        <td>{{labelAliquots[84]?.aliquot_string || " "}}<br/>{{labelAliquots[84]?.collaborator_sample_id || " "}}</td>
       </tr>
     </table>
+    <div *ngIf="labelAliquots.length> 84">
+      <br/>
+      <div style="text-align:center;"> ------------------ Next Page ------------------ </div>
+      <table class="table">
+        <!-- would stop here , unless they are skipping. then length would be more than 85. -->
+        <!-- R 1.1 -->  <!-- 86	103	120	137	154 -->
+        <tr> 
+          <td style="width:20%;">{{labelAliquots[85]?.aliquot_string || " "}}<br/>{{labelAliquots[85]?.collaborator_sample_id || " "}}</td>
+          <td style="width:20%;">{{labelAliquots[102]?.aliquot_string || " "}}<br/>{{labelAliquots[102]?.collaborator_sample_id || " "}}</td>
+          <td style="width:20%;">{{labelAliquots[119]?.aliquot_string || " "}}<br/>{{labelAliquots[119]?.collaborator_sample_id || " "}}</td>
+          <td style="width:20%;">{{labelAliquots[136]?.aliquot_string || " "}}<br/>{{labelAliquots[136]?.collaborator_sample_id || " "}}</td>
+          <td style="width:20%;">{{labelAliquots[153]?.aliquot_string || " "}}<br/>{{labelAliquots[153]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 2.1 --> <!-- 87	104	121	138	155 -->
+        <tr> 
+          <td>{{labelAliquots[86]?.aliquot_string || " "}}<br/>{{labelAliquots[86]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[103]?.aliquot_string || " "}}<br/>{{labelAliquots[103]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[120]?.aliquot_string || " "}}<br/>{{labelAliquots[120]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[137]?.aliquot_string || " "}}<br/>{{labelAliquots[137]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[154]?.aliquot_string || " "}}<br/>{{labelAliquots[154]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 3.1 -->  <!-- 88	105	122	139	156 -->
+        <tr> 
+          <td>{{labelAliquots[87]?.aliquot_string || " "}}<br/>{{labelAliquots[87]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[104]?.aliquot_string || " "}}<br/>{{labelAliquots[104]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[121]?.aliquot_string || " "}}<br/>{{labelAliquots[121]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[138]?.aliquot_string || " "}}<br/>{{labelAliquots[138]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[155]?.aliquot_string || " "}}<br/>{{labelAliquots[155]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 4.1 -->  <!-- 89	106	123	140	157 -->
+        <tr> 
+          <td>{{labelAliquots[88]?.aliquot_string || " "}}<br/>{{labelAliquots[88]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[105]?.aliquot_string || " "}}<br/>{{labelAliquots[105]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[122]?.aliquot_string || " "}}<br/>{{labelAliquots[122]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[139]?.aliquot_string || " "}}<br/>{{labelAliquots[139]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[156]?.aliquot_string || " "}}<br/>{{labelAliquots[156]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 5.1 -->  <!-- 90	107	124	141	158 -->
+        <tr> 
+          <td>{{labelAliquots[89]?.aliquot_string || " "}}<br/>{{labelAliquots[89]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[106]?.aliquot_string || " "}}<br/>{{labelAliquots[106]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[123]?.aliquot_string || " "}}<br/>{{labelAliquots[123]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[140]?.aliquot_string || " "}}<br/>{{labelAliquots[140]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[157]?.aliquot_string || " "}}<br/>{{labelAliquots[157]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 6.1 -->  <!-- 91	108	125	142	159 -->
+        <tr> 
+          <td>{{labelAliquots[90]?.aliquot_string || " "}}<br/>{{labelAliquots[90]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[107]?.aliquot_string || " "}}<br/>{{labelAliquots[107]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[124]?.aliquot_string || " "}}<br/>{{labelAliquots[124]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[141]?.aliquot_string || " "}}<br/>{{labelAliquots[141]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[158]?.aliquot_string || " "}}<br/>{{labelAliquots[158]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 7.1 -->  <!-- 92	109	126	143	160 -->
+        <tr> 
+          <td>{{labelAliquots[91]?.aliquot_string || " "}}<br/>{{labelAliquots[91]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[108]?.aliquot_string || " "}}<br/>{{labelAliquots[108]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[125]?.aliquot_string || " "}}<br/>{{labelAliquots[125]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[142]?.aliquot_string || " "}}<br/>{{labelAliquots[142]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[159]?.aliquot_string || " "}}<br/>{{labelAliquots[159]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 8.1 -->  <!-- 93	110	127	144	161 -->
+        <tr> 
+          <td>{{labelAliquots[92]?.aliquot_string || " "}}<br/>{{labelAliquots[92]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[109]?.aliquot_string || " "}}<br/>{{labelAliquots[109]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[126]?.aliquot_string || " "}}<br/>{{labelAliquots[126]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[143]?.aliquot_string || " "}}<br/>{{labelAliquots[143]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[160]?.aliquot_string || " "}}<br/>{{labelAliquots[160]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 9.1 -->  <!-- 94	111	128	145	162 -->
+        <tr> 
+          <td>{{labelAliquots[93]?.aliquot_string || " "}}<br/>{{labelAliquots[93]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[110]?.aliquot_string || " "}}<br/>{{labelAliquots[110]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[127]?.aliquot_string || " "}}<br/>{{labelAliquots[127]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[144]?.aliquot_string || " "}}<br/>{{labelAliquots[144]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[161]?.aliquot_string || " "}}<br/>{{labelAliquots[161]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 10.1 -->  <!-- 95	112	129	146	163 -->
+        <tr> 
+          <td>{{labelAliquots[94]?.aliquot_string || " "}}<br/>{{labelAliquots[94]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[111]?.aliquot_string || " "}}<br/>{{labelAliquots[111]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[128]?.aliquot_string || " "}}<br/>{{labelAliquots[128]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[145]?.aliquot_string || " "}}<br/>{{labelAliquots[145]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[162]?.aliquot_string || " "}}<br/>{{labelAliquots[162]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 11.1 -->  <!-- 96	113	130	147	164 -->
+        <tr> 
+          <td>{{labelAliquots[95]?.aliquot_string || " "}}<br/>{{labelAliquots[95]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[112]?.aliquot_string || " "}}<br/>{{labelAliquots[112]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[129]?.aliquot_string || " "}}<br/>{{labelAliquots[129]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[146]?.aliquot_string || " "}}<br/>{{labelAliquots[146]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[163]?.aliquot_string || " "}}<br/>{{labelAliquots[163]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 12.1 -->  <!-- 97	114	131	148	165 -->
+        <tr> 
+          <td>{{labelAliquots[96]?.aliquot_string || " "}}<br/>{{labelAliquots[96]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[113]?.aliquot_string || " "}}<br/>{{labelAliquots[113]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[130]?.aliquot_string || " "}}<br/>{{labelAliquots[130]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[147]?.aliquot_string || " "}}<br/>{{labelAliquots[147]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[164]?.aliquot_string || " "}}<br/>{{labelAliquots[164]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 13.1 -->  <!-- 98	115	132	149	166 -->
+        <tr> 
+          <td>{{labelAliquots[97]?.aliquot_string || " "}}<br/>{{labelAliquots[97]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[114]?.aliquot_string || " "}}<br/>{{labelAliquots[114]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[131]?.aliquot_string || " "}}<br/>{{labelAliquots[131]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[148]?.aliquot_string || " "}}<br/>{{labelAliquots[148]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[165]?.aliquot_string || " "}}<br/>{{labelAliquots[165]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 14.1 -->  <!-- 99	116	133	150	167 -->
+        <tr> 
+          <td>{{labelAliquots[98]?.aliquot_string || " "}}<br/>{{labelAliquots[98]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[115]?.aliquot_string || " "}}<br/>{{labelAliquots[115]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[132]?.aliquot_string || " "}}<br/>{{labelAliquots[132]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[149]?.aliquot_string || " "}}<br/>{{labelAliquots[149]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[166]?.aliquot_string || " "}}<br/>{{labelAliquots[166]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 15.1 -->  <!-- 100	117	134	151	168 -->
+        <tr> 
+          <td>{{labelAliquots[99]?.aliquot_string || " "}}<br/>{{labelAliquots[99]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[116]?.aliquot_string || " "}}<br/>{{labelAliquots[116]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[133]?.aliquot_string || " "}}<br/>{{labelAliquots[133]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[150]?.aliquot_string || " "}}<br/>{{labelAliquots[150]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[167]?.aliquot_string || " "}}<br/>{{labelAliquots[167]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 16.1 -->  <!-- 101	118	135	152	169 -->
+        <tr> 
+          <td>{{labelAliquots[100]?.aliquot_string || " "}}<br/>{{labelAliquots[100]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[117]?.aliquot_string || " "}}<br/>{{labelAliquots[117]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[134]?.aliquot_string || " "}}<br/>{{labelAliquots[134]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[151]?.aliquot_string || " "}}<br/>{{labelAliquots[151]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[168]?.aliquot_string || " "}}<br/>{{labelAliquots[168]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        <!-- R 17.1 -->  <!-- 102	119	136	153	170 -->
+        <tr> 
+          <td>{{labelAliquots[101]?.aliquot_string || " "}}<br/>{{labelAliquots[101]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[118]?.aliquot_string || " "}}<br/>{{labelAliquots[118]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[135]?.aliquot_string || " "}}<br/>{{labelAliquots[135]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[152]?.aliquot_string || " "}}<br/>{{labelAliquots[152]?.collaborator_sample_id || " "}}</td>
+          <td>{{labelAliquots[169]?.aliquot_string || " "}}<br/>{{labelAliquots[169]?.collaborator_sample_id || " "}}</td>
+        </tr>
+        
+          
+      </table>
+    </div> <!-- end if second page -->
   </div>
 </div>
