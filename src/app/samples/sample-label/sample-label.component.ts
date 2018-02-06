@@ -34,7 +34,7 @@ export class SampleLabelComponent implements OnInit {
 			this.labelSkips = lp[0];
 
 			// account for any skipped cells
-			let x = 0;
+	/*		let x = 0;
 			while (x < this.labelSkips) {
 				this.labelAliquots.push({"aliquot_string": "", "collaborator_sample_id": ""});
 				x++;
@@ -44,8 +44,8 @@ export class SampleLabelComponent implements OnInit {
 			lp[1].forEach(element => {
 				if (element.include)
 					this.labelAliquots.push(element);
-			});
-	//		this.labelAliquots = this.fakeLabelArray();
+			});*/
+			this.labelAliquots = this.fakeLabelArray();
 		});
 	}
 	
@@ -85,19 +85,19 @@ export class SampleLabelComponent implements OnInit {
 			});
 			let Columns2 = ["","","","",""];
 			pdf.autoTable(Columns2, this.labelTable2Rows, {
-				startY: 0.22,
+				startY: 0.24,
 				margin: [0.6, 0.6, .1, 0.6], //[top, right, bottom, left]
 				theme: 'plain',
 				drawHeaderRow:  function() {return false;},
 				styles: {
-					halign: 'center', valign: 'middle', cellPadding: 0.152
+					halign: 'center', valign: 'middle', cellPadding: 0.153
 				},
 				columnStyles: {
-					0: { columnWidth: 1.32 },
-					1: { columnWidth: 1.32 },
-					2: { columnWidth: 1.32 },
-					3: { columnWidth: 1.32 },
-					4: { columnWidth: 1.32 }
+					0: { columnWidth: 1.43 },
+					1: { columnWidth: 1.43 },
+					2: { columnWidth: 1.43 },
+					3: { columnWidth: 1.43 },
+					4: { columnWidth: 1.43 }
 				}		
 			});
 		}
@@ -110,19 +110,19 @@ export class SampleLabelComponent implements OnInit {
 			});
 			let Columns3 = ["","","","",""];
 			pdf.autoTable(Columns3, this.labelTable3Rows, {
-				startY: 0.22,
+				startY: 0.24,
 				margin: [0.6, 0.6, .1, 0.6], //[top, right, bottom, left]
 				theme: 'plain',
 				drawHeaderRow:  function() {return false;},
 				styles: {
-					halign: 'center', valign: 'middle', cellPadding: 0.152
+					halign: 'center', valign: 'middle', cellPadding: 0.153
 				},
 				columnStyles: {
-					0: { columnWidth: 1.32 },
-					1: { columnWidth: 1.32 },
-					2: { columnWidth: 1.32 },
-					3: { columnWidth: 1.32 },
-					4: { columnWidth: 1.32 }
+					0: { columnWidth: 1.43 },
+					1: { columnWidth: 1.43 },
+					2: { columnWidth: 1.43 },
+					3: { columnWidth: 1.43 },
+					4: { columnWidth: 1.43 }
 				}		
 			});
 		}
@@ -154,7 +154,7 @@ export class SampleLabelComponent implements OnInit {
 			x++;
 		}
 		let i = 0;
-		while (i < 85) {
+		while (i < 255) {
 			fakeLabelArr.push({"aliquot_string": `test ${i+1}`, "collaborator_sample_id": i+1 });
 			i++;
 		}			
