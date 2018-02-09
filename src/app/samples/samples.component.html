@@ -1,10 +1,6 @@
 <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="btn-group">
-            <button class="btn btn-sm" (click)="showHideAdd = !showHideAdd">Add Sample</button>
-            <!--<button class="btn btn-sm" (click)="showHideEdit = !showHideEdit" [disabled]=" studySelected ? null : showHideAdd ? null: 'disabled' ">Edit Study</button>-->
-            <!--<button class="btn btn-sm" [disabled]="studySelected ? null : 'disabled'" (click)="deleteStudyConfirm = true">Delete Sample</button>-->
-        </div>
+       <h3>Samples</h3>
     </div>
 </div>
 
@@ -897,353 +893,360 @@
 <!-- begin samples table -->
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
+
+
+        <clr-datagrid [(clrDgSelected)]="selected">
+
+            <clr-dg-action-bar>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-secondary" (click)="showHideAdd = !showHideAdd">
+                        <clr-icon shape="plus"></clr-icon> Add Sample</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createAB(selected)">
+                        <clr-icon shape="plus"></clr-icon> Create Analysis Batch</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createFCSV(selected)">
+                        <clr-icon shape="plus"></clr-icon>Add FCSV</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="freezeSample(selected)">
+                        <clr-icon shape="thermometer"></clr-icon> Freeze</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openPrintLabelModal(selected)">
+                        <clr-icon shape="printer"></clr-icon> Print Labels</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1">
+                        <clr-icon shape="trash"></clr-icon> Delete Sample</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editSample(selected[0])">
+                        <clr-icon shape="note-edit" size="16"></clr-icon> Edit Sample</button>
+
+                </div>
+            </clr-dg-action-bar>
+
+            <!--<clr-dg-column class="no-padding ten">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                            Edit
+                        </ng-container>
+                    </clr-dg-column>-->
+
+            <!-- regular column header for Sample ID-->
+            <!-- <clr-dg-column [clrDgField]="'sample_id'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                            Sample ID
+                        </ng-container>
+                    </clr-dg-column>  -->
+
+            <!-- filter column header for Sample ID -->
+            <clr-dg-column [clrDgField]="'sample_id'">
+                Sample ID
+                <clr-dg-filter [clrDgFilter]="rangeFilter">
+                    <range-filter #rangeFilter></range-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <clr-dg-column>
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Analysis Batches
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'collaborator_sample_id'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Collaborator Sample ID
+                </ng-container>
+            </clr-dg-column>
+
+
+            <!-- regular column header for Study-->
+            <!--<clr-dg-column [clrDgField]="'study'">
+                         <ng-container *clrDgHideableColumn="{hidden: false}">
+                            Study
+                        </ng-container>
+                    </clr-dg-column>-->
+
+            <!-- filter column header for study -->
+            <clr-dg-column [clrDgField]="'study'">
+                Study
+                <clr-dg-filter [clrDgFilter]="studyFilter">
+                    <study-filter #studyFilter></study-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <!-- regular column header for Sample Type-->
+            <!--<clr-dg-column [clrDgField]="'sample_type'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                            Sample Type
+                        </ng-container>
+                    </clr-dg-column>-->
+
+            <!-- filter column header for sample type -->
+            <clr-dg-column [clrDgField]="'sample_type'">
+                Sample Type
+                <clr-dg-filter [clrDgFilter]="sampleTypeFilter">
+                    <sample-type-filter #sampleTypeFilter></sample-type-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <clr-dg-column style="width:20em" [clrDgField]="'sample_description'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Sample Description
+                </ng-container>
+            </clr-dg-column>
+
+            <!-- regular column header for matrix type-->
+            <!--<clr-dg-column [clrDgField]="'matrix_type'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                            Matrix
+                        </ng-container>
+                    </clr-dg-column>-->
+
+            <!-- filter column header for matrix type-->
+            <clr-dg-column [clrDgField]="'matrix_type'">
+                Matrix
+                <clr-dg-filter [clrDgFilter]="matrixTypeFilter">
+                    <matrix-type-filter #matrixTypeFilter></matrix-type-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'filter_flag'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Filtered
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'secondary_concentration_flag'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    2° Conc
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'final_concentrated_sample_volume'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    FCSV
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_type'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    FCSV Type
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_notes'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    FCSV Notes
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'sample_volume_filtered'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Vol filtered
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'meter_reading_initial'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    IMR
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'meter_reading_final'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    FMR
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'dissolution_volume'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Dissolution Volume (mL)
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'post_dilution_volume'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Volume After Dilution (uL)
+                </ng-container>
+            </clr-dg-column>
+
+            <!-- regular column header for Study-->
+            <!--<clr-dg-column [clrDgField]="'filter_type'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                           Filter Type
+                        </ng-container>
+                    </clr-dg-column>-->
+
+            <!-- filter column header for study -->
+            <clr-dg-column [clrDgField]="'filter_type'">
+                Filter Type
+                <clr-dg-filter [clrDgFilter]="filterTypeFilter">
+                    <filter-type-filter #filterTypeFilter></filter-type-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <!-- regular column header for filter born on date -->
+            <!-- <clr-dg-column [clrDgField]="'filter_born_on_date'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                           Filter Born On Date
+                        </ng-container>
+                    </clr-dg-column> -->
+
+            <!-- filter column header for filter born on date -->
+            <clr-dg-column [clrDgField]="'filter_born_on_date'">
+                Filter Born On Date
+                <clr-dg-filter [clrDgFilter]="filterBornOnDateFilter">
+                    <filter-born-on-date-filter [dateField]="'filter_born_on_date'" #filterBornOnDateFilter></filter-born-on-date-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <!-- regular column header for collection start date -->
+            <!-- <clr-dg-column [clrDgField]="'collection_start_date'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                           Collect Start Date
+                        </ng-container>
+                    </clr-dg-column> -->
+
+            <!-- filter column header for collection start date -->
+            <clr-dg-column [clrDgField]="'collection_start_date'">
+                Collect Start Date
+                <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
+                    <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <!-- regular column header for collection end date -->
+            <!-- <clr-dg-column [clrDgField]="'collection_end_date'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                           Collect End Date
+                        </ng-container>
+                    </clr-dg-column> -->
+
+            <!-- filter column header for collection end date -->
+            <clr-dg-column [clrDgField]="'collection_end_date'">
+                Collect End Date
+                <clr-dg-filter [clrDgFilter]="collectionEndDateFilter">
+                    <collection-end-date-filter [dateField]="'collection_end_date'" #collectionEndDateFilter></collection-end-date-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'study_site_name'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Study Site Name
+                </ng-container>
+            </clr-dg-column>
+
+            <!-- regular column header for Sampler name-->
+            <!--<clr-dg-column [clrDgField]="'sampler_name'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                           Sampler Name
+                        </ng-container>
+                    </clr-dg-column>-->
+
+            <!-- filter column header for sampler name -->
+            <clr-dg-column [clrDgField]="'sampler_name'">
+                Sampler Name
+                <clr-dg-filter [clrDgFilter]="samplerNameFilter">
+                    <sampler-name-filter #samplerNameFilter></sampler-name-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <clr-dg-column style="width:20em" [clrDgField]="'sample_notes'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Sample Notes
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'insert_user'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Added by
+                </ng-container>
+            </clr-dg-column>
+
+            <!-- regular column header for date added-->
+            <!-- <clr-dg-column [clrDgField]="'insert_date'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                             Date added
+                        </ng-container>
+                    </clr-dg-column> -->
+
+            <!-- filter column header for date added -->
+            <clr-dg-column [clrDgField]="'insert_date'">
+                Date Added
+                <clr-dg-filter [clrDgFilter]="dateAddedFilter">
+                    <date-added-filter [dateField]="'insert_date'" #dateAddedFilter></date-added-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'update_user'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Updated by
+                </ng-container>
+            </clr-dg-column>
+
+            <!-- regular column header for date updated-->
+            <!-- <clr-dg-column [clrDgField]="'update_date'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                             Date updated
+                        </ng-container>
+                    </clr-dg-column> -->
+
+            <!-- filter column header for date updated -->
+            <clr-dg-column [clrDgField]="'update_date'">
+                Date Updated
+                <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
+                    <date-updated-filter [dateField]="'update_date'" #dateUpdatedFilter></date-updated-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
+            <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
+
+                <!--<clr-dg-cell>
+                             <div class="btn-group">
+                                <button class="btn btn-sm btn-link" (click)="editSample(sample)"><clr-icon shape="note-edit" size="16"></clr-icon></button>
+                            </div>
+                        </clr-dg-cell>-->
+                <clr-dg-cell>{{sample.id}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.analysisbatches}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.studies">{{sample.study_string}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type_string}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type_string}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
+
+                <clr-dg-cell>{{sample.final_concentrated_sample_volume}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.final_concentrated_sample_volume_type}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.final_concentrated_sample_volume_notes}}</clr-dg-cell>
+
+                <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'name':this.units}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.dissolution_volume}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type.name}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.filter_born_on_date | date:'shortDate'}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.users">{{sample.sampler_name.name}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.sample_notes}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.created_by}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.created_date | date:'shortDate'}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.modified_by }}</clr-dg-cell>
+                <clr-dg-cell>{{sample.modified_date | date:'shortDate'}}</clr-dg-cell>
+            </clr-dg-row>
+
+            <clr-dg-footer>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} samples
+                <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+            </clr-dg-footer>
+        </clr-datagrid>
+
+
+        <!-- <div class="card">
             <div class="card-block">
                 <div class="card-title">
                     All Samples
                 </div>
                 <div class="card-text">
-                    <clr-datagrid [(clrDgSelected)]="selected">
 
-                        <clr-dg-action-bar>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createAB(selected)">
-                                    <clr-icon shape="plus"></clr-icon> Create Analysis Batch</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createFCSV(selected)">
-                                    <clr-icon shape="plus"></clr-icon>Add FCSV</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="freezeSample(selected)">
-                                    <clr-icon shape="thermometer"></clr-icon> Freeze</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openPrintLabelModal(selected)">
-                                    <clr-icon shape="printer"></clr-icon> Print Labels</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1">
-                                    <clr-icon shape="trash"></clr-icon> Delete Sample</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editSample(selected[0])">
-                                    <clr-icon shape="note-edit" size="16"></clr-icon> Edit Sample</button>
-
-                            </div>
-                        </clr-dg-action-bar>
-
-                        <!--<clr-dg-column class="no-padding ten">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Edit
-                            </ng-container>
-                        </clr-dg-column>-->
-
-                        <!-- regular column header for Sample ID-->
-                        <!-- <clr-dg-column [clrDgField]="'sample_id'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Sample ID
-                            </ng-container>
-                        </clr-dg-column>  -->
-
-                        <!-- filter column header for Sample ID -->
-                        <clr-dg-column [clrDgField]="'sample_id'">
-                            Sample ID
-                            <clr-dg-filter [clrDgFilter]="rangeFilter">
-                                <range-filter #rangeFilter></range-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <clr-dg-column>
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Analysis Batches
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'collaborator_sample_id'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Collaborator Sample ID
-                            </ng-container>
-                        </clr-dg-column>
-
-
-                        <!-- regular column header for Study-->
-                        <!--<clr-dg-column [clrDgField]="'study'">
-                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Study
-                            </ng-container>
-                        </clr-dg-column>-->
-
-                        <!-- filter column header for study -->
-                        <clr-dg-column [clrDgField]="'study'">
-                            Study
-                            <clr-dg-filter [clrDgFilter]="studyFilter">
-                                <study-filter #studyFilter></study-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <!-- regular column header for Sample Type-->
-                        <!--<clr-dg-column [clrDgField]="'sample_type'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Sample Type
-                            </ng-container>
-                        </clr-dg-column>-->
-
-                        <!-- filter column header for sample type -->
-                        <clr-dg-column [clrDgField]="'sample_type'">
-                            Sample Type
-                            <clr-dg-filter [clrDgFilter]="sampleTypeFilter">
-                                <sample-type-filter #sampleTypeFilter></sample-type-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <clr-dg-column style="width:20em" [clrDgField]="'sample_description'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Sample Description
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <!-- regular column header for matrix type-->
-                        <!--<clr-dg-column [clrDgField]="'matrix_type'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Matrix
-                            </ng-container>
-                        </clr-dg-column>-->
-
-                        <!-- filter column header for matrix type-->
-                        <clr-dg-column [clrDgField]="'matrix_type'">
-                            Matrix
-                            <clr-dg-filter [clrDgFilter]="matrixTypeFilter">
-                                <matrix-type-filter #matrixTypeFilter></matrix-type-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'filter_flag'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Filtered
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'secondary_concentration_flag'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                2° Conc
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'final_concentrated_sample_volume'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                FCSV
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_type'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                FCSV Type
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_notes'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                FCSV Notes
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'sample_volume_filtered'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Vol filtered
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'meter_reading_initial'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                IMR
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'meter_reading_final'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                FMR
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'dissolution_volume'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Dissolution Volume (mL)
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'post_dilution_volume'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Volume After Dilution (uL)
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <!-- regular column header for Study-->
-                        <!--<clr-dg-column [clrDgField]="'filter_type'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Filter Type
-                            </ng-container>
-                        </clr-dg-column>-->
-
-                        <!-- filter column header for study -->
-                        <clr-dg-column [clrDgField]="'filter_type'">
-                            Filter Type
-                            <clr-dg-filter [clrDgFilter]="filterTypeFilter">
-                                <filter-type-filter #filterTypeFilter></filter-type-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <!-- regular column header for filter born on date -->
-                        <!-- <clr-dg-column [clrDgField]="'filter_born_on_date'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Filter Born On Date
-                            </ng-container>
-                        </clr-dg-column> -->
-
-                        <!-- filter column header for filter born on date -->
-                        <clr-dg-column [clrDgField]="'filter_born_on_date'">
-                            Filter Born On Date
-                            <clr-dg-filter [clrDgFilter]="filterBornOnDateFilter">
-                                <filter-born-on-date-filter [dateField]="'filter_born_on_date'" #filterBornOnDateFilter></filter-born-on-date-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <!-- regular column header for collection start date -->
-                        <!-- <clr-dg-column [clrDgField]="'collection_start_date'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Collect Start Date
-                            </ng-container>
-                        </clr-dg-column> -->
-
-                        <!-- filter column header for collection start date -->
-                        <clr-dg-column [clrDgField]="'collection_start_date'">
-                            Collect Start Date
-                            <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
-                                <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <!-- regular column header for collection end date -->
-                        <!-- <clr-dg-column [clrDgField]="'collection_end_date'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Collect End Date
-                            </ng-container>
-                        </clr-dg-column> -->
-
-                        <!-- filter column header for collection end date -->
-                        <clr-dg-column [clrDgField]="'collection_end_date'">
-                            Collect End Date
-                            <clr-dg-filter [clrDgFilter]="collectionEndDateFilter">
-                                <collection-end-date-filter [dateField]="'collection_end_date'" #collectionEndDateFilter></collection-end-date-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'study_site_name'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Study Site Name
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <!-- regular column header for Sampler name-->
-                        <!--<clr-dg-column [clrDgField]="'sampler_name'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                               Sampler Name
-                            </ng-container>
-                        </clr-dg-column>-->
-
-                        <!-- filter column header for sampler name -->
-                        <clr-dg-column [clrDgField]="'sampler_name'">
-                            Sampler Name
-                            <clr-dg-filter [clrDgFilter]="samplerNameFilter">
-                                <sampler-name-filter #samplerNameFilter></sampler-name-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <clr-dg-column style="width:20em" [clrDgField]="'sample_notes'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Sample Notes
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'insert_user'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Added by
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <!-- regular column header for date added-->
-                        <!-- <clr-dg-column [clrDgField]="'insert_date'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                 Date added
-                            </ng-container>
-                        </clr-dg-column> -->
-
-                        <!-- filter column header for date added -->
-                        <clr-dg-column [clrDgField]="'insert_date'">
-                            Date Added
-                            <clr-dg-filter [clrDgFilter]="dateAddedFilter">
-                                <date-added-filter [dateField]="'insert_date'" #dateAddedFilter></date-added-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <clr-dg-column [clrDgField]="'update_user'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Updated by
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <!-- regular column header for date updated-->
-                        <!-- <clr-dg-column [clrDgField]="'update_date'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                 Date updated
-                            </ng-container>
-                        </clr-dg-column> -->
-
-                        <!-- filter column header for date updated -->
-                        <clr-dg-column [clrDgField]="'update_date'">
-                            Date Updated
-                            <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
-                                <date-updated-filter [dateField]="'update_date'" #dateUpdatedFilter></date-updated-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
-
-                        <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
-
-                            <!--<clr-dg-cell>
-                                 <div class="btn-group">
-                                    <button class="btn btn-sm btn-link" (click)="editSample(sample)"><clr-icon shape="note-edit" size="16"></clr-icon></button>
-                                </div>
-                            </clr-dg-cell>-->
-                            <clr-dg-cell>{{sample.id}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.analysisbatches}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.studies">{{sample.study_string}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type_string}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type_string}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
-
-                            <clr-dg-cell>{{sample.final_concentrated_sample_volume}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.final_concentrated_sample_volume_type}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.final_concentrated_sample_volume_notes}}</clr-dg-cell>
-
-                            <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'name':this.units}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.dissolution_volume}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type.name}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.filter_born_on_date | date:'shortDate'}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
-                            <clr-dg-cell *ngIf="this.users">{{sample.sampler_name.name}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.sample_notes}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.created_by}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.created_date | date:'shortDate'}}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.modified_by }}</clr-dg-cell>
-                            <clr-dg-cell>{{sample.modified_date | date:'shortDate'}}</clr-dg-cell>
-                        </clr-dg-row>
-
-                        <clr-dg-footer>
-                            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} samples
-                            <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
-                        </clr-dg-footer>
-                    </clr-datagrid>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 <!-- end samples table -->

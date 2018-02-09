@@ -851,19 +851,29 @@ export class AnalysisBatchesComponent implements OnInit {
       // set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
       this.focusAnalysisBatchID = abID;
       // call to retrieve AB detail data
-      this.focusAnalysisBatchData = this.retrieveABData(abID);
-      this.extractionBatchArray = this.focusAnalysisBatchData.extractionbatches;
-    }
 
-    // build the target list by looping through the AB extraction batch array and adding all targets to a local array
-    for (let extractionbatch of this.extractionBatchArray) {
-      for (let target of extractionbatch.targets) {
-        this.targetDetailArray.push(target);
-      }
-    }
-    // show the inhibition details modal if not showing already
-    if (this.showHideTargetDetailModal === false) {
-      this.showHideTargetDetailModal = true;
+      this._analysisBatchService.getAnalysisBatchDetail(abID)
+        .subscribe(
+        (analysisBatchDetail) => {
+          console.log(analysisBatchDetail);
+          this.focusAnalysisBatchData = analysisBatchDetail;
+          this.extractionBatchArray = this.focusAnalysisBatchData.extractionbatches;
+
+          // build the target list by looping through the AB extraction batch array and adding all targets to a local array
+          for (let extractionbatch of this.extractionBatchArray) {
+            for (let target of extractionbatch.targets) {
+              this.targetDetailArray.push(target);
+            }
+          }
+          // show the inhibition details modal if not showing already
+          if (this.showHideTargetDetailModal === false) {
+            this.showHideTargetDetailModal = true;
+          }
+        },
+        error => {
+          this.errorMessage = <any>error
+        }
+        );
     }
   }
 
