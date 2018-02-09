@@ -1,146 +1,145 @@
-<div [clrLoading]="loading">
-  <div class="row">
-    <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
-      <div class="card ab-detail-card">
-        <div class="card-block" *ngIf="!loading">
-          <h3 class="card-title">Extractions</h3>
-          <p class="card-text">
-
-
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="card ab-detail-card">
+      <div class="card-block">
+        <h3 class="card-title">Extractions</h3>
+        <span class="spinner spinner-lg" *ngIf="loading" >
+            Loading...
+          </span>
+        <p class="card-text" *ngIf="!loading">
+          <div class="row extraction-row">
             <clr-tree-node *ngFor="let extractionbatch of extractionBatchArray">
               <span>Extraction {{extractionbatch.extraction_number}}&nbsp;&nbsp;&nbsp;&nbsp;{{extractionbatch.extraction_date |
-                date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
 
               <button class="stack-action btn btn-sm btn-link " (click)="editExtractionBatch(extractionbatch)" type="button">Edit</button>
-              <ng-template [clrIfExpanded]>
+              <ng-template [clrIfExpanded]="false">
                 <clr-tree-node>
-                  <div class="row">
-                    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
-                      <div>
-                        <table class="table table-vertical table-compact table-noborder">
-                          <tbody>
-                            <tr>
-                              <th>Volume Extracted</th>
-                              <td>{{extractionbatch.extraction_volume}} µL</td>
-                            </tr>
-                            <tr>
-                              <th>Volume Eluted</th>
-                              <td>{{extractionbatch.elution_volume}} µL</td>
-                            </tr>
-                            <tr>
-                              <th>Extraction Method</th>
-                              <td>{{extractionbatch.extraction_method.name}}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <hr>
+                  <div class="extraction-row">
 
-                      <div *ngFor="let rt of extractionbatch.reverse_transcriptions">
+                    <div>
+                      <table class="table table-vertical table-compact ">
+                        <tbody>
+                          <tr>
+                            <th>Volume Extracted</th>
+                            <td>{{extractionbatch.extraction_volume}} µL</td>
+                          </tr>
+                          <tr>
+                            <th>Volume Eluted</th>
+                            <td>{{extractionbatch.elution_volume}} µL</td>
+                          </tr>
+                          <tr>
+                            <th>Extraction Method</th>
+                            <td>{{extractionbatch.extraction_method.name}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div *ngFor="let rt of extractionbatch.reverse_transcriptions">
+                      <label>
                         <span>Reverse Transcription&nbsp;&nbsp;&nbsp;&nbsp;{{rt.rt_date | date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         <button class="stack-action btn btn-sm btn-link " (click)="editRT(rt)" type="button">Edit</button>
-                        <table class="table table-vertical table-compact table-noborder">
-                          <tbody>
-                            <tr>
-                              <th>Template Volume</th>
-                              <td>{{rt.template_volume}} µL</td>
-                            </tr>
-                            <tr>
-                              <th>Reaction Volume</th>
-                              <td>{{rt.reaction_volume}} µL</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <hr>
+                      </label>
+                      <table class="table table-vertical table-compact">
+                        <tbody>
+                          <tr>
+                            <th>Template Volume</th>
+                            <td>{{rt.template_volume}} µL</td>
+                          </tr>
+                          <tr>
+                            <th>Reaction Volume</th>
+                            <td>{{rt.reaction_volume}} µL</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
 
-                      <div *ngFor="let inhibition of extractionbatch.inhibitions">
-                        <label>Inhibition</label>
-                        <table class="table table-vertical table-compact table-noborder">
-                          <tbody>
-                            <tr>
-                              <th>Inhibition Date</th>
-                              <td>{{inhibition.inhibition_date | date:'shortDate' }}</td>
-                            </tr>
-                            <tr>
-                              <th>Inhibition Type</th>
-                              <td>{{nucleic_acid_type}}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <hr>
+                    <div>
+                      <label>Targets </label>
+                      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                      <table class="table table-vertical table-compact ">
+                        <tbody>
+                          <tr *ngFor="let target of extractionbatch.targets">
+                            <th>{{target.code}}</th>
+                            <td>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
 
-                      <div>
-                        <label>Targets </label>
-                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        <table class="table table-vertical table-compact table-noborder">
-                          <tbody>
-                            <tr *ngFor="let target of extractionbatch.targets">
-                              <th>{{target.name}}</th>
-                              <td>{{target.nucleic_acid_type }}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-
-
+                    <div *ngFor="let inhibition of extractionbatch.inhibitions">
+                      <label>Inhibition</label>
+                      <table class="table table-vertical table-compact">
+                        <tbody>
+                          <tr>
+                            <th>Inhibition Date</th>
+                            <td>{{inhibition.inhibition_date | date:'shortDate' }}</td>
+                          </tr>
+                          <tr>
+                            <th>Inhibition Type</th>
+                            <td>{{inhibition.nucleic_acid_type_id | displayValue:'name':this.nucleicAcidTypes}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
 
                   </div>
                 </clr-tree-node>
               </ng-template>
             </clr-tree-node>
-          </p>
-        </div>
+          </div>
       </div>
     </div>
-    <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
-      <div class="card ab-detail-card">
-        <div class="card-block" *ngIf="!loading">
-          <h3 class="card-title">Samples</h3>
-          <p class="card-text">
+  </div>
 
-            <clr-tree-node *ngFor="let sample of samplesArray">
-              Sample {{sample.id}}
-              <ng-template clrIfExpanded>
-                <clr-tree-node>
-                  <table class="table table-vertical table-compact">
-                    <tbody>
-                      <tr>
-                        <th>Collaborator Sample ID</th>
-                        <td>{{sample.collaborator_sample_id}}</td>
-                      </tr>
-                      <tr>
-                        <th>Sample Type</th>
-                        <td>{{sample.sample_type.name}}</td>
-                        <!-- <td>Sample</td> -->
-                      </tr>
-                      <tr>
-                        <th>Matrix</th>
-                        <td>{{sample.matrix_type.name}}</td>
-                        <!-- <td>Water</td> -->
-                      </tr>
-                      <tr>
-                        <th>Study</th>
-                        <td>{{sample.study.id}}</td>
-                        <!-- <td>Kewuanee County Study</td> -->
-                      </tr>
-                    </tbody>
-                  </table>
-                </clr-tree-node>
-              </ng-template>
-            </clr-tree-node>
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="card ab-detail-card">
+      <div class="card-block" *ngIf="!loading">
+        <h3 class="card-title">Samples</h3>
+        <p class="card-text">
 
-          </p>
-        </div>
+          <clr-tree-node *ngFor="let sample of samplesArray">
+            Sample {{sample.id}}
+            <ng-template clrIfExpanded>
+              <clr-tree-node>
+                <table class="table table-vertical table-compact">
+                  <tbody>
+                    <tr>
+                      <th>Collaborator Sample ID</th>
+                      <td>{{sample.collaborator_sample_id}}</td>
+                    </tr>
+                    <tr>
+                      <th>Sample Type</th>
+                      <td>{{sample.sample_type.name}}</td>
+                      <!-- <td>Sample</td> -->
+                    </tr>
+                    <tr>
+                      <th>Matrix</th>
+                      <td>{{sample.matrix_type.name}}</td>
+                      <!-- <td>Water</td> -->
+                    </tr>
+                    <tr>
+                      <th>Study</th>
+                      <td>{{sample.study.id}}</td>
+                      <!-- <td>Kewuanee County Study</td> -->
+                    </tr>
+                  </tbody>
+                </table>
+              </clr-tree-node>
+            </ng-template>
+          </clr-tree-node>
+
+        </p>
       </div>
     </div>
   </div>
 </div>
 
+
 <clr-modal class="modal-sm" *ngIf="!loading" [(clrModalOpen)]="showHideEditExtractionDetail">
-  <h3 class="modal-title">Edit extraction</h3>
+  <h3 class="modal-title">Edit Extraction</h3>
   <div class="modal-body">
     <span>Analysis Batch {{selectedABID}}</span>
     <form id="editExtractionBatchForm" class="compact" [formGroup]="editExtractionBatchForm" (ngSubmit)="onSubmit('edit', editExtractionBatchForm.value)"
@@ -193,12 +192,14 @@
 
         <div class="form-group">
           <label for="templateVol">Template Volume</label>
-          <input id="templateVol" type="text" size="10" formControlName="template_volume"><span>µL</span>
+          <input id="templateVol" type="text" size="10" formControlName="template_volume">
+          <span>µL</span>
         </div>
 
         <div class="form-group">
           <label for="reactionVol">Reaction Volume</label>
-          <input id="reactionVol" type="text" size="10" formControlName="reaction_volume"><span>µL</span>
+          <input id="reactionVol" type="text" size="10" formControlName="reaction_volume">
+          <span>µL</span>
           <!-- <div class="select">
             <select id="rtReactionVolUnits" formControlName="reaction_volume_units">
               <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>

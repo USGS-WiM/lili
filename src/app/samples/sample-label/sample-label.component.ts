@@ -89,7 +89,7 @@ export class SampleLabelComponent implements OnInit {
 			});
 
 			// for testing purposes only
-			// this.labelAliquots = this.fakeLabelArray();
+			this.labelAliquots = this.fakeLabelArray();
 		});
 	} // end ngOnInit()
 	
