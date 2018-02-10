@@ -61,6 +61,7 @@ import { FinalConcentratedSampleVolumeService } from "app/fcsv/final-concentrate
 import { AliquotService } from "app/aliquots/aliquot.service";
 import { FreezerLocationsService } from "app/aliquots/freezer-locations.service";
 import { FreezerService } from "app/aliquots/freezer.service";
+import { SampleLabelComponent } from "./samples/sample-label/sample-label.component";
 
 @NgModule({
     declarations: [
@@ -93,7 +94,8 @@ import { FreezerService } from "app/aliquots/freezer.service";
         FilterTypesComponent,
         TargetsComponent,
         UsersComponent,
-        AnalysisBatchWorksheetComponent
+        AnalysisBatchWorksheetComponent, 
+        SampleLabelComponent
     ],
     imports: [
         BrowserAnimationsModule,

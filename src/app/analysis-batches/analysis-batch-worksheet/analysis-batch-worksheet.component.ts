@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AnalysisBatchService } from '../../analysis-batches/analysis-batch.service';
 import { Iabworksheet } from '../../analysis-batches/analysis-batch-worksheet/ab-worksheet';
-import { fakeAsync } from '@angular/core/testing';
 
 declare let jsPDF: any;
 //declare let html2pdf: any;
@@ -133,7 +132,6 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 		pdf.setFontSize(8);
 		pdf.setFontType("bold");
 
-		// .textEx(string, over, down, )
 		// Top left Table /////////////////////////////
 		pdf.textEx('Analysis batch:', 70, 50, 'right', 'middle');
 		pdf.setFontType("normal");

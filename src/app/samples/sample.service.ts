@@ -9,6 +9,7 @@ import { APP_SETTINGS } from '../app.settings';
 
 import { ISample } from './sample';
 import { IInhibition } from '../inhibitions/inhibition';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class SampleService {
@@ -82,6 +83,13 @@ export class SampleService {
       .map(this.extractData)
       .catch(this.handleError);
 
+  }
+
+  // subject, getter,setter for label parts needed by modal
+  private _LabelParts: Subject<Array<any>> = new Subject<Array<any>>();
+  public get LabelParts(): Observable<any> { return this._LabelParts.asObservable(); }
+  public setLabelParts(labelArr: any) {
+    this._LabelParts.next(labelArr);
   }
 
   private handleError(error: Response) {
