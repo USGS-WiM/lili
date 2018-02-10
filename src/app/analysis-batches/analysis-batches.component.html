@@ -1,3 +1,8 @@
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <h3>Analysis Batches</h3>
+    </div>
+</div>
 <!-- Extract wizard -->
 <clr-wizard #wizardExtract [(clrWizardOpen)]="extractWizardOpen" (clrWizardOnFinish)="finishExtractWizard(selectedAnalysisBatchID, extractForm.value, createInhibitionForm.value)"
     (clrWizardOnCancel)="resetExtractWizard()" clrWizardSize="xl">
@@ -822,145 +827,137 @@
 <!-- begin Analysis batches table -->
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-            <div class="card-block">
-                <div class="card-title">
-                    All Analysis Batches
+
+        <clr-datagrid [(clrDgSingleSelected)]="selectedAB">
+
+            <clr-dg-action-bar>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)" [clrLoading]="submitLoading">
+                        <clr-icon shape="upload"></clr-icon> Extract</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)">
+                        <clr-icon shape="note-edit" size="16"></clr-icon> Edit Analysis Batch</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="reprintWorksheet(selectedAB)" [clrLoading]="printSubmitLoading">
+                        <clr-icon shape="clipboard"></clr-icon> Re-Print Worksheet</button>
                 </div>
-                <div class="card-text">
-                    <clr-datagrid [(clrDgSingleSelected)]="selectedAB">
+            </clr-dg-action-bar>
 
-                        <clr-dg-action-bar>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)" [clrLoading]="submitLoading">
-                                    <clr-icon shape="upload"></clr-icon> Extract</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)">
-                                    <clr-icon shape="note-edit" size="16"></clr-icon> Edit Analysis Batch</button>
-                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="reprintWorksheet(selectedAB)" [clrLoading]="printSubmitLoading">
-                                    <clr-icon shape="clipboard"></clr-icon> Re-Print Worksheet</button>
-                            </div>
-                        </clr-dg-action-bar>
+            <clr-dg-column [clrDgField]="'analysis_batch_id'">
+                Analysis Batch ID
+                <clr-dg-filter [clrDgFilter]="rangeFilter">
+                    <range-filter #rangeFilter></range-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'analysis_batch_id'">
-                            Analysis Batch ID
-                            <clr-dg-filter [clrDgFilter]="rangeFilter">
-                                <range-filter #rangeFilter></range-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
+            <clr-dg-column [clrDgField]="'ab_description'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Analysis Batch Description
+                </ng-container>
+            </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'ab_description'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Analysis Batch Description
-                            </ng-container>
-                        </clr-dg-column>
+            <!-- <clr-dg-column [clrDgField]="'studies'">
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                            Studies
+                        </ng-container>
+                    </clr-dg-column> -->
 
-                        <!-- <clr-dg-column [clrDgField]="'studies'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Studies
-                            </ng-container>
-                        </clr-dg-column> -->
+            <clr-dg-column>
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Extraction Count
+                </ng-container>
+            </clr-dg-column>
 
-                        <clr-dg-column>
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Extraction Count
-                            </ng-container>
-                        </clr-dg-column>
+            <clr-dg-column>
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Inhibition Count
+                </ng-container>
+            </clr-dg-column>
 
-                        <clr-dg-column>
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Inhibition Count
-                            </ng-container>
-                        </clr-dg-column>
+            <clr-dg-column>
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    RT Count
+                </ng-container>
+            </clr-dg-column>
 
-                        <clr-dg-column>
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                RT Count
-                            </ng-container>
-                        </clr-dg-column>
+            <clr-dg-column>
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Target Count
+                </ng-container>
+            </clr-dg-column>
 
-                        <clr-dg-column>
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Target Count
-                            </ng-container>
-                        </clr-dg-column>
-
-                        <clr-dg-column>
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Analysis Batch Notes
-                            </ng-container>
-                        </clr-dg-column>
+            <clr-dg-column>
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Analysis Batch Notes
+                </ng-container>
+            </clr-dg-column>
 
 
-                        <!-- <clr-dg-column>
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Samples
-                            </ng-container>
-                        </clr-dg-column> -->
+            <!-- <clr-dg-column>
+                        <ng-container *clrDgHideableColumn="{hidden: false}">
+                            Samples
+                        </ng-container>
+                    </clr-dg-column> -->
 
-                        <clr-dg-column [clrDgField]="'insert_user'">
-                            <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Added by
-                            </ng-container>
-                        </clr-dg-column>
+            <clr-dg-column [clrDgField]="'insert_user'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Added by
+                </ng-container>
+            </clr-dg-column>
 
-                        <!-- filter column header for date added -->
-                        <clr-dg-column [clrDgField]="'insert_date'">
-                            Date Added
-                            <clr-dg-filter [clrDgFilter]="dateAddedFilter">
-                                <date-added-filter [dateField]="'insert_date'" #dateAddedFilter></date-added-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
+            <!-- filter column header for date added -->
+            <clr-dg-column [clrDgField]="'insert_date'">
+                Date Added
+                <clr-dg-filter [clrDgFilter]="dateAddedFilter">
+                    <date-added-filter [dateField]="'insert_date'" #dateAddedFilter></date-added-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'update_user'">
-                            <ng-container *clrDgHideableColumn="{hidden: true}">
-                                Updated by
-                            </ng-container>
-                        </clr-dg-column>
+            <clr-dg-column [clrDgField]="'update_user'">
+                <ng-container *clrDgHideableColumn="{hidden: true}">
+                    Updated by
+                </ng-container>
+            </clr-dg-column>
 
-                        <!-- filter column header for date updated -->
-                        <clr-dg-column [clrDgField]="'update_date'">
-                            Date Updated
-                            <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
-                                <date-updated-filter [dateField]="'update_date'" #dateUpdatedFilter></date-updated-filter>
-                            </clr-dg-filter>
-                        </clr-dg-column>
+            <!-- filter column header for date updated -->
+            <clr-dg-column [clrDgField]="'update_date'">
+                Date Updated
+                <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
+                    <date-updated-filter [dateField]="'update_date'" #dateUpdatedFilter></date-updated-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
 
-                        <!-- begin data table rows -->
+            <!-- begin data table rows -->
 
-                        <clr-dg-row *clrDgItems="let ab of allAnalysisBatchSummaries" [clrDgItem]="ab">
+            <clr-dg-row *clrDgItems="let ab of allAnalysisBatchSummaries" [clrDgItem]="ab">
 
-                            <clr-dg-cell>{{ab.id}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.analysis_batch_description}}</clr-dg-cell>
-                            <!-- <clr-dg-cell><span *ngFor="let study of ab.studies">{{study.name}}<br></span></clr-dg-cell> -->
+                <clr-dg-cell>{{ab.id}}</clr-dg-cell>
+                <clr-dg-cell>{{ab.analysis_batch_description}}</clr-dg-cell>
+                <!-- <clr-dg-cell><span *ngFor="let study of ab.studies">{{study.name}}<br></span></clr-dg-cell> -->
 
-                            <clr-dg-cell>{{ab.summary.extraction_count}}</clr-dg-cell>
+                <clr-dg-cell>{{ab.summary.extraction_count}}</clr-dg-cell>
 
-                            <clr-dg-cell>{{ab.summary.inhibition_count}}</clr-dg-cell>
+                <clr-dg-cell>{{ab.summary.inhibition_count}}</clr-dg-cell>
 
-                            <clr-dg-cell>{{ab.summary.reverse_transcription_count}}</clr-dg-cell>
+                <clr-dg-cell>{{ab.summary.reverse_transcription_count}}</clr-dg-cell>
 
-                            <clr-dg-cell>
-                                <a (click)="openTargetDetails(ab.id)" class="label label-blue clickable">{{ab.summary.target_count}}</a>
-                            </clr-dg-cell>
+                <clr-dg-cell>
+                    <a (click)="openTargetDetails(ab.id)" class="label label-blue clickable">{{ab.summary.target_count}}</a>
+                </clr-dg-cell>
 
-                            <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.created_by}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.created_date | date:'shortDate'}}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.modified_by }}</clr-dg-cell>
-                            <clr-dg-cell>{{ab.modified_date | date:'shortDate'}}</clr-dg-cell>
+                <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
+                <clr-dg-cell>{{ab.created_by}}</clr-dg-cell>
+                <clr-dg-cell>{{ab.created_date | date:'shortDate'}}</clr-dg-cell>
+                <clr-dg-cell>{{ab.modified_by }}</clr-dg-cell>
+                <clr-dg-cell>{{ab.modified_date | date:'shortDate'}}</clr-dg-cell>
 
-                            <analysis-batch-detail *clrIfExpanded [selectedABSummary]="ab" ngProjectAs="clr-dg-row-detail"></analysis-batch-detail>
+                <analysis-batch-detail *clrIfExpanded [selectedABSummary]="ab" ngProjectAs="clr-dg-row-detail"></analysis-batch-detail>
 
-                        </clr-dg-row>
+            </clr-dg-row>
 
-                        <clr-dg-footer>
-                            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} samples
-                            <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
-                        </clr-dg-footer>
-                    </clr-datagrid>
-                </div>
-            </div>
-        </div>
+            <clr-dg-footer>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} samples
+                <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+            </clr-dg-footer>
+        </clr-datagrid>
     </div>
 </div>
 <!-- end samples table -->
