@@ -82,7 +82,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="required">Filtered</label>
+                                <label>Filtered</label>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="filteredToggle" formControlName="filter_flag">
                                     <label for="filteredToggle">{{this.addSampleForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
@@ -90,7 +90,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="required">Secondary Concentration</label>
+                                <label>Secondary Concentration</label>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
                                     <label for="secondaryConcToggle">{{this.addSampleForm.controls.secondary_concentration_flag.value ? "Yes" : "No"}}</label>
@@ -180,7 +180,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="tvsInput">Total Volume Sampled</label>
+                                <label for="tvsInput">Initial Volume Sampled</label>
                                 <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
@@ -437,7 +437,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="tvsInput">Total Volume Sampled</label>
+                            <label for="tvsInput">Initial Volume Sampled</label>
                             <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                             <div class="select">
                                 <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
@@ -804,7 +804,7 @@
                         <div class="form-group" *ngFor="let sample of selected">
                             <label for="">Sample {{sample.id}}</label>
 
-                            <div *ngIf="sample.aliquots.length === 0">No aliquots recorded for this sample</div>
+                            <div *ngIf="sample.aliquots.length === 0"><clr-icon shape="times-circle"></clr-icon> No aliquots recorded for this sample</div>
 
                             <div *ngIf="sample.aliquots.length > 0">
 
@@ -833,7 +833,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="showHidePrintModal = !showHidePrintModal">Cancel</button>
-        <button type="submit" class="btn btn-primary" (click)="createLabelPDF()">Preview Labels</button>
+        <button type="submit" class="btn btn-primary" (click)="createLabelPDF()"><clr-icon shape="list"></clr-icon> Preview Labels</button>
     </div>
 </clr-modal>
 <!-- end print modal -->
@@ -909,26 +909,13 @@
                         <clr-icon shape="thermometer"></clr-icon> Freeze</button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openPrintLabelModal(selected)">
                         <clr-icon shape="printer"></clr-icon> Print Labels</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1">
-                        <clr-icon shape="trash"></clr-icon> Delete Sample</button>
+                    <!-- <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1">
+                        <clr-icon shape="trash"></clr-icon> Delete Sample</button> -->
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editSample(selected[0])">
                         <clr-icon shape="note-edit" size="16"></clr-icon> Edit Sample</button>
 
                 </div>
             </clr-dg-action-bar>
-
-            <!--<clr-dg-column class="no-padding ten">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                            Edit
-                        </ng-container>
-                    </clr-dg-column>-->
-
-            <!-- regular column header for Sample ID-->
-            <!-- <clr-dg-column [clrDgField]="'sample_id'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                            Sample ID
-                        </ng-container>
-                    </clr-dg-column>  -->
 
             <!-- filter column header for Sample ID -->
             <clr-dg-column [clrDgField]="'sample_id'">
@@ -949,7 +936,6 @@
                     Collaborator Sample ID
                 </ng-container>
             </clr-dg-column>
-
 
             <!-- regular column header for Study-->
             <!--<clr-dg-column [clrDgField]="'study'">
@@ -1149,55 +1135,49 @@
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'insert_user'">
+            <clr-dg-column [clrDgField]="'created_by'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Added by
                 </ng-container>
             </clr-dg-column>
 
             <!-- regular column header for date added-->
-            <!-- <clr-dg-column [clrDgField]="'insert_date'">
+            <!-- <clr-dg-column [clrDgField]="'created_date'">
                         <ng-container *clrDgHideableColumn="{hidden: false}">
                              Date added
                         </ng-container>
                     </clr-dg-column> -->
 
             <!-- filter column header for date added -->
-            <clr-dg-column [clrDgField]="'insert_date'">
+            <clr-dg-column [clrDgField]="'created_date'">
                 Date Added
                 <clr-dg-filter [clrDgFilter]="dateAddedFilter">
-                    <date-added-filter [dateField]="'insert_date'" #dateAddedFilter></date-added-filter>
+                    <date-added-filter [dateField]="'created_date'" #dateAddedFilter></date-added-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'update_user'">
+            <clr-dg-column [clrDgField]="'modified_by'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Updated by
                 </ng-container>
             </clr-dg-column>
 
             <!-- regular column header for date updated-->
-            <!-- <clr-dg-column [clrDgField]="'update_date'">
+            <!-- <clr-dg-column [clrDgField]="'modified_date'">
                         <ng-container *clrDgHideableColumn="{hidden: false}">
                              Date updated
                         </ng-container>
                     </clr-dg-column> -->
 
             <!-- filter column header for date updated -->
-            <clr-dg-column [clrDgField]="'update_date'">
+            <clr-dg-column [clrDgField]="'modified_date'">
                 Date Updated
                 <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
-                    <date-updated-filter [dateField]="'update_date'" #dateUpdatedFilter></date-updated-filter>
+                    <date-updated-filter [dateField]="'modified_date'" #dateUpdatedFilter></date-updated-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
             <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
-
-                <!--<clr-dg-cell>
-                             <div class="btn-group">
-                                <button class="btn btn-sm btn-link" (click)="editSample(sample)"><clr-icon shape="note-edit" size="16"></clr-icon></button>
-                            </div>
-                        </clr-dg-cell>-->
                 <clr-dg-cell>{{sample.id}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.analysisbatches}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
@@ -1232,21 +1212,9 @@
 
             <clr-dg-footer>
                 {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} samples
-                <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+                <clr-dg-pagination #pagination [clrDgPageSize]="20"></clr-dg-pagination>
             </clr-dg-footer>
         </clr-datagrid>
-
-
-        <!-- <div class="card">
-            <div class="card-block">
-                <div class="card-title">
-                    All Samples
-                </div>
-                <div class="card-text">
-
-                </div>
-            </div>
-        </div> -->
     </div>
 </div>
 <!-- end samples table -->

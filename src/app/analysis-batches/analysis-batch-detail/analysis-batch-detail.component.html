@@ -3,11 +3,14 @@
     <div class="card ab-detail-card">
       <div class="card-block">
         <h3 class="card-title">Extractions</h3>
-        <span class="spinner spinner-lg" *ngIf="loading" >
-            Loading...
-          </span>
         <p class="card-text" *ngIf="!loading">
           <div class="row extraction-row">
+            <span class="spinner spinner-lg" *ngIf="ABDetailsLoading">
+              Loading...
+            </span>
+            <span  *ngIf="noExtractionsFlag">
+                <clr-icon shape="neutral-face"></clr-icon> There are no extractions from this Analysis Batch.
+              </span>
             <clr-tree-node *ngFor="let extractionbatch of extractionBatchArray">
               <span>Extraction {{extractionbatch.extraction_number}}&nbsp;&nbsp;&nbsp;&nbsp;{{extractionbatch.extraction_date |
                 date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -99,7 +102,9 @@
       <div class="card-block" *ngIf="!loading">
         <h3 class="card-title">Samples</h3>
         <p class="card-text">
-
+          <span class="spinner spinner-lg" *ngIf="ABDetailsLoading">
+            Loading...
+          </span>
           <clr-tree-node *ngFor="let sample of samplesArray">
             Sample {{sample.id}}
             <ng-template clrIfExpanded>
@@ -113,30 +118,25 @@
                     <tr>
                       <th>Sample Type</th>
                       <td>{{sample.sample_type.name}}</td>
-                      <!-- <td>Sample</td> -->
                     </tr>
                     <tr>
                       <th>Matrix</th>
                       <td>{{sample.matrix_type.name}}</td>
-                      <!-- <td>Water</td> -->
                     </tr>
                     <tr>
                       <th>Study</th>
                       <td>{{sample.study.id}}</td>
-                      <!-- <td>Kewuanee County Study</td> -->
                     </tr>
                   </tbody>
                 </table>
               </clr-tree-node>
             </ng-template>
           </clr-tree-node>
-
         </p>
       </div>
     </div>
   </div>
 </div>
-
 
 <clr-modal class="modal-sm" *ngIf="!loading" [(clrModalOpen)]="showHideEditExtractionDetail">
   <h3 class="modal-title">Edit Extraction</h3>
@@ -207,7 +207,6 @@
           </div> -->
         </div>
 
-
         <div class="form-group">
           <label for="rtDateInput">RT Date</label>
           <input type="date" id="rtDateInput" formControlName="rt_date">
@@ -218,8 +217,6 @@
 
       </section>
     </form>
-
-
   </div>
 </clr-modal>
 

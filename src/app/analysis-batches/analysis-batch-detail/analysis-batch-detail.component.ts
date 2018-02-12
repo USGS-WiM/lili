@@ -29,7 +29,8 @@ import { UnitService } from '../../units/unit.service';
 export class AnalysisBatchDetailComponent implements OnInit {
   @Input() selectedABSummary: IAnalysisBatchSummary;
 
-  loading: boolean = true;
+  ABDetailsLoading: boolean = true;
+  noExtractionsFlag: boolean = false;
   showHideEditExtractionDetail: boolean = false;
   showHideEditRTDetail: boolean = false;
   selectedABDetail: IAnalysisBatchDetail;
@@ -95,8 +96,8 @@ export class AnalysisBatchDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.loading = true;
-    console.log("on init loading val: ", this.loading)
+    // this.ABDetailsLoading = true;
+    console.log("on init loading val: ", this.ABDetailsLoading)
 
     this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
 
@@ -112,10 +113,13 @@ export class AnalysisBatchDetailComponent implements OnInit {
         this.samplesArray = analysisBatchDetail.samples;
         this.selectedABID = analysisBatchDetail.id;
         // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
-        this.loading = false;
+        this.ABDetailsLoading = false;
+        if (analysisBatchDetail.extractionbatches.length < 1) {
+          this.noExtractionsFlag = true;
+        }
       },
       error => {
-        this.loading = false;
+        this.ABDetailsLoading = false;
         this.errorMessage = <any>error
       }
       );
@@ -148,9 +152,6 @@ export class AnalysisBatchDetailComponent implements OnInit {
     //     this.rtDetailArray.push(rt)
     //   }
     // }
-
-    this.loading = false;
-
   }
 
   public buildABExtractionArray(extractionBatchArray) {

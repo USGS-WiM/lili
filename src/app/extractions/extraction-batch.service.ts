@@ -16,19 +16,32 @@ export class ExtractionBatchService {
 
   public create(formValue: IExtractionBatchSubmission): Observable<any[]> {
 
-        let options = new RequestOptions({
-          headers: APP_SETTINGS.AUTH_JSON_HEADERS
-        });
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
 
-        return this._http.post(APP_SETTINGS.EXTRACTION_BATCHES_URL, formValue, options)
-          .map((response: Response) => <any[]>response.json())
-          .catch(this.handleError);
+    return this._http.post(APP_SETTINGS.EXTRACTION_BATCHES_URL, formValue, options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError);
 
-      }
+  }
 
-      private handleError(error: Response) {
-        console.error(error);
-        return Observable.throw(error.json().error || 'Server error');
-      }
+  // public update(formValue: IAnalysisBatch): Observable<IAnalysisBatch> {
+
+  //   let options = new RequestOptions({
+  //     headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+  //   });
+
+  //   return this._http.put(APP_SETTINGS.ANALYSIS_BATCH_URL + formValue.id + '/', formValue, options)
+  //     .map(this.extractData)
+  //     .catch(this.handleError);
+
+  // }
+
+
+  private handleError(error: Response) {
+    console.error(error);
+    return Observable.throw(error.json().error || 'Server error');
+  }
 
 }
