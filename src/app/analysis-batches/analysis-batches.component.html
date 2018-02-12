@@ -897,31 +897,31 @@
                         </ng-container>
                     </clr-dg-column> -->
 
-            <clr-dg-column [clrDgField]="'insert_user'">
+            <clr-dg-column [clrDgField]="'created_by'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Added by
                 </ng-container>
             </clr-dg-column>
 
             <!-- filter column header for date added -->
-            <clr-dg-column [clrDgField]="'insert_date'">
+            <clr-dg-column [clrDgField]="'created_date'">
                 Date Added
                 <clr-dg-filter [clrDgFilter]="dateAddedFilter">
-                    <date-added-filter [dateField]="'insert_date'" #dateAddedFilter></date-added-filter>
+                    <date-added-filter [dateField]="'created_date'" #dateAddedFilter></date-added-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'update_user'">
+            <clr-dg-column [clrDgField]="'modified_by'">
                 <ng-container *clrDgHideableColumn="{hidden: true}">
                     Updated by
                 </ng-container>
             </clr-dg-column>
 
             <!-- filter column header for date updated -->
-            <clr-dg-column [clrDgField]="'update_date'">
+            <clr-dg-column [clrDgField]="'modified_date'">
                 Date Updated
                 <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
-                    <date-updated-filter [dateField]="'update_date'" #dateUpdatedFilter></date-updated-filter>
+                    <date-updated-filter [dateField]="'modified_date'" #dateUpdatedFilter></date-updated-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
@@ -954,8 +954,8 @@
             </clr-dg-row>
 
             <clr-dg-footer>
-                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} samples
-                <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Analysis Batches
+                <clr-dg-pagination #pagination [clrDgPageSize]="20"></clr-dg-pagination>
             </clr-dg-footer>
         </clr-datagrid>
     </div>
