@@ -12,7 +12,7 @@ export interface IExtractionBatchSubmission {
     qpcr_template_volume: number;
     qpcr_reaction_volume: number;
     qpcr_date: string;
-    new_rt: Object;
+    new_rt: IReverseTranscriptionSubmission;
     new_replicates: {
         target: number;
         count: number;

@@ -473,7 +473,7 @@
             </div>
         </clr-alert>
         <div *ngIf="extractionFinished && !extractionErrorFlag">
-            <button class="btn btn-primary" (click)="createWorksheet(false)">Create Extraction Worksheet</button>
+            <button class="btn btn-primary" (click)="createWorksheet(false, false)">Create Extraction Worksheet</button>
         </div>
 
         <div *ngIf="extractForm.valid && !loadingFlag && !extractionFinished">
@@ -557,8 +557,8 @@
 
                 <div *ngIf="oneExtractionFlag">
                     There is one extraction for this analysis batch.
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="createWorksheet()" [clrLoading]="printSubmitLoading">
-                        <clr-icon shape="clipboard"></clr-icon> Re-Print Worksheet</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="createWorksheet(true, false)" [clrLoading]="printSubmitLoading">
+                        <clr-icon shape="clipboard"></clr-icon> Create Extraction Worksheet</button>
                 </div>
 
                 <div *ngIf="multipleExtractionsFlag">
@@ -580,7 +580,7 @@
                         </div>
                     </form>
                     <div>
-                        <button class="btn btn-primary" (click)="createWorksheet(true)" [disabled]="extractionBatchSelectForm.invalid">Create Extraction Worksheet</button>
+                        <button class="btn btn-primary" (click)="createWorksheet(true, true)" [disabled]="extractionBatchSelectForm.invalid">Create Extraction Worksheet</button>
                     </div>
                 </div>
             </div>

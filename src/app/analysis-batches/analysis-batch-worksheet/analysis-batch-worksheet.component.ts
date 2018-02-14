@@ -140,12 +140,33 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 		pdf.textEx('Creation date:', 70, 60, 'right', 'middle');
 		pdf.setFontType("normal");
 		pdf.textEx(this.abWorksheet.creation_date, 75, 60, 'left', 'middle');
-
+		
 		// split the studies comma separated string in case too long.
 		let studySplit = pdf.splitTextToSize(this.abWorksheet.str_studies, 240);
 		let studyRows = studySplit.length;
-
+		// if rows are greater than 5, need to strip off and add '...' at end of 5
+		if (studyRows > 5) {
+			studySplit = studySplit.slice(0, 5);
+			studySplit[4] = studySplit[4].slice(0,-3) + '...';
+			studyRows = studySplit.length;
+		}
+		// how much should the description move down based on the number of rows here
 		if (studyRows > 1) {
+			let moveDown: number = 0;
+			switch(studyRows){
+				case 5:
+					moveDown = 115;
+					break;
+				case 4:
+					moveDown = 105;
+					break;
+				case 3:
+					moveDown = 97;
+					break;
+				case 2:
+					moveDown = 87;
+					break;
+			}
 			// multiple rows, bump down more
 			pdf.setFontType("bold");
 			pdf.textEx('Studies:', 70, 70, 'right', 'middle');
@@ -153,9 +174,9 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 			pdf.text(75, 72, studySplit);
 
 			pdf.setFontType("bold");
-			pdf.textEx('Description:', 70, 85 + studyRows, 'right', 'middle');
+			pdf.textEx('Description:', 70, moveDown, 'right', 'middle');
 			pdf.setFontType("normal");
-			pdf.textEx(this.abWorksheet.description, 75, 85 + studyRows, 'left', 'middle');
+			pdf.textEx(this.abWorksheet.description, 75, moveDown, 'left', 'middle');
 		} else {
 			// only 1 row, proceed as normal
 			pdf.setFontType("bold");
@@ -202,10 +223,10 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 			r['index'] = i + 1;
 		});
 		if (this.abWorksheet.isReprint) {
-			pdf.text("This is a reprint. Aliquot listed is first aliquot of sample.", 20, 115);
+			pdf.text("This is a reprint. Aliquot listed is first aliquot of sample.", 20, 130);
 		}
 		pdf.autoTable(this.sampleColumns, this.sampleRows, {
-			startY: 120,
+			startY: 135,
 			margin: 10,
 			theme: 'grid',
 			tableWidth: 315,
@@ -221,7 +242,7 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 		this.targetRows = this.tableToJson(this.targetTable.nativeElement);
 		
 		pdf.autoTable(this.targetColumns, this.targetRows, {			
-			startY: 120,
+			startY: 135,
 			margin: {left: 338},
 			theme: 'grid',
 			tableWidth: 245,

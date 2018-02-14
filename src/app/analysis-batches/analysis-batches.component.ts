@@ -438,18 +438,21 @@ export class AnalysisBatchesComponent implements OnInit {
       (analysisBatchDetail) => {
         this.selectedAnalysisBatchData = analysisBatchDetail;
 
-        this.printSubmitLoading = false;
-        this.showHidePrintModal = true;
-
         if (analysisBatchDetail.extractionbatches.length === 0) {
           this.noExtractionsFlag = true;
         } else if (analysisBatchDetail.extractionbatches.length === 1) {
+          // since only one extractionBatch, can go immediately to populating the rePrintWorksheetData
           this.rePrintWorksheetData = analysisBatchDetail.extractionbatches[0];
           this.oneExtractionFlag = true;
         } else if (analysisBatchDetail.extractionbatches.length > 1) {
+          // because more than one extractionBatch, user input is needed to choose the desired one.
+          // set the extractionBatch array, which populates the extraction select form for the user to choose
           this.extractionBatchArray = analysisBatchDetail.extractionbatches;
           this.multipleExtractionsFlag = true;
         }
+
+        this.printSubmitLoading = false;
+        this.showHidePrintModal = true;
       },
       error => {
         this.errorMessage = <any>error
@@ -468,34 +471,38 @@ export class AnalysisBatchesComponent implements OnInit {
       creation_date: this.selectedAnalysisBatchData.created_date,
       studies: this.selectedAnalysisBatchData.studies,
       description: this.selectedAnalysisBatchData.analysis_batch_description,
-      extraction_no: (this.selectedAnalysisBatchData.extractionbatches.length) + 1,
+      //extraction_no: (this.selectedAnalysisBatchData.extractionbatches.length) + 1,
+      extraction_no: this.rePrintWorksheetData.extraction_number,
       extraction_date: this.rePrintWorksheetData.extraction_date,
       extraction_method: this.rePrintWorksheetData.extraction_method,
       extraction_sample_volume: this.rePrintWorksheetData.extraction_volume,
       eluted_extraction_volume: this.rePrintWorksheetData.elution_volume,
-      // Left TABLE:        
+      // Left TABLE:
       extraction_submission: es,
       // Right TABLE:
       targetNames: tn,
       // BOTTOM TABLE:
-      reverse_extraction_no: (this.selectedAnalysisBatchData.extractionbatches.length) + 1,
-      rt_reaction_volume: this.extractForm.controls.qpcr_reaction_volume.value,
-      rt_date: this.extractForm.controls.new_rt.value.rt_date
+      reverse_extraction_no: this.rePrintWorksheetData.extraction_number,
+      rt_reaction_volume: this.rePrintWorksheetData.reverse_transcriptions[0].reaction_volume,
+      rt_date: this.rePrintWorksheetData.reverse_transcriptions[0].rt_date
     };
     this._analysisBatchService.setWorksheetObject(ABWorksheetObj);
     this.showWorksheet = true;
   }
 
-  createWorksheet(isReprint) {
+  createWorksheet(isReprint, hasMultipleExtractions) {
     let targetNameArray = [];
     let ABWorksheetObj: Iabworksheet;
-    // if the function has been called from the re-print modal, look up the extractionBatch within the selected AB data that matches the id selected from the dropdown.
     if (isReprint) {
-      for (let extractionBatch of this.selectedAnalysisBatchData.extractionbatches) {
-        if (extractionBatch.id === Number(this.extractionBatchSelectForm.value.extraction_batch)) {
-          this.rePrintWorksheetData = extractionBatch;
-        }
-      };
+      if (hasMultipleExtractions) {
+        // set the rePrintWorksheetData to the user selection from the extract batch select form.
+        // Note: rePrintWorksheetData was set in the reprintWorksheet function if AB only had one extractionBatch
+        for (let extractionBatch of this.selectedAnalysisBatchData.extractionbatches) {
+          if (extractionBatch.id === Number(this.extractionBatchSelectForm.value.extraction_batch)) {
+            this.rePrintWorksheetData = extractionBatch;
+          }
+        };
+      }
       for (let item of this.rePrintWorksheetData.targets) {
         for (let target of this.allTargets) {
           if (item.id === target.id) {
@@ -503,6 +510,7 @@ export class AnalysisBatchesComponent implements OnInit {
           }
         };
       };
+
       let sampleList = [];
       sampleList = this.selectedAnalysisBatchData.samples.map(ab => ab.id);
 
@@ -510,6 +518,7 @@ export class AnalysisBatchesComponent implements OnInit {
       // TODO: need to look up the first aliquot of every sample in this analysis batch
       this._sampleService.getSampleSelection(sampleList)
         .subscribe((sampleSelection) => {
+
           for (let extraction of this.rePrintWorksheetData.extractions) {
             for (let sample of sampleSelection) {
               if (sample.id === extraction.sample) {
@@ -572,7 +581,7 @@ export class AnalysisBatchesComponent implements OnInit {
         targetNames: targetNameArray,
         // BOTTOM TABLE:
         reverse_extraction_no: extractionNumber,
-        rt_reaction_volume: this.extractForm.controls.qpcr_reaction_volume.value,
+        rt_reaction_volume: this.extractForm.controls.new_rt.value.reaction_volume;
         rt_date: this.extractForm.controls.new_rt.value.rt_date
       };
 
@@ -769,13 +778,13 @@ export class AnalysisBatchesComponent implements OnInit {
     let extractFormValue = this.extractForm.value;
     this.extractWizWorksheetData = JSON.parse(JSON.stringify(extractFormValue));
 
-    extractFormValue.elution_volume = parseInt(extractFormValue.elution_volume, 10)
-    extractFormValue.extraction_method = parseInt(extractFormValue.extraction_method, 10)
-    extractFormValue.extraction_volume = parseInt(extractFormValue.extraction_volume, 10)
-    extractFormValue.qpcr_reaction_volume = parseInt(extractFormValue.qpcr_reaction_volume, 10)
-    extractFormValue.qpcr_template_volume = parseInt(extractFormValue.qpcr_template_volume, 10)
-    extractFormValue.new_rt.reaction_volume = parseInt(extractFormValue.new_rt.reaction_volume, 10)
-    extractFormValue.new_rt.template_volume = parseInt(extractFormValue.new_rt.template_volume, 10)
+    extractFormValue.elution_volume = Number(extractFormValue.elution_volume)
+    extractFormValue.extraction_method = Number(extractFormValue.extraction_method)
+    extractFormValue.extraction_volume = Number(extractFormValue.extraction_volume)
+    extractFormValue.qpcr_reaction_volume = Number(extractFormValue.qpcr_reaction_volume)
+    extractFormValue.qpcr_template_volume = Number(extractFormValue.qpcr_template_volume)
+    extractFormValue.new_rt.reaction_volume = Number(extractFormValue.new_rt.reaction_volume)
+    extractFormValue.new_rt.template_volume = Number(extractFormValue.new_rt.template_volume)
 
     let extractFormValueCopy = extractFormValue;
     for (let extraction of extractFormValueCopy.new_extractions) {

@@ -17,10 +17,6 @@ export interface IExtractionBatch {
     qpcr_template_volume: number;
     qpcr_reaction_volume: number;
     qpcr_date: string;
-    "ext_pos_cq_value": null,
-    "ext_pos_gc_reaction": null,
-    "ext_pos_bad_result_flag": false,
-
     extractions: IExtraction[];
     inhibitions: IInhibition[];
     reverse_transcriptions: IReverseTranscription[];
