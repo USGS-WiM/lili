@@ -140,7 +140,7 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 		pdf.textEx('Creation date:', 70, 60, 'right', 'middle');
 		pdf.setFontType("normal");
 		pdf.textEx(this.abWorksheet.creation_date, 75, 60, 'left', 'middle');
-		this.abWorksheet.str_studies = "random text here,random text here,random text here";
+		
 		// split the studies comma separated string in case too long.
 		let studySplit = pdf.splitTextToSize(this.abWorksheet.str_studies, 240);
 		let studyRows = studySplit.length;

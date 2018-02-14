@@ -512,7 +512,7 @@ export class AnalysisBatchesComponent implements OnInit {
         .subscribe((sampleSelection) => {
           for (let extraction of this.rePrintWorksheetData.extractions) {
             for (let sample of sampleSelection) {
-              if (sample.id === extraction.sample) {
+             // if (sample.id === extraction.sample) {
                 // place the aliquot freezer location data into the extraction_submission								
                 if (sample.aliquots) {
                   if (sample.aliquots.length > 0) {
@@ -528,7 +528,7 @@ export class AnalysisBatchesComponent implements OnInit {
                     extractionSubmission.push(extractionSubmit);
                   }// end if aliquots.length
                 }// end if sample.aliquots
-              }
+             // }
             }
           }
           // proceed in opening worksheet modal with the extractionsubmission
