@@ -12,6 +12,8 @@ import { IExtractionMethod } from '../../extractions/extraction-method';
 import { ITarget } from '../../targets/target';
 import { IUnit } from '../../units/unit';
 
+import { APP_SETTINGS } from '../../app.settings';
+
 import { ISampleSummary } from '../../samples/sample-summary';
 
 import { AnalysisBatchService } from '../analysis-batch.service';
@@ -27,7 +29,7 @@ import { UnitService } from '../../units/unit.service';
 export class AnalysisBatchDetailComponent implements OnInit {
   @Input() selectedABSummary: IAnalysisBatchSummary;
 
-  loading: boolean;
+  loading: boolean = true;
   showHideEditExtractionDetail: boolean = false;
   showHideEditRTDetail: boolean = false;
   selectedABDetail: IAnalysisBatchDetail;
@@ -54,10 +56,12 @@ export class AnalysisBatchDetailComponent implements OnInit {
   targetListEditLocked: boolean = false;
 
   currentExtractionNo: number;
+  expanded: boolean = false;
 
   submitted;
 
   selected = [];
+  nucleicAcidTypes = [];
 
   editExtractionBatchForm = new FormGroup({
     id: new FormControl(''),
@@ -91,7 +95,10 @@ export class AnalysisBatchDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loading = true;
+    // this.loading = true;
+    console.log("on init loading val: ", this.loading)
+
+    this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
 
     // this.selectedABDetail = this._analysisBatchService.getAnalysisBatchData(this.selectedABSummary.id);
     // console.log(this.selectedABDetail);
@@ -108,6 +115,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
         this.loading = false;
       },
       error => {
+        this.loading = false;
         this.errorMessage = <any>error
       }
       );
