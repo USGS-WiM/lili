@@ -20,5 +20,8 @@ export interface IExtractionBatch {
     extractions: IExtraction[];
     inhibitions: IInhibition[];
     reverse_transcriptions: IReverseTranscription[];
-    targets: ITarget[]
+    targets: ITarget[],
+    ext_pos_cq_value: boolean,
+    ext_pos_gc_reaction: boolean,
+    ext_pos_bad_result_flag: boolean
 }

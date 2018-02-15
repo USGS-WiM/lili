@@ -8,9 +8,9 @@
             <span class="spinner spinner-lg" *ngIf="ABDetailsLoading">
               Loading...
             </span>
-            <span  *ngIf="noExtractionsFlag">
-                <clr-icon shape="neutral-face"></clr-icon> There are no extractions from this Analysis Batch.
-              </span>
+            <span *ngIf="noExtractionsFlag">
+              <clr-icon shape="neutral-face"></clr-icon> There are no extractions from this Analysis Batch.
+            </span>
             <clr-tree-node *ngFor="let extractionbatch of extractionBatchArray">
               <span>Extraction {{extractionbatch.extraction_number}}&nbsp;&nbsp;&nbsp;&nbsp;{{extractionbatch.extraction_date |
                 date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -142,7 +142,7 @@
   <h3 class="modal-title">Edit Extraction</h3>
   <div class="modal-body">
     <span>Analysis Batch {{selectedABID}}</span>
-    <form id="editExtractionBatchForm" class="compact" [formGroup]="editExtractionBatchForm" (ngSubmit)="onSubmit('edit', editExtractionBatchForm.value)"
+    <form id="editExtractionBatchForm" class="compact" [formGroup]="editExtractionBatchForm" (ngSubmit)="onSubmit('editEB', editExtractionBatchForm.value)"
       [hidden]="submitted">
       <section class="form-block">
         <div class="form-group">
@@ -170,7 +170,30 @@
           <input type="date" id="extractionDateInput" formControlName="extraction_date">
         </div>
 
-        <button class="btn btn-primary" type="submit" [disabled]="editExtractionBatchForm.invalid">Save Edits</button>
+        <!---->
+
+        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="extractionEditErrorFlag">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Submission error. Extraction data not updated.</span>
+            <div class="alert-actions">
+              <a class="alert-action" (click)="onSubmit('editEB', editExtractionBatchForm.value)">Try again</a>
+            </div>
+          </div>
+        </clr-alert>
+
+        <clr-alert [clrAlertType]="'alert-success'" *ngIf="extractionEditSuccessFlag">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Extraction data successfully updated</span>
+            <div class="alert-actions">
+              <a class="alert-action" (click)="showHideEditExtractionDetail = false; extractionEditSuccessFlag = false">Close</a>
+            </div>
+          </div>
+        </clr-alert>
+
+        <!---->
+
+
+        <button class="btn btn-primary" type="submit" [disabled]="editExtractionBatchForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
         <button class="btn btn-info" (click)="showHideEditExtractionDetail = !showHideEditExtractionDetail">Cancel</button>
       </section>
     </form>
@@ -186,7 +209,7 @@
       <section class="form-block">
 
         <div class="form-group">
-          <label for="rtNo">RT No.</label>
+          <label for="rtNo">RT No. </label>
           <input type="text" id="rtNo" size="10" formControlName="rt_number" readonly>
         </div>
 

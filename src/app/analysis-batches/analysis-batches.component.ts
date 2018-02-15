@@ -572,7 +572,7 @@ export class AnalysisBatchesComponent implements OnInit {
         description: this.selectedAnalysisBatchData.analysis_batch_description,
         extraction_no: extractionNumber,
         extraction_date: this.extractWizWorksheetData.extraction_date,
-        extraction_method: this.allExtractionMethods.filter(em => { return em.id == this.extractWizWorksheetData.extraction_method })[0],
+        extraction_method: this.allExtractionMethods.filter(em => { return em.id = this.extractWizWorksheetData.extraction_method })[0],
         extraction_sample_volume: this.extractWizWorksheetData.extraction_volume,
         eluted_extraction_volume: this.extractWizWorksheetData.elution_volume,
         // Left TABLE:
@@ -581,7 +581,7 @@ export class AnalysisBatchesComponent implements OnInit {
         targetNames: targetNameArray,
         // BOTTOM TABLE:
         reverse_extraction_no: extractionNumber,
-        rt_reaction_volume: this.extractForm.controls.new_rt.value.reaction_volume;
+        rt_reaction_volume: this.extractForm.controls.new_rt.value.reaction_volume,
         rt_date: this.extractForm.controls.new_rt.value.rt_date
       };
 
