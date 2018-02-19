@@ -170,8 +170,6 @@
           <input type="date" id="extractionDateInput" formControlName="extraction_date">
         </div>
 
-        <!---->
-
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="extractionEditErrorFlag">
           <div clr-alert-item class="alert-item">
             <span class="alert-text">Submission error. Extraction data not updated.</span>
@@ -189,9 +187,6 @@
             </div>
           </div>
         </clr-alert>
-
-        <!---->
-
 
         <button class="btn btn-primary" type="submit" [disabled]="editExtractionBatchForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
         <button class="btn btn-info" (click)="showHideEditExtractionDetail = !showHideEditExtractionDetail">Cancel</button>

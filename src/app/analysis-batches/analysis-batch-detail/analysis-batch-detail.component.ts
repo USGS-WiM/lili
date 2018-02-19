@@ -104,7 +104,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   ngOnInit() {
     // this.ABDetailsLoading = true;
-    console.log("on init loading val: ", this.ABDetailsLoading)
+    // console.log("on init loading val: ", this.ABDetailsLoading)
 
     this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
 

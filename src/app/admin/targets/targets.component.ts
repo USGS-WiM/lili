@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { TargetService } from '../../targets/target.service';
 import { FormArray } from '@angular/forms/src/model';
 
+import { APP_SETTINGS } from '../../app.settings';
+
 @Component({
   selector: 'targets',
   templateUrl: './targets.component.html',
@@ -29,6 +31,8 @@ export class TargetsComponent implements OnInit {
   public showTargetEditSuccess: boolean;
   public showTargetCreateSuccess: boolean;
   public errorMessage: string;
+  public nucleicAcidTypes;
+  public duplicateCodeFlag: boolean = false;
 
   // add Sample form - declare a reactive form with appropriate Sample fields
   addTargetForm = new FormGroup({
@@ -49,23 +53,24 @@ export class TargetsComponent implements OnInit {
   constructor(private _route: ActivatedRoute, private _targetService: TargetService, private _cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
     this.showHideAdd = false; this.showHideEdit = false; this.showHideDelete = false;
     this.showTargetCreateError = false; this.showTargetEditError = false; this.showTargetDeleteError = false;
     this.showTargetCreateSuccess = false; this.showTargetEditSuccess = false; this.showTargetDeleteSuccess = false;
-    this.submitLoading = false;    
+    this.submitLoading = false;
   }
 
   public showAddModal() {
     this.showHideAdd = !this.showHideAdd;
-    //reset these to false in case Add Sample Type is clicked more than once
+    // reset these to false in case Add Sample Type is clicked more than once
     this.showTargetCreateError = false;
     this.showTargetCreateSuccess = false;
   }
 
   public editTarget(selectedTarget) {
-    this.editTargetForm.reset(); //reset here to ensure states are clean (instead of after update complete)
-    this.showTargetEditSuccess = false; //reset this 
-    this.showTargetEditError = false;//reset this 
+    this.editTargetForm.reset(); // reset here to ensure states are clean (instead of after update complete)
+    this.showTargetEditSuccess = false; // reset this
+    this.showTargetEditError = false; // reset this
     this.selectedTargetNote = selectedTarget.notes;
     this.selectedTargetType = selectedTarget.nucleic_acid_type;
     this.selectedTargetCode = selectedTarget.code;
@@ -98,88 +103,98 @@ export class TargetsComponent implements OnInit {
 
   // create or edit Filter submit
   public onSubmitTarget(formId, formValue) {
+    this.duplicateCodeFlag = false;
     this.showTargetCreateError = false;
     this.showTargetEditError = false;
     this.submitLoading = true;
-    switch (formId) {
-      case 'edit':
-        // update a record
-        this._targetService.update(formValue)
-          .subscribe(
-          (updatedTarget) => {
-            this.selectedTargetName = updatedTarget.name;
-            this.selectedTargetCode = updatedTarget.code;
-            this.selectedTargetType = updatedTarget.nucleic_acid_type;
-            this.selectedTargetNote = updatedTarget.notes;
-            this.updateTargetArray(formValue);
-            this.selectedTarget = undefined; 
-            this.submitLoading = false;
-            this.showTargetEditSuccess = true;
-            this._cdr.detectChanges();
-          },
-          error => {
-            this.errorMessage = <any>error;
-            this.submitLoading = false;
-            this.showTargetEditError = true;
-          });
-        break;
-      case 'add':
-        // add a record
-        this._targetService.create(formValue)
-          .subscribe(
-          (newST) => {
-            this.Targets.push(newST);
-            this.addTargetForm.reset();
-            this.submitLoading = false;
-            this.showTargetCreateSuccess = true;
-          },
-          error => {
-            this.errorMessage = <any>error;
-            this.submitLoading = false;
-            this.showTargetCreateError = true;
-          }
-          );
-        break;
-      default:
-      // do something defaulty
+    // check if code exists already
+    for (let target of this.Targets) {
+      if (target.code === formValue.code) {
+        this.duplicateCodeFlag = true;
+        this.submitLoading = false;
+        return;
+      } else {
+        switch (formId) {
+          case 'edit':
+            // update a record
+            this._targetService.update(formValue)
+              .subscribe(
+                (updatedTarget) => {
+                  this.selectedTargetName = updatedTarget.name;
+                  this.selectedTargetCode = updatedTarget.code;
+                  this.selectedTargetType = updatedTarget.nucleic_acid_type;
+                  this.selectedTargetNote = updatedTarget.notes;
+                  this.updateTargetArray(formValue);
+                  this.selectedTarget = undefined;
+                  this.submitLoading = false;
+                  this.showTargetEditSuccess = true;
+                  this._cdr.detectChanges();
+                },
+                error => {
+                  this.errorMessage = <any>error;
+                  this.submitLoading = false;
+                  this.showTargetEditError = true;
+                });
+            break;
+          case 'add':
+            // add a record
+            this._targetService.create(formValue)
+              .subscribe(
+                (newST) => {
+                  this.Targets.push(newST);
+                  this.addTargetForm.reset();
+                  this.submitLoading = false;
+                  this.showTargetCreateSuccess = true;
+                },
+                error => {
+                  this.errorMessage = <any>error;
+                  this.submitLoading = false;
+                  this.showTargetCreateError = true;
+                }
+              );
+            break;
+          default:
+          // do something defaulty
+        }
+      }
     }
   }
 
   // show delete sample type modal
-  public deleteTarget(selectedST){
-    this.showTargetDeleteSuccess = false; //reset this
-    this.showTargetDeleteError = false; //reset this too
+  public deleteTarget(selectedST) {
+    this.showTargetDeleteSuccess = false; // reset this
+    this.showTargetDeleteError = false; // reset this too
     this.selectedTargetName = selectedST.name;
     this.selectedTargetId = selectedST.id;
     // show the delete Filter form if not showing already
     if (this.showHideDelete === false) {
       this.showHideDelete = true;
-    }    
+    }
   }
 
-  public submitDelete(){
-    //get the index to be deleted by the id
+  public submitDelete() {
+    // get the index to be deleted by the id
     let ind: number;
     this.Targets.some((pdh, index, _ary) => {
-      if (pdh.id === this.selectedTargetId) ind = index;
+      if (pdh.id === this.selectedTargetId) {ind = index};
       return pdh.id === this.selectedTargetId;
     });
     this._targetService.delete(this.selectedTargetId)
-    .subscribe(
-      () => {
-      this.selectedTargetName = ""; 
-      this.Targets.splice(ind,1);
-      this.selectedTarget = undefined;
-      this.submitLoading = false;
-      this.showTargetDeleteSuccess = true;
-      this._cdr.detectChanges();
-    },
-    error => {
-      this.errorMessage = <any>error;
-      this.submitLoading = false;
-      this.showTargetDeleteError = true;
-    }
-    );
+      .subscribe(
+        () => {
+          this.selectedTargetName = "";
+          this.Targets.splice(ind, 1);
+          this.selectedTarget = undefined;
+          this.submitLoading = false;
+          this.showTargetDeleteSuccess = true;
+          this._cdr.detectChanges();
+        },
+        error => {
+          this.errorMessage = <any>error;
+          this.submitLoading = false;
+          this.showTargetDeleteError = true;
+        }
+      );
   }
 }
 
