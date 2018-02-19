@@ -13,6 +13,9 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class SampleService {
+   // subject for label parts needed by modal
+  private _LabelParts: Subject<Array<any>> = new Subject<Array<any>>();
+
   constructor(private _http: Http) { }
 
   private extractData(res: Response) {
@@ -85,8 +88,7 @@ export class SampleService {
 
   }
 
-  // subject, getter,setter for label parts needed by modal
-  private _LabelParts: Subject<Array<any>> = new Subject<Array<any>>();
+  // getter,setter for label parts needed by modal
   public get LabelParts(): Observable<any> { return this._LabelParts.asObservable(); }
   public setLabelParts(labelArr: any) {
     this._LabelParts.next(labelArr);
@@ -96,8 +98,4 @@ export class SampleService {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
   }
-
-
-
-
 }

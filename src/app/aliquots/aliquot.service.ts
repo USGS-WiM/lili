@@ -20,7 +20,7 @@ export class AliquotService {
       headers: APP_SETTINGS.AUTH_JSON_HEADERS
     });
 
-    // JSON objet submission (formValue) need to be within an array
+    // JSON object submission (formValue) need to be within an array
     return this._http.post(APP_SETTINGS.ALIQUOTS_URL, [formValue], options)
     .map((response: Response) => <any[]>response.json())
       .catch(this.handleError)

@@ -8,6 +8,7 @@ import 'rxjs/add/operator/catch';
 import { APP_SETTINGS } from '../app.settings';
 
 import { IExtractionBatchSubmission } from './extraction-batch-submission';
+import { IExtractionBatch } from 'app/extractions/extraction-batch';
 
 @Injectable()
 export class ExtractionBatchService {
@@ -26,17 +27,18 @@ export class ExtractionBatchService {
 
   }
 
-  // public update(formValue: IAnalysisBatch): Observable<IAnalysisBatch> {
+  public update(formValue): Observable<IExtractionBatch> {
 
-  //   let options = new RequestOptions({
-  //     headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
-  //   });
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
 
-  //   return this._http.put(APP_SETTINGS.ANALYSIS_BATCH_URL + formValue.id + '/', formValue, options)
-  //     .map(this.extractData)
-  //     .catch(this.handleError);
+    return this._http.put(APP_SETTINGS.EXTRACTION_BATCHES_URL + formValue.id + '/', formValue, options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError);
 
-  // }
+
+  }
 
 
   private handleError(error: Response) {

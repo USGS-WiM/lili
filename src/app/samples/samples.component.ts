@@ -352,7 +352,7 @@ export class SamplesComponent implements OnInit {
   //   }
 
   // callback for the freeze samples button
-  freezeSample(selectedSampleArray) {
+  assignFreezerLocation(selectedSampleArray) {
 
     this.lastOccupiedSpotLoading = true;
     this.showLastOccupiedSpot = false;
@@ -552,7 +552,7 @@ export class SamplesComponent implements OnInit {
     return newItem.id === this;
   }
 
-  onSubmitFreeze(formValue) {
+  onSubmitFreezerLocation(formValue) {
     this.submitLoading = true;
     formValue.freezer = Number(formValue.freezer);
     formValue.rack = Number(formValue.rack);

@@ -15,7 +15,7 @@ export interface Iabworksheet {
     targetNames: string[];
     eluted_extraction_volume: number;
     reverse_extraction_no: number;
-    rt_reaction_volume: string;
+    rt_reaction_volume: number;
     rt_date: string;
     extraction_submission: IExtractionSubmission[];
 }

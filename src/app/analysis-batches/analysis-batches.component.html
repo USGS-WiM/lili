@@ -802,18 +802,20 @@
         <div class="row">
             <div class="col-sm-12">
 
+                <label></label>
+
                 <table class="table table-compact">
                     <thead>
                         <tr>
                             <th>Target</th>
-                            <th>Type</th>
+                            <th>Nucleic Acid Type</th>
                             <th>Replicates</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let target of targetDetailArray">
-                            <td>{{target.name}}</td>
-                            <td>{{target.nucleic_acid_type}}</td>
+                            <td>{{target.code}}</td>
+                            <td>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}</td>
                             <td>{{target.replicates}}</td>
                         </tr>
                     </tbody>

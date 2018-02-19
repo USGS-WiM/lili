@@ -20,6 +20,7 @@ import { AnalysisBatchService } from '../analysis-batch.service';
 import { ExtractionMethodService } from '../../extractions/extraction-method.service';
 import { TargetService } from '../../targets/target.service';
 import { UnitService } from '../../units/unit.service';
+import { ExtractionBatchService } from 'app/extractions/extraction-batch.service';
 
 @Component({
   selector: 'analysis-batch-detail',
@@ -59,6 +60,10 @@ export class AnalysisBatchDetailComponent implements OnInit {
   currentExtractionNo: number;
   expanded: boolean = false;
 
+  submitLoading: boolean = false;
+  extractionEditErrorFlag: boolean = false;
+  extractionEditSuccessFlag: boolean = false;
+
   submitted;
 
   selected = [];
@@ -66,11 +71,12 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   editExtractionBatchForm = new FormGroup({
     id: new FormControl(''),
+    analysis_batch: new FormControl(''),
+    extraction_method: new FormControl(''),
     extraction_number: new FormControl(''),
     extraction_volume: new FormControl(''),
-    elution_volume: new FormControl(''),
-    extraction_method: new FormControl(''),
-    extraction_date: new FormControl('')
+    extraction_date: new FormControl(''),
+    elution_volume: new FormControl('')
   });
 
   // editInhibitionForm = new FormGroup({
@@ -91,13 +97,14 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   constructor(private _analysisBatchService: AnalysisBatchService,
     private _extractionMethodService: ExtractionMethodService,
+    private _extractionBatchService: ExtractionBatchService,
     private _targetService: TargetService,
     private _unitService: UnitService
   ) { }
 
   ngOnInit() {
     // this.ABDetailsLoading = true;
-    console.log("on init loading val: ", this.ABDetailsLoading)
+    // console.log("on init loading val: ", this.ABDetailsLoading)
 
     this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
 
@@ -156,8 +163,8 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   public buildABExtractionArray(extractionBatchArray) {
     let abExtractionArray: IExtraction[] = [];
-    for (let extractionbatch of extractionBatchArray ) {
-      for (let extraction of extractionbatch.extractions){
+    for (let extractionbatch of extractionBatchArray) {
+      for (let extraction of extractionbatch.extractions) {
         abExtractionArray.push(extraction);
       }
     }
@@ -169,11 +176,12 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
     this.editExtractionBatchForm.setValue({
       id: extractionbatch.id,
+      analysis_batch: extractionbatch.analysis_batch,
+      extraction_method: extractionbatch.extraction_method.id,
       extraction_number: extractionbatch.extraction_number,
       extraction_volume: extractionbatch.extraction_volume,
-      elution_volume: extractionbatch.elution_volume,
-      extraction_method: extractionbatch.extraction_method.id,
-      extraction_date: extractionbatch.extraction_date
+      extraction_date: extractionbatch.extraction_date,
+      elution_volume: extractionbatch.elution_volume
     });
 
     // show the edit detail modal if not showing already
@@ -232,6 +240,21 @@ export class AnalysisBatchDetailComponent implements OnInit {
   }
 
   onSubmit(formID, formValue) {
+
+    if (formID === "editEB") {
+      this._extractionBatchService.update(formValue)
+        .subscribe(
+        (updatedExtractionBatch) => {
+          this.extractionEditSuccessFlag = true;
+          this.extractionEditErrorFlag = false;
+        },
+        error => {
+          this.errorMessage = <any>error
+          this.extractionEditSuccessFlag = false;
+          this.extractionEditErrorFlag = true;
+        }
+        );
+    }
 
   }
 
