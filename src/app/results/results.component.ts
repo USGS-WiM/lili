@@ -52,7 +52,7 @@ export class ResultsComponent implements OnInit {
     // on init, call getTargets function of the TargetService, set results to allTargets var
     this._targetService.getTargets()
       .subscribe(targets => this.allTargets = targets,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
   }
 
@@ -132,7 +132,8 @@ export class ResultsComponent implements OnInit {
     let input = fileInput.target
     let fileName = fileInput.target.files[0].name;
 
-    let fileNamePattern: RegExp = (/\d\d\d\d\d-\d-[A-z]+-\d/);
+    // let fileNamePattern: RegExp = (/\d\d\d\d\d-\d-[A-z]+-\d/);
+    let fileNamePattern: RegExp = (/\d+-\d-[a-zA-Z0-9]+-\d+/);
 
     if (!fileNamePattern.test(fileName)) {
       this.targetFileNameErrorFlag = true;
@@ -219,17 +220,18 @@ export class ResultsComponent implements OnInit {
     this.parsedTargetResults = targetResults;
 
     // TODO: finish. currently pcrreplicatebatch endpoint is broken, see https://github.com/USGS-WiM/lide/issues/72
-    this._pcrReplicateBatchService.getID(targetResults.analysis_batch, targetResults.extraction_number, targetResults.replicate_number)
+    this._pcrReplicateBatchService.getID(targetResults.analysis_batch,
+      targetResults.extraction_number, targetResults.target, targetResults.replicate_number)
       .subscribe(
-      (pcrReplicateBatchID) => {
-        this.pcrReplicateBatchIDErrorFlag = false;
-        this.resultsSubmissionReady = true;
-        this.parsedTargetResults_pcrBatchID = pcrReplicateBatchID;
-      },
-      error => {
-        this.pcrReplicateBatchIDErrorFlag = true;
-        this.resultsSubmissionReady = false;
-      }
+        (pcrReplicateBatchID) => {
+          this.pcrReplicateBatchIDErrorFlag = false;
+          this.resultsSubmissionReady = true;
+          this.parsedTargetResults_pcrBatchID = pcrReplicateBatchID;
+        },
+        error => {
+          this.pcrReplicateBatchIDErrorFlag = true;
+          this.resultsSubmissionReady = false;
+        }
       )
   }
 
@@ -263,16 +265,16 @@ export class ResultsComponent implements OnInit {
 
     this._inhibitionService.submitRawInhibitionResults(this.parsedInhResults)
       .subscribe(
-      (calculatedDilutions) => {
-        console.log(calculatedDilutions);
-        this.inhLoadingFlag = false;
-        this.dilutionFactorsCalculated = true;
-      },
-      error => {
-        this.inhLoadingFlag = false;
-        this.inhRawErrorMessage = <any>error
-        this.inhRawErrorFlag = true;
-      }
+        (calculatedDilutions) => {
+          console.log(calculatedDilutions);
+          this.inhLoadingFlag = false;
+          this.dilutionFactorsCalculated = true;
+        },
+        error => {
+          this.inhLoadingFlag = false;
+          this.inhRawErrorMessage = <any>error
+          this.inhRawErrorFlag = true;
+        }
       )
   }
 
@@ -281,15 +283,15 @@ export class ResultsComponent implements OnInit {
     // TODO: submit target results to web services
     this._pcrReplicateBatchService.update(this.parsedTargetResults_pcrBatchID, this.parsedTargetResults)
       .subscribe(
-      (results) => {
-        console.log(results);
-        this.resultsSubmissionErrorFlag = true;
-        this.resultsSubmissionSuccessFlag = false;
-      },
-      error => {
-        this.resultsSubmissionErrorFlag = true;
-        this.resultsSubmissionSuccessFlag = false;
-      }
+        (results) => {
+          console.log(results);
+          this.resultsSubmissionErrorFlag = true;
+          this.resultsSubmissionSuccessFlag = false;
+        },
+        error => {
+          this.resultsSubmissionErrorFlag = true;
+          this.resultsSubmissionSuccessFlag = false;
+        }
       )
   }
 
