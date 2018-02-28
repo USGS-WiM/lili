@@ -27,6 +27,7 @@ export class ResultsComponent implements OnInit {
   parsedTargetResults;
   parsedTargetResults_pcrBatchID;
   resultsSubmissionReady: boolean = false;
+  validationResponseReady: boolean = false;
 
   inhLoadingFlag: boolean = false;
   inhRawErrorMessage: string = '';
@@ -96,7 +97,8 @@ export class ResultsComponent implements OnInit {
     let input = fileInput.target
     let fileName = fileInput.target.files[0].name;
 
-    let fileNamePattern: RegExp = (/\d\d\d\d\d-\d-I[DR]\.txt/);
+    // let fileNamePattern: RegExp = (/\d+-\d-I[DR]\.txt/);
+    let fileNamePattern: RegExp = (/\d+-\d+-I[DR]\.txt/);
 
     if (!fileNamePattern.test(fileName)) {
       this.inhFileNameErrorFlag = true;
@@ -133,7 +135,7 @@ export class ResultsComponent implements OnInit {
     let fileName = fileInput.target.files[0].name;
 
     // let fileNamePattern: RegExp = (/\d\d\d\d\d-\d-[A-z]+-\d/);
-    let fileNamePattern: RegExp = (/\d+-\d-[a-zA-Z0-9]+-\d+/);
+    let fileNamePattern: RegExp = (/\d+-\d+-[a-zA-Z0-9]+-\d+.txt/);
 
     if (!fileNamePattern.test(fileName)) {
       this.targetFileNameErrorFlag = true;
@@ -178,8 +180,9 @@ export class ResultsComponent implements OnInit {
       pcr_neg_cq_value: null,
       pcr_neg_concentration: null,
       pcr_pos_cq_value: null,
+      pcr_pos_gc_reaction: null,
       pcr_pos_concentration: null,
-      pcrreplicates: []
+      updated_pcrreplicates: []
     }
     let fileNameSansExtension = fileName.replace(".txt", "")
     let fileMetadata = fileNameSansExtension.split("-");
@@ -210,7 +213,7 @@ export class ResultsComponent implements OnInit {
       }
 
       if (numbersOnlyPattern.test(rep.Name)) {
-        targetResults.pcrreplicates.push({
+        targetResults.updated_pcrreplicates.push({
           "sample": Number(rep.Name),
           "cq_value": Number(rep.Cp),
           "gc_reaction": Number(rep.Concentration)
@@ -219,14 +222,14 @@ export class ResultsComponent implements OnInit {
     }
     this.parsedTargetResults = targetResults;
 
-    // TODO: finish. currently pcrreplicatebatch endpoint is broken, see https://github.com/USGS-WiM/lide/issues/72
+    // retrieve the PCR replicate batch ID based on text file name metadata
     this._pcrReplicateBatchService.getID(targetResults.analysis_batch,
       targetResults.extraction_number, targetResults.target, targetResults.replicate_number)
       .subscribe(
-        (pcrReplicateBatchID) => {
+        (pcrReplicateBatch) => {
+          this.parsedTargetResults_pcrBatchID = pcrReplicateBatch[0].id;
           this.pcrReplicateBatchIDErrorFlag = false;
           this.resultsSubmissionReady = true;
-          this.parsedTargetResults_pcrBatchID = pcrReplicateBatchID;
         },
         error => {
           this.pcrReplicateBatchIDErrorFlag = true;
@@ -287,6 +290,7 @@ export class ResultsComponent implements OnInit {
           console.log(results);
           this.resultsSubmissionErrorFlag = true;
           this.resultsSubmissionSuccessFlag = false;
+          this.validationResponseReady = true;
         },
         error => {
           this.resultsSubmissionErrorFlag = true;

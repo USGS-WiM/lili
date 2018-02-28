@@ -478,36 +478,86 @@
 
         <div *ngIf="extractForm.valid && !loadingFlag && !extractionFinished">
 
-            <div>You are about to extract Analysis Batch {{selectedAnalysisBatchID}}. Please confirm the details below.</div>
-
             <div>
-                <label>Extraction</label>
-                <ul class="list">
-                    <li>Extraction Volume: {{extractForm.value.extraction_volume}} µL</li>
-                    <li>Elution Volume: {{extractForm.value.elution_volume}} µL</li>
-                    <li>Extraction Method: {{extractForm.value.extraction_method | displayValue:'name':this.allExtractionMethods
-                        }}
-                    </li>
-                    <li>Extraction Date: {{extractForm.value.extraction_date | date:'shortDate'}}</li>
-                    <li>Re-Extraction: {{(extractForm.value.reextraction) === null ? 'No' : 'Yes'}}</li>
-                    <li>Sample Dilution Factor: {{extractForm.value.sample_dilution_factor}}</li>
-                    <li>qPCR Template Volume: {{extractForm.value.qpcr_template_volume}} µL</li>
-                    <li>qPCR Reaction Volume: {{extractForm.value.qpcr_reaction_volume}} µL</li>
-                    <li>qPCR Date: {{extractForm.value.qpcr_date | date:'shortDate'}}</li>
-                </ul>
+                <h4>You are about to extract Analysis Batch
+                    <b>{{selectedAnalysisBatchID}}</b>. Please confirm the details below.</h4>
             </div>
 
             <div>
-                <label>Reverse Transcription</label>
-                <ul class="list">
-                    <li>Template Volume: {{extractForm.value.new_rt.template_volume}} µL</li>
-                    <li>Reaction Volume: {{extractForm.value.new_rt.reaction_volume}} µL</li>
-                    <li>RT Date: {{extractForm.value.new_rt.rt_date | date:'shortDate' }}</li>
-                    <li>Re-RT: {{ extractForm.value.new_rt.re_rt === null ? 'No' : 'Yes'}}</li>
-                </ul>
+                <label>
+                    <h4>Extraction</h4>
+                </label>
+                <table class="table table-vertical">
+                    <tbody>
+                        <tr>
+                            <th>Extraction Volume</th>
+                            <td>{{extractForm.value.extraction_volume}} µL</td>
+                        </tr>
+                        <tr>
+                            <th>Elution Volume</th>
+                            <td>{{extractForm.value.elution_volume}} µL</td>
+                        </tr>
+                        <tr>
+                            <th>Extraction Method</th>
+                            <td>{{extractForm.value.extraction_method | displayValue:'name':this.allExtractionMethods}}</td>
+                        </tr>
+                        <tr>
+                            <th>Extraction Date</th>
+                            <td>{{extractForm.value.extraction_date | date:'shortDate'}}</td>
+                        </tr>
+                        <tr>
+                            <th>Re-Extraction</th>
+                            <td>{{(extractForm.value.reextraction) === null ? 'No' : 'Yes'}}</td>
+                        </tr>
+                        <tr>
+                            <th>Sample Dilution Factor</th>
+                            <td>{{extractForm.value.sample_dilution_factor}}</td>
+                        </tr>
+                        <tr>
+                            <th>qPCR Template Volume</th>
+                            <td>{{extractForm.value.qpcr_template_volume}} µL</td>
+                        </tr>
+                        <tr>
+                            <th>qPCR Reaction Volume</th>
+                            <td>{{extractForm.value.qpcr_reaction_volume}} µL</td>
+                        </tr>
+                        <tr>
+                            <th>qPCR Date</th>
+                            <td>{{extractForm.value.qpcr_date | date:'shortDate'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <label>Inhibitions</label>
+            <div *ngIf="rnaTargetsSelected">
+                <label>
+                    <h4>Reverse Transcription</h4>
+                </label>
+                <table class="table table-vertical">
+                    <tbody>
+                        <tr>
+                            <th>Template Volume</th>
+                            <td>{{extractForm.value.new_rt.template_volume}} µL</td>
+                        </tr>
+                        <tr>
+                            <th>Reaction Volume</th>
+                            <td>{{extractForm.value.new_rt.reaction_volume}} µL</td>
+                        </tr>
+                        <tr>
+                            <th>RT Date</th>
+                            <td>{{extractForm.value.new_rt.rt_date | date:'shortDate' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Re-RT</th>
+                            <td>{{ extractForm.value.new_rt.re_rt === null ? 'No' : 'Yes'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <label>
+                <h4>Inhibitions</h4>
+            </label>
             <div *ngIf="createInhibitionForm.value.dna">Creating new inhibitions for all DNA targets, with inhibition date {{createInhibitionForm.value.inhibition_date_dna
                 | date:'shortDate'}}</div>
 
@@ -527,7 +577,10 @@
             </div>
 
             <div>
-                <label>Analyzing for the following targets:</label>
+                <label>
+                    <h4>Targets</h4>
+                </label>
+                <label>This Analysis Batch is being analyzed for the following targets:</label>
                 <ul>
                     <li *ngFor="let replicate of extractForm.value.new_replicates">{{replicate.count}} replicates {{replicate.target | displayValue:'name':this.allTargets}}</li>
                 </ul>

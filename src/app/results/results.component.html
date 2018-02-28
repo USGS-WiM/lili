@@ -85,10 +85,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-block" *ngIf="parsedTargetResults">
-                            <div class="card-title">Results Confirmation</div>
+                        <!-- raw results upload -->
+                        <div class="card-block" *ngIf="parsedTargetResults && !validationResponseReady">
+                            <div class="card-title">Raw Results Confirmation</div>
                             <div class="card-text">
-
                                 <table class="table table-compact" style="width: 15em">
                                     <thead>
                                         <tr>
@@ -99,7 +99,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let rep of parsedTargetResults.pcrreplicates; let i = index">
+                                        <tr *ngFor="let rep of parsedTargetResults.updated_pcrreplicates; let i = index">
                                             <td>{{i+1}}</td>
                                             <td class="left">{{rep.sample}}</td>
                                             <td class="left">{{rep.cq_value}}</td>
@@ -108,7 +108,6 @@
                                     </tbody>
                                 </table>
                                 <br>
-
                                 <div class="alert alert-danger" *ngIf="pcrReplicateBatchIDErrorFlag">
                                     <div class="alert-items">
                                         <div class="alert-item static">
@@ -116,12 +115,12 @@
                                                 <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
                                             </div>
                                             <span class="alert-text">
-                                                The submitted analysis batch/extraction number/replicate number combination was not found in the database. Please check filename for errors and try again.
+                                                The submitted analysis batch/extraction number/replicate number combination was not found in the database. Please check filename
+                                                for errors and try again.
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-
                                 <clr-alert [clrAlertType]="'alert-danger'" *ngIf="resultsSubmissionErrorFlag">
                                     <div clr-alert-item class="alert-item">
                                         <span class="alert-text">Submission error. Results not uploaded to database.</span>
@@ -130,17 +129,22 @@
                                         </div>
                                     </div>
                                 </clr-alert>
-    
                                 <clr-alert [clrAlertType]="'alert-success'" *ngIf="resultsSubmissionSuccessFlag">
                                     <div clr-alert-item class="alert-item">
                                         <span class="alert-text">Results sucessfully submitted.</span>
-                                      
+
                                     </div>
                                 </clr-alert>
-    
-                                <button class="btn btn-primary" [disabled]="!resultsSubmissionReady" (click)="submitRawTargetResults()">Submit Results</button>
+
+                                <button class="btn btn-primary" [disabled]="!resultsSubmissionReady" (click)="submitRawTargetResults()">Submit & Validate Results</button>
                             </div>
                         </div>
+                        <!-- end raw results upload -->
+                        <!-- results validation-->
+                        <div class="card-block" *ngIf="validationResponseReady">
+                            Results Validation Goes Here
+                        </div>
+                        <!-- end results validation-->
                     </div>
                 </clr-tab-content>
             </clr-tab>
