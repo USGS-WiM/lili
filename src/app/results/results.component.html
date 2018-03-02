@@ -141,11 +141,27 @@
                                             </tr>
                                             <tr>
                                                 <th>PCR Neg</th>
-                                                <td>{{pcrResultsValidationObject.pcr_neg_cq_value}}</td>
+                                                <td>
+                                                    <span class="label" [ngClass]="{'label-danger' : pcrResultsValidationObject.pcr_neg_bad_result_flag, 'label-success': !pcrResultsValidationObject.pcr_neg_bad_result_flag}">{{pcrResultsValidationObject.pcr_neg_bad_result_flag ? "Invalid" : "Valid"}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>PCR Pos</th>
+                                                <td>
+                                                    <span class="label" [ngClass]="{'label-danger' : pcrResultsValidationObject.pcr_pos_bad_result_flag, 'label-success': !pcrResultsValidationObject.pcr_pos_bad_result_flag}">{{pcrResultsValidationObject.pcr_pos_bad_result_flag ? "Invalid" : "Valid"}}</span>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th>Ext Neg</th>
-                                                <td>{{pcrResultsValidationObject.ext_neg_cq_value}}</td>
+                                                <td>
+                                                    <span class="label" [ngClass]="{'label-danger' : pcrResultsValidationObject.ext_neg_bad_result_flag, 'label-success': !pcrResultsValidationObject.ext_neg_bad_result_flag}">{{pcrResultsValidationObject.ext_neg_bad_result_flag ? "Invalid" : "Valid"}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>RT Neg</th>
+                                                <td>
+                                                    <span class="label" [ngClass]="{'label-danger' : pcrResultsValidationObject.rt_neg_bad_result_flag, 'label-success': !pcrResultsValidationObject.rt_neg_bad_result_flag}">{{pcrResultsValidationObject.rt_neg_bad_result_flag ? "Invalid" : "Valid"}}</span>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th>Standard Curve</th>
@@ -172,7 +188,7 @@
                                         <td class="left">{{rep.cq_value}}</td>
                                         <td class="left">{{rep.gc_reaction}}</td>
                                         <td class="left">
-                                            <span [ngClass]="{'label label-danger' : rep.bad_result_flag, 'label label-success': !rep.bad_result_flag}">{{rep.bad_result_flag ? "Invalid" : "Valid"}}</span>
+                                            <span class="label" [ngClass]="{'label-danger' : rep.bad_result_flag, 'label-success': !rep.bad_result_flag}">{{rep.bad_result_flag ? "Invalid" : "Valid"}}</span>
                                         </td>
                                     </tr>
                                 </tbody>
