@@ -24,6 +24,8 @@ export class ResultsComponent implements OnInit {
 
   allTargets: ITarget[] = [];
 
+  selected = [];
+
   inhFileNameErrorFlag: boolean = false;
   parsedInhResults;
   parsedRawTargetResults;
@@ -44,6 +46,8 @@ export class ResultsComponent implements OnInit {
 
   resultsSubmissionErrorFlag: boolean = false;
   resultsSubmissionSuccessFlag: boolean = false;
+
+  showHideOverrideValidityModal: boolean = false;
 
   errorMessage: string;
 
@@ -306,6 +310,12 @@ export class ResultsComponent implements OnInit {
           this.resultsSubmissionSuccessFlag = false;
         }
       )
+  }
+
+  overrideReplicateValidity(selectedReps) {
+    console.log(selectedReps);
+
+
   }
 
 }

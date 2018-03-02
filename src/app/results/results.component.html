@@ -4,35 +4,41 @@
             <clr-tab>
                 <button clrTabLink>Target Organism Concentration</button>
                 <clr-tab-content active>
-                    <div class="card">
-                        <div class="card-header">
-                            Target Organism Concentration Results
+                    <div>
+                        <div>
+                            <h3>Target Organism Concentration Results</h3>
                         </div>
+
                         <div class="card-block">
-                            <div class="card-title">Upload Target Organism Concentration File</div>
-                            <div class="card-text">
-                                <input type="file" (change)="loadTargetFile($event)" placeholder="Upload file" accept="*">
-                                <div class="alert alert-danger" *ngIf="targetFileNameErrorFlag">
-                                    <div class="alert-items">
-                                        <div class="alert-item static">
-                                            <div class="alert-icon-wrapper">
-                                                <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                            <div class="card-title">
+                                <clr-icon shape="upload"></clr-icon> Upload Target Organism Concentration File</div>
+                            <p>
+
+                                <div class="card-text">
+
+                                    <input type="file" (change)="loadTargetFile($event)" placeholder="Upload file" accept="*">
+                                    <div class="alert alert-danger" *ngIf="targetFileNameErrorFlag">
+                                        <div class="alert-items">
+                                            <div class="alert-item static">
+                                                <div class="alert-icon-wrapper">
+                                                    <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                                                </div>
+                                                <span class="alert-text">
+                                                    Incorrect file name or extension chosen. Target Organism Concentration files should have the '.txt' file extension, and have
+                                                    the following name convention: [Analysis Batch ID]-[Extraction number]-[Target
+                                                    code]-[Replicate number]. Example: 10001-1-PV-1.txt
+                                                </span>
                                             </div>
-                                            <span class="alert-text">
-                                                Incorrect file name or extension chosen. Target Organism Concentration files should have the '.txt' file extension, and have
-                                                the following name convention: [Analysis Batch ID]-[Extraction number]-[Target
-                                                code]-[Replicate number]. Example: 10001-1-PV-1.txt
-                                            </span>
                                         </div>
                                     </div>
+
                                 </div>
-                            </div>
                         </div>
                         <hr>
                         <!-- raw results upload -->
-                        <div class="card-block" *ngIf="parsedRawTargetResults && !validationResponseReady">
+                        <div *ngIf="parsedRawTargetResults && !validationResponseReady">
                             <!-- <div class="card-title">Raw Results Confirmation</div> -->
-                            <div class="card-text">
+                            <div>
                                 <h4>
                                     <b>Text file raw results confirmation</b>
                                 </h4>
@@ -51,7 +57,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th>Target</th>
-                                                    <td>{{parsedRawTargetResults.target}}</td>
+                                                    <td>{{parsedRawTargetResults.target | displayValue:'name':this.allTargets}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Replicate Number</th>
@@ -113,14 +119,14 @@
                         </div>
                         <!-- end raw results upload -->
                         <!-- results validation-->
-                        <div class="card-block" *ngIf="validationResponseReady">
+                        <div *ngIf="validationResponseReady">
                             <div class="card-title">
-                                <b>Results Validation</b>
+                                <b>Results Validation</b><br>
                                 <label>Text file: {{parsedRawTargetResults.analysis_batch}}-{{parsedRawTargetResults.extraction_number}}-{{textFileNameTargetCode}}-{{parsedRawTargetResults.replicate_number}}</label>
 
                             </div>
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-4 col-sm-6">
                                     <table class="table table-vertical table-compact">
                                         <tbody>
                                             <tr>
@@ -171,7 +177,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <table class="table table-compact" style="width: 15em">
+                            <!-- <table class="table table-compact" style="width: 15em">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -192,7 +198,35 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table> -->
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-12">
+                                    <clr-datagrid [(clrDgSelected)]="selected">
+                                        <clr-dg-action-bar>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="showHideOverrideValidityModal = true">
+                                                    <clr-icon shape="switch"></clr-icon> Switch Validity</button>
+                                            </div>
+                                        </clr-dg-action-bar>
+                                        <clr-dg-column [clrDgField]="'name'">Sample</clr-dg-column>
+                                        <clr-dg-column [clrDgField]="'code'">Cq Value</clr-dg-column>
+                                        <clr-dg-column [clrDgField]="'type'">Concentration</clr-dg-column>
+                                        <clr-dg-column [clrDgField]="'type'">Validity</clr-dg-column>
+
+                                        <clr-dg-row *clrDgItems="let rep of pcrResultsValidationObject.pcrreplicates" [clrDgItem]="rep">
+                                            <clr-dg-cell>{{rep.sample}}</clr-dg-cell>
+                                            <clr-dg-cell>{{rep.cq_value}}</clr-dg-cell>
+                                            <clr-dg-cell>{{rep.gc_reaction}}</clr-dg-cell>
+                                            <clr-dg-cell>
+                                                <span class="label" [ngClass]="{'label-danger' : rep.bad_result_flag, 'label-success': !rep.bad_result_flag}">{{rep.bad_result_flag ? "Invalid" : "Valid"}}</span>
+                                            </clr-dg-cell>
+                                        </clr-dg-row>
+                                        <clr-dg-footer>{{pcrResultsValidationObject.pcrreplicates.length}} reps</clr-dg-footer>
+                                    </clr-datagrid>
+                                </div>
+                            </div>
+
+
                         </div>
                         <!-- end results validation-->
                     </div>
@@ -255,8 +289,6 @@
                 </clr-tab-content>
             </clr-tab>
 
-
-
             <clr-tab>
                 <button clrTabLink>Batch Submit Ext Pos Controls</button>
                 <clr-tab-content>
@@ -293,3 +325,28 @@
         </clr-tabs>
     </div>
 </div>
+
+<!-- begin override validity modal -->
+<clr-modal [(clrModalOpen)]="showHideOverrideValidityModal">
+    <h3 class="modal-title">
+        <clr-icon shape="switch" size="36"></clr-icon> Switch (override) validity of individual replicates</h3>
+    <div class="modal-body">
+        <p>You are about to override the validity of the following replicates. This will not change the value of any associated
+            control, but will overwrite the validity flag of the replicate and
+            <b>will affect results calculation.</b>
+            <p>
+
+                <ul class="list compact list-unstyled">
+                    <li *ngFor="let rep of selected">Overriding sample {{rep.sample}} from
+                        <span class="label" [ngClass]="{'label-danger' : rep.bad_result_flag, 'label-success': !rep.bad_result_flag}">{{rep.bad_result_flag ? "Invalid" : "Valid"}}</span> to
+                        <span class="label" [ngClass]="{'label-danger' : !rep.bad_result_flag, 'label-success': rep.bad_result_flag}">{{!(rep.bad_result_flag) ? "Invalid" : "Valid"}}</span>
+                    </li>
+                </ul>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" (click)="overrideReplicateValidity(selected)" [clrLoading]="submitLoading">Save Changes</button>
+        <button class="btn btn-info" (click)="showHideOverrideValidityModal = !showHideOverrideValidityModal">Cancel</button>
+    </div>
+</clr-modal>
+<!-- end override validity modal -->
