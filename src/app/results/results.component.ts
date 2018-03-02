@@ -13,6 +13,8 @@ import { PcrReplicateBatchService } from '../pcr-replicates/pcr-replicate-batch.
 import { RegExp } from 'core-js/library/web/timers';
 import { FormGroup } from '@angular/forms/src/model';
 
+import { NgClass } from '@angular/common';
+
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
@@ -24,10 +26,13 @@ export class ResultsComponent implements OnInit {
 
   inhFileNameErrorFlag: boolean = false;
   parsedInhResults;
-  parsedTargetResults;
-  parsedTargetResults_pcrBatchID;
+  parsedRawTargetResults;
+  pcrResultsValidationObject;
+  parsedRawTargetResults_pcrBatchID;
   resultsSubmissionReady: boolean = false;
   validationResponseReady: boolean = false;
+
+  textFileNameTargetCode;
 
   inhLoadingFlag: boolean = false;
   inhRawErrorMessage: string = '';
@@ -167,7 +172,7 @@ export class ResultsComponent implements OnInit {
   }
 
   parseTargetJSON(fileName, rawResults) {
-    let targetResults: ITargetResults = {
+    let rawTargetResults: ITargetResults = {
       target: null,
       analysis_batch: null,
       extraction_number: null,
@@ -189,45 +194,48 @@ export class ResultsComponent implements OnInit {
 
     let numbersOnlyPattern: RegExp = (/^[0-9]*$/);
 
-    targetResults.analysis_batch = Number(fileMetadata[0]);
-    targetResults.extraction_number = Number(fileMetadata[1]);
-    targetResults.target = this.lookupTargetID(fileMetadata[2]);
-    targetResults.replicate_number = Number(fileMetadata[3])
+    rawTargetResults.analysis_batch = Number(fileMetadata[0]);
+    rawTargetResults.extraction_number = Number(fileMetadata[1]);
+    rawTargetResults.target = this.lookupTargetID(fileMetadata[2]);
+    rawTargetResults.replicate_number = Number(fileMetadata[3])
+
+    // strictly for display on confirmation div
+    this.textFileNameTargetCode = fileMetadata[2]
 
     for (let rep of rawResults) {
       if (rep.Name === "EXT NEG") {
-        targetResults.ext_neg_cq_value = Number(rep.Cp);
-        targetResults.ext_neg_concentration = Number(rep.Concentration);
+        rawTargetResults.ext_neg_cq_value = Number(rep.Cp);
+        rawTargetResults.ext_neg_concentration = Number(rep.Concentration);
       }
       if (rep.Name === "PCR NEG") {
-        targetResults.pcr_neg_cq_value = Number(rep.Cp);
-        targetResults.pcr_neg_concentration = Number(rep.Concentration);
+        rawTargetResults.pcr_neg_cq_value = Number(rep.Cp);
+        rawTargetResults.pcr_neg_concentration = Number(rep.Concentration);
       }
       if (rep.Name === "POS") {
-        targetResults.pcr_pos_cq_value = Number(rep.Cp);
-        targetResults.pcr_pos_concentration = Number(rep.Concentration);
+        rawTargetResults.pcr_pos_cq_value = Number(rep.Cp);
+        rawTargetResults.pcr_pos_concentration = Number(rep.Concentration);
       }
       if (rep.Name === "RT NEG") {
-        targetResults.rt_neg_cq_value = Number(rep.Cp);
-        targetResults.rt_neg_concentration = Number(rep.Concentration);
+        rawTargetResults.rt_neg_cq_value = Number(rep.Cp);
+        rawTargetResults.rt_neg_concentration = Number(rep.Concentration);
       }
 
       if (numbersOnlyPattern.test(rep.Name)) {
-        targetResults.updated_pcrreplicates.push({
+        rawTargetResults.updated_pcrreplicates.push({
           "sample": Number(rep.Name),
           "cq_value": Number(rep.Cp),
           "gc_reaction": Number(rep.Concentration)
         });
       }
     }
-    this.parsedTargetResults = targetResults;
+    this.parsedRawTargetResults = rawTargetResults;
 
     // retrieve the PCR replicate batch ID based on text file name metadata
-    this._pcrReplicateBatchService.getID(targetResults.analysis_batch,
-      targetResults.extraction_number, targetResults.target, targetResults.replicate_number)
+    this._pcrReplicateBatchService.getID(rawTargetResults.analysis_batch,
+      rawTargetResults.extraction_number, rawTargetResults.target, rawTargetResults.replicate_number)
       .subscribe(
         (pcrReplicateBatch) => {
-          this.parsedTargetResults_pcrBatchID = pcrReplicateBatch[0].id;
+          this.parsedRawTargetResults_pcrBatchID = pcrReplicateBatch[0].id;
           this.pcrReplicateBatchIDErrorFlag = false;
           this.resultsSubmissionReady = true;
         },
@@ -284,10 +292,11 @@ export class ResultsComponent implements OnInit {
   submitRawTargetResults() {
 
     // TODO: submit target results to web services
-    this._pcrReplicateBatchService.update(this.parsedTargetResults_pcrBatchID, this.parsedTargetResults)
+    this._pcrReplicateBatchService.update(this.parsedRawTargetResults_pcrBatchID, this.parsedRawTargetResults)
       .subscribe(
         (results) => {
           console.log(results);
+          this.pcrResultsValidationObject = results;
           this.resultsSubmissionErrorFlag = true;
           this.resultsSubmissionSuccessFlag = false;
           this.validationResponseReady = true;
