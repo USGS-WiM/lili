@@ -121,7 +121,8 @@
                         <!-- results validation-->
                         <div *ngIf="validationResponseReady">
                             <div class="card-title">
-                                <b>Results Validation</b><br>
+                                <b>Results Validation</b>
+                                <br>
                                 <label>Text file: {{parsedRawTargetResults.analysis_batch}}-{{parsedRawTargetResults.extraction_number}}-{{textFileNameTargetCode}}-{{parsedRawTargetResults.replicate_number}}</label>
 
                             </div>
@@ -342,10 +343,29 @@
                         <span class="label" [ngClass]="{'label-danger' : !rep.bad_result_flag, 'label-success': rep.bad_result_flag}">{{!(rep.bad_result_flag) ? "Invalid" : "Valid"}}</span>
                     </li>
                 </ul>
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="replicateUpdateErrorFlag">
+                    <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Submission error. Replicate validity not updated.</span>
+                        <div class="alert-actions">
+                            <a class="alert-action" (click)="onUpdatePCRReplicates(selected)">Try again</a>
+                        </div>
+                    </div>
+                </clr-alert>
+
+                <clr-alert [clrAlertType]="'alert-success'" *ngIf="replicateUpdateSuccessFlag ">
+                    <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Replicates' validity successfully updated.</span>
+                        <div class="alert-actions">
+                            <a class="alert-action" (click)="showHideOverrideValidityModal  = false; replicateUpdateSuccessFlag = false">Close</a>
+                        </div>
+                    </div>
+                </clr-alert>
 
     </div>
+
     <div class="modal-footer">
-        <button class="btn btn-primary" (click)="overrideReplicateValidity(selected)" [clrLoading]="submitLoading">Save Changes</button>
+
+        <button class="btn btn-primary" (click)="onUpdatePCRReplicates(selected)" [clrLoading]="submitLoading">Save Changes</button>
         <button class="btn btn-info" (click)="showHideOverrideValidityModal = !showHideOverrideValidityModal">Cancel</button>
     </div>
 </clr-modal>

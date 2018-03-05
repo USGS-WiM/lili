@@ -594,7 +594,6 @@ export class SamplesComponent implements OnInit {
     this._finalConcentratedSampleVolumeService.create(fcsvArray)
       .subscribe(
       (results) => {
-        console.log(results);
         this.showFCSVCreateError = false;
         this.showFCSVCreateSuccess = true;
         this.submitLoading = false;

@@ -9,11 +9,13 @@ import { ITargetResult } from './target-result';
 import { TargetService } from '../targets/target.service';
 import { InhibitionService } from '../inhibitions/inhibition.service';
 import { PcrReplicateBatchService } from '../pcr-replicates/pcr-replicate-batch.service';
+import { PcrReplicateService } from '../pcr-replicates/pcr-replicate.service';
 
 import { RegExp } from 'core-js/library/web/timers';
 import { FormGroup } from '@angular/forms/src/model';
 
 import { NgClass } from '@angular/common';
+
 
 @Component({
   selector: 'app-results',
@@ -51,10 +53,15 @@ export class ResultsComponent implements OnInit {
 
   errorMessage: string;
 
+  replicateUpdateSuccessFlag: boolean = false;
+  replicateUpdateErrorFlag: boolean = false;
+  submitLoading: boolean = false;
+
   constructor(
     private _inhibitionService: InhibitionService,
     private _targetService: TargetService,
-    private _pcrReplicateBatchService: PcrReplicateBatchService
+    private _pcrReplicateBatchService: PcrReplicateBatchService,
+    private _pcrReplicateService: PcrReplicateService
   ) { }
 
   ngOnInit() {
@@ -312,10 +319,33 @@ export class ResultsComponent implements OnInit {
       )
   }
 
-  overrideReplicateValidity(selectedReps) {
-    console.log(selectedReps);
+  onUpdatePCRReplicates(selectedReps) {
+    this.replicateUpdateSuccessFlag = false;
+    this.replicateUpdateErrorFlag = false;
+    this.submitLoading = true;
 
+    let repArray = [];
 
+    for (let rep of selectedReps) {
+      repArray.push({
+        "id": rep.id,
+        "bad_result_flag": !rep.bad_result_flag
+      })
+    }
+
+    this._pcrReplicateService.update(repArray)
+      .subscribe(
+        (results) => {
+          this.replicateUpdateSuccessFlag = true;
+          this.replicateUpdateErrorFlag = false;
+          this.submitLoading = false;
+        },
+        error => {
+          this.replicateUpdateSuccessFlag = false;
+          this.replicateUpdateErrorFlag = true;
+          this.submitLoading = false;
+        }
+      )
   }
 
 }

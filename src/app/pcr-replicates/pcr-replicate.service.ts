@@ -19,7 +19,7 @@ export class PcrReplicateService {
       headers: APP_SETTINGS.AUTH_JSON_HEADERS
     });
 
-    return this._http.patch(APP_SETTINGS.REPLICATES_URL + replicateArray, options)
+    return this._http.patch(APP_SETTINGS.REPLICATES_URL, replicateArray, options)
       .map((response: Response) => <any[]>response.json())
       .catch(this.handleError);
   }
