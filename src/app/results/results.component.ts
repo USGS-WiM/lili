@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormArray, Validators, PatternValidator } from "@angular/forms/";
 
 import { ITarget } from '../targets/target';
 import { IInhResults } from './inh-results';
@@ -12,9 +13,10 @@ import { PcrReplicateBatchService } from '../pcr-replicates/pcr-replicate-batch.
 import { PcrReplicateService } from '../pcr-replicates/pcr-replicate.service';
 
 import { RegExp } from 'core-js/library/web/timers';
-import { FormGroup } from '@angular/forms/src/model';
 
 import { NgClass } from '@angular/common';
+
+import { APP_SETTINGS } from '../app.settings';
 
 
 @Component({
@@ -25,23 +27,29 @@ import { NgClass } from '@angular/common';
 export class ResultsComponent implements OnInit {
 
   allTargets: ITarget[] = [];
+  nucleicAcidTypes;
 
   selected = [];
 
   inhFileNameErrorFlag: boolean = false;
-  parsedInhResults;
+  parsedRawInhResults;
   parsedRawTargetResults;
   pcrResultsValidationObject;
   parsedRawTargetResults_pcrBatchID;
+  // showResultsDisplay: boolean = false;
+  rawResultsParsed: boolean = false;
   resultsSubmissionReady: boolean = false;
   validationResponseReady: boolean = false;
+  rawInhResultsParsed: boolean = false;
 
   textFileNameTargetCode;
+  inhTextFileNameNAType;
 
   inhLoadingFlag: boolean = false;
   inhRawErrorMessage: string = '';
   inhRawErrorFlag: boolean = false;
   dilutionFactorsCalculated: boolean = false;
+  inhibitionValidationObject;
 
   targetFileNameErrorFlag: boolean = false;
   pcrReplicateBatchIDErrorFlag: boolean = false;
@@ -55,14 +63,35 @@ export class ResultsComponent implements OnInit {
 
   replicateUpdateSuccessFlag: boolean = false;
   replicateUpdateErrorFlag: boolean = false;
+  inhibitionUpdateSuccessFlag: boolean = false;
+  inhibitionUpdateErrorFlag: boolean = false;
   submitLoading: boolean = false;
 
+  dilutionsForm: FormGroup;
+  inhibitionsArray: FormArray;
+
+  buildDilutionsForm() {
+    this.dilutionsForm = this.formBuilder.group({
+      inhibitions: this.formBuilder.array([
+        this.formBuilder.group({
+          id: null,
+          sample: null,
+          dilution_factor: null
+        })
+      ])
+    })
+    this.inhibitionsArray = this.dilutionsForm.get('inhibitions') as FormArray;
+  }
+
   constructor(
+    private formBuilder: FormBuilder,
     private _inhibitionService: InhibitionService,
     private _targetService: TargetService,
     private _pcrReplicateBatchService: PcrReplicateBatchService,
     private _pcrReplicateService: PcrReplicateService
-  ) { }
+  ) {
+    this.buildDilutionsForm();
+  }
 
   ngOnInit() {
 
@@ -70,6 +99,8 @@ export class ResultsComponent implements OnInit {
     this._targetService.getTargets()
       .subscribe(targets => this.allTargets = targets,
         error => this.errorMessage = <any>error);
+
+    this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
 
   }
 
@@ -104,6 +135,15 @@ export class ResultsComponent implements OnInit {
       if (targetCode === target.code) {
         return target.id;
       }
+    }
+  }
+
+  clearFileInput(ctrl) {
+    try {
+      ctrl.value = null;
+    } catch (ex) { }
+    if (ctrl.value) {
+      ctrl.parentNode.replaceChild(ctrl.cloneNode(true), ctrl);
     }
   }
 
@@ -240,6 +280,7 @@ export class ResultsComponent implements OnInit {
       }
     }
     this.parsedRawTargetResults = rawTargetResults;
+    this.rawResultsParsed = true;
 
     // retrieve the PCR replicate batch ID based on text file name metadata
     this._pcrReplicateBatchService.getID(rawTargetResults.analysis_batch,
@@ -269,6 +310,9 @@ export class ResultsComponent implements OnInit {
     let fileMetadata = fileNameSansExtension.split("-");
     let type = fileMetadata[2];
 
+    // strictly for display on confirmation div
+    this.inhTextFileNameNAType = fileMetadata[2];
+
     inhResults.analysis_batch = Number(fileMetadata[0]);
     inhResults.extraction_number = Number(fileMetadata[1]);
     if (type === "ID") { inhResults.nucleic_acid_type = 1 } else if (type === "IR") { inhResults.nucleic_acid_type = 2 }
@@ -280,15 +324,26 @@ export class ResultsComponent implements OnInit {
         inhResults.inhibitions.push({ "sample": Number(sample.Name), "cq_value": Number(sample.Cp) })
       }
     }
-    this.parsedInhResults = inhResults;
+    this.parsedRawInhResults = inhResults;
+    this.rawInhResultsParsed = true;
   }
 
   submitRawInhibitionResults() {
 
-    this._inhibitionService.submitRawInhibitionResults(this.parsedInhResults)
+    this._inhibitionService.submitRawInhibitionResults(this.parsedRawInhResults)
       .subscribe(
         (calculatedDilutions) => {
-          console.log(calculatedDilutions);
+          this.inhibitionValidationObject = calculatedDilutions;
+          this.inhibitionsArray.controls = [];
+          // populate the dilutions form inhibitions array from the calculatedDilutions response
+          for (let inh of calculatedDilutions) {
+            let formGroup: FormGroup = this.formBuilder.group({
+              id: this.formBuilder.control(inh.id),
+              sample: this.formBuilder.control(inh.sample),
+              dilution_factor: this.formBuilder.control(inh.suggested_dilution_factor)
+            })
+            this.inhibitionsArray.push(formGroup);
+          }
           this.inhLoadingFlag = false;
           this.dilutionFactorsCalculated = true;
         },
@@ -302,14 +357,13 @@ export class ResultsComponent implements OnInit {
 
   submitRawTargetResults() {
 
-    // TODO: submit target results to web services
     this._pcrReplicateBatchService.update(this.parsedRawTargetResults_pcrBatchID, this.parsedRawTargetResults)
       .subscribe(
         (results) => {
           console.log(results);
           this.pcrResultsValidationObject = results;
-          this.resultsSubmissionErrorFlag = true;
-          this.resultsSubmissionSuccessFlag = false;
+          this.resultsSubmissionErrorFlag = false;
+          this.resultsSubmissionSuccessFlag = true;
           this.validationResponseReady = true;
         },
         error => {
@@ -346,6 +400,44 @@ export class ResultsComponent implements OnInit {
           this.submitLoading = false;
         }
       )
+  }
+
+  finishValidation() {
+    this.rawResultsParsed = false;
+    this.resultsSubmissionReady = false;
+    this.validationResponseReady = false;
+    this.clearFileInput(document.getElementById("targetFileInput"));
+  }
+
+  submitInhibitions(dilutionsFormValue) {
+    this.submitLoading = true;
+    this.inhibitionUpdateSuccessFlag = false;
+    this.inhibitionUpdateErrorFlag = false;
+
+    let inhibitionsSubmission = [];
+    for (let inh of dilutionsFormValue.inhibitions) {
+      inhibitionsSubmission.push(inh);
+    }
+
+    this._inhibitionService.update(inhibitionsSubmission)
+      .subscribe(
+        (results) => {
+          this.inhibitionUpdateSuccessFlag = true;
+          this.inhibitionUpdateErrorFlag = false;
+          this.submitLoading = false;
+        },
+        error => {
+          this.inhibitionUpdateSuccessFlag = false;
+          this.inhibitionUpdateErrorFlag = true;
+          this.submitLoading = false;
+        }
+      )
+  }
+
+  finishInhibitions() {
+    this.rawInhResultsParsed = false;
+    this.dilutionFactorsCalculated = false;
+    this.clearFileInput(document.getElementById("inhibitionFileInput"));
   }
 
 }

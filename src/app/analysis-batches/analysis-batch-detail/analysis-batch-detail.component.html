@@ -65,7 +65,7 @@
                       <table class="table table-vertical table-compact ">
                         <tbody>
                           <tr *ngFor="let target of extractionbatch.targets">
-                            <th>{{target.code}}</th>
+                            <th>{{target.id | displayValue:'name':this.allTargets}}</th>
                             <td>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes }}</td>
                           </tr>
                         </tbody>

@@ -180,7 +180,7 @@ export class AnalysisBatchesComponent implements OnInit {
         reaction_volume: ['20', [ Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
         rt_date: [''],
         re_rt: null,
-        re_rt_note: ''
+        re_rt_notes: ''
       }),
       new_replicates: this.formBuilder.array([
         this.formBuilder.group({
