@@ -176,11 +176,11 @@ export class AnalysisBatchesComponent implements OnInit {
       qpcr_reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
       qpcr_date: ['', Validators.required],
       new_rt: this.formBuilder.group({
-        template_volume: ['6', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
-        reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
-        rt_date: ['', Validators.required],
+        template_volume: ['6', [ Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+        reaction_volume: ['20', [ Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+        rt_date: [''],
         re_rt: null,
-        re_rt_note: ''
+        re_rt_notes: ''
       }),
       new_replicates: this.formBuilder.array([
         this.formBuilder.group({
@@ -794,6 +794,11 @@ export class AnalysisBatchesComponent implements OnInit {
       delete extraction.row;
       delete extraction.spot;
       delete extraction.aliquots;
+    }
+
+    // if no RNA targets were included in this extraction, remove the new_rt object from the submission
+    if (this.rnaTargetsSelected === false) {
+      delete extractFormValueCopy.new_rt;
     }
 
     this.extractionBatchSubmission = extractFormValueCopy;

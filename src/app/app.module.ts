@@ -62,6 +62,7 @@ import { AliquotService } from "app/aliquots/aliquot.service";
 import { FreezerLocationsService } from "app/aliquots/freezer-locations.service";
 import { FreezerService } from "app/aliquots/freezer.service";
 import { SampleLabelComponent } from "./samples/sample-label/sample-label.component";
+import { PcrReplicateService } from "./pcr-replicates/pcr-replicate.service";
 
 @NgModule({
     declarations: [
@@ -119,6 +120,7 @@ import { SampleLabelComponent } from "./samples/sample-label/sample-label.compon
         ExtractionResolve,
         FilterTypeService,
         PcrReplicateBatchService,
+        PcrReplicateService,
         FinalConcentratedSampleVolumeService,
         FilterResolve,
         MatrixService,

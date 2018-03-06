@@ -546,7 +546,7 @@
                         <clr-stack-label>You have selected the following samples for inclusion in a new Analysis Batch:</clr-stack-label>
 
                         <ul class="list compact">
-                            <li *ngFor="let sample of selected">Sample {{sample.id}} ({{sample.study.name }})</li>
+                            <li *ngFor="let sample of selected">Sample {{sample.id}} ({{sample.study_string}})</li>
                         </ul>
                         <p>
 
@@ -988,13 +988,13 @@
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'filter_flag'">
+            <clr-dg-column >
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Filtered
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'secondary_concentration_flag'">
+            <clr-dg-column >
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     2° Conc
                 </ng-container>

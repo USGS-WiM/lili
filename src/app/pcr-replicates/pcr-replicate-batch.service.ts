@@ -12,7 +12,7 @@ export class PcrReplicateBatchService {
 
   constructor(private _http: Http) { }
 
-  public getID(analysisBatchID, extractionNo, replicateNo): Observable<any> {
+  public getID(analysisBatchID, extractionNo, targetID, replicateNo): Observable<any> {
 
     let options = new RequestOptions({
       headers: APP_SETTINGS.AUTH_JSON_HEADERS
@@ -21,7 +21,8 @@ export class PcrReplicateBatchService {
     return this._http.get(APP_SETTINGS.REPLICATE_BATCH_URL +
       '?analysis_batch=' + analysisBatchID +
       '&extraction_number=' + extractionNo +
-      '&replicate_number=' + replicateNo)
+      '&target=' + targetID +
+      '&replicate_number=' + replicateNo, options)
       .map((response: Response) => <any>response.json())
       .catch(this.handleError);
   }

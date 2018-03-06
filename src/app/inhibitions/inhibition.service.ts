@@ -41,6 +41,16 @@ export class InhibitionService {
 
   }
 
+  public update(inhibitionArray): Observable<any> {
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.patch(APP_SETTINGS.INHIBITIONS_URL, inhibitionArray, options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError);
+  }
+
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
