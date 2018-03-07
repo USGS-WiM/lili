@@ -176,8 +176,8 @@ export class AnalysisBatchesComponent implements OnInit {
       qpcr_reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
       qpcr_date: ['', Validators.required],
       new_rt: this.formBuilder.group({
-        template_volume: ['6', [ Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
-        reaction_volume: ['20', [ Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+        template_volume: ['6', [Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+        reaction_volume: ['20', [Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
         rt_date: [''],
         re_rt: null,
         re_rt_notes: ''
@@ -557,6 +557,32 @@ export class AnalysisBatchesComponent implements OnInit {
           }
         }
       }
+
+      /// lookup inhibition dilution values, append to this.extractWizWorksheetData.new_extractions
+      // this.sampleInhibitions
+
+      // check if extraction.inhibition_dna is a number
+      for (let extraction of this.extractWizWorksheetData.new_extractions) {
+        for (let inh of this.sampleInhibitions) {
+
+          if (inh.id === extraction.inhibition_dna) {
+            if (typeof extraction.inhibition_dna === 'number') {
+              extraction.dna_dilution_factor = inh.dilution_factor;
+            } else {
+              extraction.dna_dilution_factor = null
+            }
+          }
+
+          if (inh.id === extraction.inhibition_rna) {
+            if (typeof extraction.inhibition_rna === 'number') {
+              extraction.rna_dilution_factor = inh.dilution_factor;
+            } else {
+              extraction.rna_dilution_factor = null
+            }
+          }
+        }
+      }
+
       // local var to hold extraction number
       let extractionNumber;
       // add 1 to length of extractionBatches array to get current extraction number
@@ -696,7 +722,7 @@ export class AnalysisBatchesComponent implements OnInit {
                   for (let sample of abSampleInhibitions) {
 
                     // populate sampleInhibitions var with all the inhibitions associated with any sample in this AB
-                    // used for the sample level apply select dropdowns
+                    // used for the sample level inhibition apply select dropdowns
                     for (let inhibition of sample.inhibitions) {
                       this.sampleInhibitions.push(inhibition)
                     }
