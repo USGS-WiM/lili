@@ -8,4 +8,6 @@ export interface IExtractionSubmission {
     spot?: number;
     inhibition_dna?: number;
     inhibition_rna?: number;
+    dna_dilution_factor?: number;
+    rna_dilution_factor?: number;
 }

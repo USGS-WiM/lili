@@ -476,83 +476,100 @@
             <button class="btn btn-primary" (click)="createWorksheet(false, false)">Create Extraction Worksheet</button>
         </div>
 
+
+
         <div *ngIf="extractForm.valid && !loadingFlag && !extractionFinished">
 
-            <div>
-                <h4>You are about to extract Analysis Batch
-                    <b>{{selectedAnalysisBatchID}}</b>. Please confirm the details below.</h4>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <h4>You are about to extract Analysis Batch
+                        <b>{{selectedAnalysisBatchID}}</b>. Please confirm the details below.</h4>
+                </div>
             </div>
 
-            <div>
-                <label>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
                     <h4>Extraction</h4>
-                </label>
-                <table class="table table-vertical">
-                    <tbody>
-                        <tr>
-                            <th>Extraction Volume</th>
-                            <td>{{extractForm.value.extraction_volume}} µL</td>
-                        </tr>
-                        <tr>
-                            <th>Elution Volume</th>
-                            <td>{{extractForm.value.elution_volume}} µL</td>
-                        </tr>
-                        <tr>
-                            <th>Extraction Method</th>
-                            <td>{{extractForm.value.extraction_method | displayValue:'name':this.allExtractionMethods}}</td>
-                        </tr>
-                        <tr>
-                            <th>Extraction Date</th>
-                            <td>{{extractForm.value.extraction_date | date:'shortDate'}}</td>
-                        </tr>
-                        <tr>
-                            <th>Re-Extraction</th>
-                            <td>{{(extractForm.value.reextraction) === null ? 'No' : 'Yes'}}</td>
-                        </tr>
-                        <tr>
-                            <th>Sample Dilution Factor</th>
-                            <td>{{extractForm.value.sample_dilution_factor}}</td>
-                        </tr>
-                        <tr>
-                            <th>qPCR Template Volume</th>
-                            <td>{{extractForm.value.qpcr_template_volume}} µL</td>
-                        </tr>
-                        <tr>
-                            <th>qPCR Reaction Volume</th>
-                            <td>{{extractForm.value.qpcr_reaction_volume}} µL</td>
-                        </tr>
-                        <tr>
-                            <th>qPCR Date</th>
-                            <td>{{extractForm.value.qpcr_date | date:'shortDate'}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                </div>
             </div>
 
-            <div *ngIf="rnaTargetsSelected">
-                <label>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+
+                    <table class="table table-vertical table-compact">
+                        <tbody>
+                            <tr>
+                                <th>Extraction Volume</th>
+                                <td>{{extractForm.value.extraction_volume}} µL</td>
+                            </tr>
+                            <tr>
+                                <th>Elution Volume</th>
+                                <td>{{extractForm.value.elution_volume}} µL</td>
+                            </tr>
+                            <tr>
+                                <th>Extraction Method</th>
+                                <td>{{extractForm.value.extraction_method | displayValue:'name':this.allExtractionMethods}}</td>
+                            </tr>
+                            <tr>
+                                <th>Extraction Date</th>
+                                <td>{{extractForm.value.extraction_date | date:'shortDate'}}</td>
+                            </tr>
+                            <tr>
+                                <th>Re-Extraction</th>
+                                <td>{{(extractForm.value.reextraction) === null ? 'No' : 'Yes'}}</td>
+                            </tr>
+                            <tr>
+                                <th>Sample Dilution Factor</th>
+                                <td>{{extractForm.value.sample_dilution_factor}}</td>
+                            </tr>
+                            <tr>
+                                <th>qPCR Template Volume</th>
+                                <td>{{extractForm.value.qpcr_template_volume}} µL</td>
+                            </tr>
+                            <tr>
+                                <th>qPCR Reaction Volume</th>
+                                <td>{{extractForm.value.qpcr_reaction_volume}} µL</td>
+                            </tr>
+                            <tr>
+                                <th>qPCR Date</th>
+                                <td>{{extractForm.value.qpcr_date | date:'shortDate'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="row" *ngIf="rnaTargetsSelected">
+                <div class="col-lg-12 col-md-12 col-sm-12">
                     <h4>Reverse Transcription</h4>
-                </label>
-                <table class="table table-vertical">
-                    <tbody>
-                        <tr>
-                            <th>Template Volume</th>
-                            <td>{{extractForm.value.new_rt.template_volume}} µL</td>
-                        </tr>
-                        <tr>
-                            <th>Reaction Volume</th>
-                            <td>{{extractForm.value.new_rt.reaction_volume}} µL</td>
-                        </tr>
-                        <tr>
-                            <th>RT Date</th>
-                            <td>{{extractForm.value.new_rt.rt_date | date:'shortDate' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Re-RT</th>
-                            <td>{{ extractForm.value.new_rt.re_rt === null ? 'No' : 'Yes'}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="rnaTargetsSelected">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <table class="table table-vertical table-compact">
+                        <tbody>
+                            <tr>
+                                <th>Template Volume</th>
+                                <td>{{extractForm.value.new_rt.template_volume}} µL</td>
+                            </tr>
+                            <tr>
+                                <th>Reaction Volume</th>
+                                <td>{{extractForm.value.new_rt.reaction_volume}} µL</td>
+                            </tr>
+                            <tr>
+                                <th>RT Date</th>
+                                <td>{{extractForm.value.new_rt.rt_date | date:'shortDate' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Re-RT</th>
+                                <td>{{ extractForm.value.new_rt.re_rt === null ? 'No' : 'Yes'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <label>
