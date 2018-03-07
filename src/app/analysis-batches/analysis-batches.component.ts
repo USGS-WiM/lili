@@ -326,7 +326,7 @@ export class AnalysisBatchesComponent implements OnInit {
             }
           }
         }
-        if (this.createInhibitionForm.value.rna === false) {
+        if (this.createInhibitionForm.value.rna === false && this.rnaTargetsSelected) {
           for (let extraction of this.extractForm.value.new_extractions) {
             if (extraction.inhibition_rna === null) {
               alert("Please select a RNA inhibition to apply for each sample, or click to create new.")
@@ -345,7 +345,7 @@ export class AnalysisBatchesComponent implements OnInit {
             }
           }
         }
-        if (this.createInhibitionForm.value.rna === false) {
+        if (this.createInhibitionForm.value.rna === false && this.rnaTargetsSelected) {
           for (let extraction of this.extractForm.value.new_extractions) {
             if (extraction.inhibition_rna === null) {
               alert("Please select a RNA inhibition for all samples.")
