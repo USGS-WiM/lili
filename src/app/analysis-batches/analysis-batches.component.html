@@ -352,12 +352,15 @@
                                                 <label for="dnaCheck"></label>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" *ngIf="rnaTargetsSelected">
                                             <label>RNA Inhibitions (RNA targets)</label>
                                             <div class="checkbox">
                                                 <input type="checkbox" formControlName="rna" id="rnaCheck">
                                                 <label for="rnaCheck"></label>
                                             </div>
+                                        </div>
+                                        <div *ngIf="!rnaTargetsSelected">
+                                            <label>Note: No RNA targets selected.</label>
                                         </div>
                                     </section>
                                     <section class="form-block">
@@ -366,7 +369,7 @@
                                             <label>New DNA Inhibitions Date</label>
                                             <input type="date" id="inhibitionDateInput" formControlName="inhibition_date_dna">
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" *ngIf="rnaTargetsSelected">
                                             <label>New RNA Inhibitions Date</label>
                                             <input type="date" id="inhibitionDateInput" formControlName="inhibition_date_rna">
                                         </div>
@@ -376,69 +379,75 @@
 
                         </div>
 
-                        <div class="card-block" *ngIf="inhibitionsExist && (createInhibitionForm.value.dna === false || createInhibitionForm.value.rna === false)">
-                            <div class="card-title">
-                                Apply Existing Inhibitions
-                                <clr-signpost>
-                                    <clr-signpost-content *clrIfOpen>
-                                        <p>Select existing inhibitions to apply to DNA targets and RNA targets for each sample
-                                            individually. </p>
-                                    </clr-signpost-content>
-                                </clr-signpost>
-                            </div>
-                            <div class="card-text">
+                        <div class="card-block" *ngIf="inhibitionsExist">
+                            <div *ngIf="createInhibitionForm.value.dna === false || createInhibitionForm.value.rna === false">
+                                <div class="card-title">
+                                    Apply Existing Inhibitions
+                                    <clr-signpost>
+                                        <clr-signpost-content *clrIfOpen>
+                                            <p>Select existing inhibitions to apply to DNA targets and RNA targets for each
+                                                sample individually. </p>
+                                        </clr-signpost-content>
+                                    </clr-signpost>
+                                </div>
+                                <div class="card-text">
 
-                                <form class="compact" [formGroup]="extractForm">
-                                    <section class="form-block">
-                                        <div formArrayName="new_extractions">
-                                            <div>
-                                                <table class="table table-noborder">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="left">Sample</th>
-                                                            <th class="left" *ngIf="createInhibitionForm.value.dna === false">Inhibition for DNA Targets</th>
-                                                            <th class="left" *ngIf="createInhibitionForm.value.rna === false">Inhibition for RNA Targets</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
-                                                            <td class="left">
-                                                                <label class="required">Sample {{extraction.controls.sample.value}}</label>
-                                                            </td>
-                                                            <td *ngIf="createInhibitionForm.value.dna === false">
-                                                                <div class="select">
-                                                                    <select name="dnaInhibition" formControlName="inhibition_dna">
-                                                                        <option [value]="'new'">Create New</option>
-                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
-                                                                            | displayValue:'name':this.nucleicAcidTypes}})
-                                                                            - Sample {{inhibition.sample}}</option>
-                                                                    </select>
-                                                                </div>
-                                                            </td>
-                                                            <td *ngIf="createInhibitionForm.value.rna === false">
-                                                                <div class="select">
-                                                                    <select name="rnaInhibition" formControlName="inhibition_rna">
-                                                                        <option [value]="'new'">Create New</option>
-                                                                        <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
-                                                                            | displayValue:'name':this.nucleicAcidTypes}})
-                                                                            - Sample {{inhibition.sample}}</option>
-                                                                    </select>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                    <form class="compact" [formGroup]="extractForm">
+                                        <section class="form-block">
+                                            <div formArrayName="new_extractions">
+                                                <div>
+                                                    <table class="table table-noborder">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="left">Sample</th>
+                                                                <th class="left" *ngIf="createInhibitionForm.value.dna === false">Inhibition for DNA Targets</th>
+                                                                <th class="left" *ngIf="createInhibitionForm.value.rna === false && rnaTargetsSelected">Inhibition for RNA Targets</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
+                                                                <td class="left">
+                                                                    <label class="required">Sample {{extraction.controls.sample.value}}</label>
+                                                                </td>
+                                                                <td *ngIf="createInhibitionForm.value.dna === false">
+                                                                    <div class="select">
+                                                                        <select name="dnaInhibition" formControlName="inhibition_dna">
+                                                                            <option [value]="'new'">Create New</option>
+                                                                            <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
+                                                                                | displayValue:'name':this.nucleicAcidTypes}})
+                                                                                - Sample {{inhibition.sample}}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                                <td *ngIf="createInhibitionForm.value.rna === false && rnaTargetsSelected">
+                                                                    <div class="select">
+                                                                        <select name="rnaInhibition" formControlName="inhibition_rna">
+                                                                            <option [value]="'new'">Create New</option>
+                                                                            <option *ngFor="let inhibition of sampleInhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
+                                                                                | displayValue:'name':this.nucleicAcidTypes}})
+                                                                                - Sample {{inhibition.sample}}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </section>
-                                </form>
+                                        </section>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        extractFormStatus: {{extractForm.status}}
+        <div>
+            <p>
+                <span>Extract Wizard form status: {{extractForm.status}}.</span>
+                <span *ngIf="extractForm.status === 'INVALID'">There are missing or invalid values. </span>
+        </div>
         <ng-template clrPageButtons>
             <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
