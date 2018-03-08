@@ -1,7 +1,13 @@
 {
   "name": "lili",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "LIDE LIMS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/USGS-WiM/lili.git"
+  },
+  "license": "Public Domain",
+  "readme": "https://github.com/USGS-WiM/lili/blob/master/README.md",
   "angular-cli": {},
   "scripts": {
     "start": "ng serve",
@@ -60,7 +66,7 @@
     "protractor": "^5.3.0",
     "ts-node": "^3.3.0",
     "tslint": "^5.9.1",
-    "typescript": "^2.7.1",
+    "typescript": "^2.3.4",
     "typings": "^2.1.1",
     "webdriver-manager": "^12.0.6"
   }

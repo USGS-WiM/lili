@@ -192,7 +192,7 @@ export class SamplesComponent implements OnInit {
   });
 
   freezeSampleForm = new FormGroup({
-    sample: new FormControl(''),
+    // sample: new FormControl(''),
     freezer: new FormControl(1),
     aliquot_count: new FormControl('', Validators.required),
     rack: new FormControl('', Validators.required),
@@ -359,9 +359,11 @@ export class SamplesComponent implements OnInit {
     this.showLastOccupiedSpotError = false;
     // check if more than one sample is selected. if so, alert user they can only freeze one sample at a time
     // if not, proceed with further checks and logic
-    if (this.selected.length > 1) {
-      this.showHideMultipleSamplesErrorModal = true;
-    } else {
+
+    // if (this.selected.length > 1) {
+    //   this.showHideMultipleSamplesErrorModal = true;
+    // } else {
+
       // NOTE: check logic below not neccesary if only one sample - keeping for now in the event batch sample freezing 
       // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
       // checks if all the values for study are the same in the selected samples array
@@ -384,7 +386,7 @@ export class SamplesComponent implements OnInit {
             if (this.showHideFreezeModal === false) {
               this.showHideFreezeModal = true;
             }
-            this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
+            // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
 
             // request last occupied spot
             this._freezerLocationsService.getLastOccupiedSpot()
@@ -408,7 +410,7 @@ export class SamplesComponent implements OnInit {
       }
       this.selectedStudy = this.selected[0].study;
 
-    }
+    //}
   }
 
   includeExcludeLabel(event) {
@@ -554,6 +556,13 @@ export class SamplesComponent implements OnInit {
 
   onSubmitFreezerLocation(formValue) {
     this.submitLoading = true;
+
+    let sampleIDArray = [];
+    for (let sample of this.selected ) {
+      sampleIDArray.push(sample.id)
+    }
+
+    formValue.samples = sampleIDArray;
     formValue.freezer = Number(formValue.freezer);
     formValue.rack = Number(formValue.rack);
     formValue.box = Number(formValue.box);
