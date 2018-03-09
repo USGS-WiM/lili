@@ -30,6 +30,7 @@ import { AnalysisBatchService } from '../analysis-batches/analysis-batch.service
 import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
 
 import { APP_UTILITIES } from '../app.utilities';
+import { APP_SETTINGS } from '../app.settings';
 
 
 
@@ -43,6 +44,7 @@ export class SamplesComponent implements OnInit {
   freezers: IFreezer[];
   sampleTypes: ISampleType[];
   filterTypes: IFilterType[];
+  recordTypes;
   concentrationTypes: IConcentrationType[];
   matrices: IMatrix[];
   studies: IStudy[];
@@ -51,6 +53,7 @@ export class SamplesComponent implements OnInit {
   errorMessage: string;
   selectedSample: ISample;
   showHideAdd: boolean = false;
+  showHideAddPegNeg: boolean = false;
   showHideEdit: boolean = false;
   showHideABModal: boolean = false;
   showHideFCSVModal: boolean = false;
@@ -191,6 +194,44 @@ export class SamplesComponent implements OnInit {
     final_concentrated_sample_volume_notes: new FormControl(''),
   });
 
+  addPegNegForm = new FormGroup({
+    // the following controls apply to every sample record, regardless of matrix selected
+    sample_type: new FormControl(''),
+    matrix_type: new FormControl(''),
+    filter_type: new FormControl(''),
+    study: new FormControl(''),
+    study_site_name: new FormControl(''),
+    collaborator_sample_id: new FormControl(''),
+    sampler_name: new FormControl(''),
+    sample_notes: new FormControl(''),
+    sample_description: new FormControl(''),
+    arrival_date: new FormControl(''),
+    arrival_notes: new FormControl(''),
+    collection_start_date: new FormControl('', Validators.required),
+
+    //collection_start_time: new FormControl(''),
+    // collection_end_date: new FormControl(''),
+    // collection_end_time: new FormControl(''),
+    meter_reading_initial: new FormControl(''),
+    meter_reading_final: new FormControl(''),
+    meter_reading_unit: new FormControl(''),
+
+    total_volume_sampled_initial: new FormControl(''),
+    total_volume_sampled_unit_initial: new FormControl(''),
+
+    sample_volume_initial: new FormControl(''),
+    sample_volume_filtered: new FormControl(''),
+
+    filter_born_on_date: new FormControl(''),
+    filter_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
+    secondary_concentration_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
+    elution_notes: new FormControl(''),
+    technician_initials: new FormControl(''),
+    dissolution_volume: new FormControl(''),
+    record_type: new FormControl(2)
+    // post_dilution_volume: new FormControl('')
+  });
+
   freezeSampleForm = new FormGroup({
     // sample: new FormControl(''),
     freezer: new FormControl(1),
@@ -240,50 +281,53 @@ export class SamplesComponent implements OnInit {
     // on init, get sample form config object from App Utilities and set to local displayConfig var
     this.displayConfig = APP_UTILITIES.SAMPLE_FORM_CONFIG;
 
+    // on init, get sample record types object from App Settings and set to local recordTypes var
+    this.recordTypes = APP_SETTINGS.SAMPLE_RECORD_TYPES;
+
     // on init, call getSamples function of the SampleService, set results to the allSamples var
     this._sampleService.getSamples()
       .subscribe(samples => this.allSamples = samples,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // on init, call getFreezers function of the FreezerService, set results to the freezers var
     this._freezerService.getFreezers()
       .subscribe(freezers => this.freezers = freezers,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
     this._sampleTypeService.getSampleTypes()
       .subscribe(sampleTypes => this.sampleTypes = sampleTypes,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // on init, call getFilterTypes function of the SampleTypeService, set results to the sampleTypes var
     this._filterTypeService.getFilterTypes()
       .subscribe(filterTypes => this.filterTypes = filterTypes,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // on init, call getConcentrationTypes function of the ConcentrationTypeService, set results to the sampleTypes var
     this._concentrationTypeService.getConcentrationTypes()
       .subscribe(concentrationTypes => this.concentrationTypes = concentrationTypes,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // on init, call getMatrices function of the MatrixService, set results to the matrices var
     this._matrixService.getMatrices()
       .subscribe(matrices => this.matrices = matrices,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // on init, call getStudies function of the StudyService, set results to the studies var
     this._studyService.getStudies()
       .subscribe(studies => this.studies = studies,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // on init, call getUnits function of the UnitService, set results to the units var
     this._unitService.getUnits()
       .subscribe(units => this.units = units,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // on init, call getUsers function of the UserService, set results to the units var
     this._userService.getUsers()
       .subscribe(users => this.users = users,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
   }
 
@@ -364,33 +408,33 @@ export class SamplesComponent implements OnInit {
     //   this.showHideMultipleSamplesErrorModal = true;
     // } else {
 
-      // NOTE: check logic below not neccesary if only one sample - keeping for now in the event batch sample freezing 
-      // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
-      // checks if all the values for study are the same in the selected samples array
-      this.onlyOneStudySelected = selectedSampleArray.every(
-        function (value, _, array) {
-          return array[0].study === value.study;
-        });
+    // NOTE: check logic below not neccesary if only one sample - keeping for now in the event batch sample freezing 
+    // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
+    // checks if all the values for study are the same in the selected samples array
+    this.onlyOneStudySelected = selectedSampleArray.every(
+      function (value, _, array) {
+        return array[0].study === value.study;
+      });
 
-      // alert user they are attempting to select a set of studies for freezing that belong to more than one study
-      // show freeze warning modal if multiple studies, else show the freeze modal
-      if (this.onlyOneStudySelected === false) {
-        this.showHideFreezeWarningModal = true
-      } else if (this.onlyOneStudySelected === true) {
+    // alert user they are attempting to select a set of studies for freezing that belong to more than one study
+    // show freeze warning modal if multiple studies, else show the freeze modal
+    if (this.onlyOneStudySelected === false) {
+      this.showHideFreezeWarningModal = true
+    } else if (this.onlyOneStudySelected === true) {
 
-        for (let sample of selectedSampleArray) {
-          if (sample.final_concentrated_sample_volume == null) {
-            this.showHideMissingFCSVErrorModal = true;
-          } else {
-            // show the freeze modal if not showing already
-            if (this.showHideFreezeModal === false) {
-              this.showHideFreezeModal = true;
-            }
-            // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
+      for (let sample of selectedSampleArray) {
+        if (sample.final_concentrated_sample_volume == null) {
+          this.showHideMissingFCSVErrorModal = true;
+        } else {
+          // show the freeze modal if not showing already
+          if (this.showHideFreezeModal === false) {
+            this.showHideFreezeModal = true;
+          }
+          // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
 
-            // request last occupied spot
-            this._freezerLocationsService.getLastOccupiedSpot()
-              .subscribe(
+          // request last occupied spot
+          this._freezerLocationsService.getLastOccupiedSpot()
+            .subscribe(
               (lastOccupiedSpot) => {
                 console.log(lastOccupiedSpot);
                 this.lastOccupiedSpot = lastOccupiedSpot[0];
@@ -403,12 +447,12 @@ export class SamplesComponent implements OnInit {
                 this.showLastOccupiedSpot = false;
                 this.showLastOccupiedSpotError = true;
               }
-              )
+            )
 
-          }
         }
       }
-      this.selectedStudy = this.selected[0].study;
+    }
+    this.selectedStudy = this.selected[0].study;
 
     //}
   }
@@ -558,7 +602,7 @@ export class SamplesComponent implements OnInit {
     this.submitLoading = true;
 
     let sampleIDArray = [];
-    for (let sample of this.selected ) {
+    for (let sample of this.selected) {
       sampleIDArray.push(sample.id)
     }
 
@@ -571,16 +615,16 @@ export class SamplesComponent implements OnInit {
 
     this._aliquotService.create(formValue)
       .subscribe(
-      (results) => {
-        this.submitLoading = false;
-        this.showFreezeSuccess = true;
-        this.showFreezeError = false;
-      },
-      error => {
-        this.submitLoading = false;
-        this.showFreezeSuccess = false;
-        this.showFreezeError = true;
-      }
+        (results) => {
+          this.submitLoading = false;
+          this.showFreezeSuccess = true;
+          this.showFreezeError = false;
+        },
+        error => {
+          this.submitLoading = false;
+          this.showFreezeSuccess = false;
+          this.showFreezeError = true;
+        }
       )
   }
 
@@ -602,16 +646,16 @@ export class SamplesComponent implements OnInit {
 
     this._finalConcentratedSampleVolumeService.create(fcsvArray)
       .subscribe(
-      (results) => {
-        this.showFCSVCreateError = false;
-        this.showFCSVCreateSuccess = true;
-        this.submitLoading = false;
-      },
-      error => {
-        this.showFCSVCreateError = true;
-        this.showFCSVCreateSuccess = false;
-        this.submitLoading = false;
-      }
+        (results) => {
+          this.showFCSVCreateError = false;
+          this.showFCSVCreateSuccess = true;
+          this.submitLoading = false;
+        },
+        error => {
+          this.showFCSVCreateError = true;
+          this.showFCSVCreateSuccess = false;
+          this.submitLoading = false;
+        }
       )
   }
 
@@ -621,16 +665,16 @@ export class SamplesComponent implements OnInit {
     this.submitLoading = true;
     this._analysisBatchService.create(formValue)
       .subscribe(
-      (ab) => {
-        this.submitLoading = false;
-        this.showABCreateSuccess = true;
-      },
-      error => {
-        this.errorMessage = <any>error;
-        this.submitLoading = false;
-        this.showABCreateError = true;
+        (ab) => {
+          this.submitLoading = false;
+          this.showABCreateSuccess = true;
+        },
+        error => {
+          this.errorMessage = <any>error;
+          this.submitLoading = false;
+          this.showABCreateError = true;
 
-      }
+        }
       )
 
   }
@@ -647,6 +691,7 @@ export class SamplesComponent implements OnInit {
     formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
     formValue.sample_type = Number(formValue.sample_type);
     formValue.sample_volume_initial = Number(formValue.sample_volume_initial);
+    formValue.sample_volume_filtered = Number(formValue.sample_volume_filtered);
     formValue.sampler_name = Number(formValue.sampler_name);
     formValue.study = Number(formValue.study);
 
@@ -655,34 +700,63 @@ export class SamplesComponent implements OnInit {
         // update a record
         this._sampleService.update(formValue)
           .subscribe(
-          (sample) => {
-            this.updateSamplesArray(formValue);
-            this.editSampleForm.reset();
-            this.submitLoading = false;
-            this.showSampleEditSuccess = true;
-          },
-          error => {
-            this.errorMessage = <any>error;
-            this.submitLoading = false;
-            this.showSampleEditError = true;
-          }
+            (sample) => {
+              this.updateSamplesArray(formValue);
+              this.editSampleForm.reset();
+              this.submitLoading = false;
+              this.showSampleEditSuccess = true;
+            },
+            error => {
+              this.errorMessage = <any>error;
+              this.submitLoading = false;
+              this.showSampleEditError = true;
+            }
           );
         break;
       case 'add':
         // add a record
         this._sampleService.create(formValue)
           .subscribe(
-          (sample: ISample) => {
-            this.allSamples.push(formValue);
-            this.addSampleForm.reset();
-            this.submitLoading = false;
-            this.showSampleCreateSuccess = true;
-          },
-          error => {
-            this.errorMessage = <any>error;
-            this.submitLoading = false;
-            this.showSampleCreateError = true;
-          }
+            (sample: ISample) => {
+              this.allSamples.push(formValue);
+              this.addSampleForm.reset();
+              this.submitLoading = false;
+              this.showSampleCreateSuccess = true;
+            },
+            error => {
+              this.errorMessage = <any>error;
+              this.submitLoading = false;
+              this.showSampleCreateError = true;
+            }
+          );
+        break;
+      case 'addPegNeg':
+        // add a record, of type pegneg (control)
+        // need to add required field values as they are assumed and not entered by user
+        formValue.matrix_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.matrix_type;
+        formValue.filter_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.filter_type;
+        formValue.sample_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.sample_type;
+        formValue.collaborator_sample_id = APP_SETTINGS.PEGNEG_FIELD_VALUES.collaborator_sample_id;
+        formValue.study = APP_SETTINGS.PEGNEG_FIELD_VALUES.study;
+        //formValue.collection_start_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_start_time;
+        //formValue.collection_end_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_end_time;
+        formValue.collection_end_date = formValue.collection_start_date;
+        formValue.arrival_date = formValue.collection_start_date;
+    
+
+        this._sampleService.create(formValue)
+          .subscribe(
+            (sample: ISample) => {
+              this.allSamples.push(formValue);
+              this.addSampleForm.reset();
+              this.submitLoading = false;
+              this.showSampleCreateSuccess = true;
+            },
+            error => {
+              this.errorMessage = <any>error;
+              this.submitLoading = false;
+              this.showSampleCreateError = true;
+            }
           );
         break;
       default:

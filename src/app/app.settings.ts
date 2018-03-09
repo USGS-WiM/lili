@@ -50,6 +50,37 @@ export class APP_SETTINGS {
         ]
     };
 
+    public static get SAMPLE_RECORD_TYPES() {
+        return [
+        { "id": 1, "name": "Data" },
+        { "id": 2, "name": "Control" }
+        ]
+    };
+
+    public static get PEGNEG_FIELD_VALUES() {
+        return {
+            "study": 34,
+            "collaborator_sample_id": 'pegneg1',
+            "matrix_type": 1,
+            "filter_type": 8,
+            "sample_type": 4,
+            "collection_start_time": '00:00',
+            "collection_end_time": '00:00'
+        }
+    }
+
+    // public static get WATER_MATRIX_ID() {
+    //     return 1;
+    // }
+
+    // public static get ULTRAFILTER_FILTER_TYPE_ID() {
+    //     return 8;
+    // }
+
+    // public static get QC_SAMPLE_TYPE_ID() {
+    //     return 4;
+    // }
+
     public static get MIN_JSON_HEADERS() { return new Headers({ 'Accept': 'application/json' }) };
     public static get JSON_HEADERS() { return new Headers({ 'Accept': 'application/json', 'Content-Type': 'application/json' }) };
     // line below is for headers stored in local storage. todo: revisit and implement this
