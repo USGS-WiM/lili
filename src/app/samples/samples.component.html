@@ -264,6 +264,195 @@
     </div>
 </div>
 
+<!--Add peg neg card -->
+<div class="row">
+    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" *ngIf="showHideAddPegNeg">
+        <!-- begin card-->
+        <div class="card">
+            <div class="card-block">
+                <div class="card-title">Add Peg Neg
+                    <clr-signpost>
+                        <clr-icon shape="info-standard" clrSignpostTrigger></clr-icon>
+                        <clr-signpost-content *clrIfOpen>
+                            <p>Create a peg neg control record. Associate with a sample in the Add Sample form.
+                            </p>
+                        </clr-signpost-content>
+                    </clr-signpost>
+                </div>
+
+                <div class="card-text">
+                    <!-- begin form -->
+                    <form class="form compact" [formGroup]="addPegNegForm" (ngSubmit)="onSubmitSample('addPegNeg', addPegNegForm.value)">
+                        <section class="form-block">
+
+
+                            <div class="form-group">
+                                <label>Filtered</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="filteredToggle" formControlName="filter_flag">
+                                    <label for="filteredToggle">{{this.addSampleForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Secondary Concentration</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
+                                    <label for="secondaryConcToggle">{{this.addSampleForm.controls.secondary_concentration_flag.value ? "Yes" : "No"}}</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pegnegDescInput">Description</label>
+                                <textarea id="pegnegDescInput" rows="2" formControlName="sample_description" style="max-width:25em"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pegnegNotesInput">Notes</label>
+                                <textarea id="pegnegNotesInput" rows="2" formControlName="sample_notes" style="max-width:25em"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="required">Sampler Name</label>
+                                <label for="samplerNameSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addPegNegForm.get('sampler_name').invalid && (addPegNegForm.get('sampler_name').dirty || addPegNegForm.get('sampler_name').touched)">
+                                    <div class="select">
+                                        <select id="samplerNameSelect" name="samplerName" formControlName="sampler_name">
+                                            <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label for="collectStartDateInput" class="required">Collection Start Date</label>
+                                <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label for="collectStartTime">Collection Start Time (HH:MM)</label>
+                                <label for="collectStartTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addPegNegForm.get('collection_start_time').invalid && (addPegNegForm.get('collection_start_time').dirty || addPegNegForm.get('collection_start_time').touched)">
+                                    <input id="collectStartTime" type="text" formControlName="collection_start_time">
+                                    <span class="tooltip-content">Must follow format HH:MM</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="collectEndDateInput">Collection End Date</label>
+                                <input type="date" id="collectEndDateInput" formControlName="collection_end_date">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="collectEndTime">Collection End Time (HH:MM)</label>
+                                <label for="collectEndTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addPegNegForm.get('collection_end_time').invalid && (addPegNegForm.get('collection_end_time').dirty || addPegNegForm.get('collection_end_time').touched)">
+                                    <input id="collectEndTime" type="text" formControlName="collection_end_time">
+                                    <span class="tooltip-content">Must follow format HH:MM</span>
+                                </label>
+                            </div> -->
+
+                            <div class="form-group">
+                                <label for="imrInput" class="required">Initial Meter Reading</label>
+                                <input type="text" id="imrInput" formControlName="meter_reading_initial">
+                                <div class="select">
+                                    <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
+                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fmrInput" class="required">Final Meter Reading</label>
+                                <input type="text" id="fmrInput" formControlName="meter_reading_final">
+                                <label *ngIf="this.units">{{this.unitValue | displayValue:'name':this.units}}</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tvsInput" class="required">Initial Volume Sampled</label>
+                                <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
+                                <div class="select">
+                                    <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
+                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label for="volPostDiluteInput">Volume After Dilution</label>
+                                <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
+                                <span>µL</span>
+                            </div> -->
+
+                            <!-- <div class="form-group">
+                                <label class="required">Filter Type</label>
+                                <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addPegNegForm.get('filter_type').invalid && (addPegNegForm.get('filter_type').dirty || addPegNegForm.get('filter_type').touched)">
+                                    <div class="select">
+                                        <select id="filterSelect" name="filterType" formControlName="filter_type">
+                                            <option *ngFor="let filterType of filterTypes" [value]="filterType.id">{{filterType.name}}</option>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div> -->
+
+                            <div class="form-group">
+                                <label for="filterBornOnDateInput" class="required">Filter Born-on Date</label>
+                                <input type="date" id="filterBornOnDateInput" formControlName="filter_born_on_date">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dissVolInput" class="required">Dissolution Volume</label>
+                                <input id="dissVolInput" type="text" formControlName="dissolution_volume">
+                                <span>mL</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eluteNotesInput">Elution Notes</label>
+                                <textarea id="eluteNotesInput" rows="2" formControlName="elution_notes" style="max-width:25em"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="techInitInput">Tech Intials</label>
+                                <input id="techInitInput" type="text" formControlName="technician_initials">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eluteVolInput">Eluent/Backflush Volume Used</label>
+                                <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
+                            </div>
+
+                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleCreateError">
+                                <div clr-alert-item class="alert-item">
+                                    <span class="alert-text">Submission error. Sample not submitted.</span>
+                                    <div class="alert-actions">
+                                        <a class="alert-action" (click)="onSubmitSample('add', addPegNegForm.value)">Try again</a>
+                                    </div>
+                                </div>
+                            </clr-alert>
+
+                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess">
+                                <div clr-alert-item class="alert-item">
+                                    <span class="alert-text">Sample successfully submitted</span>
+                                    <div class="alert-actions">
+                                        <a class="alert-action" (click)="showHideAdd = false; showSampleCreateSuccess = false">Close</a>
+                                    </div>
+                                </div>
+                            </clr-alert>
+
+                            <button class="btn btn-primary" type="submit" [disabled]="addPegNegForm.invalid" [clrLoading]="submitLoading">Submit</button>
+                            <button class="btn btn-info" (click)="showHideAddPegNeg = !showHideAddPegNeg">Cancel</button>
+                        </section>
+                        <!-- <p>Form value: {{ addPegNegForm.value | json }}</p> -->
+                        <!-- <p>Form status: {{ addPegNegForm.status | json }}</p> -->
+                    </form>
+                    <!-- end form -->
+
+                </div>
+            </div>
+            <!-- end card -->
+        </div>
+    </div>
+</div>
+
 <!-- edit sample modal -->
 <clr-modal [(clrModalOpen)]="showHideEdit">
     <h3 class="modal-title">Edit Sample</h3>
@@ -679,7 +868,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <div *ngIf="this.selectedStudy">
-                    <h4>Assigning aliquot count and freezer locations for {{selected.length}} sample<span *ngIf="selected.length > 1">s</span> from the study
+                    <h4>Assigning aliquot count and freezer locations for {{selected.length}} sample
+                        <span *ngIf="selected.length > 1">s</span> from the study
                         <span style="font-weight:bold;">{{selectedStudy | displayValue:'name':this.studies}}</span>
                     </h4>
                 </div>
@@ -687,9 +877,13 @@
                     <label for="lastOccupiedSpot" style="font-weight:bold;">Last occupied freezer location</label>
                     <div id="lastOccupiedSpot">
                         <span class="spinner spinner-inline" *ngIf="lastOccupiedSpotLoading">Loading...</span>
-                        <span *ngIf="showLastOccupiedSpot" >
+                        <span *ngIf="showLastOccupiedSpot">
                             <span>
-                                Rack <b>{{lastOccupiedSpot.rack}}</b> | Box <b>{{lastOccupiedSpot.box}}</b> | Row <b>{{lastOccupiedSpot.row}}</b> | Spot <b>{{lastOccupiedSpot.spot}}</b>
+                                Rack
+                                <b>{{lastOccupiedSpot.rack}}</b> | Box
+                                <b>{{lastOccupiedSpot.box}}</b> | Row
+                                <b>{{lastOccupiedSpot.row}}</b> | Spot
+                                <b>{{lastOccupiedSpot.spot}}</b>
                             </span>
                             <!-- <ul class="list-unstyled">
                                 <li>Rack {{lastOccupiedSpot.rack}}</li>
@@ -891,6 +1085,8 @@
                 <div class="btn-group">
                     <button class="btn btn-sm btn-secondary" (click)="showHideAdd = !showHideAdd">
                         <clr-icon shape="plus"></clr-icon> Add Sample</button>
+                    <button class="btn btn-sm btn-secondary" (click)="showHideAddPegNeg = !showHideAddPegNeg">
+                        <clr-icon shape="plus"></clr-icon> Add Peg Neg</button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createAB(selected)">
                         <clr-icon shape="plus"></clr-icon> Create Analysis Batch</button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createFCSV(selected)">
@@ -955,6 +1151,12 @@
                 <clr-dg-filter [clrDgFilter]="sampleTypeFilter">
                     <sample-type-filter #sampleTypeFilter></sample-type-filter>
                 </clr-dg-filter>
+            </clr-dg-column>
+
+            <clr-dg-column style="width:10em" [clrDgField]="'record_type'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Record Type
+                </ng-container>
             </clr-dg-column>
 
             <clr-dg-column style="width:20em" [clrDgField]="'sample_description'">
@@ -1173,6 +1375,7 @@
                 <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.studies">{{sample.study_string}}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type_string}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.record_type  | displayValue:'name':this.recordTypes}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
