@@ -60,7 +60,6 @@ export class APP_SETTINGS {
     public static get PEGNEG_FIELD_VALUES() {
         return {
             "study": 34,
-            "collaborator_sample_id": 'pegneg1',
             "matrix_type": 1,
             "filter_type": 8,
             "sample_type": 4,

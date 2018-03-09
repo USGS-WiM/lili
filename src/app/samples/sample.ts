@@ -33,6 +33,7 @@ export interface ISample {
     post_dilution_volume: number;
     analysisbatches: number[];
     samplegroups: number[];
+    record_type: number;
     peg_neg: number;
     final_concentrated_sample_volume: number;
     final_concentrated_sample_volume_type: number;

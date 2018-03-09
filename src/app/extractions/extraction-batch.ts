@@ -8,8 +8,8 @@ export interface IExtractionBatch {
     analysis_batch: number;
     extraction_string: string;
     extraction_method: Object;
-    reextraction: number;
-    reextraction_note: string;
+    re_extraction: number;
+    re_extraction_notes: string;
     extraction_number: number;
     extraction_volume: number;
     extraction_date: string;
