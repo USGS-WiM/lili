@@ -41,6 +41,7 @@ import { APP_SETTINGS } from '../app.settings';
 })
 export class SamplesComponent implements OnInit {
   allSamples: ISample[];
+  pegnegs: ISample[] = [];
   freezers: IFreezer[];
   sampleTypes: ISampleType[];
   filterTypes: IFilterType[];
@@ -144,6 +145,7 @@ export class SamplesComponent implements OnInit {
     technician_initials: new FormControl({ value: '', disabled: true }),
     dissolution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
     post_dilution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
+    peg_neg: new FormControl('')
   });
 
   // edit sample form
@@ -192,6 +194,7 @@ export class SamplesComponent implements OnInit {
     final_concentrated_sample_volume: new FormControl(''),
     final_concentrated_sample_volume_type: new FormControl(''),
     final_concentrated_sample_volume_notes: new FormControl(''),
+    peg_neg: new FormControl('')
   });
 
   addPegNegForm = new FormGroup({
@@ -286,8 +289,19 @@ export class SamplesComponent implements OnInit {
 
     // on init, call getSamples function of the SampleService, set results to the allSamples var
     this._sampleService.getSamples()
-      .subscribe(samples => this.allSamples = samples,
-        error => this.errorMessage = <any>error);
+      .subscribe(
+        (samples) => {
+          this.allSamples = samples
+          for (let sample of samples) {
+            if (sample.record_type === 2) {
+              this.pegnegs.push(sample);
+            }
+          }
+        },
+        error => {
+          this.errorMessage = <any>error
+        }
+      );
 
     // on init, call getFreezers function of the FreezerService, set results to the freezers var
     this._freezerService.getFreezers()
@@ -733,16 +747,19 @@ export class SamplesComponent implements OnInit {
       case 'addPegNeg':
         // add a record, of type pegneg (control)
         // need to add required field values as they are assumed and not entered by user
+        let now = new Date(Date.now());
+        let currentDate = now.toISOString().substring(0, 10);
+        let currentTime = now.toTimeString().split(" ")[0];
+
         formValue.matrix_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.matrix_type;
         formValue.filter_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.filter_type;
         formValue.sample_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.sample_type;
-        formValue.collaborator_sample_id = APP_SETTINGS.PEGNEG_FIELD_VALUES.collaborator_sample_id;
+        formValue.collaborator_sample_id = 'pegneg' + currentDate + '_' + currentTime;
         formValue.study = APP_SETTINGS.PEGNEG_FIELD_VALUES.study;
         //formValue.collection_start_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_start_time;
         //formValue.collection_end_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_end_time;
         formValue.collection_end_date = formValue.collection_start_date;
         formValue.arrival_date = formValue.collection_start_date;
-    
 
         this._sampleService.create(formValue)
           .subscribe(

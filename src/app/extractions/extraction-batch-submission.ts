@@ -7,7 +7,8 @@ export interface IExtractionBatchSubmission {
     elution_volume: number;
     extraction_method: number;
     extraction_date: string;
-    reextraction: number;
+    re_extraction: number;
+    re_extraction_notes: string;
     sample_dilution_factor: number;
     qpcr_template_volume: number;
     qpcr_reaction_volume: number;

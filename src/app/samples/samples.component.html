@@ -232,6 +232,17 @@
                                 <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                             </div>
 
+                            <div class="form-group">
+                                <label class="required">Peg Neg</label>
+                                <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix_type').invalid && (addSampleForm.get('matrix_type').dirty || addSampleForm.get('matrix_type').touched)">
+                                    <div class="select">
+                                        <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg" >
+                                            <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date | date:'shortDate'}}</option>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleCreateError">
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Submission error. Sample not submitted.</span>
@@ -1375,7 +1386,7 @@
                 <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.studies">{{sample.study_string}}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type_string}}</clr-dg-cell>
-                <clr-dg-cell>{{sample.record_type  | displayValue:'name':this.recordTypes}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.record_type | displayValue:'name':this.recordTypes}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
