@@ -296,7 +296,9 @@ export class AnalysisBatchesComponent implements OnInit {
           target.count = 2;
           return target;
         });
-        // check for RNA targets, set rnaTargetsSelected var to true
+        // reset rnaTargetsSelected to false to ensure its value does not carry over from previous use of the extract wizard
+        this.rnaTargetsSelected = false;
+        // check for RNA targets in current selection, set rnaTargetsSelected var to true if any exist
         for (let target of this.selected) {
           if (target.nucleic_acid_type === 2) {
             this.rnaTargetsSelected = true;
