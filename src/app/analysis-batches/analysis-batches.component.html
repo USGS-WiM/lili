@@ -404,7 +404,36 @@
                                                                 <th class="left" *ngIf="createInhibitionForm.value.rna === false && rnaTargetsSelected">Inhibition for RNA Targets</th>
                                                             </tr>
                                                         </thead>
+
                                                         <tbody>
+                                                                <tr *ngFor="let sample of abSampleInhibitions; let i = index" [formGroupName]="i">
+                                                                    <td class="left">
+                                                                        <label class="required">Sample {{sample.id}}</label>
+                                                                    </td>
+                                                                    <td *ngIf="createInhibitionForm.value.dna === false">
+                                                                        <div class="select">
+                                                                            <select name="dnaInhibition" formControlName="inhibition_dna">
+                                                                                <option [value]="'new'">Create New</option>
+                                                                                <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
+                                                                                    | displayValue:'name':this.nucleicAcidTypes}})
+                                                                                    - {{inhibition.inhibition_date | date:'shortDate'}}</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td *ngIf="createInhibitionForm.value.rna === false && rnaTargetsSelected">
+                                                                        <div class="select">
+                                                                            <select name="rnaInhibition" formControlName="inhibition_rna">
+                                                                                <option [value]="'new'">Create New</option>
+                                                                                <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
+                                                                                    | displayValue:'name':this.nucleicAcidTypes}})
+                                                                                    - {{inhibition.inhibition_date | date:'shortDate'}}</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+
+                                                        <!-- <tbody>
                                                             <tr *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
                                                                 <td class="left">
                                                                     <label class="required">Sample {{extraction.controls.sample.value}}</label>
@@ -430,7 +459,8 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
-                                                        </tbody>
+                                                        </tbody> -->
+
                                                     </table>
                                                 </div>
                                             </div>
