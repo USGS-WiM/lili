@@ -80,6 +80,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   allSamples: ISample[] = [];
 
+  abSampleInhibitions;
+
   focusAnalysisBatchID: number;
   focusAnalysisBatchData: IAnalysisBatchDetail;
 
@@ -721,6 +723,8 @@ export class AnalysisBatchesComponent implements OnInit {
                 (abSampleInhibitions) => {
 
                   for (let sample of abSampleInhibitions) {
+
+                    this.abSampleInhibitions = abSampleInhibitions;
 
                     // populate sampleInhibitions var with all the inhibitions associated with any sample in this AB
                     // used for the sample level inhibition apply select dropdowns
