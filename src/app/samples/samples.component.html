@@ -236,7 +236,7 @@
                                 <label class="required">Peg Neg</label>
                                 <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix_type').invalid && (addSampleForm.get('matrix_type').dirty || addSampleForm.get('matrix_type').touched)">
                                     <div class="select">
-                                        <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg" >
+                                        <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
                                             <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date | date:'shortDate'}}</option>
                                         </select>
                                     </div>
@@ -871,16 +871,15 @@
 
 
 
-<!-- begin freeze modal -->
-<clr-modal [(clrModalOpen)]="showHideFreezeModal">
+<!-- begin freezer location assignment modal -->
+<clr-modal [(clrModalOpen)]="showHideFreezerLocationAssignModal">
     <h3 class="modal-title">
         <clr-icon shape="thermometer"></clr-icon> Freezer Location Assignment</h3>
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-12">
                 <div *ngIf="this.selectedStudy">
-                    <h4>Assigning aliquot count and freezer locations for {{selected.length}} sample
-                        <span *ngIf="selected.length > 1">s</span> from the study
+                    <h4><span>Assigning aliquot count and freezer locations for {{selected.length}} sample<span *ngIf="selected.length > 1">s</span></span> from the study
                         <span style="font-weight:bold;">{{selectedStudy | displayValue:'name':this.studies}}</span>
                     </h4>
                 </div>
@@ -945,7 +944,7 @@
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-outline" (click)="showHideFreezeModal = !showHideFreezeModal">Cancel</button>
+                        <button type="button" class="btn btn-outline" (click)="showHideFreezerLocationAssignModal = !showHideFreezerLocationAssignModal">Cancel</button>
                         <button type="submit" class="btn btn-primary" [disabled]="freezeSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
 
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFreezeError">
@@ -961,7 +960,7 @@
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">Sample aliquot records and locations successfully submitted.</span>
                                 <div class="alert-actions">
-                                    <a class="alert-action" (click)="showHideFreezeModal = false; showFreezeSuccess = false">Close</a>
+                                    <a class="alert-action" (click)="showHideFreezerLocationAssignModal = false; showFreezeSuccess = false">Close</a>
                                 </div>
                             </div>
                         </clr-alert>
@@ -973,7 +972,84 @@
     </div>
     <div class="modal-footer"></div>
 </clr-modal>
-<!-- end freeze modal -->
+<!-- end freezer location assignment modal-->
+
+<!-- begin freezer location lookup modal -->
+<clr-modal [(clrModalOpen)]="showHideFreezerLocationLookupModal">
+    <h3 class="modal-title">
+        <clr-icon shape="thermometer"></clr-icon> Freezer Location Lookup</h3>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <div *ngIf="selected.length > 0">
+                    <h4>Showing first aliquot for each selected sample</h4>
+                    <table class="table table-compact" style="width: 15em">
+                        <thead>
+                            <tr>
+                                <th class="left">Sample</th>
+                                <th class="left">Freezer</th>
+                                <th class="left">Rack</th>
+                                <th class="left">Box</th>
+                                <th class="left">Row</th>
+                                <th class="left">Spot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let sample of selected">
+                                <td class="left">{{sample.id}}</td>
+                                <td class="left"><span *ngIf="sample.aliquots[0]">{{sample.aliquots[0].freezer_location.freezer}}</span></td>
+                                <td class="left"><span *ngIf="sample.aliquots[0]">{{sample.aliquots[0].freezer_location.rack}}</span></td>
+                                <td class="left"><span *ngIf="sample.aliquots[0]">{{sample.aliquots[0].freezer_location.box}}</span></td>
+                                <td class="left"><span *ngIf="sample.aliquots[0]">{{sample.aliquots[0].freezer_location.row}}</span></td>
+                                <td class="left"><span *ngIf="sample.aliquots[0]">{{sample.aliquots[0].freezer_location.spot}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</clr-modal>
+<!-- end freezer location assignment modal-->
+
+<!-- begin freezer choice modal -->
+<clr-modal [(clrModalOpen)]="showHideFreezerChoiceModal">
+    <h3 class="modal-title">
+        <clr-icon shape="thermometer"></clr-icon> Freezer</h3>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <div>
+                    <h4>Sample Aliquot Freezer Location</h4>
+                </div>
+                <br>
+                <div>
+                    <button class="btn btn-primary" (click)="assignFreezerLocation(selected)">
+                        <clr-icon shape="plus"></clr-icon> Create</button>
+                    <button class="btn btn-primary" (click)="lookupFreezerLocation(selected)">
+                        <clr-icon shape="search"></clr-icon> Lookup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</clr-modal>
+<!-- end freezer location assignment modal-->
+
+<!-- begin freeze warning modal -->
+<clr-modal [(clrModalOpen)]="showHideFreezeWarningModal">
+    <h3 class="modal-title">
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Multiple Studies Error</h3>
+    <div class="modal-body">
+        <p>The selected set of samples is associated with more than one study. Please adjust selection.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showHideFreezeWarningModal = false">Return</button>
+    </div>
+</clr-modal>
+<!-- end freeze warning modal -->
 
 <!-- begin print modal -->
 <clr-modal [(clrModalOpen)]="showHidePrintModal" [clrModalSize]="'xl'">
@@ -1033,18 +1109,6 @@
 </clr-modal>
 <!-- end print modal -->
 
-<!-- begin freeze warning modal -->
-<clr-modal [(clrModalOpen)]="showHideFreezeWarningModal">
-    <h3 class="modal-title">
-        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Multiple Studies Error</h3>
-    <div class="modal-body">
-        <p>The selected set of samples is associated with more than one study. Please adjust selection.</p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHideFreezeWarningModal = false">Return</button>
-    </div>
-</clr-modal>
-<!-- end freeze warning modal -->
 
 <!-- begin Missing FCSV Error Modal -->
 <clr-modal [(clrModalOpen)]="showHideMissingFCSVErrorModal">
@@ -1102,7 +1166,7 @@
                         <clr-icon shape="plus"></clr-icon> Create Analysis Batch</button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createFCSV(selected)">
                         <clr-icon shape="plus"></clr-icon>Add FCSV</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="assignFreezerLocation(selected)">
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openFreezerChoice()">
                         <clr-icon shape="thermometer"></clr-icon> Freezer</button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openPrintLabelModal(selected)">
                         <clr-icon shape="printer"></clr-icon> Print Labels</button>

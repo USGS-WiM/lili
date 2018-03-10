@@ -58,9 +58,11 @@ export class SamplesComponent implements OnInit {
   showHideEdit: boolean = false;
   showHideABModal: boolean = false;
   showHideFCSVModal: boolean = false;
-  showHideFreezeModal: boolean = false;
+  showHideFreezerLocationAssignModal: boolean = false;
   showHidePrintModal: boolean = false;
   showHideFreezeWarningModal: boolean = false;
+  showHideFreezerChoiceModal: boolean = false;
+  showHideFreezerLocationLookupModal: boolean = false;
   showHideMultipleSamplesErrorModal: boolean = false;
   showLabelModal: boolean = false;
   sampleSelected: boolean = false;
@@ -409,9 +411,20 @@ export class SamplesComponent implements OnInit {
 
   //   }
 
+  openFreezerChoice() {
+    this.showHideFreezerChoiceModal = true;
+  }
+
+  lookupFreezerLocation() {
+    this.showHideFreezerChoiceModal = false;
+    this.showHideFreezerLocationLookupModal = true;
+
+  }
+
   // callback for the freeze samples button
   assignFreezerLocation(selectedSampleArray) {
 
+    this.showHideFreezerChoiceModal = false;
     this.lastOccupiedSpotLoading = true;
     this.showLastOccupiedSpot = false;
     this.showLastOccupiedSpotError = false;
@@ -441,8 +454,8 @@ export class SamplesComponent implements OnInit {
           this.showHideMissingFCSVErrorModal = true;
         } else {
           // show the freeze modal if not showing already
-          if (this.showHideFreezeModal === false) {
-            this.showHideFreezeModal = true;
+          if (this.showHideFreezerLocationAssignModal === false) {
+            this.showHideFreezerLocationAssignModal = true;
           }
           // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
 
