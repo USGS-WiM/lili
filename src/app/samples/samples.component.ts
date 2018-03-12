@@ -115,7 +115,7 @@ export class SamplesComponent implements OnInit {
     // the following controls apply to every sample record, regardless of matrix selected
     sample_type: new FormControl({ value: '', disabled: true }, Validators.required),
     matrix_type: new FormControl('', Validators.required),
-    filter_type: new FormControl({ value: '', disabled: true }, Validators.required), // required when not disabled
+    filter_type: new FormControl({ value: '', disabled: true }), // required when not disabled
     study: new FormControl({ value: '', disabled: true }, Validators.required),  // study name, maps to study id
     study_site_name: new FormControl({ value: '', disabled: true }),
     collaborator_sample_id: new FormControl({ value: '', disabled: true }, Validators.required),
@@ -130,6 +130,7 @@ export class SamplesComponent implements OnInit {
     collection_start_time: new FormControl({ value: '', disabled: false }, Validators.pattern('\\d\\d:\\d\\d')),
     collection_end_date: new FormControl({ value: '', disabled: true }),
     collection_end_time: new FormControl({ value: '', disabled: true }, Validators.pattern('\\d\\d:\\d\\d')),
+
     meter_reading_initial: new FormControl({ value: '', disabled: true }),
     meter_reading_final: new FormControl({ value: '', disabled: true }),
     meter_reading_unit: new FormControl({ value: '', disabled: true }),
@@ -145,8 +146,8 @@ export class SamplesComponent implements OnInit {
     secondary_concentration_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
     elution_notes: new FormControl({ value: '', disabled: true }),
     technician_initials: new FormControl({ value: '', disabled: true }),
-    dissolution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
-    post_dilution_volume: new FormControl({ value: '', disabled: true }), // required when not disabled
+    dissolution_volume: new FormControl({ value: '', disabled: true }),
+    post_dilution_volume: new FormControl({ value: '', disabled: true }),
     peg_neg: new FormControl('')
   });
 
@@ -179,10 +180,10 @@ export class SamplesComponent implements OnInit {
     total_volume_sampled_initial: new FormControl(''),
     total_volume_sampled_unit_initial: new FormControl(''),
 
+    total_volume_or_mass_sampled: new FormControl(''),
+
     sample_volume_initial: new FormControl(''),
     sample_volume_filtered: new FormControl(''),
-
-    //total_volume_or_mass_sampled: new FormControl(''),
 
     filter_born_on_date: new FormControl(''),
     filter_flag: new FormControl(false, Validators.required), // radio button
@@ -223,6 +224,8 @@ export class SamplesComponent implements OnInit {
 
     total_volume_sampled_initial: new FormControl(''),
     total_volume_sampled_unit_initial: new FormControl(''),
+
+    total_volume_or_mass_sampled: new FormControl(''),
 
     sample_volume_initial: new FormControl(''),
     sample_volume_filtered: new FormControl(''),
@@ -706,16 +709,59 @@ export class SamplesComponent implements OnInit {
 
   }
 
+  getConversionFactorToLiters(unitID) {
+    switch (unitID) {
+      case 1:
+        // if unit is gallons
+        return 0.26417;
+      case 2:
+        // if unit is liters
+        return 1;
+      case 3:
+        // if initial unit is grams
+        return 1;
+      case 4:
+        // if  unit is microliters
+        return 1000000;
+      case 5:
+        // if unit is milliliters
+        return 1000;
+        ;
+    }
+  }
+
   onSubmitSample(formId, formValue) {
     this.showSampleCreateError = false;
     this.showSampleEditError = false;
     this.submitLoading = true;
 
+    // check if meter_reading_XX fields are present by seeing if they are disabled
+    if (this.displayConfig[formValue.matrix_type].meter_reading_final === false &&
+      this.displayConfig[formValue.matrix_type].meter_reading_initial === false &&
+      this.displayConfig[formValue.matrix_type].meter_reading_unit === false) {
+
+      formValue.meter_reading_final = Number(formValue.meter_reading_final);
+      formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
+      formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
+
+      // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
+      formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
+        this.getConversionFactorToLiters(formValue.meter_reading_unit))
+    }
+
+    // check if total_volume_sampled_XX fields are present by seeing if they are not disabled (false)
+    if (this.displayConfig[formValue.matrix_type].total_volume_sampled_initial === false &&
+      this.displayConfig[formValue.matrix_type].total_volume_sampled_unit_initial === false) {
+
+      formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
+      formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
+      // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
+      formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
+        this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
+    }
+
     formValue.filter_type = Number(formValue.filter_type);
     formValue.matrix_type = Number(formValue.matrix_type);
-    formValue.meter_reading_final = Number(formValue.meter_reading_final);
-    formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
-    formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
     formValue.sample_type = Number(formValue.sample_type);
     formValue.sample_volume_initial = Number(formValue.sample_volume_initial);
     formValue.sample_volume_filtered = Number(formValue.sample_volume_filtered);
