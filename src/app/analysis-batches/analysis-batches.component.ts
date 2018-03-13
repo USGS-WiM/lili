@@ -179,9 +179,9 @@ export class AnalysisBatchesComponent implements OnInit {
       qpcr_reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
       qpcr_date: ['', Validators.required],
       new_rt: this.formBuilder.group({
-        template_volume: ['6', [Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
-        reaction_volume: ['20', [Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
-        rt_date: [''],
+        template_volume: ['6', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+        reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+        rt_date: ['', [Validators.required]],
         re_rt: null,
         re_rt_notes: ''
       }),
@@ -195,7 +195,7 @@ export class AnalysisBatchesComponent implements OnInit {
         this.formBuilder.group({
           sample: ['', Validators.required],
           inhibition_dna: [null, Validators.required],
-          inhibition_rna: [null, Validators.required],
+          inhibition_rna: [{ value: null, disabled: true }, Validators.required],
           aliquot_string: '',
           rack: '',
           box: '',
@@ -298,13 +298,22 @@ export class AnalysisBatchesComponent implements OnInit {
         });
         // reset rnaTargetsSelected to false to ensure its value does not carry over from previous use of the extract wizard
         this.rnaTargetsSelected = false;
+        this.extractForm.controls.new_rt.disable();
+        for (let extraction of this.extractionArray.controls) {
+          extraction.get('inhibition_rna').disable()
+        }
         // check for RNA targets in current selection, set rnaTargetsSelected var to true if any exist
         for (let target of this.selected) {
           if (target.nucleic_acid_type === 2) {
             this.rnaTargetsSelected = true;
+            this.extractForm.controls.new_rt.enable();
+            for (let extraction of this.extractionArray.controls) {
+              extraction.get('inhibition_rna').enable()
+            }
             break;
           }
         }
+
         // reset the replicate form array controls to a blank array so it doesnt get populated twice
         this.replicateArray.controls = [];
         // loop through selected to create replicates form
@@ -816,8 +825,11 @@ export class AnalysisBatchesComponent implements OnInit {
     extractFormValue.extraction_volume = Number(extractFormValue.extraction_volume)
     extractFormValue.qpcr_reaction_volume = Number(extractFormValue.qpcr_reaction_volume)
     extractFormValue.qpcr_template_volume = Number(extractFormValue.qpcr_template_volume)
-    extractFormValue.new_rt.reaction_volume = Number(extractFormValue.new_rt.reaction_volume)
-    extractFormValue.new_rt.template_volume = Number(extractFormValue.new_rt.template_volume)
+
+    if (extractFormValue.new_rt) {
+      extractFormValue.new_rt.reaction_volume = Number(extractFormValue.new_rt.reaction_volume)
+      extractFormValue.new_rt.template_volume = Number(extractFormValue.new_rt.template_volume)
+    }
 
     let extractFormValueCopy = extractFormValue;
     for (let extraction of extractFormValueCopy.new_extractions) {
@@ -830,9 +842,10 @@ export class AnalysisBatchesComponent implements OnInit {
     }
 
     // if no RNA targets were included in this extraction, remove the new_rt object from the submission
-    if (this.rnaTargetsSelected === false) {
-      delete extractFormValueCopy.new_rt;
-    }
+    // Note: not needed if using the disable new_rt formGroup approach - the group is already absent in this case.
+    // if (this.rnaTargetsSelected === false) {
+    //   delete extractFormValueCopy.new_rt;
+    // }
 
     this.extractionBatchSubmission = extractFormValueCopy;
 
