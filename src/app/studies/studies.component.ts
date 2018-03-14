@@ -22,6 +22,8 @@ export class StudiesComponent implements OnInit {
     showStudyCreateSuccess: boolean = false;
     showStudyEditSuccess: boolean = false;
 
+    studiesLoading: boolean = false;
+
     selectedStudyName;
     selectedStudyId;
 
@@ -42,10 +44,18 @@ export class StudiesComponent implements OnInit {
     constructor(private _studyService: StudyService) { }
 
     ngOnInit(): void {
-        //on init, call getStudies function which subscribes to the StudyService, set results to the allStudies var
+        this.studiesLoading = true;
+        // on init, call getStudies function which subscribes to the StudyService, set results to the allStudies var
         this._studyService.getStudies()
-            .subscribe(studies => this.allStudies = studies,
-            error => this.errorMessage = <any>error);
+            .subscribe(
+                (studies) => {
+                    this.allStudies = studies;
+                    this.studiesLoading = false;
+                },
+                (error) => {
+                    this.errorMessage = <any>error
+                }
+            );
     }
 
     editStudy(selectedStudy) {
@@ -88,34 +98,34 @@ export class StudiesComponent implements OnInit {
                 // update a record
                 this._studyService.update(formValue)
                     .subscribe(
-                    (study) => {
-                        this.updateStudiesArray(formValue);
-                        this.editStudyForm.reset();
-                        this.submitLoading = false;
-                        this.showStudyEditSuccess = true;
-                    },
-                    error => {
-                        this.errorMessage = <any>error;
-                        this.submitLoading = false;
-                        this.showStudyEditError = true;
-                    }
+                        (study) => {
+                            this.updateStudiesArray(formValue);
+                            this.editStudyForm.reset();
+                            this.submitLoading = false;
+                            this.showStudyEditSuccess = true;
+                        },
+                        error => {
+                            this.errorMessage = <any>error;
+                            this.submitLoading = false;
+                            this.showStudyEditError = true;
+                        }
                     );
                 break;
             case 'add':
                 // add a record
                 this._studyService.create(formValue)
                     .subscribe(
-                    (study) => {
-                        this.allStudies.push(study);
-                        this.addStudyForm.reset();
-                        this.submitLoading = false;
-                        this.showStudyCreateSuccess = true;
-                    },
-                    error => {
-                        this.errorMessage = <any>error;
-                        this.submitLoading = false;
-                        this.showStudyCreateError = true;
-                    }
+                        (study) => {
+                            this.allStudies.push(study);
+                            this.addStudyForm.reset();
+                            this.submitLoading = false;
+                            this.showStudyCreateSuccess = true;
+                        },
+                        error => {
+                            this.errorMessage = <any>error;
+                            this.submitLoading = false;
+                            this.showStudyCreateError = true;
+                        }
                     );
                 break;
             default:

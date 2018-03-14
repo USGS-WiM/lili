@@ -54,6 +54,8 @@ export class AnalysisBatchesComponent implements OnInit {
   extractionFinished = false;
   // testing
 
+  analysisBatchesLoading: boolean = false;
+
   public showWarning = false;
   public nativeWindow: any;
   rnaTargetsSelected: boolean = false;
@@ -245,6 +247,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   ngOnInit() {
 
+    this.analysisBatchesLoading = true;
+
     this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
 
     // on init, call getTargets function of the TargetService, set results to allTargets var
@@ -257,8 +261,13 @@ export class AnalysisBatchesComponent implements OnInit {
 
     // on init, call getAnalysisBatchSummaries function of the AnalysisBatchService, set results to the allAnalysisBatches var
     this._analysisBatchService.getAnalysisBatchSummaries()
-      .subscribe(analysisBatches => this.allAnalysisBatchSummaries = analysisBatches,
-        error => this.errorMessage = <any>error);
+      .subscribe(
+        (analysisBatches) => {
+          this.allAnalysisBatchSummaries = analysisBatches;
+          this.analysisBatchesLoading = false;
+        },
+        error => { this.errorMessage = <any>error }
+      );
 
     // on init, call getExtractionMethods function of the EXtractionMethodService, set results to allExtractionMethods var
     this._extractionMethodService.getExtractionMethods()
