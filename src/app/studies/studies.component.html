@@ -124,7 +124,7 @@
         <!-- <div class="card-title">
             All Studies
         </div> -->
-        <clr-datagrid [(clrDgSingleSelected)]="selectedStudy">
+        <clr-datagrid [(clrDgSingleSelected)]="selectedStudy" [clrDgLoading]="studiesLoading">
 
             <clr-dg-action-bar>
                 <div class="btn-group">

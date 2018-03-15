@@ -76,6 +76,8 @@ export class SamplesComponent implements OnInit {
   matrixSelected: IMatrix;
   unitValue;
 
+  samplesLoading: boolean = false;
+
   onlyOneStudySelected: boolean;
   submitLoading: boolean = false;
 
@@ -286,6 +288,8 @@ export class SamplesComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.samplesLoading = true;
+
     // on init, get sample form config object from App Utilities and set to local displayConfig var
     this.displayConfig = APP_UTILITIES.SAMPLE_FORM_CONFIG;
 
@@ -297,6 +301,7 @@ export class SamplesComponent implements OnInit {
       .subscribe(
         (samples) => {
           this.allSamples = samples
+          this.samplesLoading = false;
           for (let sample of samples) {
             if (sample.record_type === 2) {
               this.pegnegs.push(sample);
