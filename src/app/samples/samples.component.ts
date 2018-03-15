@@ -124,13 +124,13 @@ export class SamplesComponent implements OnInit {
     sampler_name: new FormControl({ value: '', disabled: true }),
     sample_notes: new FormControl({ value: '', disabled: true }),
     sample_description: new FormControl({ value: '', disabled: true }),
-    arrival_date: new FormControl({ value: '', disabled: true }),
+    arrival_date: new FormControl({ value: null, disabled: true }),
     arrival_notes: new FormControl({ value: '', disabled: true }),
-    collection_start_date: new FormControl({ value: '', disabled: true }, Validators.required),
+    collection_start_date: new FormControl({ value: null, disabled: true }, Validators.required),
 
     // the following controls have variable display needs based on the matrix selected
     collection_start_time: new FormControl({ value: '', disabled: false }, Validators.pattern('\\d\\d:\\d\\d')),
-    collection_end_date: new FormControl({ value: '', disabled: true }),
+    collection_end_date: new FormControl({ value: null, disabled: true }),
     collection_end_time: new FormControl({ value: '', disabled: true }, Validators.pattern('\\d\\d:\\d\\d')),
 
     meter_reading_initial: new FormControl({ value: '', disabled: true }),
@@ -143,7 +143,7 @@ export class SamplesComponent implements OnInit {
     sample_volume_initial: new FormControl({ value: '', disabled: true }),
     sample_volume_filtered: new FormControl({ value: '', disabled: true }),
 
-    filter_born_on_date: new FormControl({ value: '', disabled: true }),
+    filter_born_on_date: new FormControl({ value: null, disabled: true }),
     filter_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
     secondary_concentration_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
     elution_notes: new FormControl({ value: '', disabled: true }),
@@ -232,9 +232,9 @@ export class SamplesComponent implements OnInit {
     sample_volume_initial: new FormControl(''),
     sample_volume_filtered: new FormControl(''),
 
-    filter_born_on_date: new FormControl(''),
-    filter_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
-    secondary_concentration_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
+    filter_born_on_date: new FormControl(null),
+    filter_flag: new FormControl(false, Validators.required), // radio button
+    secondary_concentration_flag: new FormControl(false, Validators.required), // radio button
     elution_notes: new FormControl(''),
     technician_initials: new FormControl(''),
     dissolution_volume: new FormControl(''),
@@ -740,31 +740,6 @@ export class SamplesComponent implements OnInit {
     this.showSampleEditError = false;
     this.submitLoading = true;
 
-    // check if meter_reading_XX fields are present by seeing if they are disabled
-    if (this.displayConfig[formValue.matrix_type].meter_reading_final === false &&
-      this.displayConfig[formValue.matrix_type].meter_reading_initial === false &&
-      this.displayConfig[formValue.matrix_type].meter_reading_unit === false) {
-
-      formValue.meter_reading_final = Number(formValue.meter_reading_final);
-      formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
-      formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
-
-      // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
-      formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
-        this.getConversionFactorToLiters(formValue.meter_reading_unit))
-    }
-
-    // check if total_volume_sampled_XX fields are present by seeing if they are not disabled (false)
-    if (this.displayConfig[formValue.matrix_type].total_volume_sampled_initial === false &&
-      this.displayConfig[formValue.matrix_type].total_volume_sampled_unit_initial === false) {
-
-      formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
-      formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
-      // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
-      formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
-        this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
-    }
-
     formValue.filter_type = Number(formValue.filter_type);
     formValue.matrix_type = Number(formValue.matrix_type);
     formValue.sample_type = Number(formValue.sample_type);
@@ -772,6 +747,7 @@ export class SamplesComponent implements OnInit {
     formValue.sample_volume_filtered = Number(formValue.sample_volume_filtered);
     formValue.sampler_name = Number(formValue.sampler_name);
     formValue.study = Number(formValue.study);
+    formValue.dissolution_volume = Number(formValue.dissolution_volume);
 
     switch (formId) {
       case 'edit':
@@ -792,6 +768,32 @@ export class SamplesComponent implements OnInit {
           );
         break;
       case 'add':
+
+        // check if meter_reading_XX fields are present by seeing if they are disabled
+        if (this.displayConfig[formValue.matrix_type].meter_reading_final === false &&
+          this.displayConfig[formValue.matrix_type].meter_reading_initial === false &&
+          this.displayConfig[formValue.matrix_type].meter_reading_unit === false) {
+
+          formValue.meter_reading_final = Number(formValue.meter_reading_final);
+          formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
+          formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
+
+          // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
+          formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
+            this.getConversionFactorToLiters(formValue.meter_reading_unit))
+        }
+
+        // check if total_volume_sampled_XX fields are present by seeing if they are not disabled (false)
+        if (this.displayConfig[formValue.matrix_type].total_volume_sampled_initial === false &&
+          this.displayConfig[formValue.matrix_type].total_volume_sampled_unit_initial === false) {
+
+          formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
+          formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
+          // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
+          formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
+            this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
+        }
+
         // add a record
         this._sampleService.create(formValue)
           .subscribe(
@@ -810,6 +812,23 @@ export class SamplesComponent implements OnInit {
         break;
       case 'addPegNeg':
         // add a record, of type pegneg (control)
+
+
+        formValue.meter_reading_final = Number(formValue.meter_reading_final);
+        formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
+        formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
+
+        // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
+        formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
+          this.getConversionFactorToLiters(formValue.meter_reading_unit));
+
+
+        formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
+        formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
+        // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
+        formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
+          this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial));
+
         // need to add required field values as they are assumed and not entered by user
         let now = new Date(Date.now());
         let currentDate = now.toISOString().substring(0, 10);
