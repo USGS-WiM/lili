@@ -90,6 +90,13 @@
             </div>
             <div class="col-lg-2 col-md-2"></div>
         </div>
+
+        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="targetSelectErrorFlag">
+            <div clr-alert-item class="alert-item">
+                <span class="alert-text">Please select at least one target to continue.</span>
+            </div>
+        </clr-alert>
+
         <ng-template clrPageButtons>
             <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
@@ -298,19 +305,6 @@
             <div class="row">
                 <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
 
-
-                    <clr-alert *ngIf="inhibitionErrorFlag" [clrAlertType]="'alert-danger'">
-                        <div class="alert-item">
-                            New inhibition submission failed. Please try again.
-                        </div>
-                    </clr-alert>
-
-                    <clr-alert *ngIf="inhibitionFinished && !inhibitionErrorFlag" [clrAlertType]="'alert-success'">
-                        <div clr-alert-item class="alert-item">
-                            <span class="alert-text">New inhibitions successfully created</span>
-                        </div>
-                    </clr-alert>
-
                     <div class="spinner" *ngIf="loadingFlag">
                         Loading...
                     </div>
@@ -406,32 +400,32 @@
                                                         </thead>
 
                                                         <tbody>
-                                                                <tr *ngFor="let sample of abSampleInhibitions; let i = index" [formGroupName]="i">
-                                                                    <td class="left">
-                                                                        <label class="required">Sample {{sample.id}}</label>
-                                                                    </td>
-                                                                    <td *ngIf="createInhibitionForm.value.dna === false">
-                                                                        <div class="select">
-                                                                            <select name="dnaInhibition" formControlName="inhibition_dna">
-                                                                                <option [value]="'new'">Create New</option>
-                                                                                <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
-                                                                                    | displayValue:'name':this.nucleicAcidTypes}})
-                                                                                    - {{inhibition.inhibition_date | date:'shortDate'}}</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td *ngIf="createInhibitionForm.value.rna === false && rnaTargetsSelected">
-                                                                        <div class="select">
-                                                                            <select name="rnaInhibition" formControlName="inhibition_rna">
-                                                                                <option [value]="'new'">Create New</option>
-                                                                                <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
-                                                                                    | displayValue:'name':this.nucleicAcidTypes}})
-                                                                                    - {{inhibition.inhibition_date | date:'shortDate'}}</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
+                                                            <tr *ngFor="let sample of abSampleInhibitions; let i = index" [formGroupName]="i">
+                                                                <td class="left">
+                                                                    <label class="required">Sample {{sample.id}}</label>
+                                                                </td>
+                                                                <td *ngIf="createInhibitionForm.value.dna === false">
+                                                                    <div class="select">
+                                                                        <select name="dnaInhibition" formControlName="inhibition_dna">
+                                                                            <option [value]="'new'">Create New</option>
+                                                                            <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
+                                                                                | displayValue:'name':this.nucleicAcidTypes}})
+                                                                                - {{inhibition.inhibition_date | date:'shortDate'}}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                                <td *ngIf="createInhibitionForm.value.rna === false && rnaTargetsSelected">
+                                                                    <div class="select">
+                                                                        <select name="rnaInhibition" formControlName="inhibition_rna">
+                                                                            <option [value]="'new'">Create New</option>
+                                                                            <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
+                                                                                | displayValue:'name':this.nucleicAcidTypes}})
+                                                                                - {{inhibition.inhibition_date | date:'shortDate'}}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
 
                                                         <!-- <tbody>
                                                             <tr *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
@@ -478,6 +472,14 @@
                 <span>Extract Wizard form status: {{extractForm.status}}.</span>
                 <span *ngIf="extractForm.status === 'INVALID'">There are missing or invalid values. </span>
         </div>
+        <div>
+            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="inhibitionErrorFlag">
+                <div clr-alert-item class="alert-item">
+                    <span class="alert-text">{{inhibitionError}}</span>
+                </div>
+            </clr-alert>
+        </div>
+
         <ng-template clrPageButtons>
             <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>

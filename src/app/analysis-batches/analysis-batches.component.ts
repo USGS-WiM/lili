@@ -105,6 +105,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   showHidePrintModal: boolean = false;
 
+  targetSelectErrorFlag: boolean = false;
+
   // aliquotSelectionArray: IAliquotSelection[] = [];
 
   inhibitionsPerSample = [];
@@ -143,6 +145,15 @@ export class AnalysisBatchesComponent implements OnInit {
 
   rnaApplyList = [];
   dnaApplyList = [];
+
+  inhibitionError: string = "";
+
+  inhibitionErrors = {
+    "dnaInhibitionSelection": "Missing one or more inhibition selections. Please make a DNA inhibition selection for each sample.",
+    "rnaInhibitionSelection": "Missing one or more inhibition selections. Please make a RNA inhibition selection for each sample.",
+    "dnaInhibitionDate": "Please select a date for new DNA inhibitions.",
+    "rnaInhibitionDate": "Please select a date for new RNA inhibitions."
+  }
 
   isNumberPattern: RegExp = (/^[0-9]*$/);
 
@@ -293,10 +304,9 @@ export class AnalysisBatchesComponent implements OnInit {
 
   public doCustomClick(buttonType: string): void {
     if ("custom-next-targetPage" === buttonType) {
-
+      this.targetSelectErrorFlag = false;
       if (this.selected.length < 1) {
-        alert("Please select at least one target to continue.")
-
+        this.targetSelectErrorFlag = true;
       } else {
 
         // add the 'count' property to the selected (targets) object
@@ -339,51 +349,77 @@ export class AnalysisBatchesComponent implements OnInit {
     }
 
     if ("custom-next-inhPage" === buttonType) {
-      if ((this.createInhibitionForm.value.dna === false && this.createInhibitionForm.value.rna === false) ||
-        this.inhibitionFinished === true) {
-        if (this.createInhibitionForm.value.dna === false) {
-          for (let extraction of this.extractForm.value.new_extractions) {
-            if (extraction.inhibition_dna === null) {
-              alert("Please select a DNA inhibition to apply for each sample, or click to create new.")
-              return;
-            }
-          }
-        }
-        if (this.createInhibitionForm.value.rna === false && this.rnaTargetsSelected) {
-          for (let extraction of this.extractForm.value.new_extractions) {
-            if (extraction.inhibition_rna === null) {
-              alert("Please select a RNA inhibition to apply for each sample, or click to create new.")
-              return;
-            }
-          }
-        }
-      } else if ((this.createInhibitionForm.value.dna === true || this.createInhibitionForm.value.rna === true) &&
-        this.inhibitionFinished === false) {
 
+      this.inhibitionErrorFlag = false;
+      this.inhibitionError = '';
+      // if the user has opted to apply existing inhibitions for both DNA and RNA targets
+      if (this.createInhibitionForm.value.dna === false && this.createInhibitionForm.value.rna === false) {
+        // if create new inhibitions for DNA targets is not selected, loop through the new_extractions object.
+        // if any are null, alert user to select an inhibition for each sample extraction.
         if (this.createInhibitionForm.value.dna === false) {
           for (let extraction of this.extractForm.value.new_extractions) {
             if (extraction.inhibition_dna === null) {
-              alert("Please select a DNA inhibition for all samples.")
+              this.inhibitionError = this.inhibitionErrors.dnaInhibitionSelection;
+              this.inhibitionErrorFlag = true;
+              // alert("Missing one or more inhibition selections. Please make a DNA inhibition selection for each sample.")
               return;
             }
           }
         }
+        // if create new inhibitions for RNA targets is not selected and there are RNA targets selected,
+        // loop through the new_extractions object. if any are null, alert user to select an inhibition for each sample extraction.
         if (this.createInhibitionForm.value.rna === false && this.rnaTargetsSelected) {
           for (let extraction of this.extractForm.value.new_extractions) {
             if (extraction.inhibition_rna === null) {
-              alert("Please select a RNA inhibition for all samples.")
+              this.inhibitionError = this.inhibitionErrors.rnaInhibitionSelection;
+              this.inhibitionErrorFlag = true;
+              // alert("Missing one or more inhibition selections. Please make a RNA inhibition selection for each sample.")
               return;
             }
           }
         }
+        // if the user has opted to apply existing inhibitions for one target type but not the other
+      } else if (this.createInhibitionForm.value.dna === true || this.createInhibitionForm.value.rna === true) {
+
+        // if user has opted to create new inhibitions for all DNA targets but has not chosen a date for them
         if (this.createInhibitionForm.value.dna === true && this.createInhibitionForm.value.inhibition_date_dna === '') {
-          alert("Please select a date for DNA inhibitions");
+          this.inhibitionError = this.inhibitionErrors.dnaInhibitionDate;
+          this.inhibitionErrorFlag = true;
+          // alert("Please select a date for DNA inhibitions");
           return;
         }
+        // if user has opted to create new inhibitions for all RNA targets but has not chosen a date for them
         if (this.createInhibitionForm.value.rna === true && this.createInhibitionForm.value.inhibition_date_rna === '') {
-          alert("Please select a date for RNA inhibitions");
+          this.inhibitionError = this.inhibitionErrors.rnaInhibitionDate;
+          this.inhibitionErrorFlag = true;
+          // alert("Please select a date for RNA inhibitions");
           return;
         }
+        // if create new inhibitions for DNA targets is not selected, loop through the new_extractions object.
+        // if any are null, alert user to select an inhibition for each sample extraction.
+        if (this.createInhibitionForm.value.dna === false) {
+          for (let extraction of this.extractForm.value.new_extractions) {
+            if (extraction.inhibition_dna === null) {
+              this.inhibitionError = this.inhibitionErrors.dnaInhibitionSelection;
+              this.inhibitionErrorFlag = true;
+              // alert("Missing one or more inhibition selections. Please make a DNA inhibition selection for each sample.")
+              return;
+            }
+          }
+        }
+        // if create new inhibitions for RNA targets is not selected and there are RNA targets selected,
+        // loop through the new_extractions object. if any are null, alert user to select an inhibition for each sample extraction.
+        if (this.createInhibitionForm.value.rna === false && this.rnaTargetsSelected) {
+          for (let extraction of this.extractForm.value.new_extractions) {
+            if (extraction.inhibition_rna === null) {
+              this.inhibitionError = this.inhibitionErrors.rnaInhibitionSelection;
+              this.inhibitionErrorFlag = true;
+              // alert("Missing one or more inhibition selections. Please make a RNA inhibition selection for each sample.")
+              return;
+            }
+          }
+        }
+
       }
       this.populateInhibitions();
     }
