@@ -729,10 +729,8 @@ export class SamplesComponent implements OnInit {
           this.errorMessage = <any>error;
           this.submitLoading = false;
           this.showABCreateError = true;
-
         }
       )
-
   }
 
   getConversionFactorToLiters(unitID) {

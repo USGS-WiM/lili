@@ -28,7 +28,7 @@ export class APP_SETTINGS {
     public static get ANALYSIS_BATCH_DETAIL_URL(): string { return this._API_ENDPOINT + 'analysisbatchdetail/' };
     public static get ANALYSIS_BATCH_SUMMARY_URL(): string { return this._API_ENDPOINT + 'analysisbatchsummary/' };
     public static get EXTRACTIONS_URL(): string { return this._API_ENDPOINT + 'extractions/'; };
-    public static get EXTRACTION_BATCHES_URL(): string { return this._API_ENDPOINT + 'extractionbatches/'};
+    public static get EXTRACTION_BATCHES_URL(): string { return this._API_ENDPOINT + 'extractionbatches/' };
     public static get EXTRACTION_METHODS_URL(): string { return this._API_ENDPOINT + 'extractionmethods/' };
     public static get INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'inhibitions/' };
     public static get SAMPLE_INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'sampleinhibitions' };
@@ -43,17 +43,21 @@ export class APP_SETTINGS {
     public static get OTHER_ANALYSES_URL(): string { return this._API_ENDPOINT + 'otheranalyses/' };
     public static get USERS_URL(): string { return this._API_ENDPOINT + 'users/' };
 
+    public static get VERSION() {
+        return require('../../package.json').version
+    }
+
     public static get NUCLEIC_ACID_TYPES() {
         return [
-        { "id": 1, "name": "DNA" },
-        { "id": 2, "name": "RNA" }
+            { "id": 1, "name": "DNA" },
+            { "id": 2, "name": "RNA" }
         ]
     };
 
     public static get SAMPLE_RECORD_TYPES() {
         return [
-        { "id": 1, "name": "Data" },
-        { "id": 2, "name": "Control" }
+            { "id": 1, "name": "Data" },
+            { "id": 2, "name": "Control" }
         ]
     };
 
@@ -68,7 +72,7 @@ export class APP_SETTINGS {
         }
     }
 
-    
+
 
     // public static get WATER_MATRIX_ID() {
     //     return 1;

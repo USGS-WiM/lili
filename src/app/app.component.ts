@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { StudyService } from './studies/study.service';
@@ -13,6 +13,8 @@ import { TargetService } from './targets/target.service';
 import { ExtractionMethodService } from './extractions/extraction-method.service';
 import { ConcentrationTypeService } from './concentration-types/concentration-types.service';
 
+import { APP_SETTINGS } from './app.settings';
+
 @Component({
     selector: 'my-app',
     templateUrl: './app.component.html',
@@ -23,7 +25,14 @@ import { ConcentrationTypeService } from './concentration-types/concentration-ty
         AnalysisBatchService
     ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+    public liliVersion: string = '';
+
     constructor(private router: Router) {
+    }
+
+    ngOnInit() {
+        this.liliVersion = APP_SETTINGS.VERSION;
     }
 }
