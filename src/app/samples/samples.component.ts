@@ -265,8 +265,9 @@ export class SamplesComponent implements OnInit {
 
   createFCSVForm = new FormGroup({
     samples: new FormControl([]),
-    final_concentrated_sample_volume: new FormControl(''),
-    final_concentrated_sample_volume_type: new FormControl(''),
+    final_concentrated_sample_volume: new FormControl(null),
+    final_concentrated_sample_volume_unit: new FormControl(null),
+    final_concentrated_sample_volume_type: new FormControl(null),
     final_concentrated_sample_volume_notes: new FormControl('')
   })
 
@@ -396,8 +397,9 @@ export class SamplesComponent implements OnInit {
 
     this.createFCSVForm.setValue({
       samples: selectedSampleIDs,
-      final_concentrated_sample_volume: '',
-      final_concentrated_sample_volume_type: '',
+      final_concentrated_sample_volume: null,
+      final_concentrated_sample_volume_unit: null,
+      final_concentrated_sample_volume_type: null,
       final_concentrated_sample_volume_notes: ''
 
     })
@@ -429,6 +431,14 @@ export class SamplesComponent implements OnInit {
 
   }
 
+  lookupMatrixTypeID(code) {
+    for (let matrix of this.matrices) {
+      if (code === matrix.code) {
+        return matrix.id;
+      }
+    }
+  }
+
   // callback for the freeze samples button
   assignFreezerLocation(selectedSampleArray) {
 
@@ -458,7 +468,11 @@ export class SamplesComponent implements OnInit {
     } else if (this.onlyOneStudySelected === true) {
 
       for (let sample of selectedSampleArray) {
-        if (sample.final_concentrated_sample_volume == null) {
+        // if any sample in the selection lacks an FCSV value AND has a matrix that requires one, show error
+        if (sample.final_concentrated_sample_volume === null &&
+          (sample.matrix_type === (this.lookupMatrixTypeID("W"))
+            || sample.matrix_type === (this.lookupMatrixTypeID("WW"))
+            || sample.matrix_type === (this.lookupMatrixTypeID("F")))) {
           this.showHideMissingFCSVErrorModal = true;
         } else {
           // show the freeze modal if not showing already
@@ -670,6 +684,13 @@ export class SamplesComponent implements OnInit {
 
     let fcsvArray = [];
 
+    formValue.final_concentrated_sample_volume = Number(formValue.final_concentrated_sample_volume);
+    formValue.final_concentrated_sample_volume_type = Number(formValue.final_concentrated_sample_volume_type);
+    formValue.final_concentrated_sample_volume_unit = Number(formValue.final_concentrated_sample_volume_unit);
+
+    formValue.final_concentrated_sample_volume = (formValue.final_concentrated_sample_volume /
+      this.getConversionFactorToMilliliters(formValue.final_concentrated_sample_volume_unit))
+
     for (let sample of formValue.samples) {
       fcsvArray.push({
         "sample": sample,
@@ -734,6 +755,28 @@ export class SamplesComponent implements OnInit {
         ;
     }
   }
+
+  getConversionFactorToMilliliters(unitID) {
+    switch (unitID) {
+      case 1:
+        // if unit is gallons
+        return 0.00026417;
+      case 2:
+        // if unit is liters
+        return 0.0010000;
+      case 3:
+        // if initial unit is grams
+        return 1;
+      case 4:
+        // if  unit is microliters
+        return 1000;
+      case 5:
+        // if unit is milliliters
+        return 1;
+        ;
+    }
+  }
+
 
   onSubmitSample(formId, formValue) {
     this.showSampleCreateError = false;

@@ -18,7 +18,7 @@ export class MatrixTypeFilter implements OnInit, Filter<any> {
   constructor(private _matrixService: MatrixService) { }
 
   ngOnInit(): void {
-    // on init, call getStudies function which subscribes to the StudyService, set results to the allMatrixs var
+    // on init, call getMatrices function which subscribes to the MatrixService, set results to the allMatrices var
     this._matrixService.getMatrices()
       .subscribe(matrices => this.allMatrices = matrices,
         error => this.errorMessage = <any>error);
