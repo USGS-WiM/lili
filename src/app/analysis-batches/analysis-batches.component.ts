@@ -63,6 +63,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   inhibitionsExist: boolean = false;
   submitLoading: boolean = false;
+  targetDetailLoading: boolean = false;
 
   // for print modal
   printSubmitLoading: boolean = false;
@@ -106,6 +107,7 @@ export class AnalysisBatchesComponent implements OnInit {
   showHidePrintModal: boolean = false;
 
   targetSelectErrorFlag: boolean = false;
+  showHideNoTargetErrorModal: boolean = false;
 
   // aliquotSelectionArray: IAliquotSelection[] = [];
 
@@ -266,9 +268,6 @@ export class AnalysisBatchesComponent implements OnInit {
     this._targetService.getTargets()
       .subscribe(targets => this.allTargets = targets,
         error => this.errorMessage = <any>error);
-
-    // grab temporary hard-coded inhibitionsPerSample object (until web service endpoint is up-to-date)
-    // this.inhibitionsPerSample = APP_UTILITIES.INHIBITIONS_PER_SAMPLE_ENDPOINT;
 
     // on init, call getAnalysisBatchSummaries function of the AnalysisBatchService, set results to the allAnalysisBatches var
     this._analysisBatchService.getAnalysisBatchSummaries()
@@ -608,7 +607,7 @@ export class AnalysisBatchesComponent implements OnInit {
             this.errorMessage = <any>error;
           });
     } else if (!isReprint) {
-      // use this.extractWizWorksheetData, which was populated by submitExtractions()
+      // use this.extractWizWorksheetData
       for (let replicate of this.extractWizWorksheetData.new_replicates) {
         for (let target of this.allTargets) {
           if (replicate.target === target.id) {
@@ -947,11 +946,28 @@ export class AnalysisBatchesComponent implements OnInit {
 
   openTargetDetails(abID) {
 
+    this.targetDetailLoading = true;
+    this.showHideNoTargetErrorModal = false;
     this.targetDetailArray = [];
     // check if AB ID matches the current focusAnalysisBatchID.
     // This will mean the desired AB data is already stored in the variable and does not need to be retrieved
     if (abID === this.focusAnalysisBatchID) {
-      // this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
+
+      if (this.extractionBatchArray.length > 0) {
+        // build the target list by looping through the targets array of the first extractionBatch and adding all targets to a local array
+        // all extraction batches of the same analysis batch have identical target list so only first one is needed
+        for (let target of this.extractionBatchArray[0].targets) {
+          this.targetDetailArray.push(target);
+        }
+        // show the target details modal if not showing already
+        if (this.showHideTargetDetailModal === false) {
+          this.showHideTargetDetailModal = true;
+        }
+        this.targetDetailLoading = true;
+      } else {
+        this.showHideNoTargetErrorModal = true;
+      }
+
     } else {
       // set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
       this.focusAnalysisBatchID = abID;
@@ -960,23 +976,30 @@ export class AnalysisBatchesComponent implements OnInit {
       this._analysisBatchService.getAnalysisBatchDetail(abID)
         .subscribe(
           (analysisBatchDetail) => {
-            console.log(analysisBatchDetail);
-            this.focusAnalysisBatchData = analysisBatchDetail;
-            this.extractionBatchArray = this.focusAnalysisBatchData.extractionbatches;
 
-            // build the target list by looping through the AB extraction batch array and adding all targets to a local array
-            for (let extractionbatch of this.extractionBatchArray) {
-              for (let target of extractionbatch.targets) {
+            if (analysisBatchDetail.extractionbatches.length > 0) {
+
+              this.focusAnalysisBatchData = analysisBatchDetail;
+              this.extractionBatchArray = this.focusAnalysisBatchData.extractionbatches;
+              // build the target list by looping through the targets array of the first extractionBatch and adding all targets to a local array
+              // all extraction batches of the same analysis batch have identical target list so only first one is needed
+              for (let target of this.extractionBatchArray[0].targets) {
                 this.targetDetailArray.push(target);
               }
+
+              // show the target details modal if not showing already
+              if (this.showHideTargetDetailModal === false) {
+                this.showHideTargetDetailModal = true;
+              }
+              this.targetDetailLoading = false;
+            } else {
+              this.showHideNoTargetErrorModal = true;
             }
-            // show the inhibition details modal if not showing already
-            if (this.showHideTargetDetailModal === false) {
-              this.showHideTargetDetailModal = true;
-            }
+
           },
           error => {
             this.errorMessage = <any>error
+            this.targetDetailLoading = false;
           }
         );
     }
