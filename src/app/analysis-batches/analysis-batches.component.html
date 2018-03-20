@@ -935,6 +935,25 @@
 </clr-modal>
 <!-- end target detail modal -->
 
+<!-- begin no targets error modal -->
+<clr-modal [(clrModalOpen)]="showHideNoTargetErrorModal" [clrModalSize]="'md'">
+    <h3 class="modal-title">
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> No targets error</h3>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <p>This Analysis Batch has not been extracted, so no targets have been selected.
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showHideNoTargetErrorModal = false">Return</button>
+    </div>
+</clr-modal>
+<!-- end no target error modal -->
+
+
 <!-- begin Analysis batches table -->
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -992,6 +1011,7 @@
             <clr-dg-column>
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Target Count
+                    <span class="spinner spinner-inline" *ngIf="targetDetailLoading"></span>
                 </ng-container>
             </clr-dg-column>
 
@@ -1051,7 +1071,7 @@
                 <clr-dg-cell>{{ab.summary.reverse_transcription_count}}</clr-dg-cell>
 
                 <clr-dg-cell>
-                    <a (click)="openTargetDetails(ab.id)" class="label label-blue clickable">{{ab.summary.target_count}}</a>
+                    <a class="label label-blue clickable" (click)="openTargetDetails(ab.id)">{{ab.summary.target_count}}</a>
                 </clr-dg-cell>
 
                 <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
