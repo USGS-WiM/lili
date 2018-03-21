@@ -1,5 +1,5 @@
 import { IAliquot } from "../../aliquots/aliquot";
-import { IExtractionSubmission } from "../../extractions/extraction-submission";
+import { ISampleExtractionSubmission } from "../../sample-extractions/sample-extraction-submission";
 
 export interface Iabworksheet {
     isReprint: boolean;
@@ -17,7 +17,7 @@ export interface Iabworksheet {
     reverse_extraction_no: number;
     rt_reaction_volume: number;
     rt_date: string;
-    extraction_submission: IExtractionSubmission[];
+    extraction_submission: ISampleExtractionSubmission[];
 }
 
 

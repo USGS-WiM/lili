@@ -2,7 +2,7 @@ import { IAliquot } from '../aliquots/aliquot';
 export interface ISample {
     id: number;
     sample_type: Object;
-    matrix_type: Object;
+    matrix: Object;
     filter_type: Object;
     study: Object;
     study_site_name: string;

@@ -1,4 +1,4 @@
-import { IExtraction } from '../extractions/extraction';
+import { ISampleExtraction } from '../sample-extractions/sample-extraction';
 import { ISampleSummary } from '../samples/sample-summary';
 
 export interface IAnalysisBatch {

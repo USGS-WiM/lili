@@ -43,7 +43,7 @@
                         <section class="form-block">
                             <p>Select desired number of PCR replicates for each selected target. To update the targets list,
                                 return to Target Selection page.
-                                <div formArrayName="new_extractions" *ngIf="extractionArray.controls.length > 0">
+                                <div formArrayName="new_sample_extractions" *ngIf="extractionArray.controls.length > 0">
                                     <div class="form-group" *ngFor="let extraction of extractionArray.controls; let i = index" [formGroupName]="i">
                                         <label>Sample {{extraction.controls.sample.value}}</label>
                                         <div class="select" formArrayName="aliquots">
@@ -388,7 +388,7 @@
 
                                     <form class="compact" [formGroup]="extractForm">
                                         <section class="form-block">
-                                            <div formArrayName="new_extractions">
+                                            <div formArrayName="new_sample_extractions">
                                                 <div>
                                                     <table class="table table-noborder">
                                                         <thead>
@@ -661,7 +661,7 @@
             <div class="col-lg-12">
 
                 <div *ngIf="noExtractionsFlag">
-                    There are no extractions for this Analysis Batch.
+                    There are no Extractions for this Analysis Batch.
                 </div>
 
                 <div *ngIf="oneExtractionFlag">
@@ -671,7 +671,7 @@
                 </div>
 
                 <div *ngIf="multipleExtractionsFlag">
-                    There are multiple extractions of this Analysis Batch. Please select the extraction data you would like to print.
+                    There are multiple Extractions of this Analysis Batch. Please select the extraction data you would like to print.
                     <form class="compact" [formGroup]="extractionBatchSelectForm">
                         <div class="form-group">
                             <label class="required">Selection</label>

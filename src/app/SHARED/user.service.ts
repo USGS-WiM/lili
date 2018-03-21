@@ -19,7 +19,7 @@ export class UserService {
 
     return this._http.get(APP_SETTINGS.USERS_URL, options)
       .map((response: Response) => <IUser[]>response.json())
-      //.do(data => console.log('Users data: ' + JSON.stringify(data)))
+      // .do(data => console.log('Users data: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 

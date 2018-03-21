@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 import { APP_SETTINGS } from '../app.settings';
 
 import { IExtractionBatchSubmission } from './extraction-batch-submission';
-import { IExtractionBatch } from 'app/extractions/extraction-batch';
+import { IExtractionBatch } from 'app/extraction-batches/extraction-batch';
 
 @Injectable()
 export class ExtractionBatchService {

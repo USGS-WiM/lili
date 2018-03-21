@@ -9,7 +9,7 @@
               Loading...
             </span>
             <span *ngIf="noExtractionsFlag">
-              <clr-icon shape="neutral-face"></clr-icon> There are no extractions from this Analysis Batch.
+              <clr-icon shape="neutral-face"></clr-icon> There are no Extractions from this Analysis Batch.
             </span>
             <clr-tree-node *ngFor="let extractionbatch of extractionBatchArray">
               <span>Extraction {{extractionbatch.extraction_number}}&nbsp;&nbsp;&nbsp;&nbsp;{{extractionbatch.extraction_date |
@@ -121,11 +121,11 @@
                     </tr>
                     <tr>
                       <th>Sample Type</th>
-                      <td>{{sample.sample_type.name}}</td>
+                      <td>{{sample.sample_type_string}}</td>
                     </tr>
                     <tr>
                       <th>Matrix</th>
-                      <td>{{sample.matrix_type.name}}</td>
+                      <td>{{sample.matrix_string}}</td>
                     </tr>
                     <tr>
                       <th>Study</th>
@@ -224,7 +224,7 @@
           <span>µL</span>
           <!-- <div class="select">
             <select id="rtReactionVolUnits" formControlName="reaction_volume_units">
-              <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+              <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
             </select>
           </div> -->
         </div>

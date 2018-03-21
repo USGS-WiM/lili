@@ -15,7 +15,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { AdminComponent } from './admin/admin.component';
 import { ConcentrationResolve } from './concentration-types/concentration-types.resolve';
 import { UnitResolve } from './units/unit.resolve';
-import { ExtractionResolve } from './extractions/extraction-method.resolve';
+import { ExtractionResolve } from './extraction-batches/extraction-method.resolve';
 import { FilterResolve } from './SHARED/filter-type.resolve';
 import { MatrixResolve } from './SHARED/matrix.resolve';
 import { SampleTypeResolve } from './SHARED/sample-type.resolve';

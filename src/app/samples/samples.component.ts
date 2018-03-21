@@ -102,6 +102,8 @@ export class SamplesComponent implements OnInit {
 
   selectedStudy;
 
+  sampleVolumeErrorFlag: boolean = false;
+
   lastOccupiedSpot;
   showLastOccupiedSpot;
   showLastOccupiedSpotError;
@@ -112,16 +114,16 @@ export class SamplesComponent implements OnInit {
   aliquotLabelTextArray = [];
 
   // add sample form - declare reactive form with appropriate sample fields
-  // all fields except matrix_type are disabled until matrix_type is selected (see onMatrixSelect function)
+  // all fields except matrix are disabled until matrix is selected (see onMatrixSelect function)
   addSampleForm = new FormGroup({
     // the following controls apply to every sample record, regardless of matrix selected
-    sample_type: new FormControl({ value: '', disabled: true }, Validators.required),
-    matrix_type: new FormControl('', Validators.required),
-    filter_type: new FormControl({ value: '', disabled: true }), // required when not disabled
-    study: new FormControl({ value: '', disabled: true }, Validators.required),  // study name, maps to study id
+    sample_type: new FormControl({ value: null, disabled: true }, Validators.required),
+    matrix: new FormControl(null, Validators.required),
+    filter_type: new FormControl({ value: null, disabled: true }, Validators.required), // required when not disabled
+    study: new FormControl({ value: null, disabled: true }, Validators.required),  // study name, maps to study id
     study_site_name: new FormControl({ value: '', disabled: true }),
     collaborator_sample_id: new FormControl({ value: '', disabled: true }, Validators.required),
-    sampler_name: new FormControl({ value: '', disabled: true }),
+    sampler_name: new FormControl({ value: null, disabled: true }),
     sample_notes: new FormControl({ value: '', disabled: true }),
     sample_description: new FormControl({ value: '', disabled: true }),
     arrival_date: new FormControl({ value: null, disabled: true }),
@@ -129,115 +131,115 @@ export class SamplesComponent implements OnInit {
     collection_start_date: new FormControl({ value: null, disabled: true }, Validators.required),
 
     // the following controls have variable display needs based on the matrix selected
-    collection_start_time: new FormControl({ value: '', disabled: false }, Validators.pattern('\\d\\d:\\d\\d')),
+    collection_start_time: new FormControl({ value: null, disabled: false }, Validators.pattern('\\d\\d:\\d\\d')),
     collection_end_date: new FormControl({ value: null, disabled: true }),
-    collection_end_time: new FormControl({ value: '', disabled: true }, Validators.pattern('\\d\\d:\\d\\d')),
+    collection_end_time: new FormControl({ value: null, disabled: true }, Validators.pattern('\\d\\d:\\d\\d')),
 
-    meter_reading_initial: new FormControl({ value: '', disabled: true }),
-    meter_reading_final: new FormControl({ value: '', disabled: true }),
-    meter_reading_unit: new FormControl({ value: '', disabled: true }),
+    meter_reading_initial: new FormControl({ value: null, disabled: true }),
+    meter_reading_final: new FormControl({ value: null, disabled: true }),
+    meter_reading_unit: new FormControl({ value: null, disabled: true }),
 
-    total_volume_sampled_initial: new FormControl({ value: '', disabled: true }),
-    total_volume_sampled_unit_initial: new FormControl({ value: '', disabled: true }),
+    total_volume_sampled_initial: new FormControl({ value: null, disabled: true }),
+    total_volume_sampled_unit_initial: new FormControl({ value: null, disabled: true }),
 
-    sample_volume_initial: new FormControl({ value: '', disabled: true }),
-    sample_volume_filtered: new FormControl({ value: '', disabled: true }),
+    sample_volume_initial: new FormControl({ value: null, disabled: true }),
+    sample_volume_filtered: new FormControl({ value: null, disabled: true }),
 
     filter_born_on_date: new FormControl({ value: null, disabled: true }),
     filter_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
     secondary_concentration_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
     elution_notes: new FormControl({ value: '', disabled: true }),
     technician_initials: new FormControl({ value: '', disabled: true }),
-    dissolution_volume: new FormControl({ value: '', disabled: true }),
-    post_dilution_volume: new FormControl({ value: '', disabled: true }),
-    peg_neg: new FormControl('')
+    dissolution_volume: new FormControl({ value: null, disabled: true }),
+    post_dilution_volume: new FormControl({ value: null, disabled: true }),
+    peg_neg: new FormControl(null)
   });
 
   // edit sample form
   editSampleForm = new FormGroup({
-    // the following controls apply to every sample record, regardless of matrix_type selected
-    id: new FormControl(''),
-    sample_type: new FormControl('', Validators.required),
-    matrix_type: new FormControl({ value: '', disabled: false }, Validators.required),
-    filter_type: new FormControl(''), // required when not disabled
-    study: new FormControl('', Validators.required),  // study name, maps to study id
+    // the following controls apply to every sample record, regardless of matrix selected
+    id: new FormControl(null),
+    sample_type: new FormControl(null, Validators.required),
+    matrix: new FormControl({ value: null, disabled: false }, Validators.required),
+    filter_type: new FormControl(null), // required when not disabled
+    study: new FormControl(null, Validators.required),  // study name, maps to study id
     study_site_name: new FormControl(''),
     collaborator_sample_id: new FormControl('', Validators.required),
-    sampler_name: new FormControl(''),
+    sampler_name: new FormControl(null),
     sample_notes: new FormControl(''),
     sample_description: new FormControl(''),
     arrival_date: new FormControl(''),
     arrival_notes: new FormControl(''),
-    collection_start_date: new FormControl('', Validators.required),
+    collection_start_date: new FormControl(null, Validators.required),
 
     // the following controls have variable display needs based on the matrix selected
-    collection_start_time: new FormControl(''),
-    collection_end_date: new FormControl(''),
-    collection_end_time: new FormControl(''),
+    collection_start_time: new FormControl(null),
+    collection_end_date: new FormControl(null),
+    collection_end_time: new FormControl(null),
 
-    meter_reading_initial: new FormControl(''),
-    meter_reading_final: new FormControl(''),
-    meter_reading_unit: new FormControl(''),
+    meter_reading_initial: new FormControl(null),
+    meter_reading_final: new FormControl(null),
+    meter_reading_unit: new FormControl(null),
 
-    total_volume_sampled_initial: new FormControl(''),
-    total_volume_sampled_unit_initial: new FormControl(''),
+    total_volume_sampled_initial: new FormControl(null),
+    total_volume_sampled_unit_initial: new FormControl(null),
 
-    total_volume_or_mass_sampled: new FormControl(''),
+    total_volume_or_mass_sampled: new FormControl(null),
 
-    sample_volume_initial: new FormControl(''),
-    sample_volume_filtered: new FormControl(''),
-
-    filter_born_on_date: new FormControl(''),
-    filter_flag: new FormControl(false, Validators.required), // radio button
-    secondary_concentration_flag: new FormControl(false, Validators.required), // radio button
-    elution_notes: new FormControl(''),
-    technician_initials: new FormControl(''),
-    dissolution_volume: new FormControl(''), // required when not disabled
-    post_dilution_volume: new FormControl(''), // required when not disabled
-
-    // the following controls do not appear in create sample form
-    final_concentrated_sample_volume: new FormControl(''),
-    final_concentrated_sample_volume_type: new FormControl(''),
-    final_concentrated_sample_volume_notes: new FormControl(''),
-    peg_neg: new FormControl('')
-  });
-
-  addPegNegForm = new FormGroup({
-    // the following controls apply to every sample record, regardless of matrix selected
-    sample_type: new FormControl(''),
-    matrix_type: new FormControl(''),
-    filter_type: new FormControl(''),
-    study: new FormControl(''),
-    study_site_name: new FormControl(''),
-    collaborator_sample_id: new FormControl(''),
-    sampler_name: new FormControl(''),
-    sample_notes: new FormControl(''),
-    sample_description: new FormControl(''),
-    arrival_date: new FormControl(''),
-    arrival_notes: new FormControl(''),
-    collection_start_date: new FormControl('', Validators.required),
-
-    //collection_start_time: new FormControl(''),
-    // collection_end_date: new FormControl(''),
-    // collection_end_time: new FormControl(''),
-    meter_reading_initial: new FormControl(''),
-    meter_reading_final: new FormControl(''),
-    meter_reading_unit: new FormControl(''),
-
-    total_volume_sampled_initial: new FormControl(''),
-    total_volume_sampled_unit_initial: new FormControl(''),
-
-    total_volume_or_mass_sampled: new FormControl(''),
-
-    sample_volume_initial: new FormControl(''),
-    sample_volume_filtered: new FormControl(''),
+    sample_volume_initial: new FormControl(null),
+    sample_volume_filtered: new FormControl(null),
 
     filter_born_on_date: new FormControl(null),
     filter_flag: new FormControl(false, Validators.required), // radio button
     secondary_concentration_flag: new FormControl(false, Validators.required), // radio button
     elution_notes: new FormControl(''),
     technician_initials: new FormControl(''),
-    dissolution_volume: new FormControl(''),
+    dissolution_volume: new FormControl(null), // required when not disabled
+    post_dilution_volume: new FormControl(null), // required when not disabled
+
+    // the following controls do not appear in create sample form
+    final_concentrated_sample_volume: new FormControl(null),
+    final_concentrated_sample_volume_type: new FormControl(null),
+    final_concentrated_sample_volume_notes: new FormControl(''),
+    peg_neg: new FormControl(null)
+  });
+
+  addPegNegForm = new FormGroup({
+    // the following controls apply to every sample record, regardless of matrix selected
+    sample_type: new FormControl(null),
+    matrix: new FormControl(null),
+    filter_type: new FormControl(null),
+    study: new FormControl(null),
+    study_site_name: new FormControl(''),
+    collaborator_sample_id: new FormControl(''),
+    sampler_name: new FormControl(null),
+    sample_notes: new FormControl(''),
+    sample_description: new FormControl(''),
+    arrival_date: new FormControl(null),
+    arrival_notes: new FormControl(''),
+    collection_start_date: new FormControl(null, Validators.required),
+
+    //collection_start_time: new FormControl(null),
+    // collection_end_date: new FormControl(null),
+    // collection_end_time: new FormControl(null),
+    meter_reading_initial: new FormControl(null),
+    meter_reading_final: new FormControl(null),
+    meter_reading_unit: new FormControl(null),
+
+    total_volume_sampled_initial: new FormControl(null),
+    total_volume_sampled_unit_initial: new FormControl(null),
+
+    total_volume_or_mass_sampled: new FormControl(null),
+
+    sample_volume_initial: new FormControl(null),
+    sample_volume_filtered: new FormControl(null),
+
+    filter_born_on_date: new FormControl(null),
+    filter_flag: new FormControl(false, Validators.required), // radio button
+    secondary_concentration_flag: new FormControl(false, Validators.required), // radio button
+    elution_notes: new FormControl(''),
+    technician_initials: new FormControl(''),
+    dissolution_volume: new FormControl(null),
     record_type: new FormControl(2)
     // post_dilution_volume: new FormControl('')
   });
@@ -245,11 +247,11 @@ export class SamplesComponent implements OnInit {
   freezeSampleForm = new FormGroup({
     // sample: new FormControl(''),
     freezer: new FormControl(1),
-    aliquot_count: new FormControl('', Validators.required),
-    rack: new FormControl('', Validators.required),
-    box: new FormControl('', Validators.required),
-    row: new FormControl('', Validators.required),
-    spot: new FormControl('', Validators.required),
+    aliquot_count: new FormControl(null, Validators.required),
+    rack: new FormControl(null, Validators.required),
+    box: new FormControl(null, Validators.required),
+    row: new FormControl(null, Validators.required),
+    spot: new FormControl(null, Validators.required),
     frozen: new FormControl(true, Validators.required)
   });
 
@@ -470,9 +472,9 @@ export class SamplesComponent implements OnInit {
       for (let sample of selectedSampleArray) {
         // if any sample in the selection lacks an FCSV value AND has a matrix that requires one, show error
         if (sample.final_concentrated_sample_volume === null &&
-          (sample.matrix_type === (this.lookupMatrixTypeID("W"))
-            || sample.matrix_type === (this.lookupMatrixTypeID("WW"))
-            || sample.matrix_type === (this.lookupMatrixTypeID("F")))) {
+          (sample.matrix === (this.lookupMatrixTypeID("W"))
+            || sample.matrix === (this.lookupMatrixTypeID("WW"))
+            || sample.matrix === (this.lookupMatrixTypeID("F")))) {
           this.showHideMissingFCSVErrorModal = true;
         } else {
           // show the freeze modal if not showing already
@@ -567,7 +569,7 @@ export class SamplesComponent implements OnInit {
 
     this.editSampleForm.setValue({
       id: selectedSample.id,
-      matrix_type: selectedSample.matrix_type,
+      matrix: selectedSample.matrix,
       study: selectedSample.study,
       sample_type: selectedSample.sample_type,
       collaborator_sample_id: selectedSample.collaborator_sample_id,
@@ -775,20 +777,26 @@ export class SamplesComponent implements OnInit {
     }
   }
 
-
+  onClosesampleVolumeError() {
+    this.sampleVolumeErrorFlag = false;
+  }
   onSubmitSample(formId, formValue) {
+    this.sampleVolumeErrorFlag = false;
     this.showSampleCreateError = false;
     this.showSampleEditError = false;
     this.submitLoading = true;
 
     formValue.filter_type = Number(formValue.filter_type);
-    formValue.matrix_type = Number(formValue.matrix_type);
+    formValue.matrix = Number(formValue.matrix);
     formValue.sample_type = Number(formValue.sample_type);
     formValue.sample_volume_initial = Number(formValue.sample_volume_initial);
     formValue.sample_volume_filtered = Number(formValue.sample_volume_filtered);
-    formValue.sampler_name = Number(formValue.sampler_name);
     formValue.study = Number(formValue.study);
     formValue.dissolution_volume = Number(formValue.dissolution_volume);
+
+    if (formValue.sampler_name !== null) {
+      formValue.sampler_name = Number(formValue.sampler_name);
+    }
 
     switch (formId) {
       case 'edit':
@@ -810,50 +818,72 @@ export class SamplesComponent implements OnInit {
         break;
       case 'add':
 
+        let noTVS: boolean = false;
+
         // check if meter_reading_XX fields are present by seeing if they are disabled
-        if (this.displayConfig[formValue.matrix_type].meter_reading_final === false &&
-          this.displayConfig[formValue.matrix_type].meter_reading_initial === false &&
-          this.displayConfig[formValue.matrix_type].meter_reading_unit === false) {
+        if (this.displayConfig[formValue.matrix].meter_reading_final === false &&
+          this.displayConfig[formValue.matrix].meter_reading_initial === false &&
+          this.displayConfig[formValue.matrix].meter_reading_unit === false) {
 
-          formValue.meter_reading_final = Number(formValue.meter_reading_final);
-          formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
-          formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
+          if (formValue.meter_reading_final === null ||
+            formValue.meter_reading_initial === null ||
+            formValue.meter_reading_unit === null) {
+            noTVS = true;
+          } else if (formValue.meter_reading_final !== null
+            && formValue.meter_reading_initial !== null
+            && formValue.meter_reading_unit !== null) {
+            noTVS = false;
+            formValue.meter_reading_final = Number(formValue.meter_reading_final);
+            formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
+            formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
 
-          // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
-          formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
-            this.getConversionFactorToLiters(formValue.meter_reading_unit))
+            // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
+            formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
+              this.getConversionFactorToLiters(formValue.meter_reading_unit))
+          }
         }
 
         // check if total_volume_sampled_XX fields are present by seeing if they are not disabled (false)
-        if (this.displayConfig[formValue.matrix_type].total_volume_sampled_initial === false &&
-          this.displayConfig[formValue.matrix_type].total_volume_sampled_unit_initial === false) {
+        if (this.displayConfig[formValue.matrix].total_volume_sampled_initial === false &&
+          this.displayConfig[formValue.matrix].total_volume_sampled_unit_initial === false) {
 
-          formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
-          formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
-          // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
-          formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
-            this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
+          if (formValue.total_volume_sampled_initial === null || formValue.total_volume_sampled_unit_initial === null) {
+            noTVS = true;
+          } else if (formValue.total_volume_sampled_initial !== null && formValue.total_volume_sampled_unit_initial !== null) {
+            noTVS = false;
+            formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
+            formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
+            // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
+            formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
+              this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
+          }
         }
 
-        // add a record
-        this._sampleService.create(formValue)
-          .subscribe(
-            (sample: ISample) => {
-              this.allSamples.push(formValue);
-              this.addSampleForm.reset();
-              this.submitLoading = false;
-              this.showSampleCreateSuccess = true;
-            },
-            error => {
-              this.errorMessage = <any>error;
-              this.submitLoading = false;
-              this.showSampleCreateError = true;
-            }
-          );
+        if (noTVS === true) {
+          this.submitLoading = false;
+          this.sampleVolumeErrorFlag = true;
+        } else if (noTVS === false) {
+          // add a record
+          this._sampleService.create(formValue)
+            .subscribe(
+              (sample: ISample) => {
+                this.allSamples.push(formValue);
+                this.addSampleForm.reset();
+                this.sampleVolumeErrorFlag = false;
+                this.submitLoading = false;
+                this.showSampleCreateSuccess = true;
+              },
+              error => {
+                this.errorMessage = <any>error;
+                this.submitLoading = false;
+                this.sampleVolumeErrorFlag = false;
+                this.showSampleCreateError = true;
+              }
+            );
+        }
         break;
       case 'addPegNeg':
         // add a record, of type pegneg (control)
-
 
         formValue.meter_reading_final = Number(formValue.meter_reading_final);
         formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
@@ -862,7 +892,6 @@ export class SamplesComponent implements OnInit {
         // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
         formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
           this.getConversionFactorToLiters(formValue.meter_reading_unit));
-
 
         formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
         formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
@@ -875,7 +904,7 @@ export class SamplesComponent implements OnInit {
         let currentDate = now.toISOString().substring(0, 10);
         let currentTime = now.toTimeString().split(" ")[0];
 
-        formValue.matrix_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.matrix_type;
+        formValue.matrix = APP_SETTINGS.PEGNEG_FIELD_VALUES.matrix;
         formValue.filter_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.filter_type;
         formValue.sample_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.sample_type;
         formValue.collaborator_sample_id = 'pegneg' + currentDate + '_' + currentTime;

@@ -4,11 +4,11 @@ import { FormControl, FormGroup, Validators } from "@angular/forms/";
 import { IAnalysisBatchSummary } from '../analysis-batch-summary';
 import { IAnalysisBatchDetail } from '../analysis-batch-detail';
 import { IAnalysisBatch } from '../analysis-batch';
-import { IExtraction } from '../../extractions/extraction';
-import { IExtractionBatch } from '../../extractions/extraction-batch';
+import { ISampleExtraction } from '../../sample-extractions/sample-extraction';
+import { IExtractionBatch } from '../../extraction-batches/extraction-batch';
 import { IInhibition } from '../../inhibitions/inhibition';
 import { IReverseTranscription } from '../../reverse-transcriptions/reverse-transcription';
-import { IExtractionMethod } from '../../extractions/extraction-method';
+import { IExtractionMethod } from '../../extraction-batches/extraction-method';
 import { ITarget } from '../../targets/target';
 import { IUnit } from '../../units/unit';
 
@@ -17,10 +17,10 @@ import { APP_SETTINGS } from '../../app.settings';
 import { ISampleSummary } from '../../samples/sample-summary';
 
 import { AnalysisBatchService } from '../analysis-batch.service';
-import { ExtractionMethodService } from '../../extractions/extraction-method.service';
+import { ExtractionMethodService } from '../../extraction-batches/extraction-method.service';
 import { TargetService } from '../../targets/target.service';
 import { UnitService } from '../../units/unit.service';
-import { ExtractionBatchService } from 'app/extractions/extraction-batch.service';
+import { ExtractionBatchService } from 'app/extraction-batches/extraction-batch.service';
 
 @Component({
   selector: 'analysis-batch-detail',
@@ -38,7 +38,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   allExtractionMethods: IExtractionMethod[];
 
-  extractionDetailArray: IExtraction[] = [];
+  extractionDetailArray: ISampleExtraction[] = [];
   inhibitionDetailArray: IInhibition[] = [];
   rtDetailArray: IReverseTranscription[] = [];
 
@@ -116,12 +116,12 @@ export class AnalysisBatchDetailComponent implements OnInit {
       .subscribe(
       (analysisBatchDetail) => {
         this.selectedABDetail = analysisBatchDetail;
-        this.extractionBatchArray = analysisBatchDetail.extractionbatches
+        this.extractionBatchArray = analysisBatchDetail.extraction_batches
         this.samplesArray = analysisBatchDetail.samples;
         this.selectedABID = analysisBatchDetail.id;
-        // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
+        // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extraction_batches);
         this.ABDetailsLoading = false;
-        if (analysisBatchDetail.extractionbatches.length < 1) {
+        if (analysisBatchDetail.extraction_batches.length < 1) {
           this.noExtractionsFlag = true;
         }
       },
@@ -162,7 +162,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
   }
 
   public buildABExtractionArray(extractionBatchArray) {
-    let abExtractionArray: IExtraction[] = [];
+    let abExtractionArray: ISampleExtraction[] = [];
     for (let extractionbatch of extractionBatchArray) {
       for (let extraction of extractionbatch.extractions) {
         abExtractionArray.push(extraction);
