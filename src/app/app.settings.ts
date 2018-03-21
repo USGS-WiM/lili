@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
+import { environment } from 'environments/environment';
 
 @Injectable()
 export class APP_SETTINGS {
 
     private static _environment: string = 'development';
+    private static production: boolean = false;
     private static _API_ENDPOINT: string = APP_SETTINGS._environment === 'production' ? 'https://lidedev.wim.usgs.gov/lideservices/' : 'https://lidedev.wim.usgs.gov/lideservices/';
     public static set environment(env: string) { this._environment = env };
     public static get API_USERNAME(): string { return 'admin' };
@@ -17,7 +19,7 @@ export class APP_SETTINGS {
     public static get FREEZER_LOCATIONS_URL(): string { return this._API_ENDPOINT + 'freezerlocations/' };
     public static get ALIQUOTS_URL(): string { return this._API_ENDPOINT + 'aliquots/' };
     public static get SAMP_TYPES_URL(): string { return this._API_ENDPOINT + 'sampletypes/' };
-    public static get MATRIX_TYPES_URL(): string { return this._API_ENDPOINT + 'matrixtypes/' };
+    public static get MATRICES_URL(): string { return this._API_ENDPOINT + 'matrices/' };
     public static get SAMPLE_ENV_URL(): string { return this._API_ENDPOINT + 'sampleenvironments/' };
     public static get UNITS_URL(): string { return this._API_ENDPOINT + 'units/' };
     public static get SAMP_LOC_URL(): string { return this._API_ENDPOINT + 'samplelocations/' };
@@ -27,7 +29,7 @@ export class APP_SETTINGS {
     public static get ANALYSIS_BATCH_URL(): string { return this._API_ENDPOINT + 'analysisbatches/' };
     public static get ANALYSIS_BATCH_DETAIL_URL(): string { return this._API_ENDPOINT + 'analysisbatchdetail/' };
     public static get ANALYSIS_BATCH_SUMMARY_URL(): string { return this._API_ENDPOINT + 'analysisbatchsummary/' };
-    public static get EXTRACTIONS_URL(): string { return this._API_ENDPOINT + 'extractions/'; };
+    public static get EXTRACTIONS_URL(): string { return this._API_ENDPOINT + 'sampleextractions/'; };
     public static get EXTRACTION_BATCHES_URL(): string { return this._API_ENDPOINT + 'extractionbatches/' };
     public static get EXTRACTION_METHODS_URL(): string { return this._API_ENDPOINT + 'extractionmethods/' };
     public static get INHIBITIONS_URL(): string { return this._API_ENDPOINT + 'inhibitions/' };
@@ -44,7 +46,8 @@ export class APP_SETTINGS {
     public static get USERS_URL(): string { return this._API_ENDPOINT + 'users/' };
 
     public static get VERSION() {
-        return require('../../package.json').version
+        // return require('../../package.json').version
+        return environment.version;
     }
 
     public static get NUCLEIC_ACID_TYPES() {
@@ -64,7 +67,7 @@ export class APP_SETTINGS {
     public static get PEGNEG_FIELD_VALUES() {
         return {
             "study": 34,
-            "matrix_type": 1,
+            "matrix": 1,
             "filter_type": 8,
             "sample_type": 4,
             "collection_start_time": '00:00',

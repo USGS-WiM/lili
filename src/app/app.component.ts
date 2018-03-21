@@ -10,7 +10,7 @@ import { MatrixService } from './SHARED/matrix.service';
 import { UnitService } from './units/unit.service';
 import { UserService } from './SHARED/user.service';
 import { TargetService } from './targets/target.service';
-import { ExtractionMethodService } from './extractions/extraction-method.service';
+import { ExtractionMethodService } from './extraction-batches/extraction-method.service';
 import { ConcentrationTypeService } from './concentration-types/concentration-types.service';
 
 import { APP_SETTINGS } from './app.settings';

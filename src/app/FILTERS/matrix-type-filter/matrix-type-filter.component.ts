@@ -25,7 +25,7 @@ export class MatrixTypeFilter implements OnInit, Filter<any> {
   }
 
   accepts(sample: any) {
-    return (this.selectedMatrix === sample.matrix_type);
+    return (this.selectedMatrix === sample.matrix);
   }
 
   isActive(): boolean {

@@ -23,7 +23,7 @@ export class AnalysisBatchService {
     return body.data || {};
   }
   // need for analysis-batches.component to open worksheet in new window
-  getNativeWindow(){
+  getNativeWindow() {
     return window;
   }
   // subject, getter,setter for extraction form values

@@ -383,7 +383,7 @@ export class ResultsComponent implements OnInit {
     for (let rep of selectedReps) {
       repArray.push({
         "id": rep.id,
-        "bad_result_flag": !rep.bad_result_flag
+        "invalid": !rep.invalid
       })
     }
 

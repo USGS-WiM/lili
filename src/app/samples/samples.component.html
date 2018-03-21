@@ -39,9 +39,9 @@
 
                             <div class="form-group">
                                 <label class="required">Matrix</label>
-                                <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix_type').invalid && (addSampleForm.get('matrix_type').dirty || addSampleForm.get('matrix_type').touched)">
+                                <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
                                     <div class="select">
-                                        <select id="matrixSelect" name="matrix_type" formControlName="matrix_type" (change)="onMatrixSelect($event.target.value)">
+                                        <select id="matrixSelect" name="matrix" formControlName="matrix" (change)="onMatrixSelect($event.target.value)">
                                             <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}</option>
                                         </select>
                                     </div>
@@ -168,7 +168,7 @@
                                 <input type="text" id="imrInput" formControlName="meter_reading_initial">
                                 <div class="select">
                                     <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
-                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@
                             <div class="form-group">
                                 <label for="fmrInput">Final Meter Reading</label>
                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                                <label *ngIf="this.units">{{this.unitValue | displayValue:'name':this.units}}</label>
+                                <label *ngIf="this.units">{{this.unitValue | displayValue:'symbol':this.units}}</label>
                             </div>
 
                             <div class="form-group">
@@ -184,7 +184,7 @@
                                 <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
-                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -234,7 +234,7 @@
 
                             <div class="form-group">
                                 <label>Peg Neg</label>
-                                <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix_type').invalid && (addSampleForm.get('matrix_type').dirty || addSampleForm.get('matrix_type').touched)">
+                                <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
                                     <div class="select">
                                         <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
                                             <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date | date:'shortDate'}}</option>
@@ -242,6 +242,13 @@
                                     </div>
                                 </label>
                             </div>
+
+                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleVolumeErrorFlag" (clrAlertClosedChange)="onClosesampleVolumeError()">
+                                <div class="alert-item">
+                                    <span class="alert-text">Please provide a sample volume using meter readings (plus unit) or total volume sampled
+                                        (plus unit)</span>
+                                </div>
+                            </clr-alert>
 
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleCreateError">
                                 <div clr-alert-item class="alert-item">
@@ -367,7 +374,7 @@
                                 <input type="text" id="imrInput" formControlName="meter_reading_initial">
                                 <div class="select">
                                     <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
-                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -375,7 +382,7 @@
                             <div class="form-group">
                                 <label for="fmrInput" class="required">Final Meter Reading</label>
                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                                <label *ngIf="this.units">{{this.unitValue | displayValue:'name':this.units}}</label>
+                                <label *ngIf="this.units">{{this.unitValue | displayValue:'symbol':this.units}}</label>
                             </div>
 
                             <div class="form-group">
@@ -383,7 +390,7 @@
                                 <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
-                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -481,9 +488,9 @@
 
                         <div class="form-group">
                             <label class="required">Matrix</label>
-                            <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('matrix_type').invalid && (editSampleForm.get('matrix_type').dirty || editSampleForm.get('matrix_type').touched)">
+                            <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('matrix').invalid && (editSampleForm.get('matrix').dirty || editSampleForm.get('matrix').touched)">
                                 <div class="select">
-                                    <select id="matrixSelect" name="matrix" formControlName="matrix_type" (change)="onMatrixSelect($event.target.value)">
+                                    <select id="matrixSelect" name="matrix" formControlName="matrix" (change)="onMatrixSelect($event.target.value)">
                                         <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}</option>
                                     </select>
                                 </div>
@@ -623,7 +630,7 @@
                             <input type="text" id="imrInput" formControlName="meter_reading_initial">
                             <div class="select">
                                 <select id="imrSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
-                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                 </select>
                             </div>
                         </div>
@@ -632,7 +639,7 @@
                             <label for="fmrInput">Final Meter Reading</label>
                             <input type="text" id="fmrInput" formControlName="meter_reading_final">
                             <label *ngIf="sampleSelected">
-                                <span>{{this.unitValue | displayValue:'name':this.units }}</span>
+                                <span>{{this.unitValue | displayValue:'symbol':this.units }}</span>
                             </label>
                         </div>
 
@@ -641,7 +648,7 @@
                             <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                             <div class="select">
                                 <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
-                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                 </select>
                             </div>
                         </div>
@@ -824,7 +831,7 @@
                             <input id="fcsv" type="text" formControlName="final_concentrated_sample_volume" size="5">
                             <div class="select">
                                 <select id="fcsvUnitSelect" formControlName="final_concentrated_sample_volume_unit">
-                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                 </select>
                             </div>
                             <label>Note: FCSV is converted to milliliters (mL) for storage and results calculation. </label>
@@ -836,7 +843,7 @@
                             <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                             <div class="select">
                                 <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
-                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+                                    <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                 </select>
                             </div>
                         </div> -->
@@ -1272,14 +1279,14 @@
             </clr-dg-column>
 
             <!-- regular column header for matrix type-->
-            <!--<clr-dg-column [clrDgField]="'matrix_type'">
+            <!--<clr-dg-column [clrDgField]="'matrix'">
                         <ng-container *clrDgHideableColumn="{hidden: false}">
                             Matrix
                         </ng-container>
                     </clr-dg-column>-->
 
             <!-- filter column header for matrix type-->
-            <clr-dg-column [clrDgField]="'matrix_type'">
+            <clr-dg-column [clrDgField]="'matrix'">
                 Matrix
                 <clr-dg-filter [clrDgFilter]="matrixTypeFilter">
                     <matrix-type-filter #matrixTypeFilter></matrix-type-filter>
@@ -1483,7 +1490,7 @@
                 <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.record_type | displayValue:'name':this.recordTypes}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_type_string}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
 
@@ -1491,9 +1498,9 @@
                 <clr-dg-cell>{{sample.final_concentrated_sample_volume_type}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.final_concentrated_sample_volume_notes}}</clr-dg-cell>
 
-                <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'name':this.units}}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}} {{sample.meter_reading_unit | displayValue:'name':this.units}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'symbol':this.units}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}} {{sample.meter_reading_unit | displayValue:'symbol':this.units}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}} {{sample.meter_reading_unit | displayValue:'symbol':this.units}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.dissolution_volume}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type_string}}</clr-dg-cell>

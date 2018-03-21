@@ -1,4 +1,4 @@
-export interface IExtractionSubmission {
+export interface ISampleExtractionSubmission {
     aliquot_string?: string;
     aliquots?: any;
     box?: number;

@@ -12,7 +12,7 @@ export class APP_UTILITIES {
 	public static get SAMPLE_FORM_CONFIG(): Object {
 		return {
 			"6": { // air
-				"matrix_type": false,
+				"matrix": false,
 				"study": false,
 				"sample_type": false,
 				"collaborator_sample_id": false,
@@ -42,7 +42,7 @@ export class APP_UTILITIES {
 				"sample_volume_initial": true
 			},
 			"4": { // Forage or sediment
-				"matrix_type": false,
+				"matrix": false,
 				"study": false,
 				"sample_type": false,
 				"collaborator_sample_id": false,
@@ -72,7 +72,7 @@ export class APP_UTILITIES {
 				"sample_volume_initial": false
 			},
 			"5": {  // Liquid Manure
-				"matrix_type": false,
+				"matrix": false,
 				"study": false,
 				"sample_type": false,
 				"collaborator_sample_id": false,
@@ -102,7 +102,7 @@ export class APP_UTILITIES {
 				"sample_volume_initial": true
 			},
 			"3": { //Solid Manure
-				"matrix_type": false,
+				"matrix": false,
 				"study": false,
 				"sample_type": false,
 				"collaborator_sample_id": false,
@@ -132,7 +132,7 @@ export class APP_UTILITIES {
 				"sample_volume_initial": true
 			},
 			"2": { //wastewater
-				"matrix_type": false,
+				"matrix": false,
 				"study": false,
 				"sample_type": false,
 				"collaborator_sample_id": false,
@@ -162,7 +162,7 @@ export class APP_UTILITIES {
 				"sample_volume_initial": true
 			},
 			"1": { //water
-				"matrix_type": false,
+				"matrix": false,
 				"study": false,
 				"sample_type": false,
 				"collaborator_sample_id": false,

@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { IExtractionMethod } from 'app/extractions/extraction-method';
+import { IExtractionMethod } from 'app/extraction-batches/extraction-method';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ExtractionMethodService } from '../../extractions/extraction-method.service';
+import { ExtractionMethodService } from '../../extraction-batches/extraction-method.service';
 
 @Component({
   selector: 'extractionmethods',
@@ -14,7 +14,7 @@ export class ExtractionMethodsComponent implements OnInit {
   public showHideAdd: boolean;
   public showHideEdit: boolean;
   public showHideDelete: boolean;
-  public selectedExtraction: IExtractionMethod;
+  public selectedExtractionMethod: IExtractionMethod;
   public selectedEMName: string;
   public selectedEMId: number;
   public showEMCreateError: boolean;
@@ -36,28 +36,30 @@ export class ExtractionMethodsComponent implements OnInit {
     name: new FormControl('', Validators.required)
   });
 
-  constructor(private _route: ActivatedRoute, private _extractionService: ExtractionMethodService, private _cdr: ChangeDetectorRef) { }
+  constructor(private _route: ActivatedRoute,
+    private _extractionMethodService: ExtractionMethodService,
+    private _cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.showHideAdd = false; this.showHideEdit = false; this.showHideDelete = false;
     this.showEMCreateError = false; this.showEMEditError = false; this.showEMDeleteError = false;
     this.showEMCreateSuccess = false; this.showEMEditSuccess = false; this.showEMDeleteSuccess = false;
-    this.submitLoading = false;    
+    this.submitLoading = false;
   }
 
-  public showAddModal(){
+  public showAddModal() {
     this.showHideAdd = !this.showHideAdd;
-    //reset these to false in case Add Extraction is clicked more than once
+    // reset these to false in case Add Extraction is clicked more than once
     this.showEMCreateError = false;
     this.showEMCreateSuccess = false;
   }
 
-  public editEM(selectedExtraction) {
-    this.editEMForm.reset(); //reset here to ensure states are clean (instead of after update complete)
-    this.showEMEditSuccess = false; //reset this 
-    this.showEMEditError = false;//reset this 
-    this.selectedEMName = selectedExtraction.name;
-    this.selectedEMId = selectedExtraction.id;
+  public editEM(selectedExtractionMethod) {
+    this.editEMForm.reset(); // reset here to ensure states are clean (instead of after update complete)
+    this.showEMEditSuccess = false; // reset this
+    this.showEMEditError = false; // reset this
+    this.selectedEMName = selectedExtractionMethod.name;
+    this.selectedEMId = selectedExtractionMethod.id;
 
     this.editEMForm.setValue({
       id: this.selectedEMId,
@@ -88,37 +90,37 @@ export class ExtractionMethodsComponent implements OnInit {
     switch (formId) {
       case 'edit':
         // update a record
-        this._extractionService.update(formValue)
+        this._extractionMethodService.update(formValue)
           .subscribe(
-          (updatedExtraction) => {
-            this.selectedEMName = updatedExtraction.name;
-            this.updateEMArray(formValue);
-            this.selectedExtraction = undefined;
-            this.submitLoading = false;
-            this.showEMEditSuccess = true;
-            this._cdr.detectChanges(); 
-          },
-          error => {
-            this.errorMessage = <any>error;
-            this.submitLoading = false;
-            this.showEMEditError = true;
-          });
+            (updatedExtraction) => {
+              this.selectedEMName = updatedExtraction.name;
+              this.updateEMArray(formValue);
+              this.selectedExtractionMethod = undefined;
+              this.submitLoading = false;
+              this.showEMEditSuccess = true;
+              this._cdr.detectChanges();
+            },
+            error => {
+              this.errorMessage = <any>error;
+              this.submitLoading = false;
+              this.showEMEditError = true;
+            });
         break;
       case 'add':
         // add a record
-        this._extractionService.create(formValue)
+        this._extractionMethodService.create(formValue)
           .subscribe(
-          (newExtraction) => {
-            this.ExtractionMethods.push(newExtraction);
-            this.addEMForm.reset();
-            this.submitLoading = false;
-            this.showEMCreateSuccess = true;
-          },
-          error => {
-            this.errorMessage = <any>error;
-            this.submitLoading = false;
-            this.showEMCreateError = true;
-          }
+            (newExtraction) => {
+              this.ExtractionMethods.push(newExtraction);
+              this.addEMForm.reset();
+              this.submitLoading = false;
+              this.showEMCreateSuccess = true;
+            },
+            error => {
+              this.errorMessage = <any>error;
+              this.submitLoading = false;
+              this.showEMCreateError = true;
+            }
           );
         break;
       default:
@@ -127,40 +129,40 @@ export class ExtractionMethodsComponent implements OnInit {
   }
 
   // show delete concentration type modal
-  public deleteEM(selectedConcentration){
-    this.showEMDeleteSuccess = false; //reset this
-    this.showEMDeleteError = false; //reset this too
+  public deleteEM(selectedConcentration) {
+    this.showEMDeleteSuccess = false; // reset this
+    this.showEMDeleteError = false; // reset this too
     this.selectedEMName = selectedConcentration.name;
     this.selectedEMId = selectedConcentration.id;
     // show the delete concentration form if not showing already
     if (this.showHideDelete === false) {
       this.showHideDelete = true;
-    }    
+    }
   }
 
-  public submitDelete(){
-    //get the index to be deleted by the id
+  public submitDelete() {
+    // get the index to be deleted by the id
     let ind: number;
     this.ExtractionMethods.some((pdh, index, _ary) => {
-      if (pdh.id === this.selectedEMId) ind = index;
+      if (pdh.id === this.selectedEMId) { ind = index; }
       return pdh.id === this.selectedEMId;
     });
-    this._extractionService.delete(this.selectedEMId)
-    .subscribe(
-      () => {
-      this.selectedEMName = ""; 
-      this.ExtractionMethods.splice(ind,1);
-      this._extractionService = undefined; 
-      this.submitLoading = false;
-      this.showEMDeleteSuccess = true;
-      this._cdr.detectChanges();
-    },
-    error => {
-      this.errorMessage = <any>error;
-      this.submitLoading = false;
-      this.showEMDeleteError = true;
-    }
-    );
+    this._extractionMethodService.delete(this.selectedEMId)
+      .subscribe(
+        () => {
+          this.selectedEMName = "";
+          this.ExtractionMethods.splice(ind, 1);
+          this._extractionMethodService = undefined;
+          this.submitLoading = false;
+          this.showEMDeleteSuccess = true;
+          this._cdr.detectChanges();
+        },
+        error => {
+          this.errorMessage = <any>error;
+          this.submitLoading = false;
+          this.showEMDeleteError = true;
+        }
+      );
   }
 
 }

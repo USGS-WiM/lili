@@ -1,4 +1,4 @@
-import { IExtraction } from './extraction';
+import { ISampleExtraction } from '../sample-extractions/sample-extraction';
 import { IInhibition } from '../inhibitions/inhibition';
 import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcription';
 import { ITarget } from '../targets/target';
@@ -17,11 +17,11 @@ export interface IExtractionBatch {
     qpcr_template_volume: number;
     qpcr_reaction_volume: number;
     qpcr_date: string;
-    extractions: IExtraction[];
+    sampleextractions: ISampleExtraction[];
     inhibitions: IInhibition[];
     reverse_transcriptions: IReverseTranscription[];
     targets: ITarget[],
     ext_pos_cq_value: boolean,
     ext_pos_gc_reaction: boolean,
-    ext_pos_bad_result_flag: boolean
+    ext_pos_invalid: boolean
 }

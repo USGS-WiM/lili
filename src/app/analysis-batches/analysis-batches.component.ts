@@ -8,16 +8,16 @@ import { IAnalysisBatchDetail } from './analysis-batch-detail';
 
 import { IStudy } from '../studies/study';
 import { ISample } from '../samples/sample';
-import { IExtraction } from '../extractions/extraction';
-import { IExtractionBatch } from '../extractions/extraction-batch';
+import { ISampleExtraction } from '../sample-extractions/sample-extraction';
+import { IExtractionBatch } from '../extraction-batches/extraction-batch';
 import { IInhibition } from '../inhibitions/inhibition';
 import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcription';
 import { ITarget } from '../targets/target';
-import { IExtractionMethod } from '../extractions/extraction-method';
+import { IExtractionMethod } from '../extraction-batches/extraction-method';
 import { IUnit } from '../units/unit';
 import { IAliquot } from '../aliquots/aliquot';
 import { IFreezerLocation } from '../aliquots/freezer-location';
-import { IExtractionBatchSubmission } from '../extractions/extraction-batch-submission';
+import { IExtractionBatchSubmission } from '../extraction-batches/extraction-batch-submission';
 import { Iabworksheet } from '../analysis-batches/analysis-batch-worksheet/ab-worksheet';
 
 import { StudyService } from '../studies/study.service';
@@ -25,14 +25,14 @@ import { SampleService } from '../samples/sample.service';
 import { AnalysisBatchService } from './analysis-batch.service';
 import { TargetService } from '../targets/target.service';
 import { InhibitionService } from '../inhibitions/inhibition.service';
-import { ExtractionMethodService } from '../extractions/extraction-method.service';
-import { ExtractionBatchService } from '../extractions/extraction-batch.service';
+import { ExtractionMethodService } from '../extraction-batches/extraction-method.service';
+import { ExtractionBatchService } from '../extraction-batches/extraction-batch.service';
 import { UnitService } from '../units/unit.service';
 import { APP_UTILITIES } from '../app.utilities';
 import { AnalysisBatchWorksheetComponent } from '../analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
 import { APP_SETTINGS } from '../app.settings';
 import { RegExp } from 'core-js/library/web/timers';
-import { IExtractionSubmission } from 'app/extractions/extraction-submission';
+import { ISampleExtractionSubmission } from 'app/sample-extractions/sample-extraction-submission';
 
 
 @Component({
@@ -122,7 +122,7 @@ export class AnalysisBatchesComponent implements OnInit {
   showHideRTDetailModal: boolean = false;
   showHideInhibitionDetailModal: boolean = false;
   showHideTargetDetailModal: boolean = false;
-  extractionDetailArray: IExtraction[] = [];
+  extractionDetailArray: ISampleExtraction[] = [];
   inhibitionDetailArray: IInhibition[] = [];
   rtDetailArray: IReverseTranscription[] = [];
   targetDetailArray;
@@ -206,7 +206,7 @@ export class AnalysisBatchesComponent implements OnInit {
           count: '2'
         })
       ]),
-      new_extractions: this.formBuilder.array([
+      new_sample_extractions: this.formBuilder.array([
         this.formBuilder.group({
           sample: ['', Validators.required],
           inhibition_dna: [null, Validators.required],
@@ -221,7 +221,7 @@ export class AnalysisBatchesComponent implements OnInit {
       ])
     });
     this.replicateArray = this.extractForm.get('new_replicates') as FormArray;
-    this.extractionArray = this.extractForm.get('new_extractions') as FormArray;
+    this.extractionArray = this.extractForm.get('new_sample_extractions') as FormArray;
   }
 
   onAliquotSelect(sampleID, aliquotID) {
@@ -353,10 +353,10 @@ export class AnalysisBatchesComponent implements OnInit {
       this.inhibitionError = '';
       // if the user has opted to apply existing inhibitions for both DNA and RNA targets
       if (this.createInhibitionForm.value.dna === false && this.createInhibitionForm.value.rna === false) {
-        // if create new inhibitions for DNA targets is not selected, loop through the new_extractions object.
+        // if create new inhibitions for DNA targets is not selected, loop through the new_sample_extractions object.
         // if any are null, alert user to select an inhibition for each sample extraction.
         if (this.createInhibitionForm.value.dna === false) {
-          for (let extraction of this.extractForm.value.new_extractions) {
+          for (let extraction of this.extractForm.value.new_sample_extractions) {
             if (extraction.inhibition_dna === null) {
               this.inhibitionError = this.inhibitionErrors.dnaInhibitionSelection;
               this.inhibitionErrorFlag = true;
@@ -366,9 +366,9 @@ export class AnalysisBatchesComponent implements OnInit {
           }
         }
         // if create new inhibitions for RNA targets is not selected and there are RNA targets selected,
-        // loop through the new_extractions object. if any are null, alert user to select an inhibition for each sample extraction.
+        // loop through the new_sample_extractions object. if any are null, alert user to select an inhibition for each sample extraction.
         if (this.createInhibitionForm.value.rna === false && this.rnaTargetsSelected) {
-          for (let extraction of this.extractForm.value.new_extractions) {
+          for (let extraction of this.extractForm.value.new_sample_extractions) {
             if (extraction.inhibition_rna === null) {
               this.inhibitionError = this.inhibitionErrors.rnaInhibitionSelection;
               this.inhibitionErrorFlag = true;
@@ -394,10 +394,10 @@ export class AnalysisBatchesComponent implements OnInit {
           // alert("Please select a date for RNA inhibitions");
           return;
         }
-        // if create new inhibitions for DNA targets is not selected, loop through the new_extractions object.
+        // if create new inhibitions for DNA targets is not selected, loop through the new_sample_extractions object.
         // if any are null, alert user to select an inhibition for each sample extraction.
         if (this.createInhibitionForm.value.dna === false) {
-          for (let extraction of this.extractForm.value.new_extractions) {
+          for (let extraction of this.extractForm.value.new_sample_extractions) {
             if (extraction.inhibition_dna === null) {
               this.inhibitionError = this.inhibitionErrors.dnaInhibitionSelection;
               this.inhibitionErrorFlag = true;
@@ -407,9 +407,9 @@ export class AnalysisBatchesComponent implements OnInit {
           }
         }
         // if create new inhibitions for RNA targets is not selected and there are RNA targets selected,
-        // loop through the new_extractions object. if any are null, alert user to select an inhibition for each sample extraction.
+        // loop through the new_sample_extractions object. if any are null, alert user to select an inhibition for each sample extraction.
         if (this.createInhibitionForm.value.rna === false && this.rnaTargetsSelected) {
-          for (let extraction of this.extractForm.value.new_extractions) {
+          for (let extraction of this.extractForm.value.new_sample_extractions) {
             if (extraction.inhibition_rna === null) {
               this.inhibitionError = this.inhibitionErrors.rnaInhibitionSelection;
               this.inhibitionErrorFlag = true;
@@ -463,7 +463,7 @@ export class AnalysisBatchesComponent implements OnInit {
         (analysisBatchDetail) => {
           console.log(analysisBatchDetail);
           this.focusAnalysisBatchData = analysisBatchDetail;
-          // this.extractionDetailArray = this.focusAnalysisBatchData.extractions;
+          // this.extractionDetailArray = this.focusAnalysisBatchData.sampleextractions;
         },
         error => {
           this.errorMessage = <any>error
@@ -496,16 +496,16 @@ export class AnalysisBatchesComponent implements OnInit {
         (analysisBatchDetail) => {
           this.selectedAnalysisBatchData = analysisBatchDetail;
 
-          if (analysisBatchDetail.extractionbatches.length === 0) {
+          if (analysisBatchDetail.extraction_batches.length === 0) {
             this.noExtractionsFlag = true;
-          } else if (analysisBatchDetail.extractionbatches.length === 1) {
+          } else if (analysisBatchDetail.extraction_batches.length === 1) {
             // since only one extractionBatch, can go immediately to populating the rePrintWorksheetData
-            this.rePrintWorksheetData = analysisBatchDetail.extractionbatches[0];
+            this.rePrintWorksheetData = analysisBatchDetail.extraction_batches[0];
             this.oneExtractionFlag = true;
-          } else if (analysisBatchDetail.extractionbatches.length > 1) {
+          } else if (analysisBatchDetail.extraction_batches.length > 1) {
             // because more than one extractionBatch, user input is needed to choose the desired one.
             // set the extractionBatch array, which populates the extraction select form for the user to choose
-            this.extractionBatchArray = analysisBatchDetail.extractionbatches;
+            this.extractionBatchArray = analysisBatchDetail.extraction_batches;
             this.multipleExtractionsFlag = true;
           }
 
@@ -520,7 +520,7 @@ export class AnalysisBatchesComponent implements OnInit {
   }
 
   // called from createWorksheet in success and failure to get samples to ensure worksheet obj gets populated regardless
-  private buildReprintWorksheetObj(es: IExtractionSubmission[], tn: any[]) {
+  private buildReprintWorksheetObj(es: ISampleExtractionSubmission[], tn: any[]) {
     let ABWorksheetObj: Iabworksheet;
     ABWorksheetObj = {
       isReprint: true,
@@ -529,7 +529,7 @@ export class AnalysisBatchesComponent implements OnInit {
       creation_date: this.selectedAnalysisBatchData.created_date,
       studies: this.selectedAnalysisBatchData.studies,
       description: this.selectedAnalysisBatchData.analysis_batch_description,
-      // extraction_no: (this.selectedAnalysisBatchData.extractionbatches.length) + 1,
+      // extraction_no: (this.selectedAnalysisBatchData.extraction_batches.length) + 1,
       extraction_no: this.rePrintWorksheetData.extraction_number,
       extraction_date: this.rePrintWorksheetData.extraction_date,
       extraction_method: this.rePrintWorksheetData.extraction_method,
@@ -555,7 +555,7 @@ export class AnalysisBatchesComponent implements OnInit {
       if (hasMultipleExtractions) {
         // set the rePrintWorksheetData to the user selection from the extract batch select form.
         // Note: rePrintWorksheetData was set in the reprintWorksheet function if AB only had one extractionBatch
-        for (let extractionBatch of this.selectedAnalysisBatchData.extractionbatches) {
+        for (let extractionBatch of this.selectedAnalysisBatchData.extraction_batches) {
           if (extractionBatch.id === Number(this.extractionBatchSelectForm.value.extraction_batch)) {
             this.rePrintWorksheetData = extractionBatch;
           }
@@ -572,19 +572,19 @@ export class AnalysisBatchesComponent implements OnInit {
       let sampleList = [];
       sampleList = this.selectedAnalysisBatchData.samples.map(ab => ab.id);
 
-      let extractionSubmission: IExtractionSubmission[] = [];
+      let extractionSubmission: ISampleExtractionSubmission[] = [];
       // TODO: need to look up the first aliquot of every sample in this analysis batch
       this._sampleService.getSampleSelection(sampleList)
         .subscribe((sampleSelection) => {
 
-          for (let extraction of this.rePrintWorksheetData.extractions) {
+          for (let extraction of this.rePrintWorksheetData.sampleextractions) {
             for (let sample of sampleSelection) {
               if (sample.id === extraction.sample) {
                 // place the aliquot freezer location data into the extraction_submission
                 if (sample.aliquots) {
                   if (sample.aliquots.length > 0) {
                     // create an extractionSubmission from it
-                    let extractionSubmit: IExtractionSubmission = {
+                    let extractionSubmit: ISampleExtractionSubmission = {
                       aliquot_string: sample.aliquots[0].aliquot_string,
                       box: sample.aliquots[0].freezer_location.box,
                       rack: sample.aliquots[0].freezer_location.rack,
@@ -616,11 +616,11 @@ export class AnalysisBatchesComponent implements OnInit {
         }
       }
 
-      /// lookup inhibition dilution values, append to this.extractWizWorksheetData.new_extractions
+      /// lookup inhibition dilution values, append to this.extractWizWorksheetData.new_sample_extractions
       // this.sampleInhibitions
 
       // check if extraction.inhibition_dna is a number
-      for (let extraction of this.extractWizWorksheetData.new_extractions) {
+      for (let extraction of this.extractWizWorksheetData.new_sample_extractions) {
         for (let inh of this.sampleInhibitions) {
 
           if (inh.id === extraction.inhibition_dna) {
@@ -644,7 +644,7 @@ export class AnalysisBatchesComponent implements OnInit {
       // local var to hold extraction number
       let extractionNumber;
       // add 1 to length of extractionBatches array to get current extraction number
-      extractionNumber = (this.selectedAnalysisBatchData.extractionbatches.length) + 1
+      extractionNumber = (this.selectedAnalysisBatchData.extraction_batches.length) + 1
 
       // details for AB worksheet:
       ABWorksheetObj = {
@@ -660,7 +660,7 @@ export class AnalysisBatchesComponent implements OnInit {
         extraction_sample_volume: this.extractWizWorksheetData.extraction_volume,
         eluted_extraction_volume: this.extractWizWorksheetData.elution_volume,
         // Left TABLE:
-        extraction_submission: this.extractWizWorksheetData.new_extractions,
+        extraction_submission: this.extractWizWorksheetData.new_sample_extractions,
         // Right TABLE:
         targetNames: targetNameArray,
         // BOTTOM TABLE:
@@ -761,8 +761,8 @@ export class AnalysisBatchesComponent implements OnInit {
             // build the abInhbition array: all inhibitions in the current analysis batch
             // used for the batch level apply select dropdowns
             // TEMPORARILY COMMENTED OUT: may not need this because batch level application not in use. Revisit.
-            // if (analysisBatchDetail.extractionbatches.length > 0) {
-            //   for (let extractionBatch of analysisBatchDetail.extractionbatches) {
+            // if (analysisBatchDetail.extraction_batches.length > 0) {
+            //   for (let extractionBatch of analysisBatchDetail.extraction_batches) {
             //     if (extractionBatch.inhibitions.length > 0) {
             //       for (let inhibition of extractionBatch.inhibitions) {
             //         this.abInhibitions.push(inhibition)
@@ -822,16 +822,16 @@ export class AnalysisBatchesComponent implements OnInit {
     let createInhibitionFormValue = this.createInhibitionForm.value;
     let extractFormValue = this.extractForm.value;
     if (createInhibitionFormValue.dna === true) {
-      for (let extraction of this.extractForm.value.new_extractions) {
+      for (let extraction of this.extractForm.value.new_sample_extractions) {
         extraction.inhibition_dna = createInhibitionFormValue.inhibition_date_dna;
       }
     }
     if (createInhibitionFormValue.rna === true) {
-      for (let extraction of extractFormValue.new_extractions) {
+      for (let extraction of extractFormValue.new_sample_extractions) {
         extraction.inhibition_rna = createInhibitionFormValue.inhibition_date_rna;
       }
     }
-    for (let extraction of extractFormValue.new_extractions) {
+    for (let extraction of extractFormValue.new_sample_extractions) {
       if (this.isNumberPattern.test(extraction.inhibition_dna)) {
         extraction.inhibition_dna = parseInt(extraction.inhibition_dna, 10)
         this.dnaApplyList.push(extraction.sample)
@@ -876,7 +876,7 @@ export class AnalysisBatchesComponent implements OnInit {
     }
 
     let extractFormValueCopy = extractFormValue;
-    for (let extraction of extractFormValueCopy.new_extractions) {
+    for (let extraction of extractFormValueCopy.new_sample_extractions) {
       delete extraction.aliquot_string;
       delete extraction.rack;
       delete extraction.box;
@@ -972,21 +972,17 @@ export class AnalysisBatchesComponent implements OnInit {
       // set the focusAnalysisBatchID to the AB ID of the just-clicked AB record
       this.focusAnalysisBatchID = abID;
       // call to retrieve AB detail data
-
       this._analysisBatchService.getAnalysisBatchDetail(abID)
         .subscribe(
           (analysisBatchDetail) => {
-
-            if (analysisBatchDetail.extractionbatches.length > 0) {
-
+            if (analysisBatchDetail.extraction_batches.length > 0) {
               this.focusAnalysisBatchData = analysisBatchDetail;
-              this.extractionBatchArray = this.focusAnalysisBatchData.extractionbatches;
-              // build the target list by looping through the targets array of the first extractionBatch and adding all targets to a local array
+              this.extractionBatchArray = this.focusAnalysisBatchData.extraction_batches;
+              // build target list by looping through the targets array of the first extractionBatch and adding all targets to a local array
               // all extraction batches of the same analysis batch have identical target list so only first one is needed
               for (let target of this.extractionBatchArray[0].targets) {
                 this.targetDetailArray.push(target);
               }
-
               // show the target details modal if not showing already
               if (this.showHideTargetDetailModal === false) {
                 this.showHideTargetDetailModal = true;
@@ -995,7 +991,6 @@ export class AnalysisBatchesComponent implements OnInit {
             } else {
               this.showHideNoTargetErrorModal = true;
             }
-
           },
           error => {
             this.errorMessage = <any>error
