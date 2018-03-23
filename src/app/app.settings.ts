@@ -12,6 +12,7 @@ export class APP_SETTINGS {
     public static get API_USERNAME(): string { return 'admin' };
     public static get API_PASSWORD(): string { return 'lideadmin' };
 
+    public static get ROOT_URL(): string { return this._API_ENDPOINT };
     public static get AUTH_URL(): string { return this._API_ENDPOINT + 'auth/' };
     public static get STUDIES_URL(): string { return this._API_ENDPOINT + 'studies/' };
     public static get SAMPLES_URL(): string { return this._API_ENDPOINT + 'samples/' };

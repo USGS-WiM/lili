@@ -496,16 +496,16 @@ export class AnalysisBatchesComponent implements OnInit {
         (analysisBatchDetail) => {
           this.selectedAnalysisBatchData = analysisBatchDetail;
 
-          if (analysisBatchDetail.extraction_batches.length === 0) {
+          if (analysisBatchDetail.extractionbatches.length === 0) {
             this.noExtractionsFlag = true;
-          } else if (analysisBatchDetail.extraction_batches.length === 1) {
+          } else if (analysisBatchDetail.extractionbatches.length === 1) {
             // since only one extractionBatch, can go immediately to populating the rePrintWorksheetData
-            this.rePrintWorksheetData = analysisBatchDetail.extraction_batches[0];
+            this.rePrintWorksheetData = analysisBatchDetail.extractionbatches[0];
             this.oneExtractionFlag = true;
-          } else if (analysisBatchDetail.extraction_batches.length > 1) {
+          } else if (analysisBatchDetail.extractionbatches.length > 1) {
             // because more than one extractionBatch, user input is needed to choose the desired one.
             // set the extractionBatch array, which populates the extraction select form for the user to choose
-            this.extractionBatchArray = analysisBatchDetail.extraction_batches;
+            this.extractionBatchArray = analysisBatchDetail.extractionbatches;
             this.multipleExtractionsFlag = true;
           }
 
@@ -529,7 +529,7 @@ export class AnalysisBatchesComponent implements OnInit {
       creation_date: this.selectedAnalysisBatchData.created_date,
       studies: this.selectedAnalysisBatchData.studies,
       description: this.selectedAnalysisBatchData.analysis_batch_description,
-      // extraction_no: (this.selectedAnalysisBatchData.extraction_batches.length) + 1,
+      // extraction_no: (this.selectedAnalysisBatchData.extractionbatches.length) + 1,
       extraction_no: this.rePrintWorksheetData.extraction_number,
       extraction_date: this.rePrintWorksheetData.extraction_date,
       extraction_method: this.rePrintWorksheetData.extraction_method,
@@ -555,7 +555,7 @@ export class AnalysisBatchesComponent implements OnInit {
       if (hasMultipleExtractions) {
         // set the rePrintWorksheetData to the user selection from the extract batch select form.
         // Note: rePrintWorksheetData was set in the reprintWorksheet function if AB only had one extractionBatch
-        for (let extractionBatch of this.selectedAnalysisBatchData.extraction_batches) {
+        for (let extractionBatch of this.selectedAnalysisBatchData.extractionbatches) {
           if (extractionBatch.id === Number(this.extractionBatchSelectForm.value.extraction_batch)) {
             this.rePrintWorksheetData = extractionBatch;
           }
@@ -644,7 +644,7 @@ export class AnalysisBatchesComponent implements OnInit {
       // local var to hold extraction number
       let extractionNumber;
       // add 1 to length of extractionBatches array to get current extraction number
-      extractionNumber = (this.selectedAnalysisBatchData.extraction_batches.length) + 1
+      extractionNumber = (this.selectedAnalysisBatchData.extractionbatches.length) + 1
 
       // details for AB worksheet:
       ABWorksheetObj = {
@@ -761,8 +761,8 @@ export class AnalysisBatchesComponent implements OnInit {
             // build the abInhbition array: all inhibitions in the current analysis batch
             // used for the batch level apply select dropdowns
             // TEMPORARILY COMMENTED OUT: may not need this because batch level application not in use. Revisit.
-            // if (analysisBatchDetail.extraction_batches.length > 0) {
-            //   for (let extractionBatch of analysisBatchDetail.extraction_batches) {
+            // if (analysisBatchDetail.extractionbatches.length > 0) {
+            //   for (let extractionBatch of analysisBatchDetail.extractionbatches) {
             //     if (extractionBatch.inhibitions.length > 0) {
             //       for (let inhibition of extractionBatch.inhibitions) {
             //         this.abInhibitions.push(inhibition)
@@ -975,9 +975,9 @@ export class AnalysisBatchesComponent implements OnInit {
       this._analysisBatchService.getAnalysisBatchDetail(abID)
         .subscribe(
           (analysisBatchDetail) => {
-            if (analysisBatchDetail.extraction_batches.length > 0) {
+            if (analysisBatchDetail.extractionbatches.length > 0) {
               this.focusAnalysisBatchData = analysisBatchDetail;
-              this.extractionBatchArray = this.focusAnalysisBatchData.extraction_batches;
+              this.extractionBatchArray = this.focusAnalysisBatchData.extractionbatches;
               // build target list by looping through the targets array of the first extractionBatch and adding all targets to a local array
               // all extraction batches of the same analysis batch have identical target list so only first one is needed
               for (let target of this.extractionBatchArray[0].targets) {

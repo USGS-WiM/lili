@@ -63,6 +63,7 @@ import { FreezerLocationsService } from "app/aliquots/freezer-locations.service"
 import { FreezerService } from "app/aliquots/freezer.service";
 import { SampleLabelComponent } from "./samples/sample-label/sample-label.component";
 import { PcrReplicateService } from "./pcr-replicates/pcr-replicate.service";
+import { ServerTestService } from "./SHARED/server-test.service";
 
 @NgModule({
     declarations: [
@@ -95,7 +96,7 @@ import { PcrReplicateService } from "./pcr-replicates/pcr-replicate.service";
         FilterTypesComponent,
         TargetsComponent,
         UsersComponent,
-        AnalysisBatchWorksheetComponent, 
+        AnalysisBatchWorksheetComponent,
         SampleLabelComponent
     ],
     imports: [
@@ -130,7 +131,8 @@ import { PcrReplicateService } from "./pcr-replicates/pcr-replicate.service";
         TargetService,
         TargetResolve,
         UserService,
-        UserResolve
+        UserResolve,
+        ServerTestService
     ],
     bootstrap: [AppComponent]
 })

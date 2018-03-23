@@ -386,7 +386,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="tvsInput" class="required">Total Volume (or mass) Sampled</label>
+                                <label for="tvsInput" class="required">Total Volume (or mass)Sampled</label>
                                 <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
@@ -1441,7 +1441,7 @@
             </clr-dg-column>
 
             <clr-dg-column [clrDgField]="'created_by'">
-                <ng-container *clrDgHideableColumn="{hidden: false}">
+                <ng-container *clrDgHideableColumn="{hidden: true}">
                     Added by
                 </ng-container>
             </clr-dg-column>
@@ -1462,7 +1462,7 @@
             </clr-dg-column>
 
             <clr-dg-column [clrDgField]="'modified_by'">
-                <ng-container *clrDgHideableColumn="{hidden: false}">
+                <ng-container *clrDgHideableColumn="{hidden: true}">
                     Updated by
                 </ng-container>
             </clr-dg-column>
@@ -1508,7 +1508,7 @@
                 <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.users">{{sample.sampler_name.name}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.users">{{sample.sampler_name_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.sample_notes}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.created_by}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.created_date | date:'shortDate'}}</clr-dg-cell>

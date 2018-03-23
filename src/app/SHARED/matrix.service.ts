@@ -15,13 +15,13 @@ export class MatrixService {
 
   constructor(private _http: Http) { }
 
-   getMatrices(): Observable<IMatrix[]> {
+  getMatrices(): Observable<IMatrix[]> {
     let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
     return this._http.get(APP_SETTINGS.MATRICES_URL, options)
-    //return this._http.get(this._matricesUrl)
+      // return this._http.get(this._matricesUrl)
       .map((response: Response) => <IMatrix[]>response.json())
-      //.do(data => console.log('Matricies data: ' + JSON.stringify(data)))
+      // .do(data => console.log('Matricies data: ' + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
@@ -42,13 +42,13 @@ export class MatrixService {
   }
 
   public delete(id: number): Observable<IMatrix> {
-    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS});
+    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
 
     return this._http.delete(APP_SETTINGS.MATRICES_URL + id, options)
       .catch(this.handleError);
   }
 
-  private handleError (error: Response) {
+  private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
   }

@@ -12,6 +12,7 @@ import { UserService } from './SHARED/user.service';
 import { TargetService } from './targets/target.service';
 import { ExtractionMethodService } from './extraction-batches/extraction-method.service';
 import { ConcentrationTypeService } from './concentration-types/concentration-types.service';
+import { ServerTestService } from './SHARED/server-test.service';
 
 import { APP_SETTINGS } from './app.settings';
 
@@ -26,13 +27,26 @@ import { APP_SETTINGS } from './app.settings';
     ]
 })
 export class AppComponent implements OnInit {
+    servicesFailFlag: boolean = false;
 
     public liliVersion: string = '';
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private _serverTestService: ServerTestService) {
     }
 
     ngOnInit() {
         this.liliVersion = APP_SETTINGS.VERSION;
+
+        this._serverTestService.testLIDEServices()
+            .subscribe(
+                (response) => {
+                    console.log(response);
+                },
+                error => {
+                    console.log(error);
+                    this.servicesFailFlag = true;
+                }
+            )
+
     }
 }

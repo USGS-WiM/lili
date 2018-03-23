@@ -7,7 +7,7 @@ export interface IAnalysisBatchDetail {
     analysis_batch_notes: string;
     samples: ISampleSummary[];
     studies: Object[];
-    extraction_batches: IExtractionBatch[];
+    extractionbatches: IExtractionBatch[];
     created_date: string;
     created_by: string;
     modified_date: string;
