@@ -786,6 +786,8 @@ export class SamplesComponent implements OnInit {
     this.showSampleEditError = false;
     this.submitLoading = true;
 
+    let noTVS: boolean = false;
+
     formValue.filter_type = Number(formValue.filter_type);
     formValue.matrix = Number(formValue.matrix);
     formValue.sample_type = Number(formValue.sample_type);
@@ -817,8 +819,6 @@ export class SamplesComponent implements OnInit {
           );
         break;
       case 'add':
-
-        let noTVS: boolean = false;
 
         // check if meter_reading_XX fields are present by seeing if they are disabled
         if (this.displayConfig[formValue.matrix].meter_reading_final === false &&
@@ -885,19 +885,38 @@ export class SamplesComponent implements OnInit {
       case 'addPegNeg':
         // add a record, of type pegneg (control)
 
-        formValue.meter_reading_final = Number(formValue.meter_reading_final);
-        formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
-        formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
+        // check if any of the values are missing for the meter reading approach to deriving sample volume
+        if (formValue.meter_reading_final === null ||
+          formValue.meter_reading_initial === null ||
+          formValue.meter_reading_unit === null) {
 
-        // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
-        formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
-          this.getConversionFactorToLiters(formValue.meter_reading_unit));
+          // if any are missing, now check if any of the needed values for direct volume entry are absent
+          if (formValue.total_volume_sampled_initial === null || formValue.total_volume_sampled_unit_initial === null) {
+            // if either are absent, set the noTVS var to true.
+            noTVS = true;
+          } else if (formValue.total_volume_sampled_initial !== null && formValue.total_volume_sampled_unit_initial !== null) {
+            // if values are present, proceed with converting values and calcualting TVS
+            noTVS = false;
+            formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
+            formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
+            // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
+            formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
+              this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
+          }
 
-        formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
-        formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
-        // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
-        formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
-          this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial));
+        } else if (formValue.meter_reading_final !== null
+          && formValue.meter_reading_initial !== null
+          && formValue.meter_reading_unit !== null) {
+          // if no needed values are missing for meter reading TVS calculation, proceed with converting values and calcualting TVS
+          noTVS = false;
+          formValue.meter_reading_final = Number(formValue.meter_reading_final);
+          formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
+          formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
+
+          // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
+          formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
+            this.getConversionFactorToLiters(formValue.meter_reading_unit))
+        }
 
         // need to add required field values as they are assumed and not entered by user
         let now = new Date(Date.now());
@@ -914,20 +933,26 @@ export class SamplesComponent implements OnInit {
         formValue.collection_end_date = formValue.collection_start_date;
         formValue.arrival_date = formValue.collection_start_date;
 
-        this._sampleService.create(formValue)
-          .subscribe(
-            (sample: ISample) => {
-              this.allSamples.push(formValue);
-              this.addSampleForm.reset();
-              this.submitLoading = false;
-              this.showSampleCreateSuccess = true;
-            },
-            error => {
-              this.errorMessage = <any>error;
-              this.submitLoading = false;
-              this.showSampleCreateError = true;
-            }
-          );
+        if (noTVS === true) {
+          this.submitLoading = false;
+          this.sampleVolumeErrorFlag = true;
+        } else if (noTVS === false) {
+
+          this._sampleService.create(formValue)
+            .subscribe(
+              (sample: ISample) => {
+                this.allSamples.push(formValue);
+                this.addSampleForm.reset();
+                this.submitLoading = false;
+                this.showSampleCreateSuccess = true;
+              },
+              error => {
+                this.errorMessage = <any>error;
+                this.submitLoading = false;
+                this.showSampleCreateError = true;
+              }
+            );
+        }
         break;
       default:
       // do something defaulty

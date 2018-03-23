@@ -116,12 +116,12 @@ export class AnalysisBatchDetailComponent implements OnInit {
       .subscribe(
       (analysisBatchDetail) => {
         this.selectedABDetail = analysisBatchDetail;
-        this.extractionBatchArray = analysisBatchDetail.extraction_batches
+        this.extractionBatchArray = analysisBatchDetail.extractionbatches
         this.samplesArray = analysisBatchDetail.samples;
         this.selectedABID = analysisBatchDetail.id;
-        // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extraction_batches);
+        // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
         this.ABDetailsLoading = false;
-        if (analysisBatchDetail.extraction_batches.length < 1) {
+        if (analysisBatchDetail.extractionbatches.length < 1) {
           this.noExtractionsFlag = true;
         }
       },
