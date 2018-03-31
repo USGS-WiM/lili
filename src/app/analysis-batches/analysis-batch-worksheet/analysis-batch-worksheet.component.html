@@ -5,7 +5,7 @@
     <!-- date title -->
     <div id="row1" class="row" style="margin-top: 15px;">
       <div class="col-sm-12">
-        <span class="col-sm-4" style="padding-top:15px;">{{nowDate | date: 'MM/dd/yyyy'}}</span>
+        <!-- <span class="col-sm-4" style="padding-top:15px;">{{nowDate | date: 'MM/dd/yyyy'}}</span> -->
         <h3 class="text-center">Analysis Batch Worksheet<span *ngIf="abWorksheet?.isReprint">&nbsp;Reprint</span></h3>
       </div>
     </div>
@@ -139,7 +139,7 @@
                 <td>RT reaction volume</td>
                 <td>{{abWorksheet?.rt_reaction_volume}}</td>
                 <td style="width:20%">Date:</td>
-                <td>{{rt_date | date: 'MM/dd/yyyy'}}</td>
+                <td>{{abWorksheet?.rt_date | date: 'MM/dd/yyyy'}}</td>
               </tr>
               <tr>
                 <td colspan="4">

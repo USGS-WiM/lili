@@ -6,15 +6,15 @@
         <div class="card-title">Extraction Methods</div>
         <div class="card-text">
     
-          <clr-datagrid [(clrDgSingleSelected)]="selectedExtraction">
+          <clr-datagrid [(clrDgSingleSelected)]="selectedExtractionMethod">
             <!-- add, edit and delete Extraction buttons -->
             <clr-dg-action-bar>
               <div class="btn-group">
                 <button class="btn btn-sm" (click)="showAddModal()">
                   <clr-icon shape="plus"></clr-icon> Add</button>
-                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedExtraction" (click)="editEM(selectedExtraction)">
+                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedExtractionMethod" (click)="editEM(selectedExtractionMethod)">
                   <clr-icon shape="note-edit" size="16"></clr-icon> Edit</button>
-                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedExtraction" (click)="deleteEM(selectedExtraction)">
+                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedExtractionMethod" (click)="deleteEM(selectedExtractionMethod)">
                   <clr-icon shape="trash" size="16"></clr-icon> Delete</button>
               </div>
             </clr-dg-action-bar>
