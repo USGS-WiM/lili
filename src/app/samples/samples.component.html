@@ -869,7 +869,7 @@
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">Submission error. FCSV not submitted.</span>
                                 <div class="alert-actions">
-                                    <a class="alert-action" (click)="onSubmitAB(createABForm.value)">Try again</a>
+                                    <a class="alert-action" (click)="onSubmitFCSV(createFCSVForm.value)">Try again</a>
                                 </div>
                             </div>
                         </clr-alert>
@@ -1065,7 +1065,7 @@
                 <div>
                     <button class="btn btn-primary" (click)="assignFreezerLocation(selected)">
                         <clr-icon shape="plus"></clr-icon> Create</button>
-                    <button class="btn btn-primary" (click)="lookupFreezerLocation(selected)">
+                    <button class="btn btn-primary" (click)="lookupFreezerLocation()">
                         <clr-icon shape="search"></clr-icon> Lookup</button>
                 </div>
             </div>

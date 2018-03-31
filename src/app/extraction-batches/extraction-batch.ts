@@ -2,12 +2,13 @@ import { ISampleExtraction } from '../sample-extractions/sample-extraction';
 import { IInhibition } from '../inhibitions/inhibition';
 import { IReverseTranscription } from '../reverse-transcriptions/reverse-transcription';
 import { ITarget } from '../targets/target';
+import { IExtractionMethod } from "../extraction-batches/extraction-method";
 
 export interface IExtractionBatch {
     id: number;
     analysis_batch: number;
     extraction_string: string;
-    extraction_method: Object;
+    extraction_method: IExtractionMethod;
     re_extraction: number;
     re_extraction_notes: string;
     extraction_number: number;

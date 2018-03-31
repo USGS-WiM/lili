@@ -3,7 +3,7 @@
     <div class="card ab-detail-card">
       <div class="card-block">
         <h3 class="card-title">Extractions</h3>
-        <p class="card-text" *ngIf="!loading">
+        <p class="card-text" >
           <div class="row extraction-row">
             <span class="spinner spinner-lg" *ngIf="ABDetailsLoading">
               Loading...
@@ -103,7 +103,7 @@
 
   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <div class="card ab-detail-card">
-      <div class="card-block" *ngIf="!loading">
+      <div class="card-block" >
         <h3 class="card-title">Samples</h3>
         <p class="card-text">
           <span class="spinner spinner-lg" *ngIf="ABDetailsLoading">
@@ -142,7 +142,7 @@
   </div>
 </div>
 
-<clr-modal class="modal-sm" *ngIf="!loading" [(clrModalOpen)]="showHideEditExtractionDetail">
+<clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditExtractionDetail">
   <h3 class="modal-title">Edit Extraction</h3>
   <div class="modal-body">
     <span>Analysis Batch {{selectedABID}}</span>
@@ -243,7 +243,7 @@
 </clr-modal>
 
 <!-- edit target list modal -->
-<clr-modal [(clrModalOpen)]="showHideEditTargetList" [clrModalSize]="'xl'" *ngIf="!loading">
+<clr-modal [(clrModalOpen)]="showHideEditTargetList" [clrModalSize]="'xl'">
   <h3 class="modal-title">Edit Target List for Extraction # {{currentExtractionNo}} </h3>
   <div class="modal-body">
 

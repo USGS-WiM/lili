@@ -1,4 +1,5 @@
 import { IAliquot } from "../../aliquots/aliquot";
+import { IExtractionMethod } from "../../extraction-batches/extraction-method";
 import { ISampleExtractionSubmission } from "../../sample-extractions/sample-extraction-submission";
 
 export interface Iabworksheet {
@@ -10,7 +11,7 @@ export interface Iabworksheet {
     description: string;
     extraction_no: number;
     extraction_date: string;
-    extraction_method: Object;
+    extraction_method: IExtractionMethod;
     extraction_sample_volume: number;
     targetNames: string[];
     eluted_extraction_volume: number;
