@@ -594,14 +594,15 @@ export class SamplesComponent implements OnInit {
       meter_reading_unit: selectedSample.meter_reading_unit,
       total_volume_sampled_initial: selectedSample.total_volume_sampled_initial,
       total_volume_sampled_unit_initial: selectedSample.total_volume_sampled_unit_initial,
-      // total_volume_sampled: selectedSample.total_volume_sampled,
+      total_volume_or_mass_sampled: selectedSample.total_volume_or_mass_sampled,
       post_dilution_volume: selectedSample.post_dilution_volume,
       filter_type: selectedSample.filter_type,
       filter_born_on_date: selectedSample.filter_born_on_date,
       dissolution_volume: selectedSample.dissolution_volume,
       elution_notes: selectedSample.elution_notes,
       technician_initials: selectedSample.technician_initials,
-      sample_volume_initial: selectedSample.sample_volume_initial
+      sample_volume_initial: selectedSample.sample_volume_initial,
+      peg_neg: selectedSample.peg_neg
     })
 
     this.sampleSelected = true;
