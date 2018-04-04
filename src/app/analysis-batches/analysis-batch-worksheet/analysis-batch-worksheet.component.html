@@ -6,7 +6,9 @@
     <div id="row1" class="row" style="margin-top: 15px;">
       <div class="col-sm-12">
         <!-- <span class="col-sm-4" style="padding-top:15px;">{{nowDate | date: 'MM/dd/yyyy'}}</span> -->
-        <h3 class="text-center">Analysis Batch Worksheet<span *ngIf="abWorksheet?.isReprint">&nbsp;Reprint</span></h3>
+        <h3 class="text-center">Analysis Batch Worksheet
+          <span *ngIf="abWorksheet?.isReprint">&nbsp;Reprint</span>
+        </h3>
       </div>
     </div>
 
@@ -58,12 +60,12 @@
       </div>
     </div>
 
-    <br clear="all" />    
+    <br clear="all" />
     <!-- middle section -->
     <div id="row3" class="row">
       <!-- sample location table -->
-      
-      <div class="col-md-6 pull-left">        
+
+      <div class="col-md-6 pull-left">
         <div class="col-md-11">
           <span *ngIf="abWorksheet?.isReprint">This is a reprint. Aliquot listed is first aliquot of sample.</span>
           <table class="table table-collapse" [class.noTopMargin]="abWorksheet?.isReprint" id="sampleTable" #sampleTable>
@@ -90,7 +92,7 @@
                 <td>{{extraction.spot}}</td>
                 <td>{{extraction.dna_dilution_factor}}</td>
                 <td>{{extraction.rna_dilution_factor}}</td>
-              </tr>              
+              </tr>
             </tbody>
           </table>
           <div style="font-weight:bold;">
@@ -124,38 +126,41 @@
           </table>
         </div>
       </div>
-    </div> <!-- end middle 2 tables -->
+    </div>
+    <!-- end middle 2 tables -->
 
     <!-- bottom section -->
     <div id="row4" class="row">
-        <div class="col-md-6 pull-left" style="margin-bottom:15px;">
-            <table id="bottomTable" class="col-md-8 table">
-              <tr>
-                <td>Reverse transcription No.</td>
-                <td>{{abWorksheet?.reverse_extraction_no}}</td>
-                <td colspan="2"></td>                
-              </tr>
-              <tr>
-                <td>RT reaction volume</td>
-                <td>{{abWorksheet?.rt_reaction_volume}}</td>
-                <td style="width:20%">Date:</td>
-                <td>{{abWorksheet?.rt_date | date: 'MM/dd/yyyy'}}</td>
-              </tr>
-              <tr>
-                <td colspan="4">
-              </tr>
-              <tr>
-                <td>qPCR replicates</td>
-                <td></td>
-                <td colspan="2"></td>
-              </tr>
-            </table>
-          </div>
+      <div class="col-md-6 pull-left" style="margin-bottom:15px;">
+        <table id="bottomTable" class="col-md-8 table">
+          <tr>
+            <td>Reverse transcription No.</td>
+            <td>{{abWorksheet?.reverse_extraction_no}}</td>
+            <td colspan="2"></td>
+          </tr>
+          <tr>
+            <td>RT reaction volume</td>
+            <td>{{abWorksheet?.rt_reaction_volume}}</td>
+            <td style="width:20%">Date:</td>
+            <td>
+              {{abWorksheet?.rt_date | date: 'MM/dd/yyyy'}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+          </tr>
+          <tr>
+            <td>qPCR replicates</td>
+            <td></td>
+            <td colspan="2"></td>
+          </tr>
+        </table>
+      </div>
     </div>
-    
+
     <div id="row5" class="row col-md-12" id="notes">
-      <div class="col-md-12 line_break">Notes</div> 
-      <br clear="all"/>
+      <div class="col-md-12 line_break">Notes</div>
+      <br clear="all" />
       <div id="notesSpace">&nbsp;</div>
     </div>
 
