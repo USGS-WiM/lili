@@ -521,6 +521,11 @@ export class AnalysisBatchesComponent implements OnInit {
 
   // called from createWorksheet in success and failure to get samples to ensure worksheet obj gets populated regardless
   private buildReprintWorksheetObj(es: ISampleExtractionSubmission[], tn: any[]) {
+
+    if (this.rePrintWorksheetData.reverse_transcriptions.length === 0 ) {
+      this.rePrintWorksheetData.reverse_transcriptions.push({reaction_volume: 0, rt_date: "N/A" })
+    }
+
     let ABWorksheetObj: Iabworksheet;
     ABWorksheetObj = {
       isReprint: true,
