@@ -148,6 +148,8 @@ export class AnalysisBatchesComponent implements OnInit {
   rnaApplyList = [];
   dnaApplyList = [];
 
+  rtValuesExist: boolean = false;
+
   inhibitionError: string = "";
 
   inhibitionErrors = {
@@ -522,8 +524,9 @@ export class AnalysisBatchesComponent implements OnInit {
   // called from createWorksheet in success and failure to get samples to ensure worksheet obj gets populated regardless
   private buildReprintWorksheetObj(es: ISampleExtractionSubmission[], tn: any[]) {
 
-    if (this.rePrintWorksheetData.reverse_transcriptions.length === 0 ) {
-      this.rePrintWorksheetData.reverse_transcriptions.push({reaction_volume: 0, rt_date: "N/A" })
+    if (this.rePrintWorksheetData.reverse_transcriptions.length === 0) {
+      this.rePrintWorksheetData.reverse_transcriptions.push({ reaction_volume: 0, rt_date: "N/A" })
+      this.rtValuesExist = false;
     }
 
     let ABWorksheetObj: Iabworksheet;
@@ -994,6 +997,7 @@ export class AnalysisBatchesComponent implements OnInit {
               }
               this.targetDetailLoading = false;
             } else {
+              this.targetDetailLoading = false;
               this.showHideNoTargetErrorModal = true;
             }
           },
@@ -1020,7 +1024,7 @@ export class AnalysisBatchesComponent implements OnInit {
   editAB(selectedAB) {
 
     this.resetAB();
-    if (selectedAB.extraction_count > 0) {
+    if (selectedAB.summary.sample_extraction_count > 0) {
       this.sampleListEditLocked = true;
     }
 

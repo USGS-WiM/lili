@@ -88,7 +88,6 @@
                 </clr-datagrid>
 
             </div>
-            <div class="col-lg-2 col-md-2"></div>
         </div>
 
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="targetSelectErrorFlag">
@@ -873,7 +872,7 @@
                                             <div clr-alert-item class="alert-item">
                                                 <span class="alert-text">Submission error. Analysis Batch not updated.</span>
                                                 <div class="alert-actions">
-                                                    <a class="alert-action" (click)="onSubmitSample('add', editSampleForm.value)">Try again</a>
+                                                    <a class="alert-action" (click)="updateABSampleList(editABForm.value,selected)">Try again</a>
                                                 </div>
                                             </div>
                                         </clr-alert>
@@ -1064,7 +1063,7 @@
                 <clr-dg-cell>{{ab.analysis_batch_description}}</clr-dg-cell>
                 <!-- <clr-dg-cell><span *ngFor="let study of ab.studies">{{study.name}}<br></span></clr-dg-cell> -->
 
-                <clr-dg-cell>{{ab.summary.extraction_count}}</clr-dg-cell>
+                <clr-dg-cell>{{ab.summary.sample_extraction_count}}</clr-dg-cell>
 
                 <clr-dg-cell>{{ab.summary.inhibition_count}}</clr-dg-cell>
 
