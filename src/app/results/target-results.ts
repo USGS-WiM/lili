@@ -13,5 +13,7 @@ export interface ITargetResults {
     pcr_pos_cq_value: number;
     pcr_pos_gc_reaction: number;
     pcr_pos_concentration: number;
+    re_pcr: number;
+    notes: string,
     updated_pcrreplicates: ITargetResult[];
 }
