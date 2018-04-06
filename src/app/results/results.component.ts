@@ -238,6 +238,8 @@ export class ResultsComponent implements OnInit {
       pcr_pos_cq_value: null,
       pcr_pos_gc_reaction: null,
       pcr_pos_concentration: null,
+      re_pcr: null,
+      notes: '',
       updated_pcrreplicates: []
     }
     let fileNameSansExtension = fileName.replace(".txt", "")
