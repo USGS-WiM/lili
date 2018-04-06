@@ -64,24 +64,6 @@
             <div class="row">
                 <div class="col-lg-12">
 
-                    <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showStudyEditError">
-                        <div clr-alert-item class="alert-item">
-                            <span class="alert-text">Submission error. Study not edited.</span>
-                            <div class="alert-actions">
-                                <a class="alert-action" (click)="onSubmitStudy('edit', editStudyForm.value)">Try again</a>
-                            </div>
-                        </div>
-                    </clr-alert>
-
-                    <clr-alert [clrAlertType]="'alert-success'" *ngIf="showStudyEditSuccess">
-                        <div clr-alert-item class="alert-item">
-                            <span class="alert-text">Study successfully edited</span>
-                            <div class="alert-actions">
-                                <a class="alert-action" (click)="showHideEdit = false; showStudyEditSuccess = false">Close</a>
-                            </div>
-                        </div>
-                    </clr-alert>
-
                     <form id="editStudyForm" class="compact" [formGroup]="editStudyForm" (ngSubmit)="onSubmitStudy('edit', editStudyForm.value)">
                         <section class="form-block">
 
@@ -103,6 +85,25 @@
                                 <label for="description">Description</label>
                                 <textarea id="description" type="text" formControlName="description" rows="2" style="max-width:25em"></textarea>
                             </div>
+
+                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showStudyEditError">
+                                <div clr-alert-item class="alert-item">
+                                    <span class="alert-text">Submission error. Study not edited.</span>
+                                    <div class="alert-actions">
+                                        <a class="alert-action" (click)="onSubmitStudy('edit', editStudyForm.value)">Try again</a>
+                                    </div>
+                                </div>
+                            </clr-alert>
+
+                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showStudyEditSuccess">
+                                <div clr-alert-item class="alert-item">
+                                    <span class="alert-text">Study successfully edited</span>
+                                    <div class="alert-actions">
+                                        <a class="alert-action" (click)="showHideEdit = false; showStudyEditSuccess = false">Close</a>
+                                    </div>
+                                </div>
+                            </clr-alert>
+
                             <button class="btn btn-primary" type="submit" [disabled]="editStudyForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
                             <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
                         </section>
@@ -137,9 +138,10 @@
             </clr-dg-action-bar>
 
             <clr-dg-column [clrDgField]="'id'">
-                <ng-container *clrDgHideableColumn="{hidden: false}">
-                    Study ID
-                </ng-container>
+                Study ID
+                <clr-dg-filter [clrDgFilter]="rangeFilter">
+                    <range-filter #rangeFilter></range-filter>
+                </clr-dg-filter>
             </clr-dg-column>
 
             <clr-dg-column [clrDgField]="'name'">
