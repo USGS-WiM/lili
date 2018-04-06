@@ -386,7 +386,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="tvsInput" class="required">Total Volume (or mass)Sampled</label>
+                                <label for="tvsInput" class="required">Total Volume/Mass Sampled</label>
                                 <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
@@ -482,8 +482,8 @@
                     <section class="form-block">
 
                         <div class="form-group">
-                            <label for="studyId">Sample ID</label>
-                            <input type="text" id="studyId" size="35" formControlName="id" readonly>
+                            <label for="sampleId">Sample ID</label>
+                            <input type="text" id="sampleId" size="35" formControlName="id" readonly>
                         </div>
 
                         <div class="form-group">
@@ -709,7 +709,7 @@
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">Sample successfully updated</span>
                                 <div class="alert-actions">
-                                    <a class="alert-action" (click)="showHideAdd = false; showSampleEditSuccess = false">Close</a>
+                                    <a class="alert-action" (click)="showHideEdit = false; showSampleEditSuccess = false">Close</a>
                                 </div>
                             </div>
                         </clr-alert>
@@ -1216,8 +1216,7 @@
                 </div>
             </clr-dg-action-bar>
 
-            <!-- filter column header for Sample ID -->
-            <clr-dg-column [clrDgField]="'sample_id'">
+            <clr-dg-column [clrDgField]="'id'">
                 Sample ID
                 <clr-dg-filter [clrDgFilter]="rangeFilter">
                     <range-filter #rangeFilter></range-filter>
@@ -1230,20 +1229,12 @@
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'collaborator_sample_id'">
+            <clr-dg-column>
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Collaborator Sample ID
                 </ng-container>
             </clr-dg-column>
 
-            <!-- regular column header for Study-->
-            <!--<clr-dg-column [clrDgField]="'study'">
-                         <ng-container *clrDgHideableColumn="{hidden: false}">
-                            Study
-                        </ng-container>
-                    </clr-dg-column>-->
-
-            <!-- filter column header for study -->
             <clr-dg-column [clrDgField]="'study'">
                 Study
                 <clr-dg-filter [clrDgFilter]="studyFilter">
@@ -1251,14 +1242,6 @@
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <!-- regular column header for Sample Type-->
-            <!--<clr-dg-column [clrDgField]="'sample_type'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                            Sample Type
-                        </ng-container>
-                    </clr-dg-column>-->
-
-            <!-- filter column header for sample type -->
             <clr-dg-column [clrDgField]="'sample_type'">
                 Sample Type
                 <clr-dg-filter [clrDgFilter]="sampleTypeFilter">
@@ -1419,14 +1402,6 @@
                 </ng-container>
             </clr-dg-column>
 
-            <!-- regular column header for Sampler name-->
-            <!--<clr-dg-column [clrDgField]="'sampler_name'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                           Sampler Name
-                        </ng-container>
-                    </clr-dg-column>-->
-
-            <!-- filter column header for sampler name -->
             <clr-dg-column [clrDgField]="'sampler_name'">
                 Sampler Name
                 <clr-dg-filter [clrDgFilter]="samplerNameFilter">
@@ -1446,14 +1421,6 @@
                 </ng-container>
             </clr-dg-column>
 
-            <!-- regular column header for date added-->
-            <!-- <clr-dg-column [clrDgField]="'created_date'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                             Date added
-                        </ng-container>
-                    </clr-dg-column> -->
-
-            <!-- filter column header for date added -->
             <clr-dg-column [clrDgField]="'created_date'">
                 Date Added
                 <clr-dg-filter [clrDgFilter]="dateAddedFilter">
@@ -1467,14 +1434,6 @@
                 </ng-container>
             </clr-dg-column>
 
-            <!-- regular column header for date updated-->
-            <!-- <clr-dg-column [clrDgField]="'modified_date'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                             Date updated
-                        </ng-container>
-                    </clr-dg-column> -->
-
-            <!-- filter column header for date updated -->
             <clr-dg-column [clrDgField]="'modified_date'">
                 Date Updated
                 <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">

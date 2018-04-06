@@ -60,6 +60,9 @@ export class StudiesComponent implements OnInit {
 
     editStudy(selectedStudy) {
 
+        this.showStudyEditSuccess = false;
+        this.showStudyEditError = false;
+
         this.selectedStudyName = selectedStudy.name;
         this.selectedStudyId = selectedStudy.id;
 

@@ -970,7 +970,7 @@
                 </div>
             </clr-dg-action-bar>
 
-            <clr-dg-column [clrDgField]="'analysis_batch_id'">
+            <clr-dg-column [clrDgField]="'id'">
                 Analysis Batch ID
                 <clr-dg-filter [clrDgFilter]="rangeFilter">
                     <range-filter #rangeFilter></range-filter>
@@ -982,12 +982,6 @@
                     Analysis Batch Description
                 </ng-container>
             </clr-dg-column>
-
-            <!-- <clr-dg-column [clrDgField]="'studies'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                            Studies
-                        </ng-container>
-                    </clr-dg-column> -->
 
             <clr-dg-column>
                 <ng-container *clrDgHideableColumn="{hidden: false}">
