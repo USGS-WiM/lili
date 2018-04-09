@@ -756,6 +756,7 @@ export class SamplesComponent implements OnInit {
           this.showFCSVCreateError = false;
           this.showFCSVCreateSuccess = true;
           this.submitLoading = false;
+          this.reloadSamplesTable();
         },
         error => {
           this.showFCSVCreateError = true;
