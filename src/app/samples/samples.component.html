@@ -263,13 +263,13 @@
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Sample successfully submitted</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="showHideAdd = false; showSampleCreateSuccess = false">Close</a>
+                                        <a class="alert-action" (click)="showHideAdd = false; showSampleCreateSuccess = false; resetFlags()">Close</a>
                                     </div>
                                 </div>
                             </clr-alert>
 
                             <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
+                            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd; resetFlags()">Cancel</button>
                         </section>
                         <!--<p>Form value: {{ addSampleForm.value | json }}</p>
                         <p>Form status: {{ addSampleForm.status | json }}</p> -->
@@ -451,13 +451,13 @@
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Sample successfully submitted</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="showHideAdd = false; showSampleCreateSuccess = false">Close</a>
+                                        <a class="alert-action" (click)="showHideAddPegNeg = false; showSampleCreateSuccess = false; resetFlags();">Close</a>
                                     </div>
                                 </div>
                             </clr-alert>
 
                             <button class="btn btn-primary" type="submit" [disabled]="addPegNegForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                            <button class="btn btn-info" (click)="showHideAddPegNeg = !showHideAddPegNeg">Cancel</button>
+                            <button class="btn btn-info" (click)="showHideAddPegNeg = !showHideAddPegNeg; resetFlags();">Cancel</button>
                         </section>
                         <!-- <p>Form value: {{ addPegNegForm.value | json }}</p> -->
                         <!-- <p>Form status: {{ addPegNegForm.status | json }}</p> -->
@@ -709,14 +709,14 @@
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">Sample successfully updated</span>
                                 <div class="alert-actions">
-                                    <a class="alert-action" (click)="showHideEdit = false; showSampleEditSuccess = false">Close</a>
+                                    <a class="alert-action" (click)="showHideEdit = false; showSampleEditSuccess = false; resetFlags();">Close</a>
                                 </div>
                             </div>
                         </clr-alert>
 
 
                         <button class="btn btn-primary" type="submit" [disabled]="editSampleForm.invalid">Save Edits</button>
-                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit; resetFlags();">Cancel</button>
                     </section>
                     <!--<p>Form value: {{ editSampleForm.value | json }}</p>
                     <p>Form status: {{ editSampleForm.status | json }}</p> -->
@@ -780,13 +780,13 @@
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Analysis Batch successfully created</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="showHideABModal = false; showABCreateSuccess = false">Close</a>
+                                        <a class="alert-action" (click)="showHideABModal = false; showABCreateSuccess = false; resetFlags();">Close</a>
                                     </div>
                                 </div>
                             </clr-alert>
 
                             <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                            <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+                            <button class="btn btn-info" (click)="showHideABModal= !showHideABModal; resetFlags();">Cancel</button>
 
                     </section>
                 </form>
@@ -878,13 +878,13 @@
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">FCSV successfully submitted.</span>
                                 <div class="alert-actions">
-                                    <a class="alert-action" (click)="showHideFCSVModal = false; showFCSVCreateSuccess = false">Close</a>
+                                    <a class="alert-action" (click)="showHideFCSVModal = false; showFCSVCreateSuccess = false; resetFlags();">Close</a>
                                 </div>
                             </div>
                         </clr-alert>
 
                         <button class="btn btn-primary" type="submit" [disabled]="createFCSVForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                        <button class="btn btn-info" (click)="showHideFCSVModal = !showHideFCSVModal">Cancel</button>
+                        <button class="btn btn-info" (click)="showHideFCSVModal = !showHideFCSVModal; resetFlags();">Cancel</button>
                     </section>
                 </form>
             </div>
@@ -945,7 +945,7 @@
 
                         <div class="form-group">
                             <label for="aliquotCount" class="required">Number of Aliquots</label>
-                            <input id="aliquotCount" type="number" formControlName="aliquot_count">
+                            <input id="aliquotCount" type="number" min="1" formControlName="aliquot_count">
                         </div>
                         <div class="form-group">
                             <label for="rack" class="required">Rack</label>
@@ -971,7 +971,7 @@
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-outline" (click)="showHideFreezerLocationAssignModal = !showHideFreezerLocationAssignModal">Cancel</button>
+                        <button type="button" class="btn btn-outline" (click)="showHideFreezerLocationAssignModal = !showHideFreezerLocationAssignModal; resetFlags()">Cancel</button>
                         <button type="submit" class="btn btn-primary" [disabled]="freezeSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
 
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFreezeError">
@@ -987,7 +987,7 @@
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">Sample aliquot records and locations successfully submitted.</span>
                                 <div class="alert-actions">
-                                    <a class="alert-action" (click)="showHideFreezerLocationAssignModal = false; showFreezeSuccess = false">Close</a>
+                                    <a class="alert-action" (click)="showHideFreezerLocationAssignModal = false; showFreezeSuccess = false; resetFlags();">Close</a>
                                 </div>
                             </div>
                         </clr-alert>
@@ -1100,7 +1100,7 @@
                     <section>
                         <div>
                             <label>Number of labels to skip:</label>
-                            <input type="number" formControlName="count" class="label-skip-input">
+                            <input type="number" formControlName="count" min="1" class="label-skip-input">
                         </div>
 
                     </section>
@@ -1139,7 +1139,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHidePrintModal = !showHidePrintModal">Cancel</button>
+        <button type="button" class="btn btn-outline" (click)="showHidePrintModal = !showHidePrintModal; resetFlags();">Cancel</button>
         <button type="submit" class="btn btn-primary" (click)="createLabelPDF()">
             <clr-icon shape="list"></clr-icon> Preview & Print Labels</button>
     </div>
@@ -1182,7 +1182,7 @@
         <sample-label #sampleLabel></sample-label>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showLabelModal = !showLabelModal">Cancel</button>
+        <button type="button" class="btn btn-outline" (click)="showLabelModal = !showLabelModal; resetFlags()">Cancel</button>
     </div>
 </clr-modal>
 <!-- end SampleLabelModal -->

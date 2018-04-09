@@ -379,7 +379,7 @@
                                                                 <label class="required">Sample {{inh.controls.sample.value}}</label>
                                                             </td>
                                                             <td>
-                                                                <input formControlName="dilution_factor" type="number" class="dilution-factor-input">
+                                                                <input formControlName="dilution_factor" type="number" min="1" class="dilution-factor-input">
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -387,7 +387,7 @@
 
                                                 <!-- <div class="form-group" *ngFor="let inh of inhibitionsArray.controls; let i = index" [formGroupName]="i">
                                                         <label>Sample {{inh.controls.sample.value}}</label>
-                                                        <input formControlName="dilution_factor" type="number" class="target-count-input">
+                                                        <input formControlName="dilution_factor" type="number" min="1" class="target-count-input">
                                                     </div> -->
                                             </div>
 

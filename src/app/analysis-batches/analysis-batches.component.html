@@ -140,6 +140,9 @@
                             <label for="qpcrDateInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                                 [class.invalid]="extractForm.get('qpcr_reaction_volume').invalid && (extractForm.get('qpcr_reaction_volume').dirty || extractForm.get('qpcr_reaction_volume').touched)">
                                 <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
+                                <span class="tooltip-content">
+                                    This field cannot be empty!
+                                </span>
 
                             </label>
                         </div>
@@ -148,11 +151,23 @@
 
                     <section class="form-block" *ngIf="x">
                         <p>Select desired number of PCR replicates for each selected target. To update the targets list, return
-                            to Target Selection page.
+                            to Target Selection page. Minimum value of 1.
                             <div formArrayName="new_replicates">
+
                                 <div class="form-group" *ngFor="let target of replicateArray.controls; let i = index" [formGroupName]="i">
-                                    <label>{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
-                                    <input formControlName="count" type="number" class="target-count-input">
+
+                                    <label class="required">{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
+                                    <input formControlName="count" type="number" min="1" class="target-count-input">
+
+                                    <!-- count input with validation feedback. does not seem to work for number inputs. -->
+                                    <!-- <label for="count{{i}}" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                                        [class.invalid]="extractForm.get('new_replicates').controls[i].get('count').invalid && (extractForm.get('new_replicates').controls[i].get('count').dirty || extractForm.get('new_replicates').controls[i].get('count').touched)">
+                                        <input id="count{{i}}" formControlName="count" type="text"  class="target-count-input">
+                                        <span class="tooltip-content">
+                                            This field cannot be empty!
+                                        </span>
+                                    </label> -->
+
                                 </div>
                             </div>
                     </section>
@@ -212,7 +227,7 @@
                     <label class="required">Dilution factor of Sample</label>
                     <label for="sampleDilution" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                         [class.invalid]="extractForm.get('sample_dilution_factor').invalid && (extractForm.get('sample_dilution_factor').dirty || extractForm.get('sample_dilution_factor').touched)">
-                        <input id="sampleDilution" type="number" size="10" formControlName="sample_dilution_factor">
+                        <input id="sampleDilution" type="number" size="10" min="1" formControlName="sample_dilution_factor">
                         <span class="tooltip-content">
                             This field cannot be empty!
                         </span>
@@ -1013,13 +1028,6 @@
                     Analysis Batch Notes
                 </ng-container>
             </clr-dg-column>
-
-
-            <!-- <clr-dg-column>
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                            Samples
-                        </ng-container>
-                    </clr-dg-column> -->
 
             <clr-dg-column [clrDgField]="'created_by'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
