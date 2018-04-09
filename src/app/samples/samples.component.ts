@@ -86,9 +86,9 @@ export class SamplesComponent implements OnInit {
   submitted: boolean = false;
 
   showSampleCreateError: boolean = false;
-  showSampleEditError: boolean = false;
-
   showSampleCreateSuccess: boolean = false;
+
+  showSampleEditError: boolean = false;
   showSampleEditSuccess: boolean = false;
 
   showABCreateError: boolean = false;
@@ -106,7 +106,7 @@ export class SamplesComponent implements OnInit {
 
   lastOccupiedSpot;
   showLastOccupiedSpot;
-  showLastOccupiedSpotError;
+  showLastOccupiedSpotError: boolean = false;
   lastOccupiedSpotLoading;
 
   showHideMissingFCSVErrorModal: boolean = false;
@@ -781,11 +781,50 @@ export class SamplesComponent implements OnInit {
   onClosesampleVolumeError() {
     this.sampleVolumeErrorFlag = false;
   }
-  
+
+  resetFlags() {
+    this.sampleVolumeErrorFlag = false;
+    this.showSampleCreateError = false;
+    this.showSampleCreateSuccess = false;
+    this.showSampleEditError = false;
+    this.showSampleEditSuccess = false;
+    this.showFreezeError = false;
+    this.showFreezeSuccess = false;
+    this.showFCSVCreateSuccess = false;
+    this.showFCSVCreateError = false;
+    this.showABCreateSuccess = false;
+    this.showABCreateError = false;
+  }
+
+  reloadSamplesTable() {
+    // set sample loading to true to put spinner over table while it updates.
+    this.samplesLoading = true;
+    this.pegnegs = [];
+    // retrieve samples again, reload the table
+    // call getSamples function of the SampleService, set results to the allSamples var
+    this._sampleService.getSamples()
+      .subscribe(
+        (samples) => {
+          this.allSamples = samples
+          this.samplesLoading = false;
+          for (let item of samples) {
+            if (item.record_type === 2) {
+              this.pegnegs.push(item);
+            }
+          }
+          this.samplesLoading = false;
+        },
+        error => {
+          this.errorMessage = <any>error
+        }
+      );
+  }
+
   onSubmitSample(formId, formValue) {
     this.sampleVolumeErrorFlag = false;
     this.showSampleCreateError = false;
     this.showSampleEditError = false;
+    this.showSampleEditSuccess = false;
     this.submitLoading = true;
 
     let noTVS: boolean = false;
@@ -812,6 +851,7 @@ export class SamplesComponent implements OnInit {
               this.editSampleForm.reset();
               this.submitLoading = false;
               this.showSampleEditSuccess = true;
+              this.reloadSamplesTable();
             },
             error => {
               this.errorMessage = <any>error;
@@ -874,6 +914,7 @@ export class SamplesComponent implements OnInit {
                 this.sampleVolumeErrorFlag = false;
                 this.submitLoading = false;
                 this.showSampleCreateSuccess = true;
+                this.reloadSamplesTable();
               },
               error => {
                 this.errorMessage = <any>error;
@@ -947,6 +988,7 @@ export class SamplesComponent implements OnInit {
                 this.addSampleForm.reset();
                 this.submitLoading = false;
                 this.showSampleCreateSuccess = true;
+                this.reloadSamplesTable();
               },
               error => {
                 this.errorMessage = <any>error;

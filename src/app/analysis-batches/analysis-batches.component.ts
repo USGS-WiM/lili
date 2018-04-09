@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormArray, Validators, PatternValidator } from "@angular/forms/";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormArray, Validators, PatternValidator } from "@angular/forms/";
 import { Wizard, WizardPage, BUTTON_GROUP_DIRECTIVES } from "clarity-angular";
 
 import { IAnalysisBatchSummary } from './analysis-batch-summary';
@@ -182,6 +182,18 @@ export class AnalysisBatchesComponent implements OnInit {
     extraction_batch: new FormControl('', Validators.required)
   })
 
+
+
+  static nonZero(control: AbstractControl): { [key: string]: any; } {
+    if (Number(control.value) < 0) {
+      return { nonZero: true };
+    } else {
+      return null;
+    }
+  }
+
+
+
   buildExtractForm() {
     this.extractForm = this.formBuilder.group({
       analysis_batch: '',
@@ -205,7 +217,9 @@ export class AnalysisBatchesComponent implements OnInit {
       new_replicates: this.formBuilder.array([
         this.formBuilder.group({
           target: '',
-          count: '2'
+           // count: [2, Validators.compose([Validators.required, AnalysisBatchesComponent.nonZero])]
+           count: ['2', [Validators.required, Validators.pattern('^[1-9][0-9]*$')]],
+          // count: '2'
         })
       ]),
       new_sample_extractions: this.formBuilder.array([
