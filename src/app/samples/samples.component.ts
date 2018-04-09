@@ -109,6 +109,13 @@ export class SamplesComponent implements OnInit {
   showLastOccupiedSpotError: boolean = false;
   lastOccupiedSpotLoading;
 
+  currentFreezerDimensions = {
+    "racks": null,
+    "boxes": null,
+    "rows": null,
+    "spots": null,
+  }
+
   showHideMissingFCSVErrorModal: boolean = false;
   //aliquotLabelTextArray = [{"aliquot_string": "", "collaborator_sample_id": ""}]
   aliquotLabelTextArray = [];
@@ -318,8 +325,13 @@ export class SamplesComponent implements OnInit {
 
     // on init, call getFreezers function of the FreezerService, set results to the freezers var
     this._freezerService.getFreezers()
-      .subscribe(freezers => this.freezers = freezers,
-        error => this.errorMessage = <any>error);
+      .subscribe(
+        (freezers) => {
+          this.freezers = freezers;
+        },
+        error => {
+          this.errorMessage = <any>error
+        });
 
     // on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
     this._sampleTypeService.getSampleTypes()
@@ -355,6 +367,20 @@ export class SamplesComponent implements OnInit {
     this._userService.getUsers()
       .subscribe(users => this.users = users,
         error => this.errorMessage = <any>error);
+
+    this.freezeSampleForm.get('freezer').valueChanges.subscribe(val => {
+      // set the maxes for freezer location inputs
+      for (let freezer of this.freezers) {
+        if (freezer.id === Number(val)) {
+          this.currentFreezerDimensions = {
+            "racks": freezer.racks,
+            "boxes": freezer.boxes,
+            "rows": freezer.rows,
+            "spots": freezer.spots
+          }
+        }
+      }
+    });
 
   }
 
@@ -441,6 +467,14 @@ export class SamplesComponent implements OnInit {
     }
   }
 
+  // lookupFreezerDimensions(freezerID, dimension) {
+  //   for (let freezer of this.freezers) {
+  //     if (freezer.id === freezerID) {
+  //       return freezer[dimension];
+  //     }
+  //   }
+  // }
+
   // callback for the freeze samples button
   assignFreezerLocation(selectedSampleArray) {
 
@@ -448,6 +482,19 @@ export class SamplesComponent implements OnInit {
     this.lastOccupiedSpotLoading = true;
     this.showLastOccupiedSpot = false;
     this.showLastOccupiedSpotError = false;
+
+    // set the maxes for freezer location inputs
+    for (let freezer of this.freezers) {
+      if (freezer.id === this.freezeSampleForm.get('freezer').value) {
+        this.currentFreezerDimensions = {
+          "racks": freezer.racks,
+          "boxes": freezer.boxes,
+          "rows": freezer.rows,
+          "spots": freezer.spots
+        }
+      }
+    }
+
     // check if more than one sample is selected. if so, alert user they can only freeze one sample at a time
     // if not, proceed with further checks and logic
 
