@@ -949,19 +949,19 @@
                         </div>
                         <div class="form-group">
                             <label for="rack" class="required">Rack</label>
-                            <input id="rack" type="text" formControlName="rack">
+                            <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}" formControlName="rack"><span>Max {{currentFreezerDimensions.racks}}</span>
                         </div>
                         <div class="form-group">
                             <label for="box" class="required">Box</label>
-                            <input id="box" type="text" formControlName="box">
+                            <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}" formControlName="box"><span>Max {{currentFreezerDimensions.boxes}}</span>
                         </div>
                         <div class="form-group">
                             <label for="row" class="required">Row</label>
-                            <input id="row" type="text" formControlName="row">
+                            <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}" formControlName="row"><span>Max {{currentFreezerDimensions.rows}}</span>
                         </div>
                         <div class="form-group">
                             <label for="spot" class="required">Spot</label>
-                            <input id="spot" type="text" formControlName="spot">
+                            <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}" formControlName="spot"><span>Max {{currentFreezerDimensions.spots}}</span>
                         </div>
                         <div class="form-group">
                             <label>Frozen</label>

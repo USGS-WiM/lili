@@ -230,14 +230,13 @@ export class ResultsComponent implements OnInit {
       replicate_number: null,
 
       ext_neg_cq_value: null,
-      ext_neg_concentration: null,
+      ext_neg_gc_reaction: null,
       rt_neg_cq_value: null,
-      rt_neg_concentration: null,
+      rt_neg_gc_reaction: null,
       pcr_neg_cq_value: null,
-      pcr_neg_concentration: null,
+      pcr_neg_gc_reaction: null,
       pcr_pos_cq_value: null,
       pcr_pos_gc_reaction: null,
-      pcr_pos_concentration: null,
       re_pcr: null,
       notes: '',
       updated_pcrreplicates: []
@@ -258,19 +257,19 @@ export class ResultsComponent implements OnInit {
     for (let rep of rawResults) {
       if (rep.Name === "EXT NEG") {
         rawTargetResults.ext_neg_cq_value = Number(rep.Cp);
-        rawTargetResults.ext_neg_concentration = Number(rep.Concentration);
+        rawTargetResults.ext_neg_gc_reaction = Number(rep.Concentration);
       }
       if (rep.Name === "PCR NEG") {
         rawTargetResults.pcr_neg_cq_value = Number(rep.Cp);
-        rawTargetResults.pcr_neg_concentration = Number(rep.Concentration);
+        rawTargetResults.pcr_neg_gc_reaction = Number(rep.Concentration);
       }
       if (rep.Name === "POS") {
         rawTargetResults.pcr_pos_cq_value = Number(rep.Cp);
-        rawTargetResults.pcr_pos_concentration = Number(rep.Concentration);
+        rawTargetResults.pcr_pos_gc_reaction = Number(rep.Concentration);
       }
       if (rep.Name === "RT NEG") {
         rawTargetResults.rt_neg_cq_value = Number(rep.Cp);
-        rawTargetResults.rt_neg_concentration = Number(rep.Concentration);
+        rawTargetResults.rt_neg_gc_reaction = Number(rep.Concentration);
       }
 
       if (numbersOnlyPattern.test(rep.Name)) {
