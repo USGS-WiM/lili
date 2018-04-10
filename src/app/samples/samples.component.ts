@@ -104,6 +104,8 @@ export class SamplesComponent implements OnInit {
 
   sampleVolumeErrorFlag: boolean = false;
 
+  showHideFCSVExistsErrorModal = false;
+
   lastOccupiedSpot;
   showLastOccupiedSpot;
   showLastOccupiedSpotError: boolean = false;
@@ -268,6 +270,7 @@ export class SamplesComponent implements OnInit {
 
   createABForm = new FormGroup({
     new_samples: new FormControl([]),
+    name: new FormControl(''),
     analysis_batch_description: new FormControl(''),
     analysis_batch_notes: new FormControl('')
   });
@@ -400,6 +403,7 @@ export class SamplesComponent implements OnInit {
 
     this.createABForm.setValue({
       new_samples: sampleIDs,
+      name: '',
       analysis_batch_description: '',
       analysis_batch_notes: ''
     })
@@ -407,12 +411,17 @@ export class SamplesComponent implements OnInit {
     if (this.showHideABModal === false) {
       this.showHideABModal = true;
     }
-
-    console.log("Create AB form value: ", this.createABForm.value);
-
   }
 
   createFCSV(selectedSamples) {
+
+    // check if any of the samples selected already have FCSV
+    for (let sample of selectedSamples) {
+      if (sample.final_concentrated_sample_volume != null) {
+        this.showHideFCSVExistsErrorModal = true;
+        return;
+      }
+    }
 
     let selectedSampleIDs = []
     if (selectedSamples.length > 1) {
@@ -877,13 +886,16 @@ export class SamplesComponent implements OnInit {
 
     let noTVS: boolean = false;
 
-    formValue.filter_type = Number(formValue.filter_type);
     formValue.matrix = Number(formValue.matrix);
     formValue.sample_type = Number(formValue.sample_type);
     formValue.sample_volume_initial = Number(formValue.sample_volume_initial);
     formValue.sample_volume_filtered = Number(formValue.sample_volume_filtered);
     formValue.study = Number(formValue.study);
     formValue.dissolution_volume = Number(formValue.dissolution_volume);
+
+    if (formValue.filter_type !== null) {
+      formValue.filter_type = Number(formValue.filter_type);
+    }
 
     if (formValue.sampler_name !== null) {
       formValue.sampler_name = Number(formValue.sampler_name);

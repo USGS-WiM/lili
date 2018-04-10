@@ -660,7 +660,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="required">Filter Type</label>
+                            <label>Filter Type</label>
                             <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('filter_type').invalid && (editSampleForm.get('filter_type').dirty || editSampleForm.get('filter_type').touched)">
                                 <div class="select">
                                     <select id="filterSelect" name="filterType" formControlName="filter_type">
@@ -756,6 +756,11 @@
                             <li *ngFor="let sample of selected">Sample {{sample.id}} ({{sample.study_string}})</li>
                         </ul>
                         <p>
+
+                            <div class="form-group">
+                                <label for="abNameInput">Name</label>
+                                <input id="abNameInput" type="text" formControlName="name">
+                            </div>
 
                             <div class="form-group">
                                 <label for="abDescInput">Analysis Batch Description</label>
@@ -949,19 +954,23 @@
                         </div>
                         <div class="form-group">
                             <label for="rack" class="required">Rack</label>
-                            <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}" formControlName="rack"><span>Max {{currentFreezerDimensions.racks}}</span>
+                            <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}" formControlName="rack">
+                            <span>Max {{currentFreezerDimensions.racks}}</span>
                         </div>
                         <div class="form-group">
                             <label for="box" class="required">Box</label>
-                            <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}" formControlName="box"><span>Max {{currentFreezerDimensions.boxes}}</span>
+                            <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}" formControlName="box">
+                            <span>Max {{currentFreezerDimensions.boxes}}</span>
                         </div>
                         <div class="form-group">
                             <label for="row" class="required">Row</label>
-                            <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}" formControlName="row"><span>Max {{currentFreezerDimensions.rows}}</span>
+                            <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}" formControlName="row">
+                            <span>Max {{currentFreezerDimensions.rows}}</span>
                         </div>
                         <div class="form-group">
                             <label for="spot" class="required">Spot</label>
-                            <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}" formControlName="spot"><span>Max {{currentFreezerDimensions.spots}}</span>
+                            <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}" formControlName="spot">
+                            <span>Max {{currentFreezerDimensions.spots}}</span>
                         </div>
                         <div class="form-group">
                             <label>Frozen</label>
@@ -1088,6 +1097,19 @@
 </clr-modal>
 <!-- end freeze warning modal -->
 
+<!-- begin FCSV exists warning modal -->
+<clr-modal [(clrModalOpen)]="showHideFCSVExistsErrorModal">
+    <h3 class="modal-title">
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Existing FCSV Error</h3>
+    <div class="modal-body">
+        <p>One or more samples in your selection already has a final concentrated sample volume recorded. Please adjust selection.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showHideFCSVExistsErrorModal = false">Return</button>
+    </div>
+</clr-modal>
+<!-- end FCSV exists warning modal -->
+
 <!-- begin print modal -->
 <clr-modal [(clrModalOpen)]="showHidePrintModal" [clrModalSize]="'xl'">
     <h3 class="modal-title">Print Aliquot Labels</h3>
@@ -1203,7 +1225,7 @@
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createAB(selected)">
                         <clr-icon shape="plus"></clr-icon> Create Analysis Batch</button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createFCSV(selected)">
-                        <clr-icon shape="plus"></clr-icon>Add FCSV</button>
+                        <clr-icon shape="plus"></clr-icon> Add FCSV</button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openFreezerChoice()">
                         <clr-icon shape="thermometer"></clr-icon> Freezer</button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openPrintLabelModal(selected)">
@@ -1249,7 +1271,7 @@
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <clr-dg-column style="width:10em" [clrDgField]="'record_type'">
+            <clr-dg-column style="width:10em">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Record Type
                 </ng-container>
