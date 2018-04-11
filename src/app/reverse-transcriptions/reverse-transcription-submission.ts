@@ -3,5 +3,6 @@ export interface IReverseTranscriptionSubmission {
     reaction_volume: number;
     rt_date: string;
     re_rt: number;
+    re_rt_notes: string;
 }
 
