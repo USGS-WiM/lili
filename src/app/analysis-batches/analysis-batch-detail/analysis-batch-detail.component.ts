@@ -76,7 +76,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
     extraction_number: new FormControl(''),
     extraction_volume: new FormControl(''),
     extraction_date: new FormControl(''),
-    elution_volume: new FormControl('')
+    elution_volume: new FormControl(''),
+    re_extraction: new FormControl(null),
+    sample_dilution_factor: new FormControl(null)
   });
 
   // editInhibitionForm = new FormGroup({
@@ -114,37 +116,37 @@ export class AnalysisBatchDetailComponent implements OnInit {
     // on init, call the getAnalysisBatchDetail function of the AnalyisBatchService, set results to selectedABDetail var
     this._analysisBatchService.getAnalysisBatchDetail(this.selectedABSummary.id)
       .subscribe(
-      (analysisBatchDetail) => {
-        this.selectedABDetail = analysisBatchDetail;
-        this.extractionBatchArray = analysisBatchDetail.extractionbatches
-        this.samplesArray = analysisBatchDetail.samples;
-        this.selectedABID = analysisBatchDetail.id;
-        // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
-        this.ABDetailsLoading = false;
-        if (analysisBatchDetail.extractionbatches.length < 1) {
-          this.noExtractionsFlag = true;
+        (analysisBatchDetail) => {
+          this.selectedABDetail = analysisBatchDetail;
+          this.extractionBatchArray = analysisBatchDetail.extractionbatches
+          this.samplesArray = analysisBatchDetail.samples;
+          this.selectedABID = analysisBatchDetail.id;
+          // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
+          this.ABDetailsLoading = false;
+          if (analysisBatchDetail.extractionbatches.length < 1) {
+            this.noExtractionsFlag = true;
+          }
+        },
+        error => {
+          this.ABDetailsLoading = false;
+          this.errorMessage = <any>error
         }
-      },
-      error => {
-        this.ABDetailsLoading = false;
-        this.errorMessage = <any>error
-      }
       );
 
     // on init, call getExtractionMethods function of the EXtractionMethodService, set results to allExtractionMethods var
     this._extractionMethodService.getExtractionMethods()
       .subscribe(extractionMethods => this.allExtractionMethods = extractionMethods,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // on init, call getTargets function of the TargetService, set results to allTargets var
     this._targetService.getTargets()
       .subscribe(targets => this.allTargets = targets,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // on init, call getUnits function of the UnitService, set results to the units var
     this._unitService.getUnits()
       .subscribe(units => this.units = units,
-      error => this.errorMessage = <any>error);
+        error => this.errorMessage = <any>error);
 
     // build the inhibition list by looping through the AB data and adding all inhibitions to a local array
     // for (let extraction of this.extractionDetailArray) {
@@ -181,7 +183,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
       extraction_number: extractionbatch.extraction_number,
       extraction_volume: extractionbatch.extraction_volume,
       extraction_date: extractionbatch.extraction_date,
-      elution_volume: extractionbatch.elution_volume
+      elution_volume: extractionbatch.elution_volume,
+      sample_dilution_factor: extractionbatch.sample_dilution_factor,
+      re_extraction: null
     });
 
     // show the edit detail modal if not showing already
@@ -244,15 +248,15 @@ export class AnalysisBatchDetailComponent implements OnInit {
     if (formID === "editEB") {
       this._extractionBatchService.update(formValue)
         .subscribe(
-        (updatedExtractionBatch) => {
-          this.extractionEditSuccessFlag = true;
-          this.extractionEditErrorFlag = false;
-        },
-        error => {
-          this.errorMessage = <any>error
-          this.extractionEditSuccessFlag = false;
-          this.extractionEditErrorFlag = true;
-        }
+          (updatedExtractionBatch) => {
+            this.extractionEditSuccessFlag = true;
+            this.extractionEditErrorFlag = false;
+          },
+          error => {
+            this.errorMessage = <any>error
+            this.extractionEditSuccessFlag = false;
+            this.extractionEditErrorFlag = true;
+          }
         );
     }
 
