@@ -917,6 +917,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
     // TEMPORARY solution to lack of a re_extraction_notes field causing null value which server rejects
     this.extractionBatchSubmission.re_extraction_notes = '';
+    this.extractionBatchSubmission.new_rt.re_rt_notes = '';
 
     // submit the extractFormValue to the extraction batch service
     this._extractionBatchService.create(this.extractionBatchSubmission)
