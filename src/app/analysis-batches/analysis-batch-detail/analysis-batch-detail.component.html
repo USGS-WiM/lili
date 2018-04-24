@@ -3,7 +3,7 @@
     <div class="card ab-detail-card">
       <div class="card-block">
         <h3 class="card-title">Extractions</h3>
-        <p class="card-text" >
+        <p class="card-text">
           <div class="row extraction-row">
             <span class="spinner spinner-lg" *ngIf="ABDetailsLoading">
               Loading...
@@ -103,7 +103,7 @@
 
   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <div class="card ab-detail-card">
-      <div class="card-block" >
+      <div class="card-block">
         <h3 class="card-title">Samples</h3>
         <p class="card-text">
           <span class="spinner spinner-lg" *ngIf="ABDetailsLoading">
@@ -261,7 +261,13 @@
         <form *ngIf="!targetListEditLocked">
           <section class="form-block">
 
-            <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
+            <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected" [clDgRowSelection]="true">
+              <clr-dg-action-bar>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
+                    <clr-icon shape="window-close" size="16"></clr-icon> Deselect All</button>
+                </div>
+              </clr-dg-action-bar>
 
               <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
               <clr-dg-column [clrDgField]="'code'">Code</clr-dg-column>

@@ -1,0 +1,6 @@
+<div class="select">
+  <select [(ngModel)]="selectedRecordType" name="recordType" (ngModelChange)="onSelect($event)">
+    <option value="-1"><span class="all">ALL RECORD TYPES</span></option>
+    <option *ngFor="let recordType of allRecordTypes" [ngValue]="recordType.id">{{recordType.name}}</option>
+  </select>
+</div>

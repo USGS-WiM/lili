@@ -392,6 +392,10 @@ export class SamplesComponent implements OnInit {
     this.unitValue = parseInt(unitValue, 10);
   }
 
+  deselectAll() {
+    this.selected = [];
+  }
+
   // callback for the create analysis batch button
   createAB(selectedSampleArray) {
 

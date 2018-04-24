@@ -64,6 +64,8 @@ import { FreezerService } from "app/aliquots/freezer.service";
 import { SampleLabelComponent } from "./samples/sample-label/sample-label.component";
 import { PcrReplicateService } from "./pcr-replicates/pcr-replicate.service";
 import { ServerTestService } from "./SHARED/server-test.service";
+import { RecordTypeFilter } from './FILTERS/record-type-filter/record-type-filter.component';
+import { RecordTypeService } from "./SHARED/record-type.service";
 
 @NgModule({
     declarations: [
@@ -97,7 +99,8 @@ import { ServerTestService } from "./SHARED/server-test.service";
         TargetsComponent,
         UsersComponent,
         AnalysisBatchWorksheetComponent,
-        SampleLabelComponent
+        SampleLabelComponent,
+        RecordTypeFilter
     ],
     imports: [
         BrowserAnimationsModule,
@@ -132,7 +135,8 @@ import { ServerTestService } from "./SHARED/server-test.service";
         TargetResolve,
         UserService,
         UserResolve,
-        ServerTestService
+        ServerTestService,
+        RecordTypeService
     ],
     bootstrap: [AppComponent]
 })

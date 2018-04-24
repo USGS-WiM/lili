@@ -1214,7 +1214,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
 
-        <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="samplesLoading">
+        <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="samplesLoading" [clDgRowSelection]="true">
 
             <clr-dg-action-bar>
                 <div class="btn-group">
@@ -1234,6 +1234,8 @@
                         <clr-icon shape="trash"></clr-icon> Delete Sample</button> -->
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editSample(selected[0])">
                         <clr-icon shape="note-edit" size="16"></clr-icon> Edit Sample</button>
+                    <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
+                        <clr-icon shape="window-close" size="16"></clr-icon> Deselect All</button>
 
                 </div>
             </clr-dg-action-bar>
@@ -1251,7 +1253,7 @@
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column>
+            <clr-dg-column [clrDgField]="'collaborator_sample_id'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Collaborator Sample ID
                 </ng-container>
@@ -1271,10 +1273,11 @@
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <clr-dg-column style="width:10em">
-                <ng-container *clrDgHideableColumn="{hidden: false}">
-                    Record Type
-                </ng-container>
+            <clr-dg-column [clrDgField]="'record_type'">
+                Record Type
+                <clr-dg-filter [clrDgFilter]="recordTypeFilter">
+                    <record-type-filter #recordTypeFilter></record-type-filter>
+                </clr-dg-filter>
             </clr-dg-column>
 
             <clr-dg-column style="width:20em" [clrDgField]="'sample_description'">
@@ -1283,14 +1286,6 @@
                 </ng-container>
             </clr-dg-column>
 
-            <!-- regular column header for matrix type-->
-            <!--<clr-dg-column [clrDgField]="'matrix'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                            Matrix
-                        </ng-container>
-                    </clr-dg-column>-->
-
-            <!-- filter column header for matrix type-->
             <clr-dg-column [clrDgField]="'matrix'">
                 Matrix
                 <clr-dg-filter [clrDgFilter]="matrixTypeFilter">

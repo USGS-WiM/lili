@@ -33,7 +33,6 @@ export class MatrixTypeFilter implements OnInit, Filter<any> {
   }
 
   onSelect(value: any) {
-    console.log("Matrix type has been selected");
     this.selectedMatrix = value;
     this.changes.emit(true);
   }

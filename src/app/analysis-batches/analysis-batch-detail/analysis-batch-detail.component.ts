@@ -163,6 +163,10 @@ export class AnalysisBatchDetailComponent implements OnInit {
     // }
   }
 
+  deselectAll() {
+    this.selected = [];
+  }
+
   public buildABExtractionArray(extractionBatchArray) {
     let abExtractionArray: ISampleExtraction[] = [];
     for (let extractionbatch of extractionBatchArray) {

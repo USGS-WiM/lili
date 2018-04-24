@@ -422,7 +422,7 @@
                                                                     <div class="select">
                                                                         <select name="dnaInhibition" formControlName="inhibition_dna">
                                                                             <option [value]="'new'">Create New</option>
-                                                                            <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
+                                                                            <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id"> {{inhibition.dilution_factor}} ({{inhibition.nucleic_acid_type
                                                                                 | displayValue:'name':this.nucleicAcidTypes}})
                                                                                 - {{inhibition.inhibition_date | date:'shortDate'}}</option>
                                                                         </select>
@@ -742,7 +742,12 @@
                                     <section class="form-block">
                                         <div class="form-group">
                                             <label for="studyId">Analysis Batch ID</label>
-                                            <input type="text" id="studyId" size="35" formControlName="id" readonly>
+                                            <input type="text" size="35" formControlName="id" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="abDescInput">Analysis Batch Name</label>
+                                            <input type="text" formControlName="name">
                                         </div>
 
                                         <div class="form-group">
@@ -822,11 +827,12 @@
                                                     </a>
                                                 </label>
                                                 <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
-                                                    <!-- <clr-dg-action-bar>
+                                                    <clr-dg-action-bar>
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-sm btn-secondary" (click)="onAdd()"><clr-icon shape="plus"></clr-icon> Add Selected</button>
+                                                            <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
+                                                                <clr-icon shape="window-close" size="16"></clr-icon> Deselect All</button>
                                                         </div>
-                                                    </clr-dg-action-bar> -->
+                                                    </clr-dg-action-bar>
 
                                                     <!-- filter column header for Sample ID -->
                                                     <clr-dg-column [clrDgField]="'sample_id'">
