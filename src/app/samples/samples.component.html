@@ -53,9 +53,6 @@
                                 <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
                                     <div class="select">
                                         <select id="studySelect" name="study" formControlName="study">
-                                            <option value="">
-                                                <span class="all">NO STUDY ASSOCIATION</span>
-                                            </option>
                                             <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
                                         </select>
                                     </div>
@@ -237,6 +234,7 @@
                                 <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
                                     <div class="select">
                                         <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
+                                            <option value="">NO PEGNEG ASSOCIATION</option>
                                             <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date | date:'shortDate'}}</option>
                                         </select>
                                     </div>
@@ -699,6 +697,7 @@
                             <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
                                 <div class="select">
                                     <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
+                                        <option value="">NO PEGNEG ASSOCIATION</option>
                                         <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date | date:'shortDate'}}</option>
                                     </select>
                                 </div>
