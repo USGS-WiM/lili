@@ -394,7 +394,8 @@
                                     <clr-signpost>
                                         <clr-signpost-content *clrIfOpen>
                                             <p>Select existing inhibitions to apply to DNA targets and RNA targets for each
-                                                sample individually. </p>
+                                                sample individually.
+                                                <p>'DF' = Dilution Factor
                                         </clr-signpost-content>
                                     </clr-signpost>
                                 </div>
@@ -422,9 +423,8 @@
                                                                     <div class="select">
                                                                         <select name="dnaInhibition" formControlName="inhibition_dna">
                                                                             <option [value]="'new'">Create New</option>
-                                                                            <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
-                                                                                | displayValue:'name':this.nucleicAcidTypes}})
-                                                                                - {{inhibition.inhibition_date | date:'shortDate'}}</option>
+                                                                            <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id"> DF: {{inhibition.dilution_factor == null ? "None"
+                                                                                : inhibition.dilution_factor}}&nbsp;|&nbsp;{{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}&nbsp;|&nbsp; {{inhibition.inhibition_date | date:'shortDate'}}</option>
                                                                         </select>
                                                                     </div>
                                                                 </td>
@@ -432,9 +432,8 @@
                                                                     <div class="select">
                                                                         <select name="rnaInhibition" formControlName="inhibition_rna">
                                                                             <option [value]="'new'">Create New</option>
-                                                                            <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id">Inh {{inhibition.id}} ({{inhibition.nucleic_acid_type
-                                                                                | displayValue:'name':this.nucleicAcidTypes}})
-                                                                                - {{inhibition.inhibition_date | date:'shortDate'}}</option>
+                                                                            <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id"> DF: {{inhibition.dilution_factor == null ? "None"
+                                                                                : inhibition.dilution_factor}}&nbsp;|&nbsp;{{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}&nbsp;|&nbsp; {{inhibition.inhibition_date | date:'shortDate'}}</option>
                                                                         </select>
                                                                     </div>
                                                                 </td>
@@ -710,7 +709,7 @@
         </div>
     </div>
     <!--<div class="modal-footer">
-            <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
+            <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Close</button>
             <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
         </div>-->
 </clr-modal>
@@ -722,7 +721,7 @@
         <analysis-batch-worksheet #batchWorksheet></analysis-batch-worksheet>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showWorksheet = !showWorksheet">Cancel</button>
+        <button type="button" class="btn btn-outline" (click)="showWorksheet = !showWorksheet">Close</button>
     </div>
 </clr-modal>
 
@@ -742,7 +741,12 @@
                                     <section class="form-block">
                                         <div class="form-group">
                                             <label for="studyId">Analysis Batch ID</label>
-                                            <input type="text" id="studyId" size="35" formControlName="id" readonly>
+                                            <input type="text" size="35" formControlName="id" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="abDescInput">Analysis Batch Name</label>
+                                            <input type="text" formControlName="name">
                                         </div>
 
                                         <div class="form-group">
@@ -774,7 +778,7 @@
                                         </clr-alert>
 
                                         <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
-                                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+                                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Close</button>
 
                                     </section>
                                 </form>
@@ -822,11 +826,12 @@
                                                     </a>
                                                 </label>
                                                 <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
-                                                    <!-- <clr-dg-action-bar>
+                                                    <clr-dg-action-bar>
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-sm btn-secondary" (click)="onAdd()"><clr-icon shape="plus"></clr-icon> Add Selected</button>
+                                                            <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
+                                                                <clr-icon shape="window-close" size="16"></clr-icon> Deselect All</button>
                                                         </div>
-                                                    </clr-dg-action-bar> -->
+                                                    </clr-dg-action-bar>
 
                                                     <!-- filter column header for Sample ID -->
                                                     <clr-dg-column [clrDgField]="'sample_id'">
@@ -903,7 +908,7 @@
 
                                         <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid || sampleListEditLocked" (click)="updateABSampleList(editABForm.value,selected)"
                                             [clrLoading]="submitLoading">Save Edits</button>
-                                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+                                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Close</button>
                                     </div>
                                 </div>
                             </clr-tab-content>

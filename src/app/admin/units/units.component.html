@@ -97,7 +97,7 @@
 					</div>
 					<div class="card-footer">
 						<button class="btn btn-primary" type="submit" [disabled]="addUnitForm.invalid" [clrLoading]="submitLoading">Submit</button>
-						<button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
+						<button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Close</button>
 					</div>
 				</form>
 
@@ -152,7 +152,7 @@
 						</div>
 
 						<button class="btn btn-primary" type="submit" [disabled]="editUnitForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
-						<button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+						<button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Close</button>
 
 					</section>
 				</form>
@@ -188,7 +188,7 @@
 						<b>{{selectedUnitName}}</b> ?</p>
 
 					<button class="btn btn-primary" type="button" (click)="submitDelete()" [clrLoading]="submitLoading">Delete</button>
-					<button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Cancel</button>
+					<button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Close</button>
 				</div>
 			</div>
 		</div>

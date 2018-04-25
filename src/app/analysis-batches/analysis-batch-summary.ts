@@ -1,5 +1,6 @@
 export interface IAnalysisBatchSummary {
     id: number,
+    name: string,
     analysis_batch_description: string,
     analysis_batch_notes: string,
     studies: Object,

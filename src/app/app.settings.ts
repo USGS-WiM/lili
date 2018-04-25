@@ -27,6 +27,7 @@ export class APP_SETTINGS {
     public static get SAMP_LOC_URL(): string { return this._API_ENDPOINT + 'samplelocations/' };
     public static get FCSV_URL(): string { return this._API_ENDPOINT + 'finalconcentratedsamplevolumes/' };
     public static get FILTER_TYPES_URL(): string { return this._API_ENDPOINT + 'filtertypes/' };
+    public static get RECORD_TYPES_URL(): string { return this._API_ENDPOINT + 'recordtypes/' };
     public static get WATER_TYPES_URL(): string { return this._API_ENDPOINT + 'watertypes/' };
     public static get ANALYSIS_BATCH_URL(): string { return this._API_ENDPOINT + 'analysisbatches/' };
     public static get ANALYSIS_BATCH_DETAIL_URL(): string { return this._API_ENDPOINT + 'analysisbatchdetail/' };

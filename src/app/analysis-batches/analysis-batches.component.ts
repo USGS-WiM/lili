@@ -164,6 +164,7 @@ export class AnalysisBatchesComponent implements OnInit {
   // edit AB form
   editABForm = new FormGroup({
     id: new FormControl(''),
+    name: new FormControl(''),
     analysis_batch_description: new FormControl(''),
     analysis_batch_notes: new FormControl(''),
     new_samples: new FormControl('')
@@ -208,8 +209,8 @@ export class AnalysisBatchesComponent implements OnInit {
       qpcr_reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
       qpcr_date: [null, Validators.required],
       new_rt: this.formBuilder.group({
-        template_volume: ['6', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
-        reaction_volume: ['20', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+        template_volume: ['8.6', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
+        reaction_volume: ['50', [Validators.required, Validators.pattern('[-+]?[0-9]*\.?[0-9]+')]],
         rt_date: [null, [Validators.required]],
         re_rt: null,
         re_rt_notes: ''
@@ -217,8 +218,8 @@ export class AnalysisBatchesComponent implements OnInit {
       new_replicates: this.formBuilder.array([
         this.formBuilder.group({
           target: '',
-           // count: [2, Validators.compose([Validators.required, AnalysisBatchesComponent.nonZero])]
-           count: ['2', [Validators.required, Validators.pattern('^[1-9][0-9]*$')]],
+          // count: [2, Validators.compose([Validators.required, AnalysisBatchesComponent.nonZero])]
+          count: ['2', [Validators.required, Validators.pattern('^[1-9][0-9]*$')]],
           // count: '2'
         })
       ]),
@@ -469,6 +470,10 @@ export class AnalysisBatchesComponent implements OnInit {
     this.inhibitionFinished = false;
     // reset the extract wizard
     this.wizardExtract.reset();
+  }
+
+  deselectAll() {
+    this.selected = [];
   }
 
   retrieveABData(abID) {
@@ -1071,6 +1076,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
           this.editABForm.setValue({
             id: selectedAB.id,
+            name: this.selectedAB.name,
             analysis_batch_description: selectedAB.analysis_batch_description,
             analysis_batch_notes: selectedAB.analysis_batch_notes,
             new_samples: this.abSampleIDList
