@@ -670,6 +670,7 @@ export class SamplesComponent implements OnInit {
   }
 
   onMatrixSelect(selectedMatrixString) {
+
     console.log("Matrix selected:" + selectedMatrixString);
     let selectedMatrix = Number(selectedMatrixString);
     // loop through displayConfig variables for the selected matrix, from the config JSON file (all boolean)
@@ -681,6 +682,7 @@ export class SamplesComponent implements OnInit {
           case (true): {
             // if disabled == true, disable corresponding control
             this.addSampleForm.controls[i].disable();
+            this.addSampleForm.controls[i].reset();
             break;
           }
           case (false): {

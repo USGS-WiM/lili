@@ -97,7 +97,7 @@
               </div>
             </section>
             <button class="btn btn-primary" type="submit" [disabled]="addSTForm.invalid" [clrLoading]="submitLoading">Submit</button>
-            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Cancel</button>
+            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Close</button>
           </form>
         </div>
       </div>
@@ -150,7 +150,7 @@
               </div>
 
               <button class="btn btn-primary" type="submit" [disabled]="editSTForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
-              <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+              <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Close</button>
 
             </section>
           </form>
@@ -184,7 +184,7 @@
             <p>Are you sure you want to delete the sample type <b>{{selectedSTName}}</b> ?</p>
 
             <button class="btn btn-primary" type="button" (click)="submitDelete()" [clrLoading]="submitLoading">Delete</button>
-            <button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Cancel</button>
+            <button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Close</button>
           </div>
         </div>
       </div>

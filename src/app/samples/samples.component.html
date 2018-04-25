@@ -234,7 +234,7 @@
 
                             <div class="form-group">
                                 <label>Peg Neg</label>
-                                <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
+                                <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
                                     <div class="select">
                                         <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
                                             <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date | date:'shortDate'}}</option>
@@ -269,7 +269,7 @@
                             </clr-alert>
 
                             <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd; resetFlags()">Cancel</button>
+                            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd; resetFlags()">Close</button>
                         </section>
                         <!--<p>Form value: {{ addSampleForm.value | json }}</p>
                         <p>Form status: {{ addSampleForm.status | json }}</p> -->
@@ -308,7 +308,7 @@
                                 <label>Filtered</label>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="filteredToggle" formControlName="filter_flag">
-                                    <label for="filteredToggle">{{this.addSampleForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
+                                    <label for="filteredToggle">{{this.addPegNegForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
                                 </div>
                             </div>
 
@@ -316,7 +316,7 @@
                                 <label>Secondary Concentration</label>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
-                                    <label for="secondaryConcToggle">{{this.addSampleForm.controls.secondary_concentration_flag.value ? "Yes" : "No"}}</label>
+                                    <label for="secondaryConcToggle">{{this.addPegNegForm.controls.secondary_concentration_flag.value ? "Yes" : "No"}}</label>
                                 </div>
                             </div>
 
@@ -413,12 +413,12 @@
                             </div> -->
 
                             <div class="form-group">
-                                <label for="filterBornOnDateInput" class="required">Filter Born-on Date</label>
+                                <label for="filterBornOnDateInput">Filter Born-on Date</label>
                                 <input type="date" id="filterBornOnDateInput" formControlName="filter_born_on_date">
                             </div>
 
                             <div class="form-group">
-                                <label for="dissVolInput" class="required">Dissolution Volume</label>
+                                <label for="dissVolInput">Dissolution Volume</label>
                                 <input id="dissVolInput" type="text" formControlName="dissolution_volume">
                                 <span>mL</span>
                             </div>
@@ -442,7 +442,7 @@
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Submission error. Sample not submitted.</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="onSubmitSample('add', addPegNegForm.value)">Try again</a>
+                                        <a class="alert-action" (click)="onSubmitSample('addPegNeg', addPegNegForm.value)">Try again</a>
                                     </div>
                                 </div>
                             </clr-alert>
@@ -457,10 +457,8 @@
                             </clr-alert>
 
                             <button class="btn btn-primary" type="submit" [disabled]="addPegNegForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                            <button class="btn btn-info" (click)="showHideAddPegNeg = !showHideAddPegNeg; resetFlags();">Cancel</button>
+                            <button class="btn btn-info" (click)="showHideAddPegNeg = !showHideAddPegNeg; resetFlags();">Close</button>
                         </section>
-                        <!-- <p>Form value: {{ addPegNegForm.value | json }}</p> -->
-                        <!-- <p>Form status: {{ addPegNegForm.status | json }}</p> -->
                     </form>
                     <!-- end form -->
 
@@ -696,6 +694,17 @@
                             <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                         </div>
 
+                        <div class="form-group">
+                            <label>Peg Neg</label>
+                            <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
+                                <div class="select">
+                                    <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
+                                        <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date | date:'shortDate'}}</option>
+                                    </select>
+                                </div>
+                            </label>
+                        </div>
+
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleEditError">
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">Submission error. Sample not updated.</span>
@@ -716,7 +725,7 @@
 
 
                         <button class="btn btn-primary" type="submit" [disabled]="editSampleForm.invalid">Save Edits</button>
-                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit; resetFlags();">Cancel</button>
+                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit; resetFlags();">Close</button>
                     </section>
                     <!--<p>Form value: {{ editSampleForm.value | json }}</p>
                     <p>Form status: {{ editSampleForm.status | json }}</p> -->
@@ -733,7 +742,7 @@
         </div>
     </div>
     <!--<div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
+        <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Close</button>
         <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
     </div>-->
 </clr-modal>
@@ -791,7 +800,7 @@
                             </clr-alert>
 
                             <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                            <button class="btn btn-info" (click)="showHideABModal= !showHideABModal; resetFlags();">Cancel</button>
+                            <button class="btn btn-info" (click)="showHideABModal= !showHideABModal; resetFlags();">Close</button>
 
                     </section>
                 </form>
@@ -802,7 +811,7 @@
         </div>
     </div>
     <!--<div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Cancel</button>
+        <button type="button" class="btn btn-outline" (click)="showHideEdit = !showHideEdit">Close</button>
         <button type="submit" class="btn btn-primary"  [disabled]="editSampleForm.invalid">Save Edits</button>
     </div>-->
 </clr-modal>
@@ -889,7 +898,7 @@
                         </clr-alert>
 
                         <button class="btn btn-primary" type="submit" [disabled]="createFCSVForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                        <button class="btn btn-info" (click)="showHideFCSVModal = !showHideFCSVModal; resetFlags();">Cancel</button>
+                        <button class="btn btn-info" (click)="showHideFCSVModal = !showHideFCSVModal; resetFlags();">Close</button>
                     </section>
                 </form>
             </div>
@@ -980,7 +989,7 @@
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-outline" (click)="showHideFreezerLocationAssignModal = !showHideFreezerLocationAssignModal; resetFlags()">Cancel</button>
+                        <button type="button" class="btn btn-outline" (click)="showHideFreezerLocationAssignModal = !showHideFreezerLocationAssignModal; resetFlags()">Close</button>
                         <button type="submit" class="btn btn-primary" [disabled]="freezeSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
 
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFreezeError">
@@ -1161,7 +1170,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHidePrintModal = !showHidePrintModal; resetFlags();">Cancel</button>
+        <button type="button" class="btn btn-outline" (click)="showHidePrintModal = !showHidePrintModal; resetFlags();">Close</button>
         <button type="submit" class="btn btn-primary" (click)="createLabelPDF()">
             <clr-icon shape="list"></clr-icon> Preview & Print Labels</button>
     </div>
@@ -1204,7 +1213,7 @@
         <sample-label #sampleLabel></sample-label>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showLabelModal = !showLabelModal; resetFlags()">Cancel</button>
+        <button type="button" class="btn btn-outline" (click)="showLabelModal = !showLabelModal; resetFlags()">Close</button>
     </div>
 </clr-modal>
 <!-- end SampleLabelModal -->
@@ -1259,7 +1268,7 @@
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'study'">
+            <clr-dg-column [clrDgField]="'study_string'">
                 Study
                 <clr-dg-filter [clrDgFilter]="studyFilter">
                     <study-filter #studyFilter></study-filter>
@@ -1353,14 +1362,6 @@
                 </ng-container>
             </clr-dg-column>
 
-            <!-- regular column header for Study-->
-            <!--<clr-dg-column [clrDgField]="'filter_type'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                           Filter Type
-                        </ng-container>
-                    </clr-dg-column>-->
-
-            <!-- filter column header for study -->
             <clr-dg-column [clrDgField]="'filter_type'">
                 Filter Type
                 <clr-dg-filter [clrDgFilter]="filterTypeFilter">
@@ -1368,14 +1369,6 @@
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <!-- regular column header for filter born on date -->
-            <!-- <clr-dg-column [clrDgField]="'filter_born_on_date'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                           Filter Born On Date
-                        </ng-container>
-                    </clr-dg-column> -->
-
-            <!-- filter column header for filter born on date -->
             <clr-dg-column [clrDgField]="'filter_born_on_date'">
                 Filter Born On Date
                 <clr-dg-filter [clrDgFilter]="filterBornOnDateFilter">
@@ -1383,14 +1376,6 @@
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <!-- regular column header for collection start date -->
-            <!-- <clr-dg-column [clrDgField]="'collection_start_date'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                           Collect Start Date
-                        </ng-container>
-                    </clr-dg-column> -->
-
-            <!-- filter column header for collection start date -->
             <clr-dg-column [clrDgField]="'collection_start_date'">
                 Collect Start Date
                 <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
@@ -1398,14 +1383,6 @@
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <!-- regular column header for collection end date -->
-            <!-- <clr-dg-column [clrDgField]="'collection_end_date'">
-                        <ng-container *clrDgHideableColumn="{hidden: false}">
-                           Collect End Date
-                        </ng-container>
-                    </clr-dg-column> -->
-
-            <!-- filter column header for collection end date -->
             <clr-dg-column [clrDgField]="'collection_end_date'">
                 Collect End Date
                 <clr-dg-filter [clrDgFilter]="collectionEndDateFilter">
@@ -1462,18 +1439,16 @@
                 <clr-dg-cell>{{sample.id}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.analysisbatches}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.studies">{{sample.study_string}}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.sampleTypes">{{sample.sample_type_string}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.study_string}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.sample_type_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.record_type | displayValue:'name':this.recordTypes}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.matrices">{{sample.matrix_string}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.matrix_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
-
                 <clr-dg-cell>{{sample.final_concentrated_sample_volume}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.final_concentrated_sample_volume_type}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.final_concentrated_sample_volume_notes}}</clr-dg-cell>
-
                 <clr-dg-cell *ngIf="this.units">{{sample.sample_volume_filtered}} {{sample.total_volume_sampled_unit_initial | displayValue:'symbol':this.units}}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}} {{sample.meter_reading_unit | displayValue:'symbol':this.units}}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}} {{sample.meter_reading_unit | displayValue:'symbol':this.units}}</clr-dg-cell>

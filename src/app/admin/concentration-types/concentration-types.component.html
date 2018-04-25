@@ -91,7 +91,7 @@
 								</div>
 							</section>
 							<button class="btn btn-primary" type="submit" [disabled]="addCTForm.invalid" [clrLoading]="submitLoading">Submit</button>
-							<button class="btn btn-info" (click)="showHideEdit = !showHideAdd">Cancel</button>
+							<button class="btn btn-info" (click)="showHideEdit = !showHideAdd">Close</button>
 						</div>
 					</div>		
 				</form>
@@ -141,7 +141,7 @@
 							</label>
 						</div>
 						<button class="btn btn-primary" type="submit" [disabled]="editCTForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
-						<button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Cancel</button>
+						<button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Close</button>
 
 					</section>
 				</form>
@@ -175,7 +175,7 @@
 					<p>Are you sure you want to delete concentration type<b> {{selectedCTName}}</b> ?</p>
 
 					<button class="btn btn-primary" type="button" (click)="submitDelete()" [clrLoading]="submitLoading">Delete</button>
-					<button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Cancel</button>
+					<button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Close</button>
 				</div>
 			</div>
 		</div>
