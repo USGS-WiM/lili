@@ -5,28 +5,35 @@ import { IStudy } from '../../studies/study'
 import { StudyService } from '../../studies/study.service';
 
 @Component({
-  selector: 'study-filter',
-  templateUrl: './study-filter.component.html',
-  styleUrls: ['./study-filter.component.scss']
+  selector: 'multi-study-filter',
+  templateUrl: './multi-study-filter.component.html',
+  styleUrls: ['./multi-study-filter.component.scss']
 })
-export class StudyFilter implements OnInit, Filter<any> {
+export class MultiStudyFilterComponent implements OnInit, Filter<any> {
   allStudies: IStudy[];
   selectedStudy: number;
+  selectedStudies;
   private errorMessage: string;
+
+  changes: EventEmitter<any> = new EventEmitter<any>(false);
 
   constructor(private _studyService: StudyService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     // on init, call getStudies function which subscribes to the StudyService, set results to the allStudies var
     this._studyService.getStudies()
       .subscribe(studies => this.allStudies = studies,
         error => this.errorMessage = <any>error);
   }
 
-  changes: EventEmitter<any> = new EventEmitter<any>(false);
-
   accepts(sample: any) {
-    return (this.selectedStudy === sample.study);
+
+    for (let study of sample.studies) {
+      if (study.id === this.selectedStudy) {
+        return true;
+      }
+    }
+    //return (this.selectedStudy === sample.studies);
   }
 
   isActive(): boolean {
@@ -38,4 +45,5 @@ export class StudyFilter implements OnInit, Filter<any> {
     this.selectedStudy = value;
     this.changes.emit(true);
   }
+
 }

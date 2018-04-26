@@ -26,17 +26,6 @@
                     <form class="form compact" [formGroup]="addSampleForm" (ngSubmit)="onSubmitSample('add', addSampleForm.value)">
                         <section class="form-block">
 
-                            <!-- sample type select form, without Clarity UI validation -->
-                            <!--<div class="form-group" >
-                                <label for="sampleTypeSelect">Sample type</label>
-                                <div class="select">
-                                    <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
-                                        <option value="Default">Select Sample Type...</option>
-                                        <option *ngFor="let type of sampleTypes" [value]="type.sample_type_id">{{type.sample_type}}</option>
-                                    </select>
-                                </div>
-                            </div>-->
-
                             <div class="form-group">
                                 <label class="required">Matrix</label>
                                 <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
@@ -131,14 +120,12 @@
                                 </label>
                             </div>
 
-
                             <div class="form-group">
                                 <label for="collectStartDateInput" class="required">Collection Start Date</label>
                                 <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
                             </div>
 
                             <!--begin variable display section-->
-
                             <div class="form-group">
                                 <label for="collectStartTime">Collection Start Time (HH:MM)</label>
                                 <label for="collectStartTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collection_start_time').invalid && (addSampleForm.get('collection_start_time').dirty || addSampleForm.get('collection_start_time').touched)">
@@ -259,7 +246,7 @@
 
                             <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Sample successfully submitted</span>
+                                    <span class="alert-text">Sample successfully submitted. ID: {{createdSampleID}} </span>
                                     <div class="alert-actions">
                                         <a class="alert-action" (click)="showHideAdd = false; showSampleCreateSuccess = false; resetFlags()">Close</a>
                                     </div>
@@ -447,7 +434,7 @@
 
                             <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Sample successfully submitted</span>
+                                    <span class="alert-text">Pegneg (sample record) successfully submitted. ID: {{createdSampleID}}</span>
                                     <div class="alert-actions">
                                         <a class="alert-action" (click)="showHideAddPegNeg = false; showSampleCreateSuccess = false; resetFlags();">Close</a>
                                     </div>
@@ -791,7 +778,7 @@
 
                             <clr-alert [clrAlertType]="'alert-success'" *ngIf="showABCreateSuccess">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Analysis Batch successfully created</span>
+                                    <span class="alert-text">Analysis Batch successfully created. ID: {{createdABID}}</span>
                                     <div class="alert-actions">
                                         <a class="alert-action" (click)="showHideABModal = false; showABCreateSuccess = false; resetFlags();">Close</a>
                                     </div>

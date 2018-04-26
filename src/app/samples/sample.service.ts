@@ -13,7 +13,7 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class SampleService {
-   // subject for label parts needed by modal
+  // subject for label parts needed by modal
   private _LabelParts: Subject<Array<any>> = new Subject<Array<any>>();
 
   constructor(private _http: Http) { }
@@ -43,14 +43,9 @@ export class SampleService {
 
     return this._http.get(APP_SETTINGS.SAMPLES_URL + '?id=' + sampleList, options)
       .map((response: Response) => <ISample[]>response.json())
-      // .do(data => console.log('Samples data: ' + JSON.stringify(data)))
       .catch(this.handleError);
 
   }
-
-  // public getInhibitions(): Observable<IInhibition[]> {
-
-  // }
 
   public create(formValue: ISample): Observable<ISample> {
 
@@ -59,7 +54,7 @@ export class SampleService {
     });
 
     return this._http.post(APP_SETTINGS.SAMPLES_URL, formValue, options)
-      .map(this.extractData)
+      .map((response: Response) => <ISample[]>response.json())
       .catch(this.handleError);
 
   }

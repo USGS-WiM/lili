@@ -106,6 +106,11 @@ export class SamplesComponent implements OnInit {
 
   showHideFCSVExistsErrorModal = false;
 
+  createdSampleID;
+  createdABID;
+  createdFCSVID;
+
+
   lastOccupiedSpot;
   showLastOccupiedSpot;
   showLastOccupiedSpotError: boolean = false;
@@ -782,6 +787,7 @@ export class SamplesComponent implements OnInit {
   }
 
   onSubmitAB(formValue) {
+    this.createdABID = null;
     this.showABCreateError = false;
     this.showABCreateSuccess = false;
     this.submitLoading = true;
@@ -790,6 +796,7 @@ export class SamplesComponent implements OnInit {
         (ab) => {
           this.submitLoading = false;
           this.showABCreateSuccess = true;
+          this.createdABID = ab.id;
         },
         error => {
           this.errorMessage = <any>error;
@@ -884,6 +891,7 @@ export class SamplesComponent implements OnInit {
   }
 
   onSubmitSample(formId, formValue) {
+    this.createdSampleID = null;
     this.sampleVolumeErrorFlag = false;
     this.showSampleCreateError = false;
     this.showSampleEditError = false;
@@ -974,12 +982,13 @@ export class SamplesComponent implements OnInit {
           // add a record
           this._sampleService.create(formValue)
             .subscribe(
-              (sample: ISample) => {
+              (sample) => {
                 this.allSamples.push(formValue);
                 this.addSampleForm.reset();
                 this.sampleVolumeErrorFlag = false;
                 this.submitLoading = false;
                 this.showSampleCreateSuccess = true;
+                this.createdSampleID = sample.id;
                 this.reloadSamplesTable();
               },
               error => {
@@ -1049,11 +1058,12 @@ export class SamplesComponent implements OnInit {
 
           this._sampleService.create(formValue)
             .subscribe(
-              (sample: ISample) => {
+              (sample) => {
                 this.allSamples.push(formValue);
-                this.addSampleForm.reset();
+                this.addPegNegForm.reset();
                 this.submitLoading = false;
                 this.showSampleCreateSuccess = true;
+                this.createdSampleID = sample.id;
                 this.reloadSamplesTable();
               },
               error => {

@@ -66,6 +66,7 @@ import { PcrReplicateService } from "./pcr-replicates/pcr-replicate.service";
 import { ServerTestService } from "./SHARED/server-test.service";
 import { RecordTypeFilter } from './FILTERS/record-type-filter/record-type-filter.component';
 import { RecordTypeService } from "./SHARED/record-type.service";
+import { MultiStudyFilterComponent } from './FILTERS/multi-study-filter/multi-study-filter.component';
 
 @NgModule({
     declarations: [
@@ -100,7 +101,8 @@ import { RecordTypeService } from "./SHARED/record-type.service";
         UsersComponent,
         AnalysisBatchWorksheetComponent,
         SampleLabelComponent,
-        RecordTypeFilter
+        RecordTypeFilter,
+        MultiStudyFilterComponent
     ],
     imports: [
         BrowserAnimationsModule,

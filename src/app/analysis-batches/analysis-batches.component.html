@@ -424,7 +424,9 @@
                                                                         <select name="dnaInhibition" formControlName="inhibition_dna">
                                                                             <option [value]="'new'">Create New</option>
                                                                             <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id"> DF: {{inhibition.dilution_factor == null ? "None"
-                                                                                : inhibition.dilution_factor}}&nbsp;|&nbsp;{{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}&nbsp;|&nbsp; {{inhibition.inhibition_date | date:'shortDate'}}</option>
+                                                                                : inhibition.dilution_factor}}&nbsp;|&nbsp;{{inhibition.nucleic_acid_type
+                                                                                | displayValue:'name':this.nucleicAcidTypes}}&nbsp;|&nbsp;
+                                                                                {{inhibition.inhibition_date | date:'shortDate'}}</option>
                                                                         </select>
                                                                     </div>
                                                                 </td>
@@ -433,7 +435,9 @@
                                                                         <select name="rnaInhibition" formControlName="inhibition_rna">
                                                                             <option [value]="'new'">Create New</option>
                                                                             <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id"> DF: {{inhibition.dilution_factor == null ? "None"
-                                                                                : inhibition.dilution_factor}}&nbsp;|&nbsp;{{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}&nbsp;|&nbsp; {{inhibition.inhibition_date | date:'shortDate'}}</option>
+                                                                                : inhibition.dilution_factor}}&nbsp;|&nbsp;{{inhibition.nucleic_acid_type
+                                                                                | displayValue:'name':this.nucleicAcidTypes}}&nbsp;|&nbsp;
+                                                                                {{inhibition.inhibition_date | date:'shortDate'}}</option>
                                                                         </select>
                                                                     </div>
                                                                 </td>
@@ -997,6 +1001,13 @@
                 </clr-dg-filter>
             </clr-dg-column>
 
+            <clr-dg-column [clrDgField]="'studies'">
+                Studies
+                <clr-dg-filter [clrDgFilter]="multiStudyFilterComponent">
+                    <multi-study-filter #multiStudyFilterComponent></multi-study-filter>
+                </clr-dg-filter>
+            </clr-dg-column>
+
             <clr-dg-column [clrDgField]="'analysis_batch_description'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Analysis Batch Description
@@ -1067,19 +1078,18 @@
             <clr-dg-row *clrDgItems="let ab of allAnalysisBatchSummaries" [clrDgItem]="ab">
 
                 <clr-dg-cell>{{ab.id}}</clr-dg-cell>
+                <clr-dg-cell>
+                    <span *ngFor="let study of ab.studies">&#8226;&nbsp;{{study.name}}
+                        <br>
+                    </span>
+                </clr-dg-cell>
                 <clr-dg-cell>{{ab.analysis_batch_description}}</clr-dg-cell>
-                <!-- <clr-dg-cell><span *ngFor="let study of ab.studies">{{study.name}}<br></span></clr-dg-cell> -->
-
                 <clr-dg-cell>{{ab.summary.sample_extraction_count}}</clr-dg-cell>
-
                 <clr-dg-cell>{{ab.summary.inhibition_count}}</clr-dg-cell>
-
                 <clr-dg-cell>{{ab.summary.reverse_transcription_count}}</clr-dg-cell>
-
                 <clr-dg-cell>
                     <a class="label label-blue clickable" (click)="openTargetDetails(ab.id)">{{ab.summary.target_count}}</a>
                 </clr-dg-cell>
-
                 <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
                 <clr-dg-cell>{{ab.created_by}}</clr-dg-cell>
                 <clr-dg-cell>{{ab.created_date | date:'shortDate'}}</clr-dg-cell>

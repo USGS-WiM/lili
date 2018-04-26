@@ -27,6 +27,8 @@ export class StudiesComponent implements OnInit {
     selectedStudyName;
     selectedStudyId;
 
+    createdStudyID;
+
     submitLoading: boolean = false;
 
     // add study form - declare a reactive form with appropriate study fields
@@ -93,6 +95,7 @@ export class StudiesComponent implements OnInit {
 
     // split these out
     onSubmitStudy(formId, formValue) {
+        this.createdStudyID = null;
         this.showStudyCreateError = false;
         this.showStudyEditError = false;
         this.submitLoading = true;
@@ -123,6 +126,7 @@ export class StudiesComponent implements OnInit {
                             this.addStudyForm.reset();
                             this.submitLoading = false;
                             this.showStudyCreateSuccess = true;
+                            this.createdStudyID = study.id;
                         },
                         error => {
                             this.errorMessage = <any>error;
