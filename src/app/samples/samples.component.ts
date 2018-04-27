@@ -137,7 +137,7 @@ export class SamplesComponent implements OnInit {
     study: new FormControl({ value: null, disabled: true }, Validators.required),  // study name, maps to study id
     study_site_name: new FormControl({ value: '', disabled: true }),
     collaborator_sample_id: new FormControl({ value: '', disabled: true }, Validators.required),
-    sampler_name: new FormControl({ value: null, disabled: true }),
+    sampler_name: new FormControl({ value: '', disabled: true }),
     sample_notes: new FormControl({ value: '', disabled: true }),
     sample_description: new FormControl({ value: '', disabled: true }),
     arrival_date: new FormControl({ value: null, disabled: true }),
@@ -160,8 +160,8 @@ export class SamplesComponent implements OnInit {
     sample_volume_filtered: new FormControl({ value: null, disabled: true }),
 
     filter_born_on_date: new FormControl({ value: null, disabled: true }),
-    filter_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
-    secondary_concentration_flag: new FormControl({ value: false, disabled: true }, Validators.required), // radio button
+    filter_flag: new FormControl({ value: false, disabled: true }), // radio button
+    secondary_concentration_flag: new FormControl({ value: false, disabled: true }), // radio button
     elution_notes: new FormControl({ value: '', disabled: true }),
     technician_initials: new FormControl({ value: '', disabled: true }),
     dissolution_volume: new FormControl({ value: null, disabled: true }),
@@ -179,7 +179,7 @@ export class SamplesComponent implements OnInit {
     study: new FormControl(null, Validators.required),  // study name, maps to study id
     study_site_name: new FormControl(''),
     collaborator_sample_id: new FormControl('', Validators.required),
-    sampler_name: new FormControl(null),
+    sampler_name: new FormControl(''),
     sample_notes: new FormControl(''),
     sample_description: new FormControl(''),
     arrival_date: new FormControl(''),
@@ -204,8 +204,8 @@ export class SamplesComponent implements OnInit {
     sample_volume_filtered: new FormControl(null),
 
     filter_born_on_date: new FormControl(null),
-    filter_flag: new FormControl(false, Validators.required), // radio button
-    secondary_concentration_flag: new FormControl(false, Validators.required), // radio button
+    filter_flag: new FormControl(false), // radio button
+    secondary_concentration_flag: new FormControl(false), // radio button
     elution_notes: new FormControl(''),
     technician_initials: new FormControl(''),
     dissolution_volume: new FormControl(null), // required when not disabled
@@ -226,7 +226,7 @@ export class SamplesComponent implements OnInit {
     study: new FormControl(null),
     study_site_name: new FormControl(''),
     collaborator_sample_id: new FormControl(''),
-    sampler_name: new FormControl(null),
+    sampler_name: new FormControl(''),
     sample_notes: new FormControl(''),
     sample_description: new FormControl(''),
     arrival_date: new FormControl(null),
@@ -249,8 +249,8 @@ export class SamplesComponent implements OnInit {
     sample_volume_filtered: new FormControl(null),
 
     filter_born_on_date: new FormControl(null),
-    filter_flag: new FormControl(false, Validators.required), // radio button
-    secondary_concentration_flag: new FormControl(false, Validators.required), // radio button
+    filter_flag: new FormControl(false), // radio button
+    secondary_concentration_flag: new FormControl(false), // radio button
     elution_notes: new FormControl(''),
     technician_initials: new FormControl(''),
     dissolution_volume: new FormControl(null),
@@ -569,8 +569,6 @@ export class SamplesComponent implements OnInit {
       }
     }
     this.selectedStudy = this.selected[0].study;
-
-    //}
   }
 
   includeExcludeLabel(event) {
@@ -890,6 +888,74 @@ export class SamplesComponent implements OnInit {
       );
   }
 
+  resetAddSampleForm() {
+    this.addSampleForm.reset({
+      sample_type: { value: null, disabled: true },
+      matrix: null,
+      filter_type: { value: null, disabled: true },
+      study: { value: null, disabled: true },
+      study_site_name: { value: '', disabled: true },
+      collaborator_sample_id: { value: '', disabled: true },
+      sampler_name: { value: '', disabled: true },
+      sample_notes: { value: '', disabled: true },
+      sample_description: { value: '', disabled: true },
+      arrival_date: { value: null, disabled: true },
+      arrival_notes: { value: '', disabled: true },
+      collection_start_date: { value: null, disabled: true },
+      collection_start_time: { value: null, disabled: false },
+      collection_end_date: { value: null, disabled: true },
+      collection_end_time: { value: null, disabled: true },
+      meter_reading_initial: { value: null, disabled: true },
+      meter_reading_final: { value: null, disabled: true },
+      meter_reading_unit: { value: null, disabled: true },
+      total_volume_sampled_initial: { value: null, disabled: true },
+      total_volume_sampled_unit_initial: { value: null, disabled: true },
+      sample_volume_initial: { value: null, disabled: true },
+      sample_volume_filtered: { value: null, disabled: true },
+      filter_born_on_date: { value: null, disabled: true },
+      filter_flag: { value: false, disabled: true },
+      secondary_concentration_flag: { value: false, disabled: true },
+      elution_notes: { value: '', disabled: true },
+      technician_initials: { value: '', disabled: true },
+      dissolution_volume: { value: null, disabled: true },
+      post_dilution_volume: { value: null, disabled: true },
+      peg_neg: null
+    });
+  }
+
+  resetAddPegNegForm() {
+    this.addPegNegForm.reset({
+      sample_type: null,
+      matrix: null,
+      filter_type: null,
+      study: null,
+      study_site_name: '',
+      collaborator_sample_id: '',
+      sampler_name: '',
+      sample_notes: '',
+      sample_description: '',
+      arrival_date: null,
+      arrival_notes: '',
+      collection_start_date: null,
+      meter_reading_initial: null,
+      meter_reading_final: null,
+      meter_reading_unit: null,
+      total_volume_sampled_initial: null,
+      total_volume_sampled_unit_initial: null,
+      total_volume_or_mass_sampled: null,
+      sample_volume_initial: null,
+      sample_volume_filtered: null,
+      filter_born_on_date: null,
+      filter_flag: false,
+      secondary_concentration_flag: false,
+      elution_notes: '',
+      technician_initials: '',
+      dissolution_volume: null,
+      record_type: 2
+    })
+
+  }
+
   onSubmitSample(formId, formValue) {
     this.createdSampleID = null;
     this.sampleVolumeErrorFlag = false;
@@ -898,7 +964,8 @@ export class SamplesComponent implements OnInit {
     this.showSampleEditSuccess = false;
     this.submitLoading = true;
 
-    let noTVS: boolean = false;
+    let meterVolumesPresent: boolean = false;
+    let directTVSPresent: boolean = false;
 
     formValue.matrix = Number(formValue.matrix);
     formValue.sample_type = Number(formValue.sample_type);
@@ -909,10 +976,6 @@ export class SamplesComponent implements OnInit {
 
     if (formValue.filter_type !== null) {
       formValue.filter_type = Number(formValue.filter_type);
-    }
-
-    if (formValue.sampler_name !== null) {
-      formValue.sampler_name = Number(formValue.sampler_name);
     }
 
     switch (formId) {
@@ -936,7 +999,7 @@ export class SamplesComponent implements OnInit {
         break;
       case 'add':
 
-        // check if meter_reading_XX fields are present by seeing if they are disabled
+        // check if meter_reading_XX fields are present by seeing if they are not disabled (false)
         if (this.displayConfig[formValue.matrix].meter_reading_final === false &&
           this.displayConfig[formValue.matrix].meter_reading_initial === false &&
           this.displayConfig[formValue.matrix].meter_reading_unit === false) {
@@ -944,11 +1007,11 @@ export class SamplesComponent implements OnInit {
           if (formValue.meter_reading_final === null ||
             formValue.meter_reading_initial === null ||
             formValue.meter_reading_unit === null) {
-            noTVS = true;
+            meterVolumesPresent = false;
           } else if (formValue.meter_reading_final !== null
             && formValue.meter_reading_initial !== null
             && formValue.meter_reading_unit !== null) {
-            noTVS = false;
+            meterVolumesPresent = true;
             formValue.meter_reading_final = Number(formValue.meter_reading_final);
             formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
             formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
@@ -964,9 +1027,9 @@ export class SamplesComponent implements OnInit {
           this.displayConfig[formValue.matrix].total_volume_sampled_unit_initial === false) {
 
           if (formValue.total_volume_sampled_initial === null || formValue.total_volume_sampled_unit_initial === null) {
-            noTVS = true;
+            directTVSPresent = false;
           } else if (formValue.total_volume_sampled_initial !== null && formValue.total_volume_sampled_unit_initial !== null) {
-            noTVS = false;
+            directTVSPresent = true;
             formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
             formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
             // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
@@ -975,16 +1038,16 @@ export class SamplesComponent implements OnInit {
           }
         }
 
-        if (noTVS === true) {
+        if (meterVolumesPresent === false && directTVSPresent === false) {
           this.submitLoading = false;
           this.sampleVolumeErrorFlag = true;
-        } else if (noTVS === false) {
+        } else if (meterVolumesPresent === true || directTVSPresent === true) {
           // add a record
           this._sampleService.create(formValue)
             .subscribe(
               (sample) => {
                 this.allSamples.push(formValue);
-                this.addSampleForm.reset();
+                this.resetAddSampleForm();
                 this.sampleVolumeErrorFlag = false;
                 this.submitLoading = false;
                 this.showSampleCreateSuccess = true;
@@ -1007,26 +1070,13 @@ export class SamplesComponent implements OnInit {
         if (formValue.meter_reading_final === null ||
           formValue.meter_reading_initial === null ||
           formValue.meter_reading_unit === null) {
-
-          // if any are missing, now check if any of the needed values for direct volume entry are absent
-          if (formValue.total_volume_sampled_initial === null || formValue.total_volume_sampled_unit_initial === null) {
-            // if either are absent, set the noTVS var to true.
-            noTVS = true;
-          } else if (formValue.total_volume_sampled_initial !== null && formValue.total_volume_sampled_unit_initial !== null) {
-            // if values are present, proceed with converting values and calcualting TVS
-            noTVS = false;
-            formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
-            formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
-            // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
-            formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
-              this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
-          }
-
+          // if all are null, set meterVolumesPresent var to false
+          meterVolumesPresent = false;
         } else if (formValue.meter_reading_final !== null
           && formValue.meter_reading_initial !== null
           && formValue.meter_reading_unit !== null) {
-          // if no needed values are missing for meter reading TVS calculation, proceed with converting values and calcualting TVS
-          noTVS = false;
+          // if no needed values are missing for meter reading TVS calculation, proceed with converting values and calculating TVS
+          meterVolumesPresent = true;
           formValue.meter_reading_final = Number(formValue.meter_reading_final);
           formValue.meter_reading_initial = Number(formValue.meter_reading_initial);
           formValue.meter_reading_unit = Number(formValue.meter_reading_unit);
@@ -1035,6 +1085,22 @@ export class SamplesComponent implements OnInit {
           formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
             this.getConversionFactorToLiters(formValue.meter_reading_unit))
         }
+
+
+        // check if values are present for direct TVS input
+        if (formValue.total_volume_sampled_initial === null || formValue.total_volume_sampled_unit_initial === null) {
+          // if either are absent, set the directTVSPresent var to false.
+          directTVSPresent = false;
+        } else if (formValue.total_volume_sampled_initial !== null && formValue.total_volume_sampled_unit_initial !== null) {
+          // if values are present, proceed with converting values and calculating TVS
+          directTVSPresent = true;
+          formValue.total_volume_sampled_initial = Number(formValue.total_volume_sampled_initial);
+          formValue.total_volume_sampled_unit_initial = Number(formValue.total_volume_sampled_unit_initial);
+          // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
+          formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
+            this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
+        }
+
 
         // need to add required field values as they are assumed and not entered by user
         let now = new Date(Date.now());
@@ -1046,21 +1112,21 @@ export class SamplesComponent implements OnInit {
         formValue.sample_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.sample_type;
         formValue.collaborator_sample_id = 'pegneg' + currentDate + '_' + currentTime;
         formValue.study = APP_SETTINGS.PEGNEG_FIELD_VALUES.study;
-        //formValue.collection_start_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_start_time;
-        //formValue.collection_end_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_end_time;
+        // formValue.collection_start_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_start_time;
+        // formValue.collection_end_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_end_time;
         formValue.collection_end_date = formValue.collection_start_date;
         formValue.arrival_date = formValue.collection_start_date;
 
-        if (noTVS === true) {
+        if (meterVolumesPresent === false && directTVSPresent === false) {
           this.submitLoading = false;
           this.sampleVolumeErrorFlag = true;
-        } else if (noTVS === false) {
+        } else if (meterVolumesPresent === true || directTVSPresent === true) {
 
           this._sampleService.create(formValue)
             .subscribe(
               (sample) => {
                 this.allSamples.push(formValue);
-                this.addPegNegForm.reset();
+                this.resetAddPegNegForm();
                 this.submitLoading = false;
                 this.showSampleCreateSuccess = true;
                 this.createdSampleID = sample.id;

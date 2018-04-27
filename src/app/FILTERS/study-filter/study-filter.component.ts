@@ -14,6 +14,8 @@ export class StudyFilter implements OnInit, Filter<any> {
   selectedStudy: number;
   private errorMessage: string;
 
+  changes: EventEmitter<any> = new EventEmitter<any>(false);
+
   constructor(private _studyService: StudyService) { }
 
   ngOnInit(): void {
@@ -23,7 +25,7 @@ export class StudyFilter implements OnInit, Filter<any> {
         error => this.errorMessage = <any>error);
   }
 
-  changes: EventEmitter<any> = new EventEmitter<any>(false);
+
 
   accepts(sample: any) {
     return (this.selectedStudy === sample.study);
@@ -34,7 +36,6 @@ export class StudyFilter implements OnInit, Filter<any> {
   }
 
   onSelect(value: any) {
-    console.log("Study has been selected");
     this.selectedStudy = value;
     this.changes.emit(true);
   }
