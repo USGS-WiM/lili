@@ -67,14 +67,14 @@ export class AnalysisBatchService {
       .catch(this.handleError);
   }
 
-  public create(formValue: IAnalysisBatch): Observable<IAnalysisBatch[]> {
+  public create(formValue: IAnalysisBatch): Observable<IAnalysisBatch> {
 
     let options = new RequestOptions({
       headers: APP_SETTINGS.AUTH_JSON_HEADERS
     });
 
     return this._http.post(APP_SETTINGS.ANALYSIS_BATCH_URL, formValue, options)
-      .map(this.extractData)
+      .map((response: Response) => <any>response.json())
       .catch(this.handleError)
 
   }

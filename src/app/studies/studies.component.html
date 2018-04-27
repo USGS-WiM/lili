@@ -22,7 +22,10 @@
 
                     <clr-alert [clrAlertType]="'alert-success'" *ngIf="showStudyCreateSuccess">
                         <div clr-alert-item class="alert-item">
-                            <span class="alert-text">Study successfully submitted</span>
+                            <span class="alert-text">Study successfully submitted. ID: {{createdStudyID}}
+                            </span>
+
+
                             <div class="alert-actions">
                                 <a class="alert-action" (click)="showHideAdd = false; showStudyCreateSuccess = false">Close</a>
                             </div>
@@ -119,12 +122,8 @@
         </div>-->
     </clr-modal>
 
-
     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 
-        <!-- <div class="card-title">
-            All Studies
-        </div> -->
         <clr-datagrid [(clrDgSingleSelected)]="selectedStudy" [clrDgLoading]="studiesLoading">
 
             <clr-dg-action-bar>
@@ -156,8 +155,6 @@
                 </ng-container>
             </clr-dg-column>
 
-
-
             <clr-dg-row *clrDgItems="let study of allStudies" [clrDgItem]="study">
                 <clr-dg-cell>{{study.id}}</clr-dg-cell>
                 <clr-dg-cell>{{study.name}}</clr-dg-cell>
@@ -169,29 +166,9 @@
                 <clr-dg-pagination #pagination [clrDgPageSize]="20"></clr-dg-pagination>
             </clr-dg-footer>
 
-
         </clr-datagrid>
-
-
-        <!-- <div class="card">
-            <div class="card-block">
-                <div class="card-title">
-                    All Studies
-                </div>
-                <div class="card-text">
-
-                </div>
-            </div>
-        </div> -->
     </div>
-
-    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <app-studies-table></app-studies-table>
-    </div>-->
-
 </div>
-
-
 
 <!--<clr-modal [(clrModalOpen)]="deleteStudyConfirm">
     <h3 class="modal-title"><clr-icon shape="warning" class="is-warning" size="36"></clr-icon> Delete Study</h3>

@@ -26,17 +26,6 @@
                     <form class="form compact" [formGroup]="addSampleForm" (ngSubmit)="onSubmitSample('add', addSampleForm.value)">
                         <section class="form-block">
 
-                            <!-- sample type select form, without Clarity UI validation -->
-                            <!--<div class="form-group" >
-                                <label for="sampleTypeSelect">Sample type</label>
-                                <div class="select">
-                                    <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
-                                        <option value="Default">Select Sample Type...</option>
-                                        <option *ngFor="let type of sampleTypes" [value]="type.sample_type_id">{{type.sample_type}}</option>
-                                    </select>
-                                </div>
-                            </div>-->
-
                             <div class="form-group">
                                 <label class="required">Matrix</label>
                                 <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
@@ -121,16 +110,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Sampler Name</label>
-                                <label for="samplerNameSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sampler_name').invalid && (addSampleForm.get('sampler_name').dirty || addSampleForm.get('sampler_name').touched)">
-                                    <div class="select">
-                                        <select id="samplerNameSelect" name="samplerName" formControlName="sampler_name">
-                                            <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
-                                        </select>
-                                    </div>
-                                </label>
+                                <label for="samplerNameInput" class="required">Sampler Name</label>
+                                <input id="samplerNameInput" type="text" formControlName="sampler_name">
                             </div>
-
 
                             <div class="form-group">
                                 <label for="collectStartDateInput" class="required">Collection Start Date</label>
@@ -138,7 +120,6 @@
                             </div>
 
                             <!--begin variable display section-->
-
                             <div class="form-group">
                                 <label for="collectStartTime">Collection Start Time (HH:MM)</label>
                                 <label for="collectStartTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collection_start_time').invalid && (addSampleForm.get('collection_start_time').dirty || addSampleForm.get('collection_start_time').touched)">
@@ -243,8 +224,8 @@
 
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleVolumeErrorFlag" (clrAlertClosedChange)="onClosesampleVolumeError()">
                                 <div class="alert-item">
-                                    <span class="alert-text">Please provide a sample volume using meter readings (plus unit) or total volume sampled
-                                        (plus unit)</span>
+                                    <span class="alert-text">Please provide a sample volume using meter readings and units or total volume sampled
+                                        and units.</span>
                                 </div>
                             </clr-alert>
 
@@ -259,7 +240,7 @@
 
                             <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Sample successfully submitted</span>
+                                    <span class="alert-text">Sample successfully submitted. ID: {{createdSampleID}} </span>
                                     <div class="alert-actions">
                                         <a class="alert-action" (click)="showHideAdd = false; showSampleCreateSuccess = false; resetFlags()">Close</a>
                                     </div>
@@ -329,17 +310,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="required">Sampler Name</label>
-                                <label for="samplerNameSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addPegNegForm.get('sampler_name').invalid && (addPegNegForm.get('sampler_name').dirty || addPegNegForm.get('sampler_name').touched)">
-                                    <div class="select">
-                                        <select id="samplerNameSelect" name="samplerName" formControlName="sampler_name">
-                                            <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
-                                        </select>
-                                    </div>
-                                </label>
+                                <label for="samplerNameInput" class="required">Sampler Name</label>
+                                <input id="samplerNameInput" type="text" formControlName="sampler_name">
                             </div>
-
-
 
                             <div class="form-group">
                                 <label for="collectStartDateInput" class="required">Collection Start Date</label>
@@ -447,7 +420,7 @@
 
                             <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Sample successfully submitted</span>
+                                    <span class="alert-text">Pegneg (sample record) successfully submitted. ID: {{createdSampleID}}</span>
                                     <div class="alert-actions">
                                         <a class="alert-action" (click)="showHideAddPegNeg = false; showSampleCreateSuccess = false; resetFlags();">Close</a>
                                     </div>
@@ -568,14 +541,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Sampler Name</label>
-                            <label for="samplerNameSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sampler_name').invalid && (editSampleForm.get('sampler_name').dirty || editSampleForm.get('sampler_name').touched)">
-                                <div class="select">
-                                    <select id="samplerNameSelect" name="samplerName" formControlName="sampler_name">
-                                        <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
-                                    </select>
-                                </div>
-                            </label>
+                            <label for="samplerNameInput" class="required">Sampler Name</label>
+                            <input id="samplerNameInput" type="text" formControlName="sampler_name">
                         </div>
 
                         <div class="form-group">
@@ -791,7 +758,7 @@
 
                             <clr-alert [clrAlertType]="'alert-success'" *ngIf="showABCreateSuccess">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Analysis Batch successfully created</span>
+                                    <span class="alert-text">Analysis Batch successfully created. ID: {{createdABID}}</span>
                                     <div class="alert-actions">
                                         <a class="alert-action" (click)="showHideABModal = false; showABCreateSuccess = false; resetFlags();">Close</a>
                                     </div>
@@ -1396,10 +1363,9 @@
             </clr-dg-column>
 
             <clr-dg-column [clrDgField]="'sampler_name'">
-                Sampler Name
-                <clr-dg-filter [clrDgFilter]="samplerNameFilter">
-                    <sampler-name-filter #samplerNameFilter></sampler-name-filter>
-                </clr-dg-filter>
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Sampler Name
+                </ng-container>
             </clr-dg-column>
 
             <clr-dg-column style="width:20em" [clrDgField]="'sample_notes'">
@@ -1458,7 +1424,7 @@
                 <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.study_site_name}}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.users">{{sample.sampler_name_string}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.sampler_name}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.sample_notes}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.created_by}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.created_date | date:'shortDate'}}</clr-dg-cell>
