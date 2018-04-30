@@ -23,7 +23,6 @@ export interface ISample {
     total_volume_sampled_unit_initial: number;
     total_volume_or_mass_sampled: number;
     sample_volume_initial: number;
-    sample_volume_filtered: number;
     filter_born_on_date: string;
     filter_flag: boolean;
     secondary_concentration_flag: boolean;

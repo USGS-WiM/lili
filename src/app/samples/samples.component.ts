@@ -157,7 +157,6 @@ export class SamplesComponent implements OnInit {
     total_volume_sampled_unit_initial: new FormControl({ value: null, disabled: true }),
 
     sample_volume_initial: new FormControl({ value: null, disabled: true }),
-    sample_volume_filtered: new FormControl({ value: null, disabled: true }),
 
     filter_born_on_date: new FormControl({ value: null, disabled: true }),
     filter_flag: new FormControl({ value: false, disabled: true }), // radio button
@@ -201,7 +200,6 @@ export class SamplesComponent implements OnInit {
     total_volume_or_mass_sampled: new FormControl(null),
 
     sample_volume_initial: new FormControl(null),
-    sample_volume_filtered: new FormControl(null),
 
     filter_born_on_date: new FormControl(null),
     filter_flag: new FormControl(false), // radio button
@@ -246,7 +244,6 @@ export class SamplesComponent implements OnInit {
     total_volume_or_mass_sampled: new FormControl(null),
 
     sample_volume_initial: new FormControl(null),
-    sample_volume_filtered: new FormControl(null),
 
     filter_born_on_date: new FormControl(null),
     filter_flag: new FormControl(false), // radio button
@@ -288,6 +285,14 @@ export class SamplesComponent implements OnInit {
     final_concentrated_sample_volume_notes: new FormControl('')
   })
 
+  editFCSVForm = new FormGroup({
+    id: new FormControl(null),
+    sample: new FormControl(null),
+    concentration_type: new FormControl(null),
+    final_concentrated_sample_volume: new FormControl(null),
+    notes: new FormControl('')
+  });
+
 
   constructor(private _sampleService: SampleService,
     private _finalConcentratedSampleVolumeService: FinalConcentratedSampleVolumeService,
@@ -303,6 +308,10 @@ export class SamplesComponent implements OnInit {
     private _userService: UserService,
     private _analysisBatchService: AnalysisBatchService
   ) { }
+
+  getTime(date?: Date) {
+    return date != null ? date.getTime() : 0;
+  }
 
   ngOnInit(): void {
 
@@ -325,6 +334,14 @@ export class SamplesComponent implements OnInit {
               this.pegnegs.push(sample);
             }
           }
+          //console.log("Pegnegs array pre-sorted: ", this.pegnegs)
+          // sort pegnegs by date order
+          this.pegnegs.sort(function (a, b) {
+            const c: Date = new Date(a.collection_start_date);
+            const d: Date = new Date(b.collection_start_date);
+            return (d.getTime()) - (c.getTime());
+          });
+          //console.log("Pegnegs array post-sorted: ", this.pegnegs)
         },
         error => {
           this.errorMessage = <any>error
@@ -457,6 +474,18 @@ export class SamplesComponent implements OnInit {
 
   }
 
+  editFCSV(selectedSample) {
+
+    this.createFCSVForm.setValue({
+      id: null,
+      sample: selectedSample.id,
+      concentration_type: null,
+      final_concentrated_sample_volume: null,
+      notes: ''
+    })
+
+  }
+
   // function to show freeze modal, triggered after check for multiple studies selected or user override
   //  showFreezeModal() {
   //     //hide the freeze warning modal if showing
@@ -586,7 +615,6 @@ export class SamplesComponent implements OnInit {
         }
       }
     }
-
   }
 
   createLabelPDF() {
@@ -598,7 +626,6 @@ export class SamplesComponent implements OnInit {
     // place the aliquot_string value centered on one line, and the collaborator_sample_id below it on the next line. Important to check for include === true. 
     this._sampleService.setLabelParts(labelParts);
     this.showLabelModal = true;
-
   }
 
   openPrintLabelModal(selectedSampleArray) {
@@ -618,6 +645,13 @@ export class SamplesComponent implements OnInit {
       this.showHidePrintModal = true;
     }
 
+  }
+
+
+  addSample() {
+    if (this.showHideAdd === false) {
+      this.showHideAdd = true;
+    }
   }
 
   editSample(selectedSample) {
@@ -651,7 +685,6 @@ export class SamplesComponent implements OnInit {
       final_concentrated_sample_volume: selectedSample.final_concentrated_sample_volume,
       final_concentrated_sample_volume_type: selectedSample.final_concentrated_sample_volume_type,
       final_concentrated_sample_volume_notes: selectedSample.final_concentrated_sample_volume_notes,
-      sample_volume_filtered: selectedSample.sample_volume_filtered,
       meter_reading_initial: selectedSample.meter_reading_initial,
       meter_reading_final: selectedSample.meter_reading_final,
       meter_reading_unit: selectedSample.meter_reading_unit,
@@ -877,6 +910,7 @@ export class SamplesComponent implements OnInit {
           this.samplesLoading = false;
           for (let item of samples) {
             if (item.record_type === 2) {
+              // push all sample records of type Control into the pegnegs array.
               this.pegnegs.push(item);
             }
           }
@@ -911,7 +945,6 @@ export class SamplesComponent implements OnInit {
       total_volume_sampled_initial: { value: null, disabled: true },
       total_volume_sampled_unit_initial: { value: null, disabled: true },
       sample_volume_initial: { value: null, disabled: true },
-      sample_volume_filtered: { value: null, disabled: true },
       filter_born_on_date: { value: null, disabled: true },
       filter_flag: { value: false, disabled: true },
       secondary_concentration_flag: { value: false, disabled: true },
@@ -944,7 +977,6 @@ export class SamplesComponent implements OnInit {
       total_volume_sampled_unit_initial: null,
       total_volume_or_mass_sampled: null,
       sample_volume_initial: null,
-      sample_volume_filtered: null,
       filter_born_on_date: null,
       filter_flag: false,
       secondary_concentration_flag: false,
@@ -970,7 +1002,6 @@ export class SamplesComponent implements OnInit {
     formValue.matrix = Number(formValue.matrix);
     formValue.sample_type = Number(formValue.sample_type);
     formValue.sample_volume_initial = Number(formValue.sample_volume_initial);
-    formValue.sample_volume_filtered = Number(formValue.sample_volume_filtered);
     formValue.study = Number(formValue.study);
     formValue.dissolution_volume = Number(formValue.dissolution_volume);
 
