@@ -26,6 +26,18 @@ export class FinalConcentratedSampleVolumeService {
 
   }
 
+  public update(fcsvID, formValue): Observable<any> {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+    return this._http.put(APP_SETTINGS.FCSV_URL + fcsvID + '/', formValue, options)
+      .map((response: Response) => <any>response.json())
+      .catch(this.handleError);
+
+  }
+
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');

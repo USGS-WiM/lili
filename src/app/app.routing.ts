@@ -9,7 +9,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { StudiesComponent } from './studies/studies.component';
 import { SamplesComponent } from './samples/samples.component';
-import { AnalysisBatchesComponent} from './analysis-batches/analysis-batches.component'
+import { AnalysisBatchesComponent } from './analysis-batches/analysis-batches.component'
 import { ResultsComponent } from './results/results.component';
 import { ReportsComponent } from './reports/reports.component';
 import { AdminComponent } from './admin/admin.component';
@@ -22,19 +22,21 @@ import { SampleTypeResolve } from './SHARED/sample-type.resolve';
 import { TargetResolve } from './targets/target.resolve';
 import { UserResolve } from './SHARED/user.resolve';
 import { AnalysisBatchWorksheetComponent } from './analysis-batches/analysis-batch-worksheet/analysis-batch-worksheet.component';
+import { DataUploadComponent } from './data-upload/data-upload.component';
 
 
 export const ROUTES: Routes = [
-    {path: '', redirectTo: 'home', pathMatch: 'full'},
-    {path: 'home', component: HomeComponent},
-    {path: 'studies', component: StudiesComponent},
-    {path: 'samples', component: SamplesComponent},
-    {path: 'analysisbatches', component: AnalysisBatchesComponent},
-    {path: 'analysisbatchworksheet/:id', component: AnalysisBatchWorksheetComponent},
-    {path: 'results', component: ResultsComponent},
-    {path: 'reports', component: ReportsComponent},
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: 'home', component: HomeComponent },
+    { path: 'studies', component: StudiesComponent },
+    { path: 'samples', component: SamplesComponent },
+    { path: 'analysisbatches', component: AnalysisBatchesComponent },
+    { path: 'analysisbatchworksheet/:id', component: AnalysisBatchWorksheetComponent },
+    { path: 'dataupload', component: DataUploadComponent },
+    { path: 'results', component: ResultsComponent },
+    { path: 'reports', component: ReportsComponent },
     {
-        path: 'admin', 
+        path: 'admin',
         component: AdminComponent,
         resolve: {
             concentrationTypes: ConcentrationResolve,

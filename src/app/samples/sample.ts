@@ -1,4 +1,5 @@
 import { IAliquot } from '../aliquots/aliquot';
+import { IFinalConcentratedSampleVolume } from '../fcsv/final-concentrated-sample-volume';
 export interface ISample {
     id: number;
     sample_type: Object;
@@ -7,7 +8,7 @@ export interface ISample {
     study: Object;
     study_site_name: string;
     collaborator_sample_id: string;
-    sampler_name:  Object;
+    sampler_name: Object;
     sample_notes: string;
     sample_description: string;
     arrival_date: string;
@@ -34,9 +35,7 @@ export interface ISample {
     samplegroups: number[];
     record_type: number;
     peg_neg: number;
-    final_concentrated_sample_volume: number;
-    final_concentrated_sample_volume_type: number;
-    final_concentrated_sample_volume_notes: string;
+    final_concentrated_sample_volume: IFinalConcentratedSampleVolume;
     aliquots: IAliquot[];
     created_date: string;
     created_by: string;
