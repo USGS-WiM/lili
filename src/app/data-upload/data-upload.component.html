@@ -1,0 +1,526 @@
+<div class="row">
+  <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+    <clr-tabs>
+      <clr-tab>
+        <button clrTabLink>Upload Replicate PCR File</button>
+        <clr-tab-content active>
+
+          <div class="card-block">
+            <div class="card-title">
+              <clr-icon shape="upload"></clr-icon> Upload Replicate PCR File</div>
+            <p>
+              <div class="card-text">
+                <span>File name convention: [Analysis Batch ID]-[Extraction number]-[Target code]-[Replicate number]</span>
+                <clr-tree-node>
+                  <clr-icon shape="search"></clr-icon>
+                  Lookup Target Codes
+                  <ng-template clrIfExpanded>
+                    <ng-container>
+                      <clr-tree-node>
+                        <div class="row">
+                          <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+
+                            <table class="table table-vertical table-noborder table-compact">
+                              <tbody>
+                                <tr *ngFor="let target of allTargets">
+                                  <th>{{target.name}}</th>
+                                  <td>{{target.code}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                      </clr-tree-node>
+                    </ng-container>
+                  </ng-template>
+                </clr-tree-node>
+                <p>
+                  <input id="targetFileInput" type="file" (change)="loadTargetFile($event)" placeholder="Upload file" accept="*">
+                  <div class="alert alert-danger" *ngIf="targetFileNameErrorFlag">
+                    <div class="alert-items">
+                      <div class="alert-item static">
+                        <div class="alert-icon-wrapper">
+                          <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                        </div>
+                        <span class="alert-text">
+                          Incorrect file name or extension chosen. Replicate PCR files should have the '.txt' file extension, and have the following
+                          name convention: [Analysis Batch ID]-[Extraction number]-[Target code]-[Replicate number]. Example:
+                          10001-1-PV-1.txt
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+              </div>
+          </div>
+          <hr>
+          <!-- results display div -->
+          <div>
+            <!-- raw results upload -->
+            <div *ngIf="rawResultsParsed && !validationResponseReady">
+              <!-- <div class="card-title">Raw Results Confirmation</div> -->
+              <div>
+                <h4>
+                  <b>Text file raw results confirmation</b>
+                </h4>
+                <label>Text file: {{parsedRawTargetResults.analysis_batch}}-{{parsedRawTargetResults.extraction_number}}-{{textFileNameTargetCode}}-{{parsedRawTargetResults.replicate_number}}</label>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <table class="table table-vertical table-compact">
+                      <tbody>
+                        <tr>
+                          <th>Analysis Batch</th>
+                          <td>{{parsedRawTargetResults.analysis_batch}}</td>
+                        </tr>
+                        <tr>
+                          <th>Extraction Number</th>
+                          <td>{{parsedRawTargetResults.extraction_number}}</td>
+                        </tr>
+                        <tr>
+                          <th>Target</th>
+                          <td>{{parsedRawTargetResults.target | displayValue:'name':this.allTargets}}</td>
+                        </tr>
+                        <tr>
+                          <th>Replicate Number</th>
+                          <td>{{parsedRawTargetResults.replicate_number}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <table class="table table-compact" style="width: 15em">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th class="left">Sample</th>
+                      <th class="left">Cq Value</th>
+                      <th class="left">Concentration</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let rep of parsedRawTargetResults.updated_pcrreplicates; let i = index">
+                      <td>{{i+1}}</td>
+                      <td class="left">{{rep.sample}}</td>
+                      <td class="left">{{rep.cq_value}}</td>
+                      <td class="left">{{rep.gc_reaction}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br>
+                <div class="alert alert-danger" *ngIf="pcrReplicateBatchIDErrorFlag">
+                  <div class="alert-items">
+                    <div class="alert-item static">
+                      <div class="alert-icon-wrapper">
+                        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                      </div>
+                      <span class="alert-text">
+                        The submitted analysis batch/extraction number/replicate number combination was not found in the database. Please check filename
+                        for errors and try again.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="resultsSubmissionErrorFlag">
+                  <div clr-alert-item class="alert-item">
+                    <span class="alert-text">Submission error. Results not uploaded to database.</span>
+                    <div class="alert-actions">
+                      <a class="alert-action" (click)="submitRawTargetResults()">Try again</a>
+                    </div>
+                  </div>
+                </clr-alert>
+                <clr-alert [clrAlertType]="'alert-success'" *ngIf="resultsSubmissionSuccessFlag">
+                  <div clr-alert-item class="alert-item">
+                    <span class="alert-text">Results sucessfully submitted.</span>
+
+                  </div>
+                </clr-alert>
+
+                <button class="btn btn-primary" [disabled]="!resultsSubmissionReady" (click)="submitRawTargetResults()">Submit & Validate Results</button>
+              </div>
+            </div>
+            <!-- end raw results upload -->
+            <!-- results validation-->
+            <div *ngIf="validationResponseReady">
+              <div class="card-title">
+                <b>Results Validation</b>
+                <br>
+                <label>Text file: {{parsedRawTargetResults.analysis_batch}}-{{parsedRawTargetResults.extraction_number}}-{{textFileNameTargetCode}}-{{parsedRawTargetResults.replicate_number}}</label>
+
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                  <button class="btn btn-primary" (click)="finishValidation()">Accept & Finish</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <h4>Batch Data</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                  <table class="table table-vertical table-compact">
+                    <tbody>
+                      <tr>
+                        <th>Analysis Batch</th>
+                        <td>{{parsedRawTargetResults.analysis_batch}}</td>
+                      </tr>
+                      <tr>
+                        <th>Extraction Number</th>
+                        <td>{{parsedRawTargetResults.extraction_number}}</td>
+                      </tr>
+                      <tr>
+                        <th>Target</th>
+                        <td>{{parsedRawTargetResults.target | displayValue:'name':this.allTargets}}</td>
+                      </tr>
+                      <tr>
+                        <th>Replicate Number</th>
+                        <td>{{parsedRawTargetResults.replicate_number}}</td>
+                      </tr>
+                      <tr>
+                        <th>PCR Neg</th>
+                        <td>
+                          <span class="label" [ngClass]="{'label-danger' : pcrResultsValidationObject.pcr_neg_invalid, 'label-success': !pcrResultsValidationObject.pcr_neg_invalid}">{{pcrResultsValidationObject.pcr_neg_invalid ? "Invalid" : "Valid"}}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>PCR Pos</th>
+                        <td>
+                          <span class="label" [ngClass]="{'label-danger' : pcrResultsValidationObject.pcr_pos_invalid, 'label-success': !pcrResultsValidationObject.pcr_pos_invalid}">{{pcrResultsValidationObject.pcr_pos_invalid ? "Invalid" : "Valid"}}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Ext Neg</th>
+                        <td>
+                          <span class="label" [ngClass]="{'label-danger' : pcrResultsValidationObject.ext_neg_invalid, 'label-success': !pcrResultsValidationObject.ext_neg_invalid}">{{pcrResultsValidationObject.ext_neg_invalid ? "Invalid" : "Valid"}}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>RT Neg</th>
+                        <td>
+                          <span class="label" [ngClass]="{'label-danger' : pcrResultsValidationObject.rt_neg_invalid, 'label-success': !pcrResultsValidationObject.rt_neg_invalid}">{{pcrResultsValidationObject.rt_neg_invalid ? "Invalid" : "Valid"}}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Standard Curve</th>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <h4>Replicates</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                  <clr-datagrid [(clrDgSelected)]="selected">
+                    <clr-dg-action-bar>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="showHideOverrideValidityModal = true">
+                          <clr-icon shape="switch"></clr-icon> Switch Validity</button>
+                      </div>
+                    </clr-dg-action-bar>
+                    <clr-dg-column [clrDgField]="'name'">Sample</clr-dg-column>
+                    <clr-dg-column [clrDgField]="'code'">Cq Value</clr-dg-column>
+                    <clr-dg-column [clrDgField]="'type'">GC/Reaction</clr-dg-column>
+                    <clr-dg-column [clrDgField]="'type'">Concentration</clr-dg-column>
+                    <clr-dg-column [clrDgField]="'type'">Validity</clr-dg-column>
+
+                    <clr-dg-row *clrDgItems="let rep of pcrResultsValidationObject.pcrreplicates" [clrDgItem]="rep">
+                      <clr-dg-cell>{{rep.sample}}</clr-dg-cell>
+                      <clr-dg-cell>{{rep.cq_value}}</clr-dg-cell>
+                      <clr-dg-cell>{{rep.gc_reaction_sci }}</clr-dg-cell>
+                      <clr-dg-cell>{{rep.replicate_concentration_sci}}</clr-dg-cell>
+                      <clr-dg-cell>
+                        <span class="label" [ngClass]="{'label-danger' : rep.invalid, 'label-success': !rep.invalid}">{{rep.invalid ? "Invalid" : "Valid"}}</span>
+                      </clr-dg-cell>
+                    </clr-dg-row>
+                    <clr-dg-footer>{{pcrResultsValidationObject.pcrreplicates.length}} reps</clr-dg-footer>
+                  </clr-datagrid>
+                </div>
+              </div>
+
+            </div>
+            <!-- end results validation-->
+          </div>
+          <!-- end results display div -->
+
+        </clr-tab-content>
+      </clr-tab>
+      <!-- inhibition results tab -->
+      <clr-tab>
+        <button clrTabLink id="inhibition">Upload Inhibition File</button>
+        <clr-tab-content id="inhibition">
+
+          <div class="card-block">
+            <div class="card-title">
+              <clr-icon shape="upload"></clr-icon> Upload Inhibition File</div>
+            <p>
+              <div class="card-text">
+                <span>File name convention: [Analysis Batch ID]-[Extraction Number]-I[First letter of nucleic acid type]</span>
+                <p>
+                  <input id="inhibitionFileInput" type="file" (change)="loadInhFile($event)" placeholder="Upload file" accept="*">
+                  <!-- <button class="btn btn-primary" (click)="parseJSON()">Parse Data</button> -->
+                  <div class="alert alert-danger" *ngIf="inhFileNameErrorFlag">
+                    <div class="alert-items">
+                      <div class="alert-item static">
+                        <div class="alert-icon-wrapper">
+                          <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                        </div>
+                        <span class="alert-text">
+                          Incorrect file name or extension chosen. Inhibition files should have the '.txt' file extension and have the following name
+                          convention: [Analysis Batch ID]-[Extraction Number]-I[First letter of nucleic acid type]. Example:
+                          10045-2-IR.txt
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+          <hr>
+          <!-- raw results display-->
+          <div class="card-block" *ngIf="rawInhResultsParsed && !dilutionFactorsCalculated">
+            <!-- <div class="card-title">Uploaded Inhibition Results</div> -->
+            <div>
+              <h4>
+                <b>Inhibition file raw results confirmation</b>
+              </h4>
+              <label>Text file: {{parsedRawInhResults.analysis_batch}}-{{parsedRawInhResults.extraction_number}}-{{inhTextFileNameNAType}}</label>
+              <div class="row">
+                <div class="col-lg-4">
+                  <table class="table table-vertical table-compact">
+                    <tbody>
+                      <tr>
+                        <th>Analysis Batch</th>
+                        <td>{{parsedRawInhResults.analysis_batch}}</td>
+                      </tr>
+                      <tr>
+                        <th>Extraction Number</th>
+                        <td>{{parsedRawInhResults.extraction_number}}</td>
+                      </tr>
+                      <tr>
+                        <th>Nucleic Acid Inhibition Type</th>
+                        <td>{{parsedRawInhResults.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <table class="table table-compact" style="width: 15em">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th class="left">Sample</th>
+                    <th class="left">Cq Value</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let sample of parsedRawInhResults.inhibitions; let i = index">
+                    <td>{{i+1}}</td>
+                    <td class="left">{{sample.sample}}</td>
+                    <td class="left">{{sample.cq_value}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <br>
+              <button class="btn btn-primary" (click)="submitRawInhibitionResults()">Calculate Dilution Factors</button>
+            </div>
+          </div>
+          <!-- end raw results display-->
+          <!-- inhibition dilution factor confirmation -->
+          <div *ngIf="dilutionFactorsCalculated">
+            <div class="card-title">
+              <b>Inhibition Dilution Factor Confirmation</b>
+              <br>
+              <label>Text file: {{parsedRawInhResults.analysis_batch}}-{{parsedRawInhResults.extraction_number}}-{{inhTextFileNameNAType}}</label>
+
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <h4>Batch Data</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-sm-6">
+                <table class="table table-vertical table-compact">
+                  <tbody>
+                    <tr>
+                      <th>Analysis Batch</th>
+                      <td>{{parsedRawInhResults.analysis_batch}}</td>
+                    </tr>
+                    <tr>
+                      <th>Extraction Number</th>
+                      <td>{{parsedRawInhResults.extraction_number}}</td>
+                    </tr>
+                    <tr>
+                      <th>Nucleic Acid Inhibition Type</th>
+                      <td>{{parsedRawInhResults.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <h4>Confirm Dilution Factors</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                Dilution factors displayed have been calculated and suggested by lili. Update if appropriate or leave as is, then click Submit
+                to save the inhibition dilution factors.
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <form class="compact" [formGroup]="dilutionsForm" (ngSubmit)="submitInhibitions(dilutionsForm.value)">
+                  <section class="form-block">
+
+                    <div formArrayName="inhibitions">
+
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th class="left">Sample</th>
+                            <th class="left">Dilution Factor</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let inh of inhibitionsArray.controls; let i = index" [formGroupName]="i">
+                            <td class="left">
+                              <label class="required">Sample {{inh.controls.sample.value}}</label>
+                            </td>
+                            <td>
+                              <input formControlName="dilution_factor" type="number" min="1" class="dilution-factor-input">
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <!-- <div class="form-group" *ngFor="let inh of inhibitionsArray.controls; let i = index" [formGroupName]="i">
+                                                        <label>Sample {{inh.controls.sample.value}}</label>
+                                                        <input formControlName="dilution_factor" type="number" min="1" class="target-count-input">
+                                                    </div> -->
+                    </div>
+
+                  </section>
+                  <clr-alert [clrAlertType]="'alert-danger'" *ngIf="inhibitionUpdateErrorFlag">
+                    <div clr-alert-item class="alert-item">
+                      <span class="alert-text">Submission error. Inhibition dilution factors not submitted.</span>
+                      <div class="alert-actions">
+                        <a class="alert-action" (click)="submitInhibitions(dilutionsForm.value)">Try again</a>
+                      </div>
+                    </div>
+                  </clr-alert>
+                  <clr-alert [clrAlertType]="'alert-success'" *ngIf="inhibitionUpdateSuccessFlag">
+                    <div clr-alert-item class="alert-item">
+                      <span class="alert-text">Inhibition dilution factors sucessfully submitted.</span>
+
+                    </div>
+                  </clr-alert>
+                  <button class="btn btn-primary" *ngIf="!inhibitionUpdateSuccessFlag" type="submit" [clrLoading]="submitLoading">Submit Dilution Factors</button>
+                </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <button *ngIf="inhibitionUpdateSuccessFlag" class="btn btn-success" (click)="finishInhibitions()">Finshed</button>
+              </div>
+            </div>
+          </div>
+        </clr-tab-content>
+      </clr-tab>
+      <!-- end inhibition results tab -->
+
+      <!-- Batch submit Ext pos tab-->
+      <clr-tab>
+        <button clrTabLink>Batch Submit Ext Pos Controls</button>
+        <clr-tab-content>
+          <div>
+            <div>
+              <div>
+                <h3>Batch Submit Extraction Positive Controls</h3>
+              </div>
+
+            </div>
+            <div class="card-block">
+              <div class="card-title"></div>
+              <div class="card-text">
+
+              </div>
+            </div>
+          </div>
+        </clr-tab-content>
+      </clr-tab>
+      <!-- end Batch submit Ext pos tab-->
+
+      <clr-tab>
+        <button clrTabLink>Batch Submit Negative Results</button>
+        <clr-tab-content>
+          <div>
+            <div>
+              <div>
+                <h3>Batch Submit Negative Results</h3>
+              </div>
+            </div>
+            <div class="card-block">
+              <div class="card-title"></div>
+              <div class="card-text">
+
+              </div>
+            </div>
+          </div>
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
+  </div>
+</div>
+
+<!-- begin override validity modal -->
+<clr-modal [(clrModalOpen)]="showHideOverrideValidityModal">
+  <h3 class="modal-title">
+    <clr-icon shape="switch" size="36"></clr-icon> Switch (override) validity of individual replicates</h3>
+  <div class="modal-body">
+    <p>You are about to override the validity of the following replicates. This will not change the value of any associated
+      control, but will overwrite the validity flag of the replicate and
+      <b>will affect results calculation.</b>
+      <p>
+
+        <ul class="list compact list-unstyled">
+          <li *ngFor="let rep of selected">Overriding sample {{rep.sample}} from
+            <span class="label" [ngClass]="{'label-danger' : rep.invalid, 'label-success': !rep.invalid}">{{rep.invalid ? "Invalid" : "Valid"}}</span> to
+            <span class="label" [ngClass]="{'label-danger' : !rep.invalid, 'label-success': rep.invalid}">{{!(rep.invalid) ? "Invalid" : "Valid"}}</span>
+          </li>
+        </ul>
+        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="replicateUpdateErrorFlag">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Submission error. Replicate validity not updated.</span>
+            <div class="alert-actions">
+              <a class="alert-action" (click)="onUpdatePCRReplicates(selected)">Try again</a>
+            </div>
+          </div>
+        </clr-alert>
+
+        <clr-alert [clrAlertType]="'alert-success'" *ngIf="replicateUpdateSuccessFlag ">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Replicates' validity successfully updated.</span>
+            <div class="alert-actions">
+              <a class="alert-action" (click)="showHideOverrideValidityModal  = false; replicateUpdateSuccessFlag = false">Close</a>
+            </div>
+          </div>
+        </clr-alert>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="onUpdatePCRReplicates(selected)" [clrLoading]="submitLoading">Save Changes</button>
+    <button class="btn btn-info" (click)="showHideOverrideValidityModal = !showHideOverrideValidityModal">Close</button>
+  </div>
+</clr-modal>
+<!-- end override validity modal -->

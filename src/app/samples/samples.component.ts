@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, PatternValidator } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormArray, Validators, PatternValidator } from '@angular/forms';
 
 import { ISample } from './sample';
 import { IFreezer } from '../aliquots/freezer';
@@ -57,7 +57,8 @@ export class SamplesComponent implements OnInit {
   showHideAddPegNeg: boolean = false;
   showHideEdit: boolean = false;
   showHideABModal: boolean = false;
-  showHideFCSVModal: boolean = false;
+  addFCSVModalActive: boolean = false;
+  editFCSVModalActive: boolean = false;
   showHideFreezerLocationAssignModal: boolean = false;
   showHidePrintModal: boolean = false;
   showHideFreezeWarningModal: boolean = false;
@@ -97,6 +98,9 @@ export class SamplesComponent implements OnInit {
   showFCSVCreateError: boolean = false;
   showFCSVCreateSuccess: boolean = false;
 
+  showFCSVEditError: boolean = false;
+  showFCSVEditSuccess: boolean = false;
+
   showFreezeError: boolean = false;
   showFreezeSuccess: boolean = false;
 
@@ -110,6 +114,9 @@ export class SamplesComponent implements OnInit {
   createdABID;
   createdFCSVID;
 
+  createFCSVForm: FormGroup;
+  fcsvArray: FormArray;
+  fcsvValuesMissingFlag: boolean = false;
 
   lastOccupiedSpot;
   showLastOccupiedSpot;
@@ -124,7 +131,7 @@ export class SamplesComponent implements OnInit {
   }
 
   showHideMissingFCSVErrorModal: boolean = false;
-  //aliquotLabelTextArray = [{"aliquot_string": "", "collaborator_sample_id": ""}]
+  // aliquotLabelTextArray = [{"aliquot_string": "", "collaborator_sample_id": ""}]
   aliquotLabelTextArray = [];
 
   // add sample form - declare reactive form with appropriate sample fields
@@ -157,7 +164,6 @@ export class SamplesComponent implements OnInit {
     total_volume_sampled_unit_initial: new FormControl({ value: null, disabled: true }),
 
     sample_volume_initial: new FormControl({ value: null, disabled: true }),
-    sample_volume_filtered: new FormControl({ value: null, disabled: true }),
 
     filter_born_on_date: new FormControl({ value: null, disabled: true }),
     filter_flag: new FormControl({ value: false, disabled: true }), // radio button
@@ -201,7 +207,6 @@ export class SamplesComponent implements OnInit {
     total_volume_or_mass_sampled: new FormControl(null),
 
     sample_volume_initial: new FormControl(null),
-    sample_volume_filtered: new FormControl(null),
 
     filter_born_on_date: new FormControl(null),
     filter_flag: new FormControl(false), // radio button
@@ -210,11 +215,6 @@ export class SamplesComponent implements OnInit {
     technician_initials: new FormControl(''),
     dissolution_volume: new FormControl(null), // required when not disabled
     post_dilution_volume: new FormControl(null), // required when not disabled
-
-    // the following controls do not appear in create sample form
-    final_concentrated_sample_volume: new FormControl(null),
-    final_concentrated_sample_volume_type: new FormControl(null),
-    final_concentrated_sample_volume_notes: new FormControl(''),
     peg_neg: new FormControl(null)
   });
 
@@ -246,7 +246,6 @@ export class SamplesComponent implements OnInit {
     total_volume_or_mass_sampled: new FormControl(null),
 
     sample_volume_initial: new FormControl(null),
-    sample_volume_filtered: new FormControl(null),
 
     filter_born_on_date: new FormControl(null),
     filter_flag: new FormControl(false), // radio button
@@ -280,14 +279,28 @@ export class SamplesComponent implements OnInit {
     analysis_batch_notes: new FormControl('')
   });
 
-  createFCSVForm = new FormGroup({
-    samples: new FormControl([]),
+  editFCSVForm = new FormGroup({
+    id: new FormControl(null),
+    sample: new FormControl(null),
+    concentration_type: new FormControl(null),
     final_concentrated_sample_volume: new FormControl(null),
-    final_concentrated_sample_volume_unit: new FormControl(null),
-    final_concentrated_sample_volume_type: new FormControl(null),
-    final_concentrated_sample_volume_notes: new FormControl('')
-  })
+    notes: new FormControl('')
+  });
 
+  buildCreateFCSVForm() {
+    this.createFCSVForm = this.formBuilder.group({
+      fcsv_array: this.formBuilder.array([
+        this.formBuilder.group({
+          sample: null,
+          concentration_type: [null, Validators.required],
+          final_concentrated_sample_volume: [null, Validators.required],
+          fcsv_units: [5, Validators.required],
+          notes: ''
+        })
+      ])
+    })
+    this.fcsvArray = this.createFCSVForm.get('fcsv_array') as FormArray;
+  }
 
   constructor(private _sampleService: SampleService,
     private _finalConcentratedSampleVolumeService: FinalConcentratedSampleVolumeService,
@@ -301,8 +314,15 @@ export class SamplesComponent implements OnInit {
     private _matrixService: MatrixService,
     private _unitService: UnitService,
     private _userService: UserService,
-    private _analysisBatchService: AnalysisBatchService
-  ) { }
+    private _analysisBatchService: AnalysisBatchService,
+    private formBuilder: FormBuilder
+  ) {
+    this.buildCreateFCSVForm();
+  }
+
+  getTime(date?: Date) {
+    return date != null ? date.getTime() : 0;
+  }
 
   ngOnInit(): void {
 
@@ -325,6 +345,14 @@ export class SamplesComponent implements OnInit {
               this.pegnegs.push(sample);
             }
           }
+          // console.log("Pegnegs array pre-sorted: ", this.pegnegs)
+          // sort pegnegs by date order
+          this.pegnegs.sort(function (a, b) {
+            const c: Date = new Date(a.collection_start_date);
+            const d: Date = new Date(b.collection_start_date);
+            return (d.getTime()) - (c.getTime());
+          });
+          // console.log("Pegnegs array post-sorted: ", this.pegnegs)
         },
         error => {
           this.errorMessage = <any>error
@@ -422,7 +450,16 @@ export class SamplesComponent implements OnInit {
     }
   }
 
+  onFCSVUnitSelectBulk(unitID) {
+    for (let control of this.fcsvArray.controls) {
+      control.get('fcsv_units').setValue(unitID);
+    }
+
+  }
+
   createFCSV(selectedSamples) {
+    // reset the fcsvArray controls to a blank array so it doesnt get populated twice
+    this.fcsvArray.controls = [];
 
     // check if any of the samples selected already have FCSV
     for (let sample of selectedSamples) {
@@ -432,40 +469,40 @@ export class SamplesComponent implements OnInit {
       }
     }
 
-    let selectedSampleIDs = []
-    if (selectedSamples.length > 1) {
-      for (let sample of selectedSamples) {
-        selectedSampleIDs.push(sample.id)
-      }
-    } else {
-      selectedSampleIDs = [selectedSamples[0].id]
+    for (let sample of selectedSamples) {
+      let formGroup: FormGroup = this.formBuilder.group({
+        sample: sample.id,
+        concentration_type: null,
+        final_concentrated_sample_volume: null,
+        fcsv_units: 5,
+        notes: ''
+      })
+      this.fcsvArray.push(formGroup);
     }
+    // show the add FCSV modal modal if not showing already
+    if (this.addFCSVModalActive === false) {
+      this.addFCSVModalActive = true;
+    }
+  }
 
-    this.createFCSVForm.setValue({
-      samples: selectedSampleIDs,
-      final_concentrated_sample_volume: null,
-      final_concentrated_sample_volume_unit: null,
-      final_concentrated_sample_volume_type: null,
-      final_concentrated_sample_volume_notes: ''
+  editFCSV(selection) {
 
+    const selectedSample = selection[0];
+
+    this.editFCSVForm.setValue({
+      id: null,
+      sample: selectedSample.id,
+      concentration_type: selectedSample.final_concentrated_sample_volume.concentration_type,
+      final_concentrated_sample_volume: selectedSample.final_concentrated_sample_volume.final_concentrated_sample_volume,
+      notes: selectedSample.final_concentrated_sample_volume.notes
     })
 
-    // show the freeze modal if not showing already
-    if (this.showHideFCSVModal === false) {
-      this.showHideFCSVModal = true;
+    // show the edit FCSV modal modal if not showing already
+    if (this.editFCSVModalActive === false) {
+      this.editFCSVModalActive = true;
     }
 
   }
-
-  // function to show freeze modal, triggered after check for multiple studies selected or user override
-  //  showFreezeModal() {
-  //     //hide the freeze warning modal if showing
-  //     if (this.showHideFreezeWarningModal === true) {
-  //         this.showHideFreezeWarningModal = false;
-  //     }
-
-
-  //   }
 
   openFreezerChoice() {
     this.showHideFreezerChoiceModal = true;
@@ -586,7 +623,6 @@ export class SamplesComponent implements OnInit {
         }
       }
     }
-
   }
 
   createLabelPDF() {
@@ -598,7 +634,6 @@ export class SamplesComponent implements OnInit {
     // place the aliquot_string value centered on one line, and the collaborator_sample_id below it on the next line. Important to check for include === true. 
     this._sampleService.setLabelParts(labelParts);
     this.showLabelModal = true;
-
   }
 
   openPrintLabelModal(selectedSampleArray) {
@@ -618,6 +653,13 @@ export class SamplesComponent implements OnInit {
       this.showHidePrintModal = true;
     }
 
+  }
+
+
+  addSample() {
+    if (this.showHideAdd === false) {
+      this.showHideAdd = true;
+    }
   }
 
   editSample(selectedSample) {
@@ -648,10 +690,6 @@ export class SamplesComponent implements OnInit {
       collection_start_time: selectedSample.collection_start_time,
       collection_end_date: selectedSample.collection_end_date,
       collection_end_time: selectedSample.collection_end_time,
-      final_concentrated_sample_volume: selectedSample.final_concentrated_sample_volume,
-      final_concentrated_sample_volume_type: selectedSample.final_concentrated_sample_volume_type,
-      final_concentrated_sample_volume_notes: selectedSample.final_concentrated_sample_volume_notes,
-      sample_volume_filtered: selectedSample.sample_volume_filtered,
       meter_reading_initial: selectedSample.meter_reading_initial,
       meter_reading_final: selectedSample.meter_reading_final,
       meter_reading_unit: selectedSample.meter_reading_unit,
@@ -745,43 +783,90 @@ export class SamplesComponent implements OnInit {
       )
   }
 
-  onSubmitFCSV(formValue) {
+  onSubmitFCSV(formID, formValue) {
+
+    this.fcsvValuesMissingFlag = false;
     this.showFCSVCreateError = false;
+    this.showFCSVEditError = false;
     this.showFCSVCreateSuccess = false;
+    this.showFCSVEditSuccess = false;
     this.submitLoading = true;
 
-    let fcsvArray = [];
+    switch (formID) {
+      case 'edit':
 
-    formValue.final_concentrated_sample_volume = Number(formValue.final_concentrated_sample_volume);
-    formValue.final_concentrated_sample_volume_type = Number(formValue.final_concentrated_sample_volume_type);
-    formValue.final_concentrated_sample_volume_unit = Number(formValue.final_concentrated_sample_volume_unit);
+        // get the FCSV ID of the currently selected sample
+        const fcsvID = this.selected[0].final_concentrated_sample_volume.id;
+        // update the FCSV
+        this._finalConcentratedSampleVolumeService.update(fcsvID, formValue)
+          .subscribe(
+            (sample) => {
+              this.editFCSVForm.reset();
+              this.submitLoading = false;
+              this.showFCSVEditError = false;
+              this.showFCSVEditSuccess = true;
+              this.reloadSamplesTable();
+            },
+            error => {
+              this.errorMessage = <any>error;
+              this.submitLoading = false;
+              this.showFCSVEditSuccess = false;
+              this.showFCSVEditError = true;
+            }
+          );
+        break;
+      case 'add':
 
-    formValue.final_concentrated_sample_volume = (formValue.final_concentrated_sample_volume /
-      this.getConversionFactorToMilliliters(formValue.final_concentrated_sample_volume_unit))
-
-    for (let sample of formValue.samples) {
-      fcsvArray.push({
-        "sample": sample,
-        "final_concentrated_sample_volume": formValue.final_concentrated_sample_volume,
-        "concentration_type": formValue.final_concentrated_sample_volume_type,
-        "final_concentrated_sample_volume_notes": formValue.final_concentrated_sample_volume_notes
-      })
-    }
-
-    this._finalConcentratedSampleVolumeService.create(fcsvArray)
-      .subscribe(
-        (results) => {
-          this.showFCSVCreateError = false;
-          this.showFCSVCreateSuccess = true;
-          this.submitLoading = false;
-          this.reloadSamplesTable();
-        },
-        error => {
-          this.showFCSVCreateError = true;
-          this.showFCSVCreateSuccess = false;
-          this.submitLoading = false;
+        // if any values are missing, prevent submission and show alert
+        for (let fcsv of formValue.fcsv_array) {
+          if (fcsv.final_concentrated_sample_volume == null || fcsv.concentration_type == null) {
+            this.fcsvValuesMissingFlag = true;
+            this.submitLoading = false;
+            return;
+          }
         }
-      )
+
+        // if no missing values, proceed with conversion and submission
+        if (this.fcsvValuesMissingFlag === false) {
+
+          // set new empty array for submitting fcsv values
+          let fcsvArraySubmission = [];
+          // loop through each fcsv, convert, and push into the submission array
+          for (let fcsv of formValue.fcsv_array) {
+            fcsv.final_concentrated_sample_volume = Number(fcsv.final_concentrated_sample_volume);
+            fcsv.concentration_type = Number(fcsv.concentration_type);
+            fcsv.fcsv_units = Number(fcsv.fcsv_units);
+
+            fcsv.final_concentrated_sample_volume = (fcsv.final_concentrated_sample_volume /
+              this.getConversionFactorToMilliliters(fcsv.fcsv_units))
+
+            fcsvArraySubmission.push({
+              "sample": fcsv.sample,
+              "final_concentrated_sample_volume": fcsv.final_concentrated_sample_volume,
+              "concentration_type": fcsv.concentration_type,
+              "notes": fcsv.notes
+            })
+          }
+
+          this._finalConcentratedSampleVolumeService.create(fcsvArraySubmission)
+            .subscribe(
+              (results) => {
+                this.showFCSVCreateError = false;
+                this.showFCSVCreateSuccess = true;
+                this.submitLoading = false;
+                this.reloadSamplesTable();
+              },
+              error => {
+                this.showFCSVCreateError = true;
+                this.showFCSVCreateSuccess = false;
+                this.submitLoading = false;
+              }
+            )
+        }
+        break;
+      default:
+      // do something defaulty
+    }
   }
 
   onSubmitAB(formValue) {
@@ -860,6 +945,8 @@ export class SamplesComponent implements OnInit {
     this.showFreezeSuccess = false;
     this.showFCSVCreateSuccess = false;
     this.showFCSVCreateError = false;
+    this.showFCSVEditSuccess = false;
+    this.showFCSVEditError = false;
     this.showABCreateSuccess = false;
     this.showABCreateError = false;
   }
@@ -877,6 +964,7 @@ export class SamplesComponent implements OnInit {
           this.samplesLoading = false;
           for (let item of samples) {
             if (item.record_type === 2) {
+              // push all sample records of type Control into the pegnegs array.
               this.pegnegs.push(item);
             }
           }
@@ -911,7 +999,6 @@ export class SamplesComponent implements OnInit {
       total_volume_sampled_initial: { value: null, disabled: true },
       total_volume_sampled_unit_initial: { value: null, disabled: true },
       sample_volume_initial: { value: null, disabled: true },
-      sample_volume_filtered: { value: null, disabled: true },
       filter_born_on_date: { value: null, disabled: true },
       filter_flag: { value: false, disabled: true },
       secondary_concentration_flag: { value: false, disabled: true },
@@ -944,7 +1031,6 @@ export class SamplesComponent implements OnInit {
       total_volume_sampled_unit_initial: null,
       total_volume_or_mass_sampled: null,
       sample_volume_initial: null,
-      sample_volume_filtered: null,
       filter_born_on_date: null,
       filter_flag: false,
       secondary_concentration_flag: false,
@@ -970,7 +1056,6 @@ export class SamplesComponent implements OnInit {
     formValue.matrix = Number(formValue.matrix);
     formValue.sample_type = Number(formValue.sample_type);
     formValue.sample_volume_initial = Number(formValue.sample_volume_initial);
-    formValue.sample_volume_filtered = Number(formValue.sample_volume_filtered);
     formValue.study = Number(formValue.study);
     formValue.dissolution_volume = Number(formValue.dissolution_volume);
 

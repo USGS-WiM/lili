@@ -21,8 +21,20 @@ export class FinalConcentratedSampleVolumeService {
     });
 
     return this._http.post(APP_SETTINGS.FCSV_URL, fcsvSubmission, options)
-    .map((response: Response) => <any[]>response.json())
+      .map((response: Response) => <any[]>response.json())
       .catch(this.handleError)
+
+  }
+
+  public update(fcsvID, formValue): Observable<any> {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+    return this._http.put(APP_SETTINGS.FCSV_URL + fcsvID + '/', formValue, options)
+      .map((response: Response) => <any>response.json())
+      .catch(this.handleError);
 
   }
 
@@ -32,3 +44,4 @@ export class FinalConcentratedSampleVolumeService {
   }
 
 }
+

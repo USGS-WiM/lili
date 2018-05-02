@@ -67,6 +67,7 @@ import { ServerTestService } from "./SHARED/server-test.service";
 import { RecordTypeFilter } from './FILTERS/record-type-filter/record-type-filter.component';
 import { RecordTypeService } from "./SHARED/record-type.service";
 import { MultiStudyFilterComponent } from './FILTERS/multi-study-filter/multi-study-filter.component';
+import { DataUploadComponent } from './data-upload/data-upload.component';
 
 @NgModule({
     declarations: [
@@ -102,7 +103,8 @@ import { MultiStudyFilterComponent } from './FILTERS/multi-study-filter/multi-st
         AnalysisBatchWorksheetComponent,
         SampleLabelComponent,
         RecordTypeFilter,
-        MultiStudyFilterComponent
+        MultiStudyFilterComponent,
+        DataUploadComponent
     ],
     imports: [
         BrowserAnimationsModule,
