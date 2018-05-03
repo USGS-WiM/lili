@@ -95,23 +95,30 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="sampleDescInput">Sample Notes</label>
-                                <textarea id="sampleDescInput" rows="2" formControlName="sample_notes" style="max-width:25em"></textarea>
+                                <label for="sampleNotesInput">Sample Notes</label>
+                                <textarea id="sampleNotesInput" rows="2" formControlName="sample_notes" style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
-                                <label for="collectStartDateInput">Arrival Date</label>
-                                <input type="date" id="collectStartDateInput" formControlName="arrival_date">
+                                <label for="arrivalDateInput">Arrival Date</label>
+                                <input type="date" id="arrivalStartDateInput" formControlName="arrival_date">
                             </div>
 
                             <div class="form-group">
-                                <label for="sampleDescInput">Arrival Notes</label>
-                                <textarea id="sampleDescInput" rows="2" formControlName="arrival_notes" style="max-width:25em"></textarea>
+                                <label for="arrivalNotesInput">Arrival Notes</label>
+                                <textarea id="arrivalNotesInput" rows="2" formControlName="arrival_notes" style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="samplerNameInput" class="required">Sampler Name</label>
-                                <input id="samplerNameInput" type="text" formControlName="sampler_name">
+                                <input id="samplerNameInput" type="text" formControlName="sampler_name" class="validate filter-input" [(ngModel)]=query (keyup)=filterNames()>
+                                <div *ngIf="filteredList.length > 0">
+                                    <ul class="list-unstyled" *ngFor="let item of filteredList">
+                                        <li>
+                                            <a (click)="selectName(item)">{{item}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
 
                             <div class="form-group">

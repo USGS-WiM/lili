@@ -33,7 +33,6 @@ import { APP_UTILITIES } from '../app.utilities';
 import { APP_SETTINGS } from '../app.settings';
 
 
-
 @Component({
   selector: 'app-samples',
   templateUrl: './samples.component.html',
@@ -130,9 +129,17 @@ export class SamplesComponent implements OnInit {
     "spots": null,
   }
 
+  samplerNames: string[] = [];
+
   showHideMissingFCSVErrorModal: boolean = false;
   // aliquotLabelTextArray = [{"aliquot_string": "", "collaborator_sample_id": ""}]
   aliquotLabelTextArray = [];
+
+  // these variables related to name autocomplete
+  public query = '';
+  public names = ["Aaron Firnstahl", "Joel Stokdyk", "Blake Draper", "Aaaron Stephenson"];
+  public filteredList = [];
+  // these variables related to name autocomplete
 
   // add sample form - declare reactive form with appropriate sample fields
   // all fields except matrix are disabled until matrix is selected (see onMatrixSelect function)
@@ -324,6 +331,10 @@ export class SamplesComponent implements OnInit {
     return date != null ? date.getTime() : 0;
   }
 
+  isInArray(value, array) {
+    return array.indexOf(value) > -1;
+  }
+
   ngOnInit(): void {
 
     this.samplesLoading = true;
@@ -344,6 +355,10 @@ export class SamplesComponent implements OnInit {
             if (sample.record_type === 2) {
               this.pegnegs.push(sample);
             }
+
+            if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
+              this.samplerNames.push(sample.sampler_name)
+            }
           }
           // console.log("Pegnegs array pre-sorted: ", this.pegnegs)
           // sort pegnegs by date order
@@ -353,6 +368,9 @@ export class SamplesComponent implements OnInit {
             return (d.getTime()) - (c.getTime());
           });
           // console.log("Pegnegs array post-sorted: ", this.pegnegs)
+
+          console.log("Sampler names: ", this.samplerNames)
+
         },
         error => {
           this.errorMessage = <any>error
@@ -419,6 +437,23 @@ export class SamplesComponent implements OnInit {
     });
 
   }
+
+  // these functions related to name autocomplete
+  filterNames() {
+    if (this.query !== "") {
+      this.filteredList = this.names.filter(function (el) {
+        return el.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+      }.bind(this));
+    } else {
+      this.filteredList = [];
+    }
+  }
+
+  selectName(item) {
+    this.query = item;
+    this.filteredList = [];
+  }
+  // these functions related to name autocomplete
 
   onUnitChange(unitValue) {
     // sets the var unitValue used for meter reading unit display

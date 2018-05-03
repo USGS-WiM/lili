@@ -8,7 +8,7 @@ export interface ISample {
     study: Object;
     study_site_name: string;
     collaborator_sample_id: string;
-    sampler_name: Object;
+    sampler_name: string;
     sample_notes: string;
     sample_description: string;
     arrival_date: string;
