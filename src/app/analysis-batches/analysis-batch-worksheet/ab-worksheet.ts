@@ -2,7 +2,7 @@ import { IAliquot } from "../../aliquots/aliquot";
 import { IExtractionMethod } from "../../extraction-batches/extraction-method";
 import { ISampleExtractionSubmission } from "../../sample-extractions/sample-extraction-submission";
 
-export interface Iabworksheet {
+export interface IABWorksheet {
     isReprint: boolean;
     analysis_batch: number;
     creation_date: string;
@@ -17,6 +17,7 @@ export interface Iabworksheet {
     eluted_extraction_volume: number;
     reverse_extraction_no: number;
     rt_reaction_volume: number;
+    rt_template_volume: number;
     rt_date: string;
     extraction_submission: ISampleExtractionSubmission[];
 }

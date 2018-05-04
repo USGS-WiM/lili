@@ -18,7 +18,7 @@ import { IUnit } from '../units/unit';
 import { IAliquot } from '../aliquots/aliquot';
 import { IFreezerLocation } from '../aliquots/freezer-location';
 import { IExtractionBatchSubmission } from '../extraction-batches/extraction-batch-submission';
-import { Iabworksheet } from '../analysis-batches/analysis-batch-worksheet/ab-worksheet';
+import { IABWorksheet } from '../analysis-batches/analysis-batch-worksheet/ab-worksheet';
 
 import { StudyService } from '../studies/study.service';
 import { SampleService } from '../samples/sample.service';
@@ -544,11 +544,11 @@ export class AnalysisBatchesComponent implements OnInit {
   private buildReprintWorksheetObj(es: ISampleExtractionSubmission[], tn: any[]) {
 
     if (this.rePrintWorksheetData.reverse_transcriptions.length === 0) {
-      this.rePrintWorksheetData.reverse_transcriptions.push({ reaction_volume: 0, rt_date: "N/A" })
+      this.rePrintWorksheetData.reverse_transcriptions.push({ reaction_volume: 0, template_volume: 0, rt_date: "N/A" })
       this.rtValuesExist = false;
     }
 
-    let ABWorksheetObj: Iabworksheet;
+    let ABWorksheetObj: IABWorksheet;
     ABWorksheetObj = {
       isReprint: true,
       // TOP TABLE:
@@ -569,6 +569,7 @@ export class AnalysisBatchesComponent implements OnInit {
       // BOTTOM TABLE:
       reverse_extraction_no: this.rePrintWorksheetData.extraction_number,
       rt_reaction_volume: this.rePrintWorksheetData.reverse_transcriptions[0].reaction_volume,
+      rt_template_volume: this.rePrintWorksheetData.reverse_transcriptions[0].template_volume,
       rt_date: this.rePrintWorksheetData.reverse_transcriptions[0].rt_date
     };
     this._analysisBatchService.setWorksheetObject(ABWorksheetObj);
@@ -577,7 +578,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   createWorksheet(isReprint, hasMultipleExtractions) {
     let targetNameArray = [];
-    let ABWorksheetObj: Iabworksheet;
+    let ABWorksheetObj: IABWorksheet;
     if (isReprint) {
       if (hasMultipleExtractions) {
         // set the rePrintWorksheetData to the user selection from the extract batch select form.
@@ -693,6 +694,7 @@ export class AnalysisBatchesComponent implements OnInit {
         // BOTTOM TABLE:
         reverse_extraction_no: extractionNumber,
         rt_reaction_volume: this.extractForm.controls.new_rt.value.reaction_volume,
+        rt_template_volume: this.extractForm.controls.new_rt.value.template_volume,
         rt_date: this.extractForm.controls.new_rt.value.rt_date
       };
 

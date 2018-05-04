@@ -1453,7 +1453,11 @@
 
             <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
                 <clr-dg-cell>{{sample.id}}</clr-dg-cell>
-                <clr-dg-cell>{{sample.analysisbatches}}</clr-dg-cell>
+                <clr-dg-cell>
+                    <span *ngFor="let ab of sample.analysisbatches">&#8226;&nbsp;{{ab}}
+                        <br>
+                    </span>
+                </clr-dg-cell>
                 <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.study_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.sample_type_string}}</clr-dg-cell>

@@ -35,12 +35,23 @@
   background-size: contain;
   vertical-align: middle;
 }
+.sidenav-content {
+  position: relative;
+  padding-bottom: 50px;
+}
 
 .colophon {
   font-size:x-small;
   padding: 5px;
   bottom: 2px;
   position: absolute;
+  vertical-align: bottom;
+  height: 50px;
   line-height: 1.5em;
 }
+
+@media only screen and ( max-height: 450px ){
+  .colophon { display: none}
+}
+
 

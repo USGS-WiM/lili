@@ -116,7 +116,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let target of abWorksheet?.targetNames">
-                <td>{{target}}</td>
+                <td class="text-smaller">{{target}}</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -132,29 +132,26 @@
     <!-- bottom section -->
     <div id="row4" class="row">
       <div class="col-md-6 pull-left" style="margin-bottom:15px;">
-        <table id="bottomTable" class="col-md-8 table">
+        <table id="bottomTable" class="col-md-8 table" *ngIf="abWorksheet?.rt_reaction_volume > 0">
           <tr>
-            <td>Reverse transcription No.</td>
+            <td>RT No.</td>
             <td>{{abWorksheet?.reverse_extraction_no}}</td>
             <td colspan="2"></td>
           </tr>
           <tr>
             <td>RT reaction volume</td>
-            <td>{{abWorksheet?.rt_reaction_volume}}</td>
-            <td style="width:20%">Date:</td>
-            <td>
-              {{abWorksheet?.rt_date | date: 'MM/dd/yyyy'}}
-            </td>
+            <td>{{abWorksheet?.rt_reaction_volume}}&nbsp;µL</td>
           </tr>
           <tr>
-            <td colspan="4">
+            <td>RT template volume</td>
+            <td>{{abWorksheet?.rt_template_volume}}&nbsp;µL</td>
           </tr>
           <tr>
-            <td>qPCR replicates</td>
-            <td></td>
-            <td colspan="2"></td>
+            <td>RT Date</td>
+            <td>{{abWorksheet?.rt_date | date:'shortDate'}}</td>
           </tr>
         </table>
+        <span *ngIf="abWorksheet?.rt_reaction_volume === 0">No RT for this extraction.</span>
       </div>
     </div>
 
