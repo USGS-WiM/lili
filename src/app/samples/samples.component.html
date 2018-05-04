@@ -111,14 +111,10 @@
 
                             <div class="form-group">
                                 <label for="samplerNameInput" class="required">Sampler Name</label>
-                                <input id="samplerNameInput" type="text" formControlName="sampler_name" class="validate filter-input" [(ngModel)]=query (keyup)=filterNames()>
-                                <div *ngIf="filteredList.length > 0">
-                                    <ul class="list-unstyled" *ngFor="let item of filteredList">
-                                        <li>
-                                            <a (click)="selectName(item)">{{item}}</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
+                                <datalist id="samplerNames">
+                                    <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
+                                </datalist>
                             </div>
 
                             <div class="form-group">
@@ -141,7 +137,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="collectEndTime">Collection End Time (HH:MM)</label>
+                                <label>Collection End Time (HH:MM)</label>
                                 <label for="collectEndTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collection_end_time').invalid && (addSampleForm.get('collection_end_time').dirty || addSampleForm.get('collection_end_time').touched)">
                                     <input id="collectEndTime" type="text" formControlName="collection_end_time">
                                     <span class="tooltip-content">Must follow format HH:MM</span>
@@ -150,7 +146,10 @@
 
                             <div class="form-group">
                                 <label for="imrInput">Initial Meter Reading</label>
-                                <input type="text" id="imrInput" formControlName="meter_reading_initial">
+                                <label for="imrInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('meter_reading_initial').invalid && (addSampleForm.get('meter_reading_initial').dirty || addSampleForm.get('meter_reading_initial').touched)">
+                                    <input type="number" id="imrInput" formControlName="meter_reading_initial">
+                                    <span class="tooltip-content">Must be greater than 0 and less than Final Meter Reading</span>
+                                </label>
                                 <div class="select">
                                     <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
@@ -159,8 +158,11 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="fmrInput">Final Meter Reading</label>
-                                <input type="text" id="fmrInput" formControlName="meter_reading_final">
+                                <label>Final Meter Reading</label>
+                                <label for="fmrInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('meter_reading_final').invalid && (addSampleForm.get('meter_reading_final').dirty || addSampleForm.get('meter_reading_final').touched)">
+                                    <input id="fmrInput" type="number" formControlName="meter_reading_final">
+                                    <span class="tooltip-content">Must be greater than 0 and greater than Initial Meter Reading</span>
+                                </label>
                                 <label *ngIf="this.units">{{this.unitValue | displayValue:'symbol':this.units}}</label>
                             </div>
 
@@ -318,7 +320,10 @@
 
                             <div class="form-group">
                                 <label for="samplerNameInput" class="required">Sampler Name</label>
-                                <input id="samplerNameInput" type="text" formControlName="sampler_name">
+                                <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
+                                <datalist id="samplerNames">
+                                    <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
+                                </datalist>
                             </div>
 
                             <div class="form-group">
@@ -549,7 +554,10 @@
 
                         <div class="form-group">
                             <label for="samplerNameInput" class="required">Sampler Name</label>
-                            <input id="samplerNameInput" type="text" formControlName="sampler_name">
+                            <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
+                            <datalist id="samplerNames">
+                                <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
+                            </datalist>
                         </div>
 
                         <div class="form-group">

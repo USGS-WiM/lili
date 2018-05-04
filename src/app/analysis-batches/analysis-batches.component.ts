@@ -218,8 +218,8 @@ export class AnalysisBatchesComponent implements OnInit {
       new_replicates: this.formBuilder.array([
         this.formBuilder.group({
           target: '',
-          // count: [2, Validators.compose([Validators.required, AnalysisBatchesComponent.nonZero])]
-          count: ['2', [Validators.required, Validators.pattern('^[1-9][0-9]*$')]],
+          count: ['2', [Validators.required, Validators.min(1)]]
+          //count: ['2', [Validators.required, Validators.pattern('^[1-9][0-9]*$')]],
           // count: '2'
         })
       ]),
