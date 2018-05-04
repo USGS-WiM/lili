@@ -95,23 +95,26 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="sampleDescInput">Sample Notes</label>
-                                <textarea id="sampleDescInput" rows="2" formControlName="sample_notes" style="max-width:25em"></textarea>
+                                <label for="sampleNotesInput">Sample Notes</label>
+                                <textarea id="sampleNotesInput" rows="2" formControlName="sample_notes" style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
-                                <label for="collectStartDateInput">Arrival Date</label>
-                                <input type="date" id="collectStartDateInput" formControlName="arrival_date">
+                                <label for="arrivalDateInput">Arrival Date</label>
+                                <input type="date" id="arrivalStartDateInput" formControlName="arrival_date">
                             </div>
 
                             <div class="form-group">
-                                <label for="sampleDescInput">Arrival Notes</label>
-                                <textarea id="sampleDescInput" rows="2" formControlName="arrival_notes" style="max-width:25em"></textarea>
+                                <label for="arrivalNotesInput">Arrival Notes</label>
+                                <textarea id="arrivalNotesInput" rows="2" formControlName="arrival_notes" style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="samplerNameInput" class="required">Sampler Name</label>
-                                <input id="samplerNameInput" type="text" formControlName="sampler_name">
+                                <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
+                                <datalist id="samplerNames">
+                                    <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
+                                </datalist>
                             </div>
 
                             <div class="form-group">
@@ -134,7 +137,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="collectEndTime">Collection End Time (HH:MM)</label>
+                                <label>Collection End Time (HH:MM)</label>
                                 <label for="collectEndTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collection_end_time').invalid && (addSampleForm.get('collection_end_time').dirty || addSampleForm.get('collection_end_time').touched)">
                                     <input id="collectEndTime" type="text" formControlName="collection_end_time">
                                     <span class="tooltip-content">Must follow format HH:MM</span>
@@ -143,7 +146,10 @@
 
                             <div class="form-group">
                                 <label for="imrInput">Initial Meter Reading</label>
-                                <input type="text" id="imrInput" formControlName="meter_reading_initial">
+                                <label for="imrInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('meter_reading_initial').invalid && (addSampleForm.get('meter_reading_initial').dirty || addSampleForm.get('meter_reading_initial').touched)">
+                                    <input type="number" id="imrInput" formControlName="meter_reading_initial">
+                                    <span class="tooltip-content">Must be greater than 0 and less than Final Meter Reading</span>
+                                </label>
                                 <div class="select">
                                     <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
@@ -152,8 +158,11 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="fmrInput">Final Meter Reading</label>
-                                <input type="text" id="fmrInput" formControlName="meter_reading_final">
+                                <label>Final Meter Reading</label>
+                                <label for="fmrInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('meter_reading_final').invalid && (addSampleForm.get('meter_reading_final').dirty || addSampleForm.get('meter_reading_final').touched)">
+                                    <input id="fmrInput" type="number" formControlName="meter_reading_final">
+                                    <span class="tooltip-content">Must be greater than 0 and greater than Initial Meter Reading</span>
+                                </label>
                                 <label *ngIf="this.units">{{this.unitValue | displayValue:'symbol':this.units}}</label>
                             </div>
 
@@ -311,7 +320,10 @@
 
                             <div class="form-group">
                                 <label for="samplerNameInput" class="required">Sampler Name</label>
-                                <input id="samplerNameInput" type="text" formControlName="sampler_name">
+                                <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
+                                <datalist id="samplerNames">
+                                    <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
+                                </datalist>
                             </div>
 
                             <div class="form-group">
@@ -542,7 +554,10 @@
 
                         <div class="form-group">
                             <label for="samplerNameInput" class="required">Sampler Name</label>
-                            <input id="samplerNameInput" type="text" formControlName="sampler_name">
+                            <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
+                            <datalist id="samplerNames">
+                                <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
+                            </datalist>
                         </div>
 
                         <div class="form-group">
@@ -1438,7 +1453,11 @@
 
             <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
                 <clr-dg-cell>{{sample.id}}</clr-dg-cell>
-                <clr-dg-cell>{{sample.analysisbatches}}</clr-dg-cell>
+                <clr-dg-cell>
+                    <span *ngFor="let ab of sample.analysisbatches">&#8226;&nbsp;{{ab}}
+                        <br>
+                    </span>
+                </clr-dg-cell>
                 <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.study_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.sample_type_string}}</clr-dg-cell>

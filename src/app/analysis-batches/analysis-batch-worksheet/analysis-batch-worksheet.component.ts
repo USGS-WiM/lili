@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AnalysisBatchService } from '../../analysis-batches/analysis-batch.service';
-import { Iabworksheet } from '../../analysis-batches/analysis-batch-worksheet/ab-worksheet';
+import { IABWorksheet } from '../../analysis-batches/analysis-batch-worksheet/ab-worksheet';
 
 declare let jsPDF: any;
 // declare let html2pdf: any;
@@ -65,7 +65,7 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 	@ViewChild('targetTable') targetTable: ElementRef;
 
 	public worksheetElement: any;
-	public abWorksheet: Iabworksheet;
+	public abWorksheet: IABWorksheet;
 	private headerStyle: Object;
 	public sampleColumns: Object[];
 	public sampleRows: any[];
@@ -354,108 +354,4 @@ export class AnalysisBatchWorksheetComponent implements OnInit {
 		}
 		return data;
 	}
-
-	// for testing only
-	private fakeObject(): Iabworksheet {
-		let fakeObj: Iabworksheet = {
-			analysis_batch: 14,
-			creation_date: "2017-11-03",
-			description: "test AB",
-			eluted_extraction_volume: 4000,
-			extraction_date: "2017-12-27",
-			extraction_method: {
-				id: 1,
-				name: "Manual"
-			},
-			extraction_no: 12,
-			extraction_sample_volume: 5000,
-			extraction_submission: [{
-				aliquot_string: "7-1",
-				box: 1,
-				rack: 1,
-				row: 1,
-				sample: 7,
-				spot: 5
-			}, // 1
-			{
-				aliquot_string: "7-1",
-				box: 1,
-				rack: 1,
-				row: 1,
-				sample: 7,
-				spot: 5
-			}, // 2
-			{
-				aliquot_string: "7-1",
-				box: 1,
-				rack: 1,
-				row: 1,
-				sample: 7,
-				spot: 5
-			}, // 3
-			{
-				aliquot_string: "7-1",
-				box: 1,
-				rack: 1,
-				row: 1,
-				sample: 7,
-				spot: 5
-			}, // 4
-			{
-				aliquot_string: "7-1",
-				box: 1,
-				rack: 1,
-				row: 1,
-				sample: 7,
-				spot: 5
-			}, // 5
-                /*	{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 6
-                	{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 7 
-                	{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 8
-                	{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 9 
-                	{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 10 
-                	{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5},// 11
-                	{aliquot_string:"7-1", box:1, rack:1, row:1, sample:7, spot:5}*/ // 12
-			],
-			isReprint: true,
-			reverse_extraction_no: 12,
-			rt_date: "",
-			rt_reaction_volume: 20,
-			studies: [{
-				id: 4,
-				description: "Minnesota urban runoff study test",
-				name: "Minnesota urban runoff study"
-			},
-			{
-				id: 3,
-				description: "With MDH and U of MN.  First samples Oct 2016",
-				name: "MDH Storm Water Irrigation"
-			}
-			],
-			targetNames: [
-				"Enterovirus", //1
-				"G1 Norovirus", //2
-				"A", //3
-				"AA", //4
-				"E", //5
-				"G1", //6
-				"G2", //7
-				"HP", //8
-				"PV", //9
-				"RVA", //10
-				"S", //11
-				"TTR", //12
-				"A", //13
-				"AA", //14
-				"E", //15
-				"G1", //16
-				"G2", //17
-				"HP" //18
-                /*	"PV",//19
-                	"RVA"//20*/
-			]
-		}
-		return fakeObj;
-	}
-
 }

@@ -30,7 +30,7 @@ import { ExtractionBatchService } from 'app/extraction-batches/extraction-batch.
 export class AnalysisBatchDetailComponent implements OnInit {
   @Input() selectedABSummary: IAnalysisBatchSummary;
 
-  ABDetailsLoading: boolean = true;
+  ABDetailsLoading: boolean = false;
   noExtractionsFlag: boolean = false;
   showHideEditExtractionDetail: boolean = false;
   showHideEditRTDetail: boolean = false;
@@ -105,13 +105,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.ABDetailsLoading = true;
-    // console.log("on init loading val: ", this.ABDetailsLoading)
+    this.ABDetailsLoading = true;
 
     this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
-
-    // this.selectedABDetail = this._analysisBatchService.getAnalysisBatchData(this.selectedABSummary.id);
-    // console.log(this.selectedABDetail);
 
     // on init, call the getAnalysisBatchDetail function of the AnalyisBatchService, set results to selectedABDetail var
     this._analysisBatchService.getAnalysisBatchDetail(this.selectedABSummary.id)
