@@ -38,7 +38,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="required">Study</label>
+                                <label [ngClass]="{'required': addSampleForm.get('study').enabled}">Study</label>
                                 <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
                                     <div class="select">
                                         <select id="studySelect" name="study" formControlName="study">
@@ -49,7 +49,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="required">Sample type</label>
+                                <label [ngClass]="{'required': addSampleForm.get('sample_type').enabled}">Sample type</label>
                                 <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sample_type').invalid && (addSampleForm.get('sample_type').dirty || addSampleForm.get('sample_type').touched)">
                                     <div class="select">
                                         <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
@@ -60,7 +60,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="required">Collaborator Sample ID</label>
+                                <label [ngClass]="{'required': addSampleForm.get('collaborator_sample_id').enabled}">Collaborator Sample ID</label>
                                 <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collaborator_sample_id').invalid && (addSampleForm.get('collaborator_sample_id').dirty || addSampleForm.get('collaborator_sample_id').touched)">
                                     <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id">
                                     <span class="tooltip-content">Collaborator ID is required.</span>
@@ -110,7 +110,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="samplerNameInput" class="required">Sampler Name</label>
+                                <label for="samplerNameInput" [ngClass]="{'required': addSampleForm.get('sampler_name').enabled}">Sampler Name</label>
                                 <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
                                 <datalist id="samplerNames">
                                     <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
@@ -118,7 +118,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="collectStartDateInput" class="required">Collection Start Date</label>
+                                <label for="collectStartDateInput" [ngClass]="{'required': addSampleForm.get('collection_start_date').enabled}">Collection Start Date</label>
                                 <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
                             </div>
 
@@ -183,7 +183,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="required">Filter Type</label>
+                                <label [ngClass]="{'required': addSampleForm.get('filter_type').enabled}">Filter Type</label>
                                 <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('filter_type').invalid && (addSampleForm.get('filter_type').dirty || addSampleForm.get('filter_type').touched)">
                                     <div class="select">
                                         <select id="filterSelect" name="filterType" formControlName="filter_type">
@@ -319,7 +319,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="samplerNameInput" class="required">Sampler Name</label>
+                                <label for="samplerNameInput" [ngClass]="{'required': addPegnegForm.get('sampler_name').enabled}">Sampler Name</label>
                                 <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
                                 <datalist id="samplerNames">
                                     <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
@@ -327,7 +327,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="collectStartDateInput" class="required">Collection Start Date</label>
+                                <label for="collectStartDateInput" [ngClass]="{'required': addPegnegForm.get('collection_start_date').enabled}">Collection Start Date</label>
                                 <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
                             </div>
 
@@ -353,7 +353,7 @@
                             </div> -->
 
                             <div class="form-group">
-                                <label for="imrInput" class="required">Initial Meter Reading</label>
+                                <label for="imrInput" >Initial Meter Reading</label>
                                 <input type="text" id="imrInput" formControlName="meter_reading_initial">
                                 <div class="select">
                                     <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
@@ -363,13 +363,13 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="fmrInput" class="required">Final Meter Reading</label>
+                                <label for="fmrInput" >Final Meter Reading</label>
                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
                                 <label *ngIf="this.units">{{this.unitValue | displayValue:'symbol':this.units}}</label>
                             </div>
 
                             <div class="form-group">
-                                <label for="tvsInput" class="required">Total Volume/Mass Sampled</label>
+                                <label for="tvsInput">Total Volume/Mass Sampled</label>
                                 <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
@@ -377,23 +377,6 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <!-- <div class="form-group">
-                                <label for="volPostDiluteInput">Volume After Dilution</label>
-                                <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
-                                <span>µL</span>
-                            </div> -->
-
-                            <!-- <div class="form-group">
-                                <label class="required">Filter Type</label>
-                                <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addPegNegForm.get('filter_type').invalid && (addPegNegForm.get('filter_type').dirty || addPegNegForm.get('filter_type').touched)">
-                                    <div class="select">
-                                        <select id="filterSelect" name="filterType" formControlName="filter_type">
-                                            <option *ngFor="let filterType of filterTypes" [value]="filterType.id">{{filterType.name}}</option>
-                                        </select>
-                                    </div>
-                                </label>
-                            </div> -->
 
                             <div class="form-group">
                                 <label for="filterBornOnDateInput">Filter Born-on Date</label>

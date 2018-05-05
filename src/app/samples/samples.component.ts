@@ -305,8 +305,8 @@ export class SamplesComponent implements OnInit {
   buildAddSampleForm() {
     this.addSampleForm = this.formBuilder.group({
       // the following controls apply to every sample record, regardless of matrix selected
+      matrix: [{ value: null, disabled: false }, Validators.required],
       sample_type: [{ value: null, disabled: true }, Validators.required],
-      matrix: new FormControl(null, Validators.required),
       filter_type: [{ value: null, disabled: true }, Validators.required], // required when not disabled
       study: [{ value: null, disabled: true }, Validators.required],  // study name, maps to study id
       study_site_name: [{ value: null, disabled: true }],
@@ -1043,6 +1043,8 @@ export class SamplesComponent implements OnInit {
   }
 
   reloadSamplesTable() {
+
+    this.allSamples = [];
     // set sample loading to true to put spinner over table while it updates.
     this.samplesLoading = true;
     this.pegnegs = [];
@@ -1052,7 +1054,6 @@ export class SamplesComponent implements OnInit {
       .subscribe(
         (samples) => {
           this.allSamples = samples
-          this.samplesLoading = false;
           for (let item of samples) {
             if (item.record_type === 2) {
               // push all sample records of type Control into the pegnegs array.
