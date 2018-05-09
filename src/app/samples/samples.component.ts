@@ -32,23 +32,6 @@ import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
 import { APP_UTILITIES } from '../app.utilities';
 import { APP_SETTINGS } from '../app.settings';
 
-function validateFinalMeterReading(control: FormControl) {
-  let value = control.value;
-  // if (value >= SamplesComponent.addSampleForm.get('meter_reading_initial').value) {
-  //   return value;
-  // }
-
-  if (value >= 5) {
-    return {
-      valueTooHigh: {
-        value: value
-      }
-    }
-  }
-  return null;
-};
-
-
 @Component({
   selector: 'app-samples',
   templateUrl: './samples.component.html',
@@ -151,52 +134,9 @@ export class SamplesComponent implements OnInit {
 
   samplerNames: string[] = [];
 
-
   showHideMissingFCSVErrorModal: boolean = false;
   // aliquotLabelTextArray = [{"aliquot_string": "", "collaborator_sample_id": ""}]
   aliquotLabelTextArray = [];
-
-  // add sample form - declare reactive form with appropriate sample fields
-  // all fields except matrix are disabled until matrix is selected (see onMatrixSelect function)
-  // addSampleForm = new FormGroup({
-  //   // the following controls apply to every sample record, regardless of matrix selected
-  //   sample_type: new FormControl({ value: null, disabled: true }, Validators.required),
-  //   matrix: new FormControl(null, Validators.required),
-  //   filter_type: new FormControl({ value: null, disabled: true }, Validators.required), // required when not disabled
-  //   study: new FormControl({ value: null, disabled: true }, Validators.required),  // study name, maps to study id
-  //   study_site_name: new FormControl({ value: '', disabled: true }),
-  //   collaborator_sample_id: new FormControl({ value: '', disabled: true }, Validators.required),
-  //   sampler_name: new FormControl({ value: '', disabled: true }),
-  //   sample_notes: new FormControl({ value: '', disabled: true }),
-  //   sample_description: new FormControl({ value: '', disabled: true }),
-  //   arrival_date: new FormControl({ value: null, disabled: true }),
-  //   arrival_notes: new FormControl({ value: '', disabled: true }),
-  //   collection_start_date: new FormControl({ value: null, disabled: true }, Validators.required),
-
-  //   // the following controls have variable display needs based on the matrix selected
-  //   collection_start_time: new FormControl({ value: null, disabled: false }, Validators.pattern('\\d\\d:\\d\\d')),
-  //   collection_end_date: new FormControl({ value: null, disabled: true }),
-  //   collection_end_time: new FormControl({ value: null, disabled: true }, Validators.pattern('\\d\\d:\\d\\d')),
-
-  //   meter_reading_initial: new FormControl({ value: null, disabled: true }),
-  //   meter_reading_final: new FormControl({ value: null, disabled: true },
-  //     Validators.min(meter_reading_initial)),
-  //   meter_reading_unit: new FormControl({ value: null, disabled: true }),
-
-  //   total_volume_sampled_initial: new FormControl({ value: null, disabled: true }),
-  //   total_volume_sampled_unit_initial: new FormControl({ value: null, disabled: true }),
-
-  //   sample_volume_initial: new FormControl({ value: null, disabled: true }),
-
-  //   filter_born_on_date: new FormControl({ value: null, disabled: true }),
-  //   filter_flag: new FormControl({ value: false, disabled: true }), // radio button
-  //   secondary_concentration_flag: new FormControl({ value: false, disabled: true }), // radio button
-  //   elution_notes: new FormControl({ value: '', disabled: true }),
-  //   technician_initials: new FormControl({ value: '', disabled: true }),
-  //   dissolution_volume: new FormControl({ value: null, disabled: true }),
-  //   post_dilution_volume: new FormControl({ value: null, disabled: true }),
-  //   peg_neg: new FormControl(null)
-  // });
 
   // edit sample form
   editSampleForm = new FormGroup({

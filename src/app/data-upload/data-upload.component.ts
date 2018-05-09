@@ -69,6 +69,14 @@ export class DataUploadComponent implements OnInit {
   dilutionsForm: FormGroup;
   inhibitionsArray: FormArray;
 
+  batchExtPosForm: FormGroup;
+  extractions_array: FormArray;
+
+  resetFlags() {
+    this.resultsSubmissionSuccessFlag = false;
+    this.resultsSubmissionErrorFlag = false;
+  }
+
   buildDilutionsForm() {
     this.dilutionsForm = this.formBuilder.group({
       inhibitions: this.formBuilder.array([

@@ -129,17 +129,18 @@
                     </div>
                   </div>
                 </clr-alert>
+
                 <clr-alert [clrAlertType]="'alert-success'" *ngIf="resultsSubmissionSuccessFlag">
                   <div clr-alert-item class="alert-item">
                     <span class="alert-text">Results sucessfully submitted.</span>
-
                   </div>
                 </clr-alert>
 
-                <button class="btn btn-primary" [disabled]="!resultsSubmissionReady" (click)="submitRawTargetResults()">Submit & Validate Results</button>
+                <button class="btn btn-primary" [disabled]="!resultsSubmissionReady" (click)="submitRawTargetResults(); resetFlags()">Submit & Validate Results</button>
               </div>
             </div>
             <!-- end raw results upload -->
+
             <!-- results validation-->
             <div *ngIf="validationResponseReady">
               <div class="card-title">
@@ -214,6 +215,12 @@
               <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <h4>Replicates</h4>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                  <label>Note: validity displayed below is based on negative controls only.</label>
                 </div>
               </div>
               <div class="row">
@@ -453,6 +460,9 @@
             <div class="card-block">
               <div class="card-title"></div>
               <div class="card-text">
+
+               
+
 
               </div>
             </div>
