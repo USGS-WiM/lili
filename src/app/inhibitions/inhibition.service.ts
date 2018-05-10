@@ -10,7 +10,6 @@ import { APP_SETTINGS } from '../app.settings';
 import { IInhibition } from './inhibition';
 
 
-
 @Injectable()
 export class InhibitionService {
 

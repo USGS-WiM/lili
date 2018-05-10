@@ -3,21 +3,174 @@
         <h3>Results</h3>
     </div>
 </div>
-<!-- begin samples table -->
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <p>
+            <button class="btn btn-outline" (click)="openResultsQueryWizard()">Open Results Query Builder</button>
+
+    </div>
+</div>
+
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
+        <clr-wizard #resultsQueryWizard [(clrWizardOpen)]="resultsQueryWizardActive">
+            <clr-wizard-title>Results Query Builder</clr-wizard-title>
 
-        <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="samplesLoading" [clDgRowSelection]="true">
+            <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+            <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+            <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+            <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+            <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
+                <ng-template clrPageTitle>Select Samples</ng-template>
+
+                <div class="in-wizard-datagrid">
+                    <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="samplesLoading" [clDgRowSelection]="true" class="datagrid-compact">
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
+                                    <clr-icon shape="window-close" size="16"></clr-icon> Deselect All</button>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'id'">
+                            Sample ID
+                            <clr-dg-filter [clrDgFilter]="rangeFilter">
+                                <range-filter #rangeFilter></range-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'collaborator_sample_id'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Collaborator Sample ID
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'study_string'">
+                            Study
+                            <clr-dg-filter [clrDgFilter]="studyFilter">
+                                <study-filter #studyFilter></study-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column>
+
+
+                        <clr-dg-column [clrDgField]="'collection_start_date'">
+                            Collect Start Date
+                            <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
+                                <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column>
+
+                        <!-- <clr-dg-column [clrDgField]="'collection_end_date'">
+                            Collect End Date
+                            <clr-dg-filter [clrDgFilter]="collectionEndDateFilter">
+                                <collection-end-date-filter [dateField]="'collection_end_date'" #collectionEndDateFilter></collection-end-date-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column> -->
+
+                        <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
+                            <clr-dg-cell>{{sample.id}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.study_string}}</clr-dg-cell>
+                            <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
+                            <!-- <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell> -->
+
+
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} samples
+                            <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid>
+
+                </div>
+                <p>
+                    <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleSelectErrorFlag">
+                        <div clr-alert-item class="alert-item">
+                            <span class="alert-text">Please select at least one sample to continue.</span>
+                        </div>
+                    </clr-alert>
+
+                    <ng-template clrPageButtons>
+                        <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
+                        <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
+                        <clr-wizard-button [type]="'custom-next-sampleSelect'">Next</clr-wizard-button>
+                    </ng-template>
+            </clr-wizard-page>
+
+            <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
+                <ng-template clrPageTitle>Select Targets</ng-template>
+                <div class="in-wizard-datagrid">
+                    <clr-datagrid [(clrDgSelected)]="selected" [clDgRowSelection]="true" class="datagrid-compact">
+
+                        <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+                        <clr-dg-column [clrDgField]="'code'">Code</clr-dg-column>
+                        <clr-dg-column [clrDgField]="'type'">Type</clr-dg-column>
+
+                        <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
+                            <clr-dg-cell>{{target.name}}</clr-dg-cell>
+                            <clr-dg-cell>{{target.code}}</clr-dg-cell>
+                            <clr-dg-cell>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes }}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>{{allTargets.length}} targets</clr-dg-footer>
+                    </clr-datagrid>
+                </div>
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="targetSelectErrorFlag">
+                    <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Please select at least one target to continue.</span>
+                    </div>
+                </clr-alert>
+                <ng-template clrPageButtons>
+                    <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
+                    <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
+                    <clr-wizard-button [type]="'custom-next-targetSelect'">Next</clr-wizard-button>
+                </ng-template>
+            </clr-wizard-page>
+
+            <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
+                <ng-template clrPageTitle>Query Summary</ng-template>
+                <label>Samples:</label>
+                <ul class="list">
+                    <li *ngFor="let sample of resultsQuery.samples">{{sample}}</li>
+                </ul>
+                <p>
+                    <label>Targets:</label>
+                    <ul class="list">
+                        <li *ngFor="let target of resultsQuery.targets">{{target | displayValue:'name': allTargets}}</li>
+                    </ul>
+
+                    <ng-template clrPageButtons>
+                        <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+                        <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
+                        <clr-wizard-button [type]="'custom-finish'">Finish</clr-wizard-button>
+                    </ng-template>
+
+            </clr-wizard-page>
+        </clr-wizard>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="resultsLoaded && results.length === 0">
+        There are no results for your query.
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="resultsLoaded && results.length > 0">
+        <clr-datagrid [clrDgLoading]="resultsLoading">
 
             <clr-dg-action-bar>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
-                        <clr-icon shape="window-close" size="16"></clr-icon> Deselect All</button>
+                    <button type="button" class="btn btn-sm btn-secondary" (click)="exportToCSV()">
+                        <clr-icon shape="export" size="16"></clr-icon> Export to CSV</button>
                 </div>
             </clr-dg-action-bar>
 
-            <clr-dg-column [clrDgField]="'id'">
+            <clr-dg-column [clrDgField]="'sample'">
                 Sample ID
                 <clr-dg-filter [clrDgFilter]="rangeFilter">
                     <range-filter #rangeFilter></range-filter>
@@ -30,14 +183,6 @@
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'study_string'">
-                Study
-                <clr-dg-filter [clrDgFilter]="studyFilter">
-                    <study-filter #studyFilter></study-filter>
-                </clr-dg-filter>
-            </clr-dg-column>
-
-
             <clr-dg-column [clrDgField]="'collection_start_date'">
                 Collect Start Date
                 <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
@@ -45,33 +190,31 @@
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'collection_end_date'">
-                Collect End Date
-                <clr-dg-filter [clrDgFilter]="collectionEndDateFilter">
-                    <collection-end-date-filter [dateField]="'collection_end_date'" #collectionEndDateFilter></collection-end-date-filter>
-                </clr-dg-filter>
+            <clr-dg-column [clrDgField]="'target'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Target
+                </ng-container>
             </clr-dg-column>
 
-            <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
-                <clr-dg-cell>{{sample.id}}</clr-dg-cell>
-                <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
-                <clr-dg-cell>{{sample.study_string}}</clr-dg-cell>
-                <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
-                <clr-dg-cell>{{sample.collection_end_date | date:'shortDate'}}</clr-dg-cell>
+            <clr-dg-column [clrDgField]="'sample_mean_concentration'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Sample Mean Concentration
+                </ng-container>
+            </clr-dg-column>
 
-
+            <clr-dg-row *clrDgItems="let fsmc of results" [clrDgItem]="fsmc">
+                <clr-dg-cell>{{fsmc.sample}}</clr-dg-cell>
+                <clr-dg-cell>{{fsmc.collaborator_sample_id}}</clr-dg-cell>
+                <clr-dg-cell>{{fsmc.target | displayValue:'name': allTargets }}</clr-dg-cell>
+                <clr-dg-cell>{{fsmc.sample_mean_concentration}</clr-dg-cell>
             </clr-dg-row>
 
             <clr-dg-footer>
                 {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} samples
-                <clr-dg-pagination #pagination [clrDgPageSize]="20"></clr-dg-pagination>
+                <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
             </clr-dg-footer>
         </clr-datagrid>
-    </div>
-</div>
-<!-- end samples table -->
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        Datagrid goes here
+
+
     </div>
 </div>
