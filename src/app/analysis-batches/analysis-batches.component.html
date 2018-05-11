@@ -774,7 +774,7 @@
 
                                         <clr-alert [clrAlertType]="'alert-success'" *ngIf="showABEditSuccess">
                                             <div clr-alert-item class="alert-item">
-                                                <span class="alert-text">Analysis successfully updated</span>
+                                                <span class="alert-text">Analysis Batch successfully updated</span>
                                                 <div class="alert-actions">
                                                     <a class="alert-action" (click)="showHideEdit = false; showABEditSuccess = false">Close</a>
                                                 </div>
@@ -942,7 +942,7 @@
                         <form class="compact" [formGroup]="batchExtPosForm" (ngSubmit)="onSubmitBatchExtPos(batchExtPosForm.value)">
                             <section class="form-block">
 
-                                <div formArrayName="extractions">
+                                <div formArrayName="extraction_batches">
                                     <div class="row">
                                         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                         </div>

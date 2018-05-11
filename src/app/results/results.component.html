@@ -205,8 +205,9 @@
             <clr-dg-row *clrDgItems="let fsmc of results" [clrDgItem]="fsmc">
                 <clr-dg-cell>{{fsmc.sample}}</clr-dg-cell>
                 <clr-dg-cell>{{fsmc.collaborator_sample_id}}</clr-dg-cell>
+                <clr-dg-cell>{{fsmc.collection_start_date | date:'shortDate'}}</clr-dg-cell>
                 <clr-dg-cell>{{fsmc.target | displayValue:'name': allTargets }}</clr-dg-cell>
-                <clr-dg-cell>{{fsmc.sample_mean_concentration}</clr-dg-cell>
+                <clr-dg-cell>{{fsmc.final_sample_mean_concentration_sci}}</clr-dg-cell>
             </clr-dg-row>
 
             <clr-dg-footer>

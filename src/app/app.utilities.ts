@@ -198,9 +198,25 @@ export class APP_UTILITIES {
         }
     }
 
+    public static mapOrder(array, order, key) {
+
+        array.sort(function (a, b) {
+            const A = a[key], B = b[key];
+
+            if (order.indexOf(A) > order.indexOf(B)) {
+                return 1;
+            } else {
+                return -1;
+            }
+
+        });
+
+        return array;
+    };
+
 
     public static convertArrayOfObjectsToCSV(args: any) {
-        let result, counter, keys, columnDelimiter, lineDelimiter, data, headers;
+        let result, counter, keys = [], columnDelimiter, lineDelimiter, data, headers, unorderedKeys;
 
         headers = [];
 
@@ -212,18 +228,34 @@ export class APP_UTILITIES {
         columnDelimiter = args.columnDelimiter || ',';
         lineDelimiter = args.lineDelimiter || '\n';
 
-        keys = Object.keys(data[0]);
+        unorderedKeys = Object.keys(data[0]);
+
+        args.headers.forEach(function (col) {
+            let found = false;
+            unorderedKeys = unorderedKeys.filter(function (item) {
+                if (!found && item === col.fieldName) {
+                    keys.push(item);
+                    found = true;
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+        })
 
         // put the headers array in the same order as the data keys
         keys.forEach(function (item) {
             const obj = args.headers.filter(function (o) {
-                return o.name === item;
+                return o.fieldName === item;
             })[0];
-            headers.push(obj.descr);
+            if (obj) {
+                headers.push(obj.colName);
+            }
+
         });
 
         // remove keys that aren't in the headers array, ensuring those data columns won't be exported
-        // keys.forEach(function(item){
+        // keys.forEach(function (item) {
         //     if (headers.indexOf(item) < 0) {
         //         let ndx = keys.indexOf(item);
         //         keys.splice(ndx, 1);

@@ -202,7 +202,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   buildBatchExtPosForm() {
     this.batchExtPosForm = this.formBuilder.group({
-      extractions: this.formBuilder.array([
+      extraction_batches: this.formBuilder.array([
         this.formBuilder.group({
           id: null,
           number: null,
@@ -211,7 +211,7 @@ export class AnalysisBatchesComponent implements OnInit {
         })
       ])
     })
-    this.EB_array = this.batchExtPosForm.get("extractions") as FormArray;
+    this.EB_array = this.batchExtPosForm.get("extraction_batches") as FormArray;
   }
 
   buildExtractForm() {
@@ -494,6 +494,12 @@ export class AnalysisBatchesComponent implements OnInit {
 
   deselectAll() {
     this.selected = [];
+  }
+
+  resetFlags() {
+    this.submitLoading = false;
+    this.showBatchExtPosError = false;
+    this.showBatchExtPosSuccess = false;
   }
 
   retrieveABData(abID) {
@@ -1152,6 +1158,31 @@ export class AnalysisBatchesComponent implements OnInit {
   }
 
   onSubmitBatchExtPos(formValue) {
+    this.showBatchExtPosSuccess = false;
+    this.showBatchExtPosError = false;
     this.submitLoading = true;
+
+    const ebSubmissionArray = [];
+
+    for (let extraction_batch of formValue.extraction_batches) {
+      ebSubmissionArray.push(extraction_batch);
+    }
+
+
+    this._extractionBatchService.bulkUpdate(ebSubmissionArray)
+      .subscribe(
+        (extractionBatches) => {
+          this.submitLoading = false;
+          this.showBatchExtPosSuccess = true;
+          this.showBatchExtPosError = false;
+
+        },
+        error => {
+          this.errorMessage = <any>error
+          this.showBatchExtPosError = true;
+          this.showBatchExtPosSuccess = false;
+          this.submitLoading = false;
+        }
+      );
   }
 }

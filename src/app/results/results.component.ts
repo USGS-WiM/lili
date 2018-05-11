@@ -43,7 +43,14 @@ export class ResultsComponent implements OnInit {
     targets: []
   }
 
-  columns = ['Sample', 'Collaborator Sample ID', 'Collection Start Date', 'Target', 'Sample Mean Concentration']
+  columns = [
+    { fieldName: 'sample', colName: "Sample" },
+    { fieldName: 'collaborator_sample_id', colName: "Collaborator Sample ID" },
+    { fieldName: 'collection_start_date', colName: "Collection Start Date" },
+    { fieldName: 'target_string', colName: "Target" },
+    { fieldName: 'final_sample_mean_concentration', colName: "Sample Mean Concentration" },
+    { fieldName: 'final_sample_mean_concentration_sci', colName: "Sample Mean Concentration (Sci)" }
+  ]
 
   constructor(private _sampleService: SampleService,
     private _targetService: TargetService,
@@ -83,7 +90,7 @@ export class ResultsComponent implements OnInit {
   }
 
   exportToCSV() {
-    const filename = 'Report_CountCasesByStatus_' + APP_UTILITIES.TODAY + '.csv';
+    const filename = 'LIDE_Results_' + APP_UTILITIES.TODAY + '.csv';
     APP_UTILITIES.downloadCSV({ filename: filename, data: this.results, headers: this.columns });
   }
 
