@@ -24,6 +24,19 @@ export class FreezerLocationsService {
 
   }
 
+  public getNextAvailable(studyID) {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.FREEZER_LOCATIONS_URL + 'get_next_available/?study=' + studyID , options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError)
+
+  }
+
+
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');

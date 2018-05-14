@@ -353,7 +353,7 @@
                             </div> -->
 
                             <div class="form-group">
-                                <label for="imrInput" >Initial Meter Reading</label>
+                                <label for="imrInput">Initial Meter Reading</label>
                                 <input type="text" id="imrInput" formControlName="meter_reading_initial">
                                 <div class="select">
                                     <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
@@ -363,7 +363,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="fmrInput" >Final Meter Reading</label>
+                                <label for="fmrInput">Final Meter Reading</label>
                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
                                 <label *ngIf="this.units">{{this.unitValue | displayValue:'symbol':this.units}}</label>
                             </div>
@@ -914,7 +914,7 @@
 <!-- end Edit FCSV modal -->
 
 <!-- begin freezer location assignment modal -->
-<clr-modal [(clrModalOpen)]="showHideFreezerLocationAssignModal">
+<clr-modal [(clrModalOpen)]="showHideFreezerLocationAssignModal" [clrModalSize]="'lg'">
     <h3 class="modal-title">
         <clr-icon shape="thermometer"></clr-icon> Freezer Location Assignment</h3>
     <div class="modal-body">
@@ -922,8 +922,7 @@
             <div class="col-lg-12">
                 <div *ngIf="this.selectedStudy">
                     <h4>
-                        <span>Assigning aliquot count and freezer locations for {{selected.length}} sample
-                            <span *ngIf="selected.length > 1">s</span>
+                        <span>Assigning aliquot count and freezer locations for {{selected.length}} sample<span *ngIf="selected.length > 1">s</span>
                         </span> from the study
                         <span style="font-weight:bold;">{{selectedStudy | displayValue:'name':this.studies}}</span>
                     </h4>
@@ -1018,8 +1017,18 @@
                 </form>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-6">
+                Left
+            </div>
+            <div class="col-lg-6">
+                Right
+            </div>
+        </div>
     </div>
-    <div class="modal-footer"></div>
+    <div class="modal-footer">
+
+    </div>
 </clr-modal>
 <!-- end freezer location assignment modal-->
 
@@ -1320,7 +1329,7 @@
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'final_concentrated_sample_volume'">
+            <clr-dg-column>
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     FCSV
                 </ng-container>
@@ -1335,6 +1344,12 @@
             <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_notes'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     FCSV Notes
+                </ng-container>
+            </clr-dg-column>
+
+            <clr-dg-column [clrDgField]="'total_volume_or_mass_sampled'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Total Volume Sampled
                 </ng-container>
             </clr-dg-column>
 
@@ -1450,7 +1465,7 @@
                 <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
                 <clr-dg-cell>
-                    <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.final_concentrated_sample_volume}}</span>
+                    <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.final_concentrated_sample_volume | number : '1.2-6' }}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>
                     <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.concentration_type}}</span>
@@ -1458,10 +1473,11 @@
                 <clr-dg-cell>
                     <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.notes}}</span>
                 </clr-dg-cell>
-                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial}} {{sample.meter_reading_unit | displayValue:'symbol':this.units}}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final}} {{sample.meter_reading_unit | displayValue:'symbol':this.units}}</clr-dg-cell>
-                <clr-dg-cell>{{sample.dissolution_volume}}</clr-dg-cell>
-                <clr-dg-cell>{{sample.post_dilution_volume}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.total_volume_or_mass_sampled | number : '1.2-6' }}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial | number : '1.2-6' }} {{sample.meter_reading_unit | displayValue:'symbol':this.units}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final | number : '1.2-6' }} {{sample.meter_reading_unit | displayValue:'symbol':this.units}}</clr-dg-cell>
+                <clr-dg-cell>{{sample.dissolution_volume | number : '1.2-6' }}</clr-dg-cell>
+                <clr-dg-cell>{{sample.post_dilution_volume | number : '1.2-6' }}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.filter_born_on_date | date:'shortDate'}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>

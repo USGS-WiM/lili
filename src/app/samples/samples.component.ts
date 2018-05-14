@@ -616,22 +616,46 @@ export class SamplesComponent implements OnInit {
           }
           // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
 
-          // request last occupied spot
-          this._freezerLocationsService.getLastOccupiedSpot()
+          const studyID = selectedSampleArray[0].study;
+
+          this._freezerLocationsService.getNextAvailable(studyID)
             .subscribe(
-              (lastOccupiedSpot) => {
-                console.log(lastOccupiedSpot);
-                this.lastOccupiedSpot = lastOccupiedSpot[0];
-                this.lastOccupiedSpotLoading = false;
-                this.showLastOccupiedSpot = true;
-                this.showLastOccupiedSpotError = false;
+              (nextAvailable) => {
+                //  this.lastOccupiedSpot = lastOccupiedSpot[0];
+                // this.lastOccupiedSpotLoading = false;
+                // this.showLastOccupiedSpot = true;
+                // this.showLastOccupiedSpotError = false;
+
+                if (nextAvailable.notfound) {
+                  // show no current box loc message
+                }
+
+                if (nextAvailable.box) {
+                  // show both current box loc and next box loc
+                }
               },
               error => {
-                this.lastOccupiedSpotLoading = false;
-                this.showLastOccupiedSpot = false;
-                this.showLastOccupiedSpotError = true;
+                // this.lastOccupiedSpotLoading = false;
+                // this.showLastOccupiedSpot = false;
+                // this.showLastOccupiedSpotError = true;
               }
             )
+
+          // request last occupied spot
+          // this._freezerLocationsService.getLastOccupiedSpot()
+          //   .subscribe(
+          //     (lastOccupiedSpot) => {
+          //       this.lastOccupiedSpot = lastOccupiedSpot[0];
+          //       this.lastOccupiedSpotLoading = false;
+          //       this.showLastOccupiedSpot = true;
+          //       this.showLastOccupiedSpotError = false;
+          //     },
+          //     error => {
+          //       this.lastOccupiedSpotLoading = false;
+          //       this.showLastOccupiedSpot = false;
+          //       this.showLastOccupiedSpotError = true;
+          //     }
+          //   )
 
         }
       }
