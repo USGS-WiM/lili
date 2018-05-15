@@ -918,16 +918,17 @@
     <h3 class="modal-title">
         <clr-icon shape="thermometer"></clr-icon> Freezer Location Assignment</h3>
     <div class="modal-body">
-        <div class="row">
-            <div class="col-lg-12">
-                <div *ngIf="this.selectedStudy">
-                    <h4>
-                        <span>Assigning aliquot count and freezer locations for {{selected.length}} sample<span *ngIf="selected.length > 1">s</span>
-                        </span> from the study
-                        <span style="font-weight:bold;">{{selectedStudy | displayValue:'name':this.studies}}</span>
-                    </h4>
-                </div>
-                <div *ngIf="showLastOccupiedSpot" class="last-spot-border">
+        <!-- <div class="row"> -->
+        <!-- <div class="col-lg-12 "> -->
+        <div *ngIf="this.selectedStudy">
+            <h4>
+                <span>Assigning freezer locations for {{selected.length}} sample
+                    <span *ngIf="selected.length > 1">s</span>
+                </span> from the study
+                <span style="font-weight:bold;">{{selectedStudy | displayValue:'name':this.studies}}</span>
+            </h4>
+        </div>
+        <!-- <div *ngIf="showLastOccupiedSpot" class="last-spot-border">
                     <label for="lastOccupiedSpot" style="font-weight:bold;">Last occupied freezer location</label>
                     <div id="lastOccupiedSpot">
                         <span class="spinner spinner-inline" *ngIf="lastOccupiedSpotLoading">Loading...</span>
@@ -939,92 +940,125 @@
                                 <b>{{lastOccupiedSpot.row}}</b> | Spot
                                 <b>{{lastOccupiedSpot.spot}}</b>
                             </span>
-                            <!-- <ul class="list-unstyled">
-                                <li>Rack {{lastOccupiedSpot.rack}}</li>
-                                <li>Box {{lastOccupiedSpot.box}}</li>
-                                <li>Row {{lastOccupiedSpot.row}}</li>
-                                <li>Spot {{lastOccupiedSpot.spot}}</li>
-                            </ul> -->
                         </span>
                         <span *ngIf="showLastOccupiedSpotError">
                             <clr-icon shape="error-standard"></clr-icon> Not Available</span>
                     </div>
+                </div> -->
+        <form id="freezeForm" class="compact" [formGroup]="freezeForm" (ngSubmit)="onSubmitFreezerLocation(freezeForm.value)">
+            <section class="form-block">
+
+                <div class="form-group">
+                    <label for="freezer" class="required">Freezer</label>
+                    <select id="freezerSelect" name="freezer" formControlName="freezer">
+                        <option *ngFor="let freezer of freezers" [value]="freezer.id">{{freezer.id}}</option>
+                    </select>
                 </div>
-                <form id="freezeSampleForm" class="compact" [formGroup]="freezeSampleForm" (ngSubmit)="onSubmitFreezerLocation(freezeSampleForm.value)">
-                    <section class="form-block">
 
-                        <div class="form-group">
-                            <label for="freezer" class="required">Freezer</label>
-                            <select id="freezerSelect" name="freezer" formControlName="freezer">
-                                <option *ngFor="let freezer of freezers" [value]="freezer.id">{{freezer.id}}</option>
-                            </select>
-                        </div>
+                <div class="form-group">
+                    <label>Frozen</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="frozenToggle" formControlName="frozen">
+                        <label for="frozenToggle">{{this.freezeForm.controls.frozen.value ? "Yes" : "No"}}</label>
+                    </div>
+                </div>
 
-                        <div class="form-group">
-                            <label for="aliquotCount" class="required">Number of Aliquots</label>
-                            <input id="aliquotCount" type="number" min="1" formControlName="aliquot_count">
-                        </div>
-                        <div class="form-group">
-                            <label for="rack" class="required">Rack</label>
-                            <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}" formControlName="rack">
-                            <span>Max {{currentFreezerDimensions.racks}}</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="box" class="required">Box</label>
-                            <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}" formControlName="box">
-                            <span>Max {{currentFreezerDimensions.boxes}}</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="row" class="required">Row</label>
-                            <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}" formControlName="row">
-                            <span>Max {{currentFreezerDimensions.rows}}</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="spot" class="required">Spot</label>
-                            <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}" formControlName="spot">
-                            <span>Max {{currentFreezerDimensions.spots}}</span>
-                        </div>
-                        <div class="form-group">
-                            <label>Frozen</label>
-                            <div class="toggle-switch">
-                                <input type="checkbox" id="frozenToggle" formControlName="frozen">
-                                <label for="frozenToggle">{{this.freezeSampleForm.controls.frozen.value ? "Yes" : "No"}}</label>
-                            </div>
-                        </div>
+                <div class="form-group">
+                    <label for="aliquotCount" class="required">Number of Aliquots per Sample</label>
+                    <input id="aliquotCount" type="number" min="1" formControlName="aliquot_count">
+                </div>
 
-                        <button type="button" class="btn btn-outline" (click)="showHideFreezerLocationAssignModal = !showHideFreezerLocationAssignModal; resetFlags()">Close</button>
-                        <button type="submit" class="btn btn-primary" [disabled]="freezeSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
+                <div class="form-group">
+                    <label for="aliquotCount" class="required">Total Number Aliquots</label>
+                    <input id="aliquotCount" type="number" readonly value="35">
+                </div>
 
-                        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFreezeError">
-                            <div clr-alert-item class="alert-item">
-                                <span class="alert-text">Submission error. Aliquot records not recorded.</span>
-                                <div class="alert-actions">
-                                    <a class="alert-action" (click)="onSubmitFreezerLocation(freezeSampleForm.value)">Try again</a>
-                                </div>
-                            </div>
-                        </clr-alert>
+            </section>
+            <section *ngIf="noCurrentBoxFlag">
+                <label>{{noCurrentBoxMessage}} </label>
+            </section>
+            <section class="form-block" *ngIf="!noCurrentBoxFlag">
+                <label>
+                    <span class="box-section-label">Current Box&nbsp;</span>|
+                    <span>&nbsp;Available spots: </span>
+                </label>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label for="rack" class="required">Rack</label>
+                        <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}" formControlName="rack">
+                        <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label for="box" class="required">Box</label>
+                        <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}" formControlName="box">
+                        <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label for="row" class="required">Row</label>
+                        <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}" formControlName="row">
+                        <span class="max-size-indicator">Max {{currentFreezerDimensions.rows}}</span>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label for="spot" class="required">Spot</label>
+                        <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}" formControlName="spot">
+                        <span class="max-size-indicator">Max {{currentFreezerDimensions.spots}}</span>
+                    </div>
+                </div>
+            </section>
 
-                        <clr-alert [clrAlertType]="'alert-success'" *ngIf="showFreezeSuccess">
-                            <div clr-alert-item class="alert-item">
-                                <span class="alert-text">Sample aliquot records and locations successfully submitted.</span>
-                                <div class="alert-actions">
-                                    <a class="alert-action" (click)="showHideFreezerLocationAssignModal = false; showFreezeSuccess = false; resetFlags();">Close</a>
-                                </div>
-                            </div>
-                        </clr-alert>
+            <section class="form-block">
+                <label>
+                    <span class="box-section-label">Next Available Box&nbsp;</span>|
+                    <span>&nbsp;Available spots: </span>
+                </label>
+                <div class="form-group row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label for="rack" class="required">Rack</label>
+                        <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}" formControlName="rack">
+                        <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label for="box" class="required">Box</label>
+                        <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}" formControlName="box">
+                        <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label for="row" class="required">Row</label>
+                        <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}" formControlName="row">
+                        <span class="max-size-indicator">Max {{currentFreezerDimensions.rows}}</span>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label for="spot" class="required">Spot</label>
+                        <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}" formControlName="spot">
+                        <span class="max-size-indicator">Max {{currentFreezerDimensions.spots}}</span>
+                    </div>
+                </div>
+            </section>
+            <section class="form-block">
+                <button type="button" class="btn btn-outline" (click)="showHideFreezerLocationAssignModal = !showHideFreezerLocationAssignModal; resetFlags()">Close</button>
+                <button type="submit" class="btn btn-primary" [disabled]="freezeForm.invalid" [clrLoading]="submitLoading">Submit</button>
 
-                    </section>
-                </form>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                Left
-            </div>
-            <div class="col-lg-6">
-                Right
-            </div>
-        </div>
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFreezeError">
+                    <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Submission error. Aliquot records not recorded.</span>
+                        <div class="alert-actions">
+                            <a class="alert-action" (click)="onSubmitFreezerLocation(freezeForm.value)">Try again</a>
+                        </div>
+                    </div>
+                </clr-alert>
+
+                <clr-alert [clrAlertType]="'alert-success'" *ngIf="showFreezeSuccess">
+                    <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Sample aliquot records and locations successfully submitted.</span>
+                        <div class="alert-actions">
+                            <a class="alert-action" (click)="showHideFreezerLocationAssignModal = false; showFreezeSuccess = false; resetFlags();">Close</a>
+                        </div>
+                    </div>
+                </clr-alert>
+            </section>
+        </form>
+        <!-- </div> -->
+        <!-- </div> -->
     </div>
     <div class="modal-footer">
 

@@ -123,6 +123,11 @@ export class SamplesComponent implements OnInit {
   showLastOccupiedSpotError: boolean = false;
   lastOccupiedSpotLoading;
 
+  noCurrentBoxFlag: boolean = false;
+  noCurrentBoxMessage: string = '';
+
+  freezeForm: FormGroup;
+
   initialMeterReading = 2;
 
   currentFreezerDimensions = {
@@ -211,16 +216,16 @@ export class SamplesComponent implements OnInit {
     record_type: new FormControl(2)
   });
 
-  freezeSampleForm = new FormGroup({
-    // sample: new FormControl(''),
-    freezer: new FormControl(1),
-    aliquot_count: new FormControl(null, [Validators.required, Validators.min(1)]),
-    rack: new FormControl(null, [Validators.required, Validators.min(1)]),
-    box: new FormControl(null, [Validators.required, Validators.min(1)]),
-    row: new FormControl(null, [Validators.required, Validators.min(1)]),
-    spot: new FormControl(null, [Validators.required, Validators.min(1)]),
-    frozen: new FormControl(true, Validators.required)
-  });
+  // freezeSampleForm = new FormGroup({
+  //   // sample: new FormControl(''),
+  //   freezer: new FormControl(1),
+  //   aliquot_count: new FormControl(null, [Validators.required, Validators.min(1)]),
+  //   rack: new FormControl(null, [Validators.required, Validators.min(1)]),
+  //   box: new FormControl(null, [Validators.required, Validators.min(1)]),
+  //   row: new FormControl(null, [Validators.required, Validators.min(1)]),
+  //   spot: new FormControl(null, [Validators.required, Validators.min(1)]),
+  //   frozen: new FormControl(true, Validators.required)
+  // });
 
   skipLabelForm = new FormGroup({
     count: new FormControl("0")
@@ -241,6 +246,24 @@ export class SamplesComponent implements OnInit {
     notes: new FormControl('')
   });
 
+  buildFreezeForm() {
+    this.freezeForm = this.formBuilder.group({
+      freezer: [1, Validators.required],
+      frozen: [{ value: true }, [Validators.required, Validators.min(1)]],
+      aliquot_count: [{ value: null }, [Validators.required, Validators.min(1)]],
+      rack: [{ value: null }, [Validators.required, Validators.min(1)]],
+      box: [{ value: null }, [Validators.required, Validators.min(1)]],
+      row: [{ value: null }, [Validators.required, Validators.min(1)]],
+      spot: [{ value: null }, [Validators.required, Validators.min(1)]],
+      next_empty_box: this.formBuilder.group({
+        aliquot_count: [{ value: null }, [Validators.required, Validators.min(1)]],
+        rack: [{ value: null }, [Validators.required, Validators.min(1)]],
+        box: [{ value: null }, [Validators.required, Validators.min(1)]],
+        row: [{ value: null }, [Validators.required, Validators.min(1)]],
+        spot: [{ value: null }, [Validators.required, Validators.min(1)]],
+      })
+    })
+  };
 
   buildAddSampleForm() {
     this.addSampleForm = this.formBuilder.group({
@@ -312,6 +335,7 @@ export class SamplesComponent implements OnInit {
   ) {
     this.buildAddSampleForm();
     this.buildCreateFCSVForm();
+    this.buildFreezeForm();
   }
 
   validateFinalMeterReading = (control: FormControl) => {
@@ -435,7 +459,7 @@ export class SamplesComponent implements OnInit {
       .subscribe(users => this.users = users,
         error => this.errorMessage = <any>error);
 
-    this.freezeSampleForm.get('freezer').valueChanges.subscribe(val => {
+    this.freezeForm.get('freezer').valueChanges.subscribe(val => {
       // set the maxes for freezer location inputs
       for (let freezer of this.freezers) {
         if (freezer.id === Number(val)) {
@@ -568,10 +592,11 @@ export class SamplesComponent implements OnInit {
     this.lastOccupiedSpotLoading = true;
     this.showLastOccupiedSpot = false;
     this.showLastOccupiedSpotError = false;
+    this.noCurrentBoxFlag = false;
 
     // set the maxes for freezer location inputs
     for (let freezer of this.freezers) {
-      if (freezer.id === this.freezeSampleForm.get('freezer').value) {
+      if (freezer.id === this.freezeForm.get('freezer').value) {
         this.currentFreezerDimensions = {
           "racks": freezer.racks,
           "boxes": freezer.boxes,
@@ -610,11 +635,7 @@ export class SamplesComponent implements OnInit {
             || sample.matrix === (this.lookupMatrixTypeID("F")))) {
           this.showHideMissingFCSVErrorModal = true;
         } else {
-          // show the freeze modal if not showing already
-          if (this.showHideFreezerLocationAssignModal === false) {
-            this.showHideFreezerLocationAssignModal = true;
-          }
-          // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
+          // lookup the suggested locations (next available)
 
           const studyID = selectedSampleArray[0].study;
 
@@ -625,14 +646,41 @@ export class SamplesComponent implements OnInit {
                 // this.lastOccupiedSpotLoading = false;
                 // this.showLastOccupiedSpot = true;
                 // this.showLastOccupiedSpotError = false;
+                this.freezeForm.patchValue({
+                  next_empty_box: {
+                    aliquot_count: null,
+                    rack: nextAvailable.next_empty_box.rack,
+                    box: nextAvailable.next_empty_box.box,
+                    row: nextAvailable.next_empty_box.row,
+                    spot: nextAvailable.next_empty_box.spot
+                  }
+                });
 
+                // if there is no current box for the study
                 if (nextAvailable.notfound) {
-                  // show no current box loc message
+                  // show no current box message
+                  this.noCurrentBoxMessage = nextAvailable.notfound;
+                  this.noCurrentBoxFlag = true;
                 }
 
+                // if there is a box with aliquots for the study ('box' field will exist in this case)
                 if (nextAvailable.box) {
-                  // show both current box loc and next box loc
+                  // show both current box loc and next loc box
+                  this.noCurrentBoxFlag = false;
+                  this.freezeForm.patchValue({
+                    aliquot_count: null,
+                    rack: nextAvailable.rack,
+                    box: nextAvailable.box,
+                    row: nextAvailable.row,
+                    spot: nextAvailable.spot
+                  });
                 }
+
+                // show the freeze modal if not showing already
+                if (this.showHideFreezerLocationAssignModal === false) {
+                  this.showHideFreezerLocationAssignModal = true;
+                }
+
               },
               error => {
                 // this.lastOccupiedSpotLoading = false;
@@ -641,6 +689,7 @@ export class SamplesComponent implements OnInit {
               }
             )
 
+          // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
           // request last occupied spot
           // this._freezerLocationsService.getLastOccupiedSpot()
           //   .subscribe(

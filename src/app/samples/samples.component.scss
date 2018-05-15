@@ -41,5 +41,13 @@
     text-decoration: none;
     display: block;
 }
+.box-section-label {
+    font-style: bold !important;
+    font-size: larger;
+}
+
+.max-size-indicator {
+    font-style: italic !important;
+}
 
 .suggestions a:hover {background-color: #ddd}
