@@ -914,7 +914,7 @@
 <!-- end Edit FCSV modal -->
 
 <!-- begin freezer location assignment modal -->
-<clr-modal [(clrModalOpen)]="showHideFreezerLocationAssignModal" [clrModalSize]="'lg'">
+<clr-modal [(clrModalOpen)]="freezerLocationAssignModalActive" [clrModalSize]="'lg'">
     <h3 class="modal-title">
         <clr-icon shape="thermometer"></clr-icon> Freezer Location Assignment</h3>
     <div class="modal-body">
@@ -922,10 +922,12 @@
         <!-- <div class="col-lg-12 "> -->
         <div *ngIf="this.selectedStudy">
             <h4>
-                <span>Assigning freezer locations for {{selected.length}} sample
-                    <span *ngIf="selected.length > 1">s</span>
-                </span> from the study
-                <span style="font-weight:bold;">{{selectedStudy | displayValue:'name':this.studies}}</span>
+                <span>
+                    <span>Assigning freezer locations for {{selected.length}} sample
+                        <span *ngIf="selected.length > 1">s</span>
+                    </span> from the study
+                    <span style="font-weight:bold;">{{selectedStudy | displayValue:'name':this.studies}}</span>
+                </span>
             </h4>
         </div>
         <!-- <div *ngIf="showLastOccupiedSpot" class="last-spot-border">
@@ -945,14 +947,19 @@
                             <clr-icon shape="error-standard"></clr-icon> Not Available</span>
                     </div>
                 </div> -->
-        <form id="freezeForm" class="compact" [formGroup]="freezeForm" (ngSubmit)="onSubmitFreezerLocation(freezeForm.value)">
+        <form id="freezeForm" [formGroup]="freezeForm" (ngSubmit)="onSubmitFreezerLocation(freezeForm.value)">
             <section class="form-block">
 
                 <div class="form-group">
-                    <label for="freezer" class="required">Freezer</label>
+                    <label for="freezer" class="required">Select Freezer</label>
                     <select id="freezerSelect" name="freezer" formControlName="freezer">
                         <option *ngFor="let freezer of freezers" [value]="freezer.id">{{freezer.id}}</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="aliquotCount" class="required">Aliquots per Sample</label>
+                    <input id="aliquotCount" type="number" min="1" formControlName="aliquots_per_sample" class="input-small-number">
                 </div>
 
                 <div class="form-group">
@@ -964,24 +971,60 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="aliquotCount" class="required">Number of Aliquots per Sample</label>
-                    <input id="aliquotCount" type="number" min="1" formControlName="aliquot_count">
-                </div>
-
-                <div class="form-group">
-                    <label for="aliquotCount" class="required">Total Number Aliquots</label>
-                    <input id="aliquotCount" type="number" readonly value="35">
+                    <label for="totalAliquots">Total Number Aliquots
+                        <clr-tooltip>
+                            <clr-icon clrTooltipTrigger shape="info-circle" size="24"></clr-icon>
+                            <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                                <span>Sample count * Aliquots per sample count</span>
+                            </clr-tooltip-content>
+                        </clr-tooltip>
+                    </label>
+                    <input id="totalAliquots" type="number" formControlName="total_aliquots" readonly>
                 </div>
 
             </section>
+            <hr>
+
+            <section>
+                <clr-tree-node>
+                    <clr-icon shape="info-standard" class="is-solid"></clr-icon>
+                    Instructions
+                    <ng-template clrIfExpanded>
+                        <ng-container>
+                            <clr-tree-node>
+                                <label>Choose starting location for aliquots. Maximum value is displayed to the right of each input.
+                                    Next available box is always shown. If the study of the current sample selection has
+                                    any aliquots already stored, current box for the study is shown. Select share of total
+                                    aliquots for each box. Suggested starting locations (based on current freezer status)
+                                    are provided but can be changed. Note that samples are not split across boxes. In order
+                                    to enforce this, the maximum share of total for the current box may be less than spots
+                                    available in that box.
+                                </label>
+                            </clr-tree-node>
+                        </ng-container>
+                    </ng-template>
+                </clr-tree-node>
+            </section>
+
             <section *ngIf="noCurrentBoxFlag">
                 <label>{{noCurrentBoxMessage}} </label>
             </section>
             <section class="form-block" *ngIf="!noCurrentBoxFlag">
                 <label>
                     <span class="box-section-label">Current Box&nbsp;</span>|
-                    <span>&nbsp;Available spots: </span>
+                    <span>&nbsp;Available spots: {{this.freezeForm.get('available_spots_in_box').value}}</span>
+
                 </label>
+                <div class="form-group row">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <label class="required">Share of Total</label>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <input type="number" formControlName="aliquot_count_share" class="input-small-number">
+                        <span class="max-size-indicator">Max {{currentBoxShareMax}}</span>
+                    </div>
+
+                </div>
                 <div class="form-group row">
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="rack" class="required">Rack</label>
@@ -1006,11 +1049,20 @@
                 </div>
             </section>
 
-            <section class="form-block">
+            <section class="form-block" formGroupName="next_empty_box">
                 <label>
                     <span class="box-section-label">Next Available Box&nbsp;</span>|
-                    <span>&nbsp;Available spots: </span>
+                    <span>&nbsp;Available spots: {{this.freezeForm.get('next_empty_box').get('available_spots_in_box').value}}
+                    </span>
                 </label>
+                <div class="form-group row">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <label class="required">Share of Total</label>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <input type="number" formControlName="aliquot_count_share" class="input-small-number">
+                    </div>
+                </div>
                 <div class="form-group row">
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="rack" class="required">Rack</label>
@@ -1035,7 +1087,7 @@
                 </div>
             </section>
             <section class="form-block">
-                <button type="button" class="btn btn-outline" (click)="showHideFreezerLocationAssignModal = !showHideFreezerLocationAssignModal; resetFlags()">Close</button>
+                <button type="button" class="btn btn-outline" (click)="freezerLocationAssignModalActive = !freezerLocationAssignModalActive; resetFlags()">Close</button>
                 <button type="submit" class="btn btn-primary" [disabled]="freezeForm.invalid" [clrLoading]="submitLoading">Submit</button>
 
                 <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFreezeError">
@@ -1051,7 +1103,7 @@
                     <div clr-alert-item class="alert-item">
                         <span class="alert-text">Sample aliquot records and locations successfully submitted.</span>
                         <div class="alert-actions">
-                            <a class="alert-action" (click)="showHideFreezerLocationAssignModal = false; showFreezeSuccess = false; resetFlags();">Close</a>
+                            <a class="alert-action" (click)="freezerLocationAssignModalActive = false; showFreezeSuccess = false; resetFlags();">Close</a>
                         </div>
                     </div>
                 </clr-alert>
@@ -1178,7 +1230,7 @@
                     <section>
                         <div>
                             <label>Number of labels to skip:</label>
-                            <input type="number" formControlName="count" min="1" class="label-skip-input">
+                            <input type="number" formControlName="count" min="1" class="input-small-number">
                         </div>
 
                     </section>

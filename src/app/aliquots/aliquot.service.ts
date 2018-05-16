@@ -14,15 +14,15 @@ export class AliquotService {
 
   constructor(private _http: Http) { }
 
-  public create(formValue): Observable<any> {
+  public create(submissionArray): Observable<any> {
 
     let options = new RequestOptions({
       headers: APP_SETTINGS.AUTH_JSON_HEADERS
     });
 
     // JSON object submission (formValue) need to be within an array
-    return this._http.post(APP_SETTINGS.ALIQUOTS_URL, [formValue], options)
-    .map((response: Response) => <any[]>response.json())
+    return this._http.post(APP_SETTINGS.ALIQUOTS_URL, submissionArray, options)
+      .map((response: Response) => <any[]>response.json())
       .catch(this.handleError)
 
   }

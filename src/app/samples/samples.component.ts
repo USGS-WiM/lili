@@ -57,7 +57,7 @@ export class SamplesComponent implements OnInit {
   showHideABModal: boolean = false;
   addFCSVModalActive: boolean = false;
   editFCSVModalActive: boolean = false;
-  showHideFreezerLocationAssignModal: boolean = false;
+  freezerLocationAssignModalActive: boolean = false;
   showHidePrintModal: boolean = false;
   showHideFreezeWarningModal: boolean = false;
   showHideFreezerChoiceModal: boolean = false;
@@ -127,6 +127,7 @@ export class SamplesComponent implements OnInit {
   noCurrentBoxMessage: string = '';
 
   freezeForm: FormGroup;
+  currentBoxShareMax;
 
   initialMeterReading = 2;
 
@@ -216,17 +217,6 @@ export class SamplesComponent implements OnInit {
     record_type: new FormControl(2)
   });
 
-  // freezeSampleForm = new FormGroup({
-  //   // sample: new FormControl(''),
-  //   freezer: new FormControl(1),
-  //   aliquot_count: new FormControl(null, [Validators.required, Validators.min(1)]),
-  //   rack: new FormControl(null, [Validators.required, Validators.min(1)]),
-  //   box: new FormControl(null, [Validators.required, Validators.min(1)]),
-  //   row: new FormControl(null, [Validators.required, Validators.min(1)]),
-  //   spot: new FormControl(null, [Validators.required, Validators.min(1)]),
-  //   frozen: new FormControl(true, Validators.required)
-  // });
-
   skipLabelForm = new FormGroup({
     count: new FormControl("0")
   })
@@ -249,14 +239,18 @@ export class SamplesComponent implements OnInit {
   buildFreezeForm() {
     this.freezeForm = this.formBuilder.group({
       freezer: [1, Validators.required],
-      frozen: [{ value: true }, [Validators.required, Validators.min(1)]],
-      aliquot_count: [{ value: null }, [Validators.required, Validators.min(1)]],
+      frozen: [true, Validators.required],
+      aliquots_per_sample: 3,
+      total_aliquots: null,
+      available_spots_in_box: null,
+      aliquot_count_share: [{ value: 0 }, [Validators.required, Validators.min(0)]],
       rack: [{ value: null }, [Validators.required, Validators.min(1)]],
       box: [{ value: null }, [Validators.required, Validators.min(1)]],
       row: [{ value: null }, [Validators.required, Validators.min(1)]],
       spot: [{ value: null }, [Validators.required, Validators.min(1)]],
       next_empty_box: this.formBuilder.group({
-        aliquot_count: [{ value: null }, [Validators.required, Validators.min(1)]],
+        aliquot_count_share: [{ value: 0 }, [Validators.required, Validators.min(0)]],
+        available_spots_in_box: null,
         rack: [{ value: null }, [Validators.required, Validators.min(1)]],
         box: [{ value: null }, [Validators.required, Validators.min(1)]],
         row: [{ value: null }, [Validators.required, Validators.min(1)]],
@@ -473,6 +467,18 @@ export class SamplesComponent implements OnInit {
       }
     });
 
+    this.freezeForm.get('aliquots_per_sample').valueChanges.subscribe(val => {
+      const sampleCount = this.selected.length;
+      const totalAliquots = sampleCount * val;
+      this.freezeForm.get('total_aliquots').setValue(totalAliquots);
+
+      // get aliquots per sample and available spots in box; calculate and update currentBoxShareMax
+      const aliquotsPerSample = this.freezeForm.get('aliquots_per_sample').value;
+      const availableSpotsInBox = this.freezeForm.get('available_spots_in_box').value;
+      this.currentBoxShareMax = (Math.trunc(availableSpotsInBox / aliquotsPerSample)) * aliquotsPerSample;
+
+    });
+
   }
 
   onUnitChange(unitValue) {
@@ -585,132 +591,6 @@ export class SamplesComponent implements OnInit {
   //   }
   // }
 
-  // callback for the freeze samples button
-  assignFreezerLocation(selectedSampleArray) {
-
-    this.showHideFreezerChoiceModal = false;
-    this.lastOccupiedSpotLoading = true;
-    this.showLastOccupiedSpot = false;
-    this.showLastOccupiedSpotError = false;
-    this.noCurrentBoxFlag = false;
-
-    // set the maxes for freezer location inputs
-    for (let freezer of this.freezers) {
-      if (freezer.id === this.freezeForm.get('freezer').value) {
-        this.currentFreezerDimensions = {
-          "racks": freezer.racks,
-          "boxes": freezer.boxes,
-          "rows": freezer.rows,
-          "spots": freezer.spots
-        }
-      }
-    }
-
-    // check if more than one sample is selected. if so, alert user they can only freeze one sample at a time
-    // if not, proceed with further checks and logic
-
-    // if (this.selected.length > 1) {
-    //   this.showHideMultipleSamplesErrorModal = true;
-    // } else {
-
-    // NOTE: check logic below not neccesary if only one sample - keeping for now in the event batch sample freezing 
-    // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
-    // checks if all the values for study are the same in the selected samples array
-    this.onlyOneStudySelected = selectedSampleArray.every(
-      function (value, _, array) {
-        return array[0].study === value.study;
-      });
-
-    // alert user they are attempting to select a set of studies for freezing that belong to more than one study
-    // show freeze warning modal if multiple studies, else show the freeze modal
-    if (this.onlyOneStudySelected === false) {
-      this.showHideFreezeWarningModal = true
-    } else if (this.onlyOneStudySelected === true) {
-
-      for (let sample of selectedSampleArray) {
-        // if any sample in the selection lacks an FCSV value AND has a matrix that requires one, show error
-        if (sample.final_concentrated_sample_volume === null &&
-          (sample.matrix === (this.lookupMatrixTypeID("W"))
-            || sample.matrix === (this.lookupMatrixTypeID("WW"))
-            || sample.matrix === (this.lookupMatrixTypeID("F")))) {
-          this.showHideMissingFCSVErrorModal = true;
-        } else {
-          // lookup the suggested locations (next available)
-
-          const studyID = selectedSampleArray[0].study;
-
-          this._freezerLocationsService.getNextAvailable(studyID)
-            .subscribe(
-              (nextAvailable) => {
-                //  this.lastOccupiedSpot = lastOccupiedSpot[0];
-                // this.lastOccupiedSpotLoading = false;
-                // this.showLastOccupiedSpot = true;
-                // this.showLastOccupiedSpotError = false;
-                this.freezeForm.patchValue({
-                  next_empty_box: {
-                    aliquot_count: null,
-                    rack: nextAvailable.next_empty_box.rack,
-                    box: nextAvailable.next_empty_box.box,
-                    row: nextAvailable.next_empty_box.row,
-                    spot: nextAvailable.next_empty_box.spot
-                  }
-                });
-
-                // if there is no current box for the study
-                if (nextAvailable.notfound) {
-                  // show no current box message
-                  this.noCurrentBoxMessage = nextAvailable.notfound;
-                  this.noCurrentBoxFlag = true;
-                }
-
-                // if there is a box with aliquots for the study ('box' field will exist in this case)
-                if (nextAvailable.box) {
-                  // show both current box loc and next loc box
-                  this.noCurrentBoxFlag = false;
-                  this.freezeForm.patchValue({
-                    aliquot_count: null,
-                    rack: nextAvailable.rack,
-                    box: nextAvailable.box,
-                    row: nextAvailable.row,
-                    spot: nextAvailable.spot
-                  });
-                }
-
-                // show the freeze modal if not showing already
-                if (this.showHideFreezerLocationAssignModal === false) {
-                  this.showHideFreezerLocationAssignModal = true;
-                }
-
-              },
-              error => {
-                // this.lastOccupiedSpotLoading = false;
-                // this.showLastOccupiedSpot = false;
-                // this.showLastOccupiedSpotError = true;
-              }
-            )
-
-          // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
-          // request last occupied spot
-          // this._freezerLocationsService.getLastOccupiedSpot()
-          //   .subscribe(
-          //     (lastOccupiedSpot) => {
-          //       this.lastOccupiedSpot = lastOccupiedSpot[0];
-          //       this.lastOccupiedSpotLoading = false;
-          //       this.showLastOccupiedSpot = true;
-          //       this.showLastOccupiedSpotError = false;
-          //     },
-          //     error => {
-          //       this.lastOccupiedSpotLoading = false;
-          //       this.showLastOccupiedSpot = false;
-          //       this.showLastOccupiedSpotError = true;
-          //     }
-          //   )
-
-        }
-      }
-    }
-    this.selectedStudy = this.selected[0].study;
-  }
 
   includeExcludeLabel(event) {
 
@@ -857,22 +737,206 @@ export class SamplesComponent implements OnInit {
     return newItem.id === this;
   }
 
+  // callback for the freeze samples button
+  assignFreezerLocation(selectedSampleArray) {
+
+    this.showHideFreezerChoiceModal = false;
+    this.noCurrentBoxFlag = false;
+    // this.lastOccupiedSpotLoading = true;
+    // this.showLastOccupiedSpot = false;
+    // this.showLastOccupiedSpotError = false;
+
+    // set the maxes for freezer location inputs
+    for (let freezer of this.freezers) {
+      if (freezer.id === this.freezeForm.get('freezer').value) {
+        this.currentFreezerDimensions = {
+          "racks": freezer.racks,
+          "boxes": freezer.boxes,
+          "rows": freezer.rows,
+          "spots": freezer.spots
+        }
+      }
+    }
+
+    // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
+    // checks if all the values for study are the same in the selected samples array
+    this.onlyOneStudySelected = selectedSampleArray.every(
+      function (value, _, array) {
+        return array[0].study === value.study;
+      });
+
+    // alert user they are attempting to select a set of studies for freezing that belong to more than one study
+    // show freeze warning modal if multiple studies, else show the freeze modal
+    if (this.onlyOneStudySelected === false) {
+      this.showHideFreezeWarningModal = true
+    } else if (this.onlyOneStudySelected === true) {
+
+      for (let sample of selectedSampleArray) {
+        // if any sample in the selection lacks an FCSV value AND has a matrix that requires one, show error
+        if (sample.final_concentrated_sample_volume === null &&
+          (sample.matrix === (this.lookupMatrixTypeID("W"))
+            || sample.matrix === (this.lookupMatrixTypeID("WW"))
+            || sample.matrix === (this.lookupMatrixTypeID("F")))) {
+          this.showHideMissingFCSVErrorModal = true;
+        } else {
+          // lookup the suggested locations (next available)
+          const studyID = selectedSampleArray[0].study;
+          this._freezerLocationsService.getNextAvailable(studyID)
+            .subscribe(
+              (nextAvailable) => {
+                //  this.lastOccupiedSpot = lastOccupiedSpot[0];
+                // this.lastOccupiedSpotLoading = false;
+                // this.showLastOccupiedSpot = true;
+                // this.showLastOccupiedSpotError = false;
+
+                // get the sample count
+                const sampleCount = selectedSampleArray.length;
+                // get aliquots per sample from freezeForm
+                const aliquotsPerSample = this.freezeForm.get('aliquots_per_sample').value;
+                // calculate a totalAliquots number to patch into freezeForm control
+                const totalAliquots = sampleCount * aliquotsPerSample;
+
+                this.currentBoxShareMax = (Math.trunc(nextAvailable.available_spots_in_box / aliquotsPerSample) * aliquotsPerSample);
+
+                this.freezeForm.patchValue({
+                  total_aliquots: totalAliquots,
+                  available_spots_in_box: nextAvailable.available_spots_in_box,
+                  next_empty_box: {
+                    aliquot_count_share: 0,
+                    available_spots_in_box: nextAvailable.next_empty_box.available_spots_in_box,
+                    rack: nextAvailable.next_empty_box.rack,
+                    box: nextAvailable.next_empty_box.box,
+                    row: nextAvailable.next_empty_box.row,
+                    spot: nextAvailable.next_empty_box.spot
+                  }
+                });
+
+                // if there is no current box for the study
+                if (nextAvailable.not_found) {
+                  // show no current box message
+                  this.noCurrentBoxMessage = nextAvailable.not_found;
+                  this.noCurrentBoxFlag = true;
+                }
+
+                // if there is a box with aliquots for the study ('box' field will exist in this case)
+                if (nextAvailable.box) {
+                  // show both current box loc and next loc box
+                  this.noCurrentBoxFlag = false;
+                  this.freezeForm.patchValue({
+                    aliquot_count_share: 0,
+                    rack: nextAvailable.rack,
+                    box: nextAvailable.box,
+                    row: nextAvailable.row,
+                    spot: nextAvailable.spot
+                  });
+                }
+
+                // show the freeze modal if not showing already
+                if (this.freezerLocationAssignModalActive === false) {
+                  this.freezerLocationAssignModalActive = true;
+                }
+
+              },
+              error => {
+                // this.lastOccupiedSpotLoading = false;
+                // this.showLastOccupiedSpot = false;
+                // this.showLastOccupiedSpotError = true;
+              }
+            )
+
+          // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
+          // request last occupied spot
+          // this._freezerLocationsService.getLastOccupiedSpot()
+          //   .subscribe(
+          //     (lastOccupiedSpot) => {
+          //       this.lastOccupiedSpot = lastOccupiedSpot[0];
+          //       this.lastOccupiedSpotLoading = false;
+          //       this.showLastOccupiedSpot = true;
+          //       this.showLastOccupiedSpotError = false;
+          //     },
+          //     error => {
+          //       this.lastOccupiedSpotLoading = false;
+          //       this.showLastOccupiedSpot = false;
+          //       this.showLastOccupiedSpotError = true;
+          //     }
+          //   )
+
+        }
+      }
+    }
+    this.selectedStudy = this.selected[0].study;
+  }
+
+
   onSubmitFreezerLocation(formValue) {
     this.submitLoading = true;
+
+    let submissionArray = [];
+
+    let currentBoxSampleCount = 0;
+    let nextBoxSampleCount = 0;
 
     let sampleIDArray = [];
     for (let sample of this.selected) {
       sampleIDArray.push(sample.id)
     }
 
-    formValue.samples = sampleIDArray;
-    formValue.freezer = Number(formValue.freezer);
-    formValue.rack = Number(formValue.rack);
-    formValue.box = Number(formValue.box);
-    formValue.row = Number(formValue.row);
-    formValue.spot = Number(formValue.spot);
+    // if the aliquot_count_share is greater than 0, current box is being used
+    if (formValue.aliquot_count_share > 0) {
+      // calculate the amount of sample-aliquot sets that can go into the current box
+      currentBoxSampleCount = (Math.trunc(formValue.available_spots_in_box / formValue.aliquots_per_sample));
 
-    this._aliquotService.create(formValue)
+      // split sampleIDArray: one array for current box, another array for next box
+
+      // set currentBoxSampleIDArray to the first x of the wholeSampleIDArray, where x = currentBoxSampleCount, using array.slice
+      let currentBoxSampleIDArray = sampleIDArray.slice(0, currentBoxSampleCount)
+
+      // create object with sample array, aliquot per sample count, starting location; push to submission array
+      let currentBoxObject = {
+        samples: currentBoxSampleIDArray,
+        aliquot_count: formValue.aliquots_per_sample,
+        freezer: formValue.freezer,
+        frozen: formValue.frozen,
+        rack: formValue.rack,
+        box: formValue.box,
+        row: formValue.row,
+        spot: formValue.spot
+      }
+      submissionArray.push(currentBoxObject);
+    }
+
+    if (formValue.next_empty_box.aliquot_count_share > 0) {
+
+      // determine the length of the nextBoxSampleCount by subtracting currentBoxSampleCount from the  wholeSampleIDArray length.
+      nextBoxSampleCount = sampleIDArray.length - currentBoxSampleCount;
+
+      // set nextBoxSampleIDArray to the remaining IDs of the wholeSampleIDArray, using array.slice
+      let nextBoxSampleIDArray = sampleIDArray.slice(nextBoxSampleCount * -1)
+
+      // create object with sample array, aliquot per sample count, starting location; push to submission array
+      let nextBoxObject = {
+        samples: nextBoxSampleIDArray,
+        aliquot_count: formValue.aliquots_per_sample,
+        freezer: formValue.freezer,
+        frozen: formValue.frozen,
+        rack: formValue.next_empty_box.rack,
+        box: formValue.next_empty_box.box,
+        row: formValue.next_empty_box.row,
+        spot: formValue.next_empty_box.spot
+      }
+      submissionArray.push(nextBoxObject);
+    }
+    console.log("whatever");
+
+    // DEPRECATED
+    // formValue.samples = sampleIDArray;
+    // formValue.freezer = Number(formValue.freezer);
+    // formValue.rack = Number(formValue.rack);
+    // formValue.box = Number(formValue.box);
+    // formValue.row = Number(formValue.row);
+    // formValue.spot = Number(formValue.spot);
+
+    this._aliquotService.create(submissionArray)
       .subscribe(
         (results) => {
           this.submitLoading = false;
