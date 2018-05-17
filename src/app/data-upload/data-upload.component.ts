@@ -34,12 +34,14 @@ export class DataUploadComponent implements OnInit {
   parsedRawInhResults;
   parsedRawTargetResults;
   pcrResultsValidationObject;
+  pcrResultsValidationReplicates = [];
   parsedRawTargetResults_pcrBatchID;
   // showResultsDisplay: boolean = false;
   rawResultsParsed: boolean = false;
   resultsSubmissionReady: boolean = false;
   validationResponseReady: boolean = false;
   rawInhResultsParsed: boolean = false;
+  replicatesLoading: boolean = false;
 
   textFileNameTargetCode;
   inhTextFileNameNAType;
@@ -344,6 +346,8 @@ export class DataUploadComponent implements OnInit {
 
   submitRawInhibitionResults() {
 
+    this.resetInhibitions();
+
     this._inhibitionService.submitRawInhibitionResults(this.parsedRawInhResults)
       .subscribe(
         (calculatedDilutions) => {
@@ -376,6 +380,7 @@ export class DataUploadComponent implements OnInit {
         (results) => {
           console.log(results);
           this.pcrResultsValidationObject = results;
+          this.pcrResultsValidationReplicates = results.pcrreplicates;
           this.resultsSubmissionErrorFlag = false;
           this.resultsSubmissionSuccessFlag = true;
           this.validationResponseReady = true;
@@ -392,6 +397,10 @@ export class DataUploadComponent implements OnInit {
     this.replicateUpdateErrorFlag = false;
     this.submitLoading = true;
 
+
+    this.replicatesLoading = true;
+    this.pcrResultsValidationReplicates = [];
+
     let repArray = [];
 
     for (let rep of selectedReps) {
@@ -404,14 +413,17 @@ export class DataUploadComponent implements OnInit {
     this._pcrReplicateService.update(repArray)
       .subscribe(
         (results) => {
+          this.pcrResultsValidationReplicates = results;
           this.replicateUpdateSuccessFlag = true;
           this.replicateUpdateErrorFlag = false;
           this.submitLoading = false;
+          this.replicatesLoading = false;
         },
         error => {
           this.replicateUpdateSuccessFlag = false;
           this.replicateUpdateErrorFlag = true;
           this.submitLoading = false;
+          this.replicatesLoading = false;
         }
       )
   }
@@ -420,6 +432,8 @@ export class DataUploadComponent implements OnInit {
     this.rawResultsParsed = false;
     this.resultsSubmissionReady = false;
     this.validationResponseReady = false;
+    this.resultsSubmissionSuccessFlag = false;
+    this.resultsSubmissionErrorFlag = false;
     this.clearFileInput(document.getElementById("targetFileInput"));
   }
 
@@ -448,7 +462,11 @@ export class DataUploadComponent implements OnInit {
       )
   }
 
-  finishInhibitions() {
+  resetInhibitions() {
+
+    this.inhibitionUpdateSuccessFlag = false;
+    this.inhibitionUpdateErrorFlag = false;
+
     this.rawInhResultsParsed = false;
     this.dilutionFactorsCalculated = false;
     this.clearFileInput(document.getElementById("inhibitionFileInput"));

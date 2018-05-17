@@ -99,8 +99,8 @@ export class SamplesComponent implements OnInit {
   showFCSVEditError: boolean = false;
   showFCSVEditSuccess: boolean = false;
 
-  showFreezeError: boolean = false;
-  showFreezeSuccess: boolean = false;
+  freezeErrorFlag: boolean = false;
+  freezeSuccessFlag: boolean = false;
 
   selectedStudy;
 
@@ -869,6 +869,8 @@ export class SamplesComponent implements OnInit {
 
 
   onSubmitFreezerLocation(formValue) {
+
+    this.resetFlags();
     this.submitLoading = true;
 
     let submissionArray = [];
@@ -940,13 +942,13 @@ export class SamplesComponent implements OnInit {
       .subscribe(
         (results) => {
           this.submitLoading = false;
-          this.showFreezeSuccess = true;
-          this.showFreezeError = false;
+          this.freezeSuccessFlag = true;
+          this.freezeErrorFlag = false;
         },
         error => {
           this.submitLoading = false;
-          this.showFreezeSuccess = false;
-          this.showFreezeError = true;
+          this.freezeSuccessFlag = false;
+          this.freezeErrorFlag = true;
         }
       )
   }
@@ -1104,13 +1106,13 @@ export class SamplesComponent implements OnInit {
   }
 
   resetFlags() {
-    this.sampleVolumeErrorFlag = false;
+    this.sampleVolumeErrorFlag  = false;
     this.showSampleCreateError = false;
     this.showSampleCreateSuccess = false;
     this.showSampleEditError = false;
     this.showSampleEditSuccess = false;
-    this.showFreezeError = false;
-    this.showFreezeSuccess = false;
+    this.freezeErrorFlag = false;
+    this.freezeSuccessFlag = false;
     this.showFCSVCreateSuccess = false;
     this.showFCSVCreateError = false;
     this.showFCSVEditSuccess = false;

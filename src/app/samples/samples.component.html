@@ -1087,10 +1087,8 @@
                 </div>
             </section>
             <section class="form-block">
-                <button type="button" class="btn btn-outline" (click)="freezerLocationAssignModalActive = !freezerLocationAssignModalActive; resetFlags()">Close</button>
-                <button type="submit" class="btn btn-primary" [disabled]="freezeForm.invalid" [clrLoading]="submitLoading">Submit</button>
 
-                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFreezeError">
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="freezeErrorFlag">
                     <div clr-alert-item class="alert-item">
                         <span class="alert-text">Submission error. Aliquot records not recorded.</span>
                         <div class="alert-actions">
@@ -1099,14 +1097,17 @@
                     </div>
                 </clr-alert>
 
-                <clr-alert [clrAlertType]="'alert-success'" *ngIf="showFreezeSuccess">
+                <clr-alert [clrAlertType]="'alert-success'" *ngIf="freezeSuccessFlag">
                     <div clr-alert-item class="alert-item">
                         <span class="alert-text">Sample aliquot records and locations successfully submitted.</span>
                         <div class="alert-actions">
-                            <a class="alert-action" (click)="freezerLocationAssignModalActive = false; showFreezeSuccess = false; resetFlags();">Close</a>
+                            <a class="alert-action" (click)="freezerLocationAssignModalActive = false; freezeSuccessFlag = false; resetFlags();">Close</a>
                         </div>
                     </div>
                 </clr-alert>
+                <button type="button" class="btn btn-outline" (click)="freezerLocationAssignModalActive = !freezerLocationAssignModalActive; resetFlags()">Close</button>
+                <button type="submit" class="btn btn-primary" [disabled]="freezeForm.invalid" [clrLoading]="submitLoading">Submit</button>
+
             </section>
         </form>
         <!-- </div> -->
