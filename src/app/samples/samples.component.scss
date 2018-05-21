@@ -7,7 +7,7 @@
     min-width: 4em;
 }
 
-.label-skip-input {
+.input-small-number {
     width: 5em;
 }
 
@@ -40,6 +40,14 @@
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+}
+.box-section-label {
+    font-style: bold !important;
+    font-size: larger;
+}
+
+.max-size-indicator {
+    font-style: italic !important;
 }
 
 .suggestions a:hover {background-color: #ddd}

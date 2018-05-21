@@ -53,20 +53,20 @@ export class UsersComponent implements OnInit {
     this.showHideAdd = false; this.showHideEdit = false; this.showHideDelete = false;
     this.showUserCreateError = false; this.showUserEditError = false; this.showUserDeleteError = false;
     this.showUserCreateSuccess = false; this.showUserEditSuccess = false; this.showUserDeleteSuccess = false;
-    this.submitLoading = false;    
+    this.submitLoading = false;
   }
 
   public showAddModal() {
     this.showHideAdd = !this.showHideAdd;
-    //reset these to false in case Add Sample Type is clicked more than once
+    // reset these to false in case Add Sample Type is clicked more than once
     this.showUserCreateError = false;
     this.showUserCreateSuccess = false;
   }
 
   public editUser(selectedUser) {
-    this.editUserForm.reset(); //reset here to ensure states are clean (instead of after update complete)
-    this.showUserEditSuccess = false; //reset this 
-    this.showUserEditError = false;//reset this 
+    this.editUserForm.reset(); // reset here to ensure states are clean (instead of after update complete)
+    this.showUserEditSuccess = false; // reset this
+    this.showUserEditError = false; // reset this
     this.selectedUserEmail = selectedUser.email;
     this.selectedUserUsername = selectedUser.username;
     this.selectedUserLastName = selectedUser.last_name;

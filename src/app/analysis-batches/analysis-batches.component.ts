@@ -152,6 +152,13 @@ export class AnalysisBatchesComponent implements OnInit {
 
   inhibitionError: string = "";
 
+  batchExtPosForm: FormGroup;
+  EB_array: FormArray;
+  batchExtPosModalActive: boolean = false;
+  showBatchExtPosError: boolean = false;
+  showBatchExtPosSuccess: boolean = false;
+  batchExtPosLoading: boolean = false;
+
   inhibitionErrors = {
     "dnaInhibitionSelection": "Missing one or more inhibition selections. Please make a DNA inhibition selection for each sample.",
     "rnaInhibitionSelection": "Missing one or more inhibition selections. Please make a RNA inhibition selection for each sample.",
@@ -193,7 +200,19 @@ export class AnalysisBatchesComponent implements OnInit {
     }
   }
 
-
+  buildBatchExtPosForm() {
+    this.batchExtPosForm = this.formBuilder.group({
+      extraction_batches: this.formBuilder.array([
+        this.formBuilder.group({
+          id: null,
+          number: null,
+          ext_pos_cq_value: null,
+          rt_pos_cq_value: null
+        })
+      ])
+    })
+    this.EB_array = this.batchExtPosForm.get("extraction_batches") as FormArray;
+  }
 
   buildExtractForm() {
     this.extractForm = this.formBuilder.group({
@@ -273,6 +292,7 @@ export class AnalysisBatchesComponent implements OnInit {
     private _unitService: UnitService
   ) {
     this.buildExtractForm();
+    this.buildBatchExtPosForm();
   }
 
   ngOnInit() {
@@ -474,6 +494,12 @@ export class AnalysisBatchesComponent implements OnInit {
 
   deselectAll() {
     this.selected = [];
+  }
+
+  resetFlags() {
+    this.submitLoading = false;
+    this.showBatchExtPosError = false;
+    this.showBatchExtPosSuccess = false;
   }
 
   retrieveABData(abID) {
@@ -1091,6 +1117,71 @@ export class AnalysisBatchesComponent implements OnInit {
         },
         error => {
           this.errorMessage = <any>error
+        }
+      );
+  }
+
+  openBatchExtPos(selectedAB) {
+
+    this.batchExtPosLoading = true
+
+    // reset the extraction form array controls to a blank array
+    this.EB_array.controls = [];
+    // call to retrieve AB detail data
+    this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
+      .subscribe(
+        (analysisBatchDetail) => {
+
+          for (let extractionBatch of analysisBatchDetail.extractionbatches) {
+            let ebFormGroup: FormGroup = this.formBuilder.group({
+              id: this.formBuilder.control(extractionBatch.id),
+              number: this.formBuilder.control(extractionBatch.extraction_number),
+              ext_pos_cq_value: this.formBuilder.control(null),
+              rt_pos_cq_value: this.formBuilder.control(null),
+            });
+            this.EB_array.push(ebFormGroup);
+          }
+
+
+          // show the edit analysis batch modal if not showing already
+          if (this.batchExtPosModalActive === false) {
+            this.batchExtPosModalActive = true;
+          }
+
+          this.batchExtPosLoading = false;
+        },
+        error => {
+          this.errorMessage = <any>error
+          this.batchExtPosLoading = false;
+        }
+      );
+  }
+
+  onSubmitBatchExtPos(formValue) {
+    this.showBatchExtPosSuccess = false;
+    this.showBatchExtPosError = false;
+    this.submitLoading = true;
+
+    const ebSubmissionArray = [];
+
+    for (let extraction_batch of formValue.extraction_batches) {
+      ebSubmissionArray.push(extraction_batch);
+    }
+
+
+    this._extractionBatchService.bulkUpdate(ebSubmissionArray)
+      .subscribe(
+        (extractionBatches) => {
+          this.submitLoading = false;
+          this.showBatchExtPosSuccess = true;
+          this.showBatchExtPosError = false;
+
+        },
+        error => {
+          this.errorMessage = <any>error
+          this.showBatchExtPosError = true;
+          this.showBatchExtPosSuccess = false;
+          this.submitLoading = false;
         }
       );
   }

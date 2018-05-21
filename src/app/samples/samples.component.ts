@@ -32,23 +32,6 @@ import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
 import { APP_UTILITIES } from '../app.utilities';
 import { APP_SETTINGS } from '../app.settings';
 
-function validateFinalMeterReading(control: FormControl) {
-  let value = control.value;
-  // if (value >= SamplesComponent.addSampleForm.get('meter_reading_initial').value) {
-  //   return value;
-  // }
-
-  if (value >= 5) {
-    return {
-      valueTooHigh: {
-        value: value
-      }
-    }
-  }
-  return null;
-};
-
-
 @Component({
   selector: 'app-samples',
   templateUrl: './samples.component.html',
@@ -74,7 +57,7 @@ export class SamplesComponent implements OnInit {
   showHideABModal: boolean = false;
   addFCSVModalActive: boolean = false;
   editFCSVModalActive: boolean = false;
-  showHideFreezerLocationAssignModal: boolean = false;
+  freezerLocationAssignModalActive: boolean = false;
   showHidePrintModal: boolean = false;
   showHideFreezeWarningModal: boolean = false;
   showHideFreezerChoiceModal: boolean = false;
@@ -116,8 +99,8 @@ export class SamplesComponent implements OnInit {
   showFCSVEditError: boolean = false;
   showFCSVEditSuccess: boolean = false;
 
-  showFreezeError: boolean = false;
-  showFreezeSuccess: boolean = false;
+  freezeErrorFlag: boolean = false;
+  freezeSuccessFlag: boolean = false;
 
   selectedStudy;
 
@@ -140,6 +123,14 @@ export class SamplesComponent implements OnInit {
   showLastOccupiedSpotError: boolean = false;
   lastOccupiedSpotLoading;
 
+  noCurrentBoxFlag: boolean = false;
+  noCurrentBoxMessage: string = '';
+
+  aliquotCountErrorFlag: boolean = false;
+
+  freezeForm: FormGroup;
+  currentBoxShareMax;
+
   initialMeterReading = 2;
 
   currentFreezerDimensions = {
@@ -151,52 +142,9 @@ export class SamplesComponent implements OnInit {
 
   samplerNames: string[] = [];
 
-
   showHideMissingFCSVErrorModal: boolean = false;
   // aliquotLabelTextArray = [{"aliquot_string": "", "collaborator_sample_id": ""}]
   aliquotLabelTextArray = [];
-
-  // add sample form - declare reactive form with appropriate sample fields
-  // all fields except matrix are disabled until matrix is selected (see onMatrixSelect function)
-  // addSampleForm = new FormGroup({
-  //   // the following controls apply to every sample record, regardless of matrix selected
-  //   sample_type: new FormControl({ value: null, disabled: true }, Validators.required),
-  //   matrix: new FormControl(null, Validators.required),
-  //   filter_type: new FormControl({ value: null, disabled: true }, Validators.required), // required when not disabled
-  //   study: new FormControl({ value: null, disabled: true }, Validators.required),  // study name, maps to study id
-  //   study_site_name: new FormControl({ value: '', disabled: true }),
-  //   collaborator_sample_id: new FormControl({ value: '', disabled: true }, Validators.required),
-  //   sampler_name: new FormControl({ value: '', disabled: true }),
-  //   sample_notes: new FormControl({ value: '', disabled: true }),
-  //   sample_description: new FormControl({ value: '', disabled: true }),
-  //   arrival_date: new FormControl({ value: null, disabled: true }),
-  //   arrival_notes: new FormControl({ value: '', disabled: true }),
-  //   collection_start_date: new FormControl({ value: null, disabled: true }, Validators.required),
-
-  //   // the following controls have variable display needs based on the matrix selected
-  //   collection_start_time: new FormControl({ value: null, disabled: false }, Validators.pattern('\\d\\d:\\d\\d')),
-  //   collection_end_date: new FormControl({ value: null, disabled: true }),
-  //   collection_end_time: new FormControl({ value: null, disabled: true }, Validators.pattern('\\d\\d:\\d\\d')),
-
-  //   meter_reading_initial: new FormControl({ value: null, disabled: true }),
-  //   meter_reading_final: new FormControl({ value: null, disabled: true },
-  //     Validators.min(meter_reading_initial)),
-  //   meter_reading_unit: new FormControl({ value: null, disabled: true }),
-
-  //   total_volume_sampled_initial: new FormControl({ value: null, disabled: true }),
-  //   total_volume_sampled_unit_initial: new FormControl({ value: null, disabled: true }),
-
-  //   sample_volume_initial: new FormControl({ value: null, disabled: true }),
-
-  //   filter_born_on_date: new FormControl({ value: null, disabled: true }),
-  //   filter_flag: new FormControl({ value: false, disabled: true }), // radio button
-  //   secondary_concentration_flag: new FormControl({ value: false, disabled: true }), // radio button
-  //   elution_notes: new FormControl({ value: '', disabled: true }),
-  //   technician_initials: new FormControl({ value: '', disabled: true }),
-  //   dissolution_volume: new FormControl({ value: null, disabled: true }),
-  //   post_dilution_volume: new FormControl({ value: null, disabled: true }),
-  //   peg_neg: new FormControl(null)
-  // });
 
   // edit sample form
   editSampleForm = new FormGroup({
@@ -271,17 +219,6 @@ export class SamplesComponent implements OnInit {
     record_type: new FormControl(2)
   });
 
-  freezeSampleForm = new FormGroup({
-    // sample: new FormControl(''),
-    freezer: new FormControl(1),
-    aliquot_count: new FormControl(null, [Validators.required, Validators.min(1)]),
-    rack: new FormControl(null, [Validators.required, Validators.min(1)]),
-    box: new FormControl(null, [Validators.required, Validators.min(1)]),
-    row: new FormControl(null, [Validators.required, Validators.min(1)]),
-    spot: new FormControl(null, [Validators.required, Validators.min(1)]),
-    frozen: new FormControl(true, Validators.required)
-  });
-
   skipLabelForm = new FormGroup({
     count: new FormControl("0")
   })
@@ -301,12 +238,34 @@ export class SamplesComponent implements OnInit {
     notes: new FormControl('')
   });
 
+  buildFreezeForm() {
+    this.freezeForm = this.formBuilder.group({
+      freezer: [1, Validators.required],
+      frozen: [true, Validators.required],
+      aliquots_per_sample: 3,
+      total_aliquots: null,
+      available_spots_in_box: null,
+      aliquot_count_share: [{ value: 0 }, [Validators.required, Validators.min(0)]],
+      rack: [{ value: null }, [Validators.required, Validators.min(1)]],
+      box: [{ value: null }, [Validators.required, Validators.min(1)]],
+      row: [{ value: null }, [Validators.required, Validators.min(1)]],
+      spot: [{ value: null }, [Validators.required, Validators.min(1)]],
+      next_empty_box: this.formBuilder.group({
+        aliquot_count_share: [{ value: 0 }, [Validators.required, Validators.min(0)]],
+        available_spots_in_box: null,
+        rack: [{ value: null }, [Validators.required, Validators.min(1)]],
+        box: [{ value: null }, [Validators.required, Validators.min(1)]],
+        row: [{ value: null }, [Validators.required, Validators.min(1)]],
+        spot: [{ value: null }, [Validators.required, Validators.min(1)]],
+      })
+    })
+  };
 
   buildAddSampleForm() {
     this.addSampleForm = this.formBuilder.group({
       // the following controls apply to every sample record, regardless of matrix selected
+      matrix: [{ value: null, disabled: false }, Validators.required],
       sample_type: [{ value: null, disabled: true }, Validators.required],
-      matrix: new FormControl(null, Validators.required),
       filter_type: [{ value: null, disabled: true }, Validators.required], // required when not disabled
       study: [{ value: null, disabled: true }, Validators.required],  // study name, maps to study id
       study_site_name: [{ value: null, disabled: true }],
@@ -331,7 +290,7 @@ export class SamplesComponent implements OnInit {
       filter_born_on_date: [{ value: null, disabled: true }],
       filter_flag: [{ value: false, disabled: true }], // radio button
       secondary_concentration_flag: [{ value: false, disabled: true }], // radio button
-      technician_initials: [{ value: false, disabled: true }],
+      technician_initials: [{ value: '', disabled: true }],
       elution_notes: [{ value: '', disabled: true }],
       dissolution_volume: [{ value: null, disabled: true }],
       post_dilution_volume: [{ value: null, disabled: true }],
@@ -372,6 +331,7 @@ export class SamplesComponent implements OnInit {
   ) {
     this.buildAddSampleForm();
     this.buildCreateFCSVForm();
+    this.buildFreezeForm();
   }
 
   validateFinalMeterReading = (control: FormControl) => {
@@ -495,7 +455,7 @@ export class SamplesComponent implements OnInit {
       .subscribe(users => this.users = users,
         error => this.errorMessage = <any>error);
 
-    this.freezeSampleForm.get('freezer').valueChanges.subscribe(val => {
+    this.freezeForm.get('freezer').valueChanges.subscribe(val => {
       // set the maxes for freezer location inputs
       for (let freezer of this.freezers) {
         if (freezer.id === Number(val)) {
@@ -507,6 +467,18 @@ export class SamplesComponent implements OnInit {
           }
         }
       }
+    });
+
+    this.freezeForm.get('aliquots_per_sample').valueChanges.subscribe(val => {
+      const sampleCount = this.selected.length;
+      const totalAliquots = sampleCount * val;
+      this.freezeForm.get('total_aliquots').setValue(totalAliquots);
+
+      // get aliquots per sample and available spots in box; calculate and update currentBoxShareMax
+      const aliquotsPerSample = this.freezeForm.get('aliquots_per_sample').value;
+      const availableSpotsInBox = this.freezeForm.get('available_spots_in_box').value;
+      this.currentBoxShareMax = (Math.trunc(availableSpotsInBox / aliquotsPerSample)) * aliquotsPerSample;
+
     });
 
   }
@@ -621,83 +593,6 @@ export class SamplesComponent implements OnInit {
   //   }
   // }
 
-  // callback for the freeze samples button
-  assignFreezerLocation(selectedSampleArray) {
-
-    this.showHideFreezerChoiceModal = false;
-    this.lastOccupiedSpotLoading = true;
-    this.showLastOccupiedSpot = false;
-    this.showLastOccupiedSpotError = false;
-
-    // set the maxes for freezer location inputs
-    for (let freezer of this.freezers) {
-      if (freezer.id === this.freezeSampleForm.get('freezer').value) {
-        this.currentFreezerDimensions = {
-          "racks": freezer.racks,
-          "boxes": freezer.boxes,
-          "rows": freezer.rows,
-          "spots": freezer.spots
-        }
-      }
-    }
-
-    // check if more than one sample is selected. if so, alert user they can only freeze one sample at a time
-    // if not, proceed with further checks and logic
-
-    // if (this.selected.length > 1) {
-    //   this.showHideMultipleSamplesErrorModal = true;
-    // } else {
-
-    // NOTE: check logic below not neccesary if only one sample - keeping for now in the event batch sample freezing 
-    // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
-    // checks if all the values for study are the same in the selected samples array
-    this.onlyOneStudySelected = selectedSampleArray.every(
-      function (value, _, array) {
-        return array[0].study === value.study;
-      });
-
-    // alert user they are attempting to select a set of studies for freezing that belong to more than one study
-    // show freeze warning modal if multiple studies, else show the freeze modal
-    if (this.onlyOneStudySelected === false) {
-      this.showHideFreezeWarningModal = true
-    } else if (this.onlyOneStudySelected === true) {
-
-      for (let sample of selectedSampleArray) {
-        // if any sample in the selection lacks an FCSV value AND has a matrix that requires one, show error
-        if (sample.final_concentrated_sample_volume === null &&
-          (sample.matrix === (this.lookupMatrixTypeID("W"))
-            || sample.matrix === (this.lookupMatrixTypeID("WW"))
-            || sample.matrix === (this.lookupMatrixTypeID("F")))) {
-          this.showHideMissingFCSVErrorModal = true;
-        } else {
-          // show the freeze modal if not showing already
-          if (this.showHideFreezerLocationAssignModal === false) {
-            this.showHideFreezerLocationAssignModal = true;
-          }
-          // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
-
-          // request last occupied spot
-          this._freezerLocationsService.getLastOccupiedSpot()
-            .subscribe(
-              (lastOccupiedSpot) => {
-                console.log(lastOccupiedSpot);
-                this.lastOccupiedSpot = lastOccupiedSpot[0];
-                this.lastOccupiedSpotLoading = false;
-                this.showLastOccupiedSpot = true;
-                this.showLastOccupiedSpotError = false;
-              },
-              error => {
-                this.lastOccupiedSpotLoading = false;
-                this.showLastOccupiedSpot = false;
-                this.showLastOccupiedSpotError = true;
-              }
-            )
-
-        }
-      }
-    }
-    this.selectedStudy = this.selected[0].study;
-  }
 
   includeExcludeLabel(event) {
 
@@ -844,32 +739,237 @@ export class SamplesComponent implements OnInit {
     return newItem.id === this;
   }
 
+  // callback for the freeze samples button
+  assignFreezerLocation(selectedSampleArray) {
+
+    this.showHideFreezerChoiceModal = false;
+    this.noCurrentBoxFlag = false;
+    this.showHideMissingFCSVErrorModal = false;
+    // this.lastOccupiedSpotLoading = true;
+    // this.showLastOccupiedSpot = false;
+    // this.showLastOccupiedSpotError = false;
+
+    // set the maxes for freezer location inputs
+    for (let freezer of this.freezers) {
+      if (freezer.id === this.freezeForm.get('freezer').value) {
+        this.currentFreezerDimensions = {
+          "racks": freezer.racks,
+          "boxes": freezer.boxes,
+          "rows": freezer.rows,
+          "spots": freezer.spots
+        }
+      }
+    }
+
+    // assign the onlyOneStudySelected var to the output of an Array.prototype.every() function
+    // checks if all the values for study are the same in the selected samples array
+    this.onlyOneStudySelected = selectedSampleArray.every(
+      function (value, _, array) {
+        return array[0].study === value.study;
+      });
+
+    // alert user they are attempting to select a set of studies for freezing that belong to more than one study
+    // show freeze warning modal if multiple studies, else show the freeze modal
+    if (this.onlyOneStudySelected === false) {
+      this.showHideFreezeWarningModal = true
+    } else if (this.onlyOneStudySelected === true) {
+
+      for (let sample of selectedSampleArray) {
+        // if any sample in the selection lacks an FCSV value AND has a matrix that requires one, show error
+        if (sample.final_concentrated_sample_volume === null &&
+          (sample.matrix === (this.lookupMatrixTypeID("W"))
+            || sample.matrix === (this.lookupMatrixTypeID("WW"))
+            || sample.matrix === (this.lookupMatrixTypeID("F")))) {
+          this.showHideMissingFCSVErrorModal = true;
+          return;
+        } else {
+          // lookup the suggested locations (next available)
+          const studyID = selectedSampleArray[0].study;
+          this._freezerLocationsService.getNextAvailable(studyID)
+            .subscribe(
+              (nextAvailable) => {
+                //  this.lastOccupiedSpot = lastOccupiedSpot[0];
+                // this.lastOccupiedSpotLoading = false;
+                // this.showLastOccupiedSpot = true;
+                // this.showLastOccupiedSpotError = false;
+
+                // get the sample count
+                const sampleCount = selectedSampleArray.length;
+                // get aliquots per sample from freezeForm
+                const aliquotsPerSample = this.freezeForm.get('aliquots_per_sample').value;
+                // calculate a totalAliquots number to patch into freezeForm control
+                const totalAliquots = sampleCount * aliquotsPerSample;
+
+                this.currentBoxShareMax = (Math.trunc(nextAvailable.available_spots_in_box / aliquotsPerSample) * aliquotsPerSample);
+
+                this.freezeForm.patchValue({
+                  total_aliquots: totalAliquots,
+                  available_spots_in_box: nextAvailable.available_spots_in_box,
+                  next_empty_box: {
+                    aliquot_count_share: 0,
+                    available_spots_in_box: nextAvailable.next_empty_box.available_spots_in_box,
+                    rack: nextAvailable.next_empty_box.rack,
+                    box: nextAvailable.next_empty_box.box,
+                    row: nextAvailable.next_empty_box.row,
+                    spot: nextAvailable.next_empty_box.spot
+                  }
+                });
+
+                // if there is no current box for the study
+                if (nextAvailable.not_found) {
+                  // show no current box message
+                  this.noCurrentBoxMessage = nextAvailable.not_found;
+                  this.noCurrentBoxFlag = true;
+                }
+
+                // if there is a box with aliquots for the study ('box' field will exist in this case)
+                if (nextAvailable.box) {
+                  // show both current box loc and next loc box
+                  this.noCurrentBoxFlag = false;
+                  this.freezeForm.patchValue({
+                    aliquot_count_share: 0,
+                    rack: nextAvailable.rack,
+                    box: nextAvailable.box,
+                    row: nextAvailable.row,
+                    spot: nextAvailable.spot
+                  });
+                }
+
+                // show the freeze modal if not showing already
+                if (this.freezerLocationAssignModalActive === false) {
+                  this.freezerLocationAssignModalActive = true;
+                }
+
+              },
+              error => {
+                // this.lastOccupiedSpotLoading = false;
+                // this.showLastOccupiedSpot = false;
+                // this.showLastOccupiedSpotError = true;
+              }
+            )
+
+          // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
+          // request last occupied spot
+          // this._freezerLocationsService.getLastOccupiedSpot()
+          //   .subscribe(
+          //     (lastOccupiedSpot) => {
+          //       this.lastOccupiedSpot = lastOccupiedSpot[0];
+          //       this.lastOccupiedSpotLoading = false;
+          //       this.showLastOccupiedSpot = true;
+          //       this.showLastOccupiedSpotError = false;
+          //     },
+          //     error => {
+          //       this.lastOccupiedSpotLoading = false;
+          //       this.showLastOccupiedSpot = false;
+          //       this.showLastOccupiedSpotError = true;
+          //     }
+          //   )
+
+        }
+      }
+    }
+    this.selectedStudy = this.selected[0].study;
+  }
+
+
   onSubmitFreezerLocation(formValue) {
+
+    this.resetFlags();
     this.submitLoading = true;
+
+    let submissionArray = [];
+
+    let currentBoxSampleCount = 0;
+    let nextBoxSampleCount = 0;
+
+    this.aliquotCountErrorFlag = false;
+
+    // check if aliquot share count exceeds the total number of aliquots expected
+    if (formValue.aliquot_count_share) {
+      if ((formValue.aliquot_count_share + formValue.next_empty_box.aliquot_count_share) > formValue.total_aliquots) {
+        this.aliquotCountErrorFlag = true;
+        this.submitLoading = false;
+        return;
+      }
+    } else {
+      if (formValue.next_empty_box.aliquot_count_share > formValue.total_aliquots) {
+        this.aliquotCountErrorFlag = true;
+        this.submitLoading = false;
+        return;
+      }
+    }
 
     let sampleIDArray = [];
     for (let sample of this.selected) {
       sampleIDArray.push(sample.id)
     }
 
-    formValue.samples = sampleIDArray;
-    formValue.freezer = Number(formValue.freezer);
-    formValue.rack = Number(formValue.rack);
-    formValue.box = Number(formValue.box);
-    formValue.row = Number(formValue.row);
-    formValue.spot = Number(formValue.spot);
+    // if the aliquot_count_share is greater than 0, current box is being used
+    if (formValue.aliquot_count_share > 0) {
+      // calculate the amount of sample-aliquot sets that can go into the current box
+      currentBoxSampleCount = (Math.trunc(formValue.available_spots_in_box / formValue.aliquots_per_sample));
 
-    this._aliquotService.create(formValue)
+      // split sampleIDArray: one array for current box, another array for next box
+
+      // set currentBoxSampleIDArray to the first x of the wholeSampleIDArray, where x = currentBoxSampleCount, using array.slice
+      let currentBoxSampleIDArray = sampleIDArray.slice(0, currentBoxSampleCount)
+
+      // create object with sample array, aliquot per sample count, starting location; push to submission array
+      let currentBoxObject = {
+        samples: currentBoxSampleIDArray,
+        aliquot_count: formValue.aliquots_per_sample,
+        freezer: formValue.freezer,
+        frozen: formValue.frozen,
+        rack: formValue.rack,
+        box: formValue.box,
+        row: formValue.row,
+        spot: formValue.spot
+      }
+      submissionArray.push(currentBoxObject);
+    }
+
+    if (formValue.next_empty_box.aliquot_count_share > 0) {
+
+      // determine the length of the nextBoxSampleCount by subtracting currentBoxSampleCount from the  wholeSampleIDArray length.
+      nextBoxSampleCount = sampleIDArray.length - currentBoxSampleCount;
+
+      // set nextBoxSampleIDArray to the remaining IDs of the wholeSampleIDArray, using array.slice
+      let nextBoxSampleIDArray = sampleIDArray.slice(nextBoxSampleCount * -1)
+
+      // create object with sample array, aliquot per sample count, starting location; push to submission array
+      let nextBoxObject = {
+        samples: nextBoxSampleIDArray,
+        aliquot_count: formValue.aliquots_per_sample,
+        freezer: formValue.freezer,
+        frozen: formValue.frozen,
+        rack: formValue.next_empty_box.rack,
+        box: formValue.next_empty_box.box,
+        row: formValue.next_empty_box.row,
+        spot: formValue.next_empty_box.spot
+      }
+      submissionArray.push(nextBoxObject);
+    }
+    console.log("whatever");
+
+    // DEPRECATED
+    // formValue.samples = sampleIDArray;
+    // formValue.freezer = Number(formValue.freezer);
+    // formValue.rack = Number(formValue.rack);
+    // formValue.box = Number(formValue.box);
+    // formValue.row = Number(formValue.row);
+    // formValue.spot = Number(formValue.spot);
+
+    this._aliquotService.create(submissionArray)
       .subscribe(
         (results) => {
           this.submitLoading = false;
-          this.showFreezeSuccess = true;
-          this.showFreezeError = false;
+          this.freezeSuccessFlag = true;
+          this.freezeErrorFlag = false;
         },
         error => {
           this.submitLoading = false;
-          this.showFreezeSuccess = false;
-          this.showFreezeError = true;
+          this.freezeSuccessFlag = false;
+          this.freezeErrorFlag = true;
         }
       )
   }
@@ -1032,8 +1132,8 @@ export class SamplesComponent implements OnInit {
     this.showSampleCreateSuccess = false;
     this.showSampleEditError = false;
     this.showSampleEditSuccess = false;
-    this.showFreezeError = false;
-    this.showFreezeSuccess = false;
+    this.freezeErrorFlag = false;
+    this.freezeSuccessFlag = false;
     this.showFCSVCreateSuccess = false;
     this.showFCSVCreateError = false;
     this.showFCSVEditSuccess = false;
@@ -1043,6 +1143,8 @@ export class SamplesComponent implements OnInit {
   }
 
   reloadSamplesTable() {
+
+    this.allSamples = [];
     // set sample loading to true to put spinner over table while it updates.
     this.samplesLoading = true;
     this.pegnegs = [];
@@ -1052,7 +1154,6 @@ export class SamplesComponent implements OnInit {
       .subscribe(
         (samples) => {
           this.allSamples = samples
-          this.samplesLoading = false;
           for (let item of samples) {
             if (item.record_type === 2) {
               // push all sample records of type Control into the pegnegs array.

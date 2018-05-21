@@ -129,17 +129,18 @@
                     </div>
                   </div>
                 </clr-alert>
+
                 <clr-alert [clrAlertType]="'alert-success'" *ngIf="resultsSubmissionSuccessFlag">
                   <div clr-alert-item class="alert-item">
                     <span class="alert-text">Results sucessfully submitted.</span>
-
                   </div>
                 </clr-alert>
 
-                <button class="btn btn-primary" [disabled]="!resultsSubmissionReady" (click)="submitRawTargetResults()">Submit & Validate Results</button>
+                <button class="btn btn-primary" [disabled]="!resultsSubmissionReady" (click)="submitRawTargetResults(); resetFlags()">Submit & Validate Results</button>
               </div>
             </div>
             <!-- end raw results upload -->
+
             <!-- results validation-->
             <div *ngIf="validationResponseReady">
               <div class="card-title">
@@ -216,9 +217,15 @@
                   <h4>Replicates</h4>
                 </div>
               </div>
+
+              <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                  <label>Note: validity displayed below is based on negative controls only.</label>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-lg-6 col-sm-12">
-                  <clr-datagrid [(clrDgSelected)]="selected">
+                  <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="replicatesLoading" >
                     <clr-dg-action-bar>
                       <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="showHideOverrideValidityModal = true">
@@ -231,7 +238,7 @@
                     <clr-dg-column [clrDgField]="'type'">Concentration</clr-dg-column>
                     <clr-dg-column [clrDgField]="'type'">Validity</clr-dg-column>
 
-                    <clr-dg-row *clrDgItems="let rep of pcrResultsValidationObject.pcrreplicates" [clrDgItem]="rep">
+                    <clr-dg-row *clrDgItems="let rep of pcrResultsValidationReplicates" [clrDgItem]="rep">
                       <clr-dg-cell>{{rep.sample}}</clr-dg-cell>
                       <clr-dg-cell>{{rep.cq_value}}</clr-dg-cell>
                       <clr-dg-cell>{{rep.gc_reaction_sci }}</clr-dg-cell>
@@ -240,7 +247,7 @@
                         <span class="label" [ngClass]="{'label-danger' : rep.invalid, 'label-success': !rep.invalid}">{{rep.invalid ? "Invalid" : "Valid"}}</span>
                       </clr-dg-cell>
                     </clr-dg-row>
-                    <clr-dg-footer>{{pcrResultsValidationObject.pcrreplicates.length}} reps</clr-dg-footer>
+                    <clr-dg-footer>{{pcrResultsValidationReplicates.length}} reps</clr-dg-footer>
                   </clr-datagrid>
                 </div>
               </div>
@@ -431,7 +438,7 @@
             </div>
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <button *ngIf="inhibitionUpdateSuccessFlag" class="btn btn-success" (click)="finishInhibitions()">Finshed</button>
+                <button *ngIf="inhibitionUpdateSuccessFlag" class="btn btn-success" (click)="resetInhibitions()">Finshed</button>
               </div>
             </div>
           </div>
@@ -439,27 +446,6 @@
       </clr-tab>
       <!-- end inhibition results tab -->
 
-      <!-- Batch submit Ext pos tab-->
-      <clr-tab>
-        <button clrTabLink>Batch Submit Ext Pos Controls</button>
-        <clr-tab-content>
-          <div>
-            <div>
-              <div>
-                <h3>Batch Submit Extraction Positive Controls</h3>
-              </div>
-
-            </div>
-            <div class="card-block">
-              <div class="card-title"></div>
-              <div class="card-text">
-
-              </div>
-            </div>
-          </div>
-        </clr-tab-content>
-      </clr-tab>
-      <!-- end Batch submit Ext pos tab-->
 
       <clr-tab>
         <button clrTabLink>Batch Submit Negative Results</button>

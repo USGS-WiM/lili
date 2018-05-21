@@ -47,6 +47,7 @@ export class APP_SETTINGS {
     public static get CONTROLS_URL(): string { return this._API_ENDPOINT + 'controls/' };
     public static get OTHER_ANALYSES_URL(): string { return this._API_ENDPOINT + 'otheranalyses/' };
     public static get USERS_URL(): string { return this._API_ENDPOINT + 'users/' };
+    public static get FINALSAMPLEMEANCONCENTRATIONS_URL(): string { return this._API_ENDPOINT + 'finalsamplemeanconcentrations/' };
 
     public static get VERSION() {
         // return require('../../package.json').version

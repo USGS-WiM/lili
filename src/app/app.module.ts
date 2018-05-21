@@ -68,6 +68,7 @@ import { RecordTypeFilter } from './FILTERS/record-type-filter/record-type-filte
 import { RecordTypeService } from "./SHARED/record-type.service";
 import { MultiStudyFilterComponent } from './FILTERS/multi-study-filter/multi-study-filter.component';
 import { DataUploadComponent } from './data-upload/data-upload.component';
+import { FinalSampleMeanConcentrationService } from "./results/final-sample-mean-concentration.service";
 
 @NgModule({
     declarations: [
@@ -140,7 +141,8 @@ import { DataUploadComponent } from './data-upload/data-upload.component';
         UserService,
         UserResolve,
         ServerTestService,
-        RecordTypeService
+        RecordTypeService,
+        FinalSampleMeanConcentrationService
     ],
     bootstrap: [AppComponent]
 })
