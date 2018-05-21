@@ -37,7 +37,6 @@ export class ExtractionBatchService {
       .map((response: Response) => <any[]>response.json())
       .catch(this.handleError);
 
-
   }
 
   public bulkUpdate(ebSubmissionArray): Observable<IExtractionBatch> {
@@ -46,10 +45,9 @@ export class ExtractionBatchService {
       headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
     });
 
-    return this._http.put(APP_SETTINGS.EXTRACTION_BATCHES_URL, ebSubmissionArray, options)
+    return this._http.patch(APP_SETTINGS.EXTRACTION_BATCHES_URL, ebSubmissionArray, options)
       .map((response: Response) => <any[]>response.json())
       .catch(this.handleError);
-
 
   }
 

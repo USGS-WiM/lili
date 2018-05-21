@@ -126,6 +126,8 @@ export class SamplesComponent implements OnInit {
   noCurrentBoxFlag: boolean = false;
   noCurrentBoxMessage: string = '';
 
+  aliquotCountErrorFlag: boolean = false;
+
   freezeForm: FormGroup;
   currentBoxShareMax;
 
@@ -288,7 +290,7 @@ export class SamplesComponent implements OnInit {
       filter_born_on_date: [{ value: null, disabled: true }],
       filter_flag: [{ value: false, disabled: true }], // radio button
       secondary_concentration_flag: [{ value: false, disabled: true }], // radio button
-      technician_initials: [{ value: false, disabled: true }],
+      technician_initials: [{ value: '', disabled: true }],
       elution_notes: [{ value: '', disabled: true }],
       dissolution_volume: [{ value: null, disabled: true }],
       post_dilution_volume: [{ value: null, disabled: true }],
@@ -742,6 +744,7 @@ export class SamplesComponent implements OnInit {
 
     this.showHideFreezerChoiceModal = false;
     this.noCurrentBoxFlag = false;
+    this.showHideMissingFCSVErrorModal = false;
     // this.lastOccupiedSpotLoading = true;
     // this.showLastOccupiedSpot = false;
     // this.showLastOccupiedSpotError = false;
@@ -778,6 +781,7 @@ export class SamplesComponent implements OnInit {
             || sample.matrix === (this.lookupMatrixTypeID("WW"))
             || sample.matrix === (this.lookupMatrixTypeID("F")))) {
           this.showHideMissingFCSVErrorModal = true;
+          return;
         } else {
           // lookup the suggested locations (next available)
           const studyID = selectedSampleArray[0].study;
@@ -877,6 +881,23 @@ export class SamplesComponent implements OnInit {
 
     let currentBoxSampleCount = 0;
     let nextBoxSampleCount = 0;
+
+    this.aliquotCountErrorFlag = false;
+
+    // check if aliquot share count exceeds the total number of aliquots expected
+    if (formValue.aliquot_count_share) {
+      if ((formValue.aliquot_count_share + formValue.next_empty_box.aliquot_count_share) > formValue.total_aliquots) {
+        this.aliquotCountErrorFlag = true;
+        this.submitLoading = false;
+        return;
+      }
+    } else {
+      if (formValue.next_empty_box.aliquot_count_share > formValue.total_aliquots) {
+        this.aliquotCountErrorFlag = true;
+        this.submitLoading = false;
+        return;
+      }
+    }
 
     let sampleIDArray = [];
     for (let sample of this.selected) {
@@ -1106,7 +1127,7 @@ export class SamplesComponent implements OnInit {
   }
 
   resetFlags() {
-    this.sampleVolumeErrorFlag  = false;
+    this.sampleVolumeErrorFlag = false;
     this.showSampleCreateError = false;
     this.showSampleCreateSuccess = false;
     this.showSampleEditError = false;

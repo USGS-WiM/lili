@@ -1097,6 +1097,15 @@
                     </div>
                 </clr-alert>
 
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="aliquotCountErrorFlag ">
+                    <div clr-alert-item class="alert-item">
+                        <span class="alert-text">The aliquot share count exceeds total number of aliquots expected. Please adjust and submit again.</span>
+                        <!-- <div class="alert-actions">
+                            <a class="alert-action" (click)="onSubmitFreezerLocation(freezeForm.value)">Try again</a>
+                        </div> -->
+                    </div>
+                </clr-alert>
+
                 <clr-alert [clrAlertType]="'alert-success'" *ngIf="freezeSuccessFlag">
                     <div clr-alert-item class="alert-item">
                         <span class="alert-text">Sample aliquot records and locations successfully submitted.</span>
@@ -1167,7 +1176,7 @@
     </div>
     <div class="modal-footer"></div>
 </clr-modal>
-<!-- end freezer location assignment modal-->
+<!-- end freezer location lookup modal-->
 
 <!-- begin freezer choice modal -->
 <clr-modal [(clrModalOpen)]="showHideFreezerChoiceModal">
