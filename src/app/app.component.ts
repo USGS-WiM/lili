@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
         this._serverTestService.testLIDEServices()
             .subscribe(
                 (response) => {
-                    console.log(response);
+                    // console.log(response);
                 },
                 error => {
                     console.log(error);
