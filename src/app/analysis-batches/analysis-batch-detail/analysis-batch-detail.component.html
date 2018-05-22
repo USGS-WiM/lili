@@ -11,6 +11,7 @@
             <span *ngIf="noExtractionsFlag">
               <clr-icon shape="neutral-face"></clr-icon> There are no Extractions from this Analysis Batch.
             </span>
+
             <clr-tree-node *ngFor="let extractionbatch of extractionBatchArray">
               <span>Extraction {{extractionbatch.extraction_number}}&nbsp;&nbsp;&nbsp;&nbsp;{{extractionbatch.extraction_date |
                 date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -71,27 +72,6 @@
                         </tbody>
                       </table>
                     </div>
-
-                    <div *ngFor="let inhibition of extractionbatch.inhibitions">
-                      <label>Inhibition</label>
-                      <table class="table table-vertical table-compact">
-                        <tbody>
-                          <tr>
-                            <th>Sample</th>
-                            <td>{{inhibition.sample}}</td>
-                          </tr>
-                          <tr>
-                            <th>Inhibition Date</th>
-                            <td>{{inhibition.inhibition_date | date:'shortDate' }}</td>
-                          </tr>
-                          <tr>
-                            <th>Inhibition Type</th>
-                            <td>{{inhibition.nucleic_acid_type_id | displayValue:'name':this.nucleicAcidTypes}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-
                   </div>
                 </clr-tree-node>
               </ng-template>
@@ -106,37 +86,72 @@
       <div class="card-block">
         <h3 class="card-title">Samples</h3>
         <p class="card-text">
-          <span class="spinner spinner-lg" *ngIf="ABDetailsLoading">
-            Loading...
-          </span>
-          <clr-tree-node *ngFor="let sample of samplesArray">
-            Sample {{sample.id}}
-            <ng-template clrIfExpanded>
-              <clr-tree-node>
-                <table class="table table-vertical table-compact">
-                  <tbody>
-                    <tr>
-                      <th>Collaborator Sample ID</th>
-                      <td>{{sample.collaborator_sample_id}}</td>
-                    </tr>
-                    <tr>
-                      <th>Sample Type</th>
-                      <td>{{sample.sample_type.name}}</td>
-                    </tr>
-                    <tr>
-                      <th>Matrix</th>
-                      <td>{{sample.matrix.name}}</td>
-                    </tr>
-                    <tr>
-                      <th>Study</th>
-                      <td>{{sample.study.id}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </clr-tree-node>
-            </ng-template>
-          </clr-tree-node>
-        </p>
+          <div class="row extraction-row">
+            <span class="spinner spinner-lg" *ngIf="ABDetailsLoading">
+              Loading...
+            </span>
+            <span *ngIf="noExtractionsFlag">
+              <clr-icon shape="neutral-face"></clr-icon> There are no Extractions from this Analysis Batch.
+            </span>
+
+            <clr-tree-node *ngFor="let sample of samplesArray">
+              Sample {{sample.id}}
+              <ng-template clrIfExpanded>
+                <clr-tree-node>
+
+                  <div class="extraction-row">
+
+                    <table class="table table-vertical table-compact">
+                      <tbody>
+                        <tr>
+                          <th>Collaborator Sample ID</th>
+                          <td>{{sample.collaborator_sample_id}}</td>
+                        </tr>
+                        <tr>
+                          <th>Sample Type</th>
+                          <td>{{sample.sample_type.name}}</td>
+                        </tr>
+                        <tr>
+                          <th>Matrix</th>
+                          <td>{{sample.matrix.name}}</td>
+                        </tr>
+                        <tr>
+                          <th>Study</th>
+                          <td>{{sample.study.id}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <clr-tree-node>
+                      Inhibitions
+                      <ng-template clrIfExpanded>
+                        <div *ngFor="let inhibition of sample.inhibitions; let i = index">
+                          <label>Inhibition {{i+1}}</label>
+                          <table class="table table-vertical table-compact">
+                            <tbody>
+                              <tr>
+                                <th>Inhibition Date</th>
+                                <td>{{inhibition.inhibition_date | date:'shortDate' }}</td>
+                              </tr>
+                              <tr>
+                                <th>Dilution Factor</th>
+                                <td>{{inhibition.dilution_factor == null ? "Not Calculated": inhibition.dilution_factor}}</td>
+                              </tr>
+                              <tr>
+                                <th>Inhibition Type</th>
+                                <td>{{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+
+                      </ng-template>
+                    </clr-tree-node>
+                  </div>
+                </clr-tree-node>
+              </ng-template>
+            </clr-tree-node>
+          </div>
       </div>
     </div>
   </div>

@@ -749,6 +749,17 @@ export class SamplesComponent implements OnInit {
     // this.showLastOccupiedSpot = false;
     // this.showLastOccupiedSpotError = false;
 
+    // if any sample in the selection lacks an FCSV value AND has a matrix that requires one, show error
+    for (let sample of selectedSampleArray) {
+      if (sample.final_concentrated_sample_volume === null &&
+        (sample.matrix === (this.lookupMatrixTypeID("W"))
+          || sample.matrix === (this.lookupMatrixTypeID("WW"))
+          || sample.matrix === (this.lookupMatrixTypeID("F")))) {
+        this.showHideMissingFCSVErrorModal = true;
+        return;
+      }
+    }
+
     // set the maxes for freezer location inputs
     for (let freezer of this.freezers) {
       if (freezer.id === this.freezeForm.get('freezer').value) {
@@ -774,99 +785,87 @@ export class SamplesComponent implements OnInit {
       this.showHideFreezeWarningModal = true
     } else if (this.onlyOneStudySelected === true) {
 
-      for (let sample of selectedSampleArray) {
-        // if any sample in the selection lacks an FCSV value AND has a matrix that requires one, show error
-        if (sample.final_concentrated_sample_volume === null &&
-          (sample.matrix === (this.lookupMatrixTypeID("W"))
-            || sample.matrix === (this.lookupMatrixTypeID("WW"))
-            || sample.matrix === (this.lookupMatrixTypeID("F")))) {
-          this.showHideMissingFCSVErrorModal = true;
-          return;
-        } else {
-          // lookup the suggested locations (next available)
-          const studyID = selectedSampleArray[0].study;
-          this._freezerLocationsService.getNextAvailable(studyID)
-            .subscribe(
-              (nextAvailable) => {
-                //  this.lastOccupiedSpot = lastOccupiedSpot[0];
-                // this.lastOccupiedSpotLoading = false;
-                // this.showLastOccupiedSpot = true;
-                // this.showLastOccupiedSpotError = false;
+      // lookup the suggested locations (next available)
+      const studyID = selectedSampleArray[0].study;
+      this._freezerLocationsService.getNextAvailable(studyID)
+        .subscribe(
+          (nextAvailable) => {
+            //  this.lastOccupiedSpot = lastOccupiedSpot[0];
+            // this.lastOccupiedSpotLoading = false;
+            // this.showLastOccupiedSpot = true;
+            // this.showLastOccupiedSpotError = false;
 
-                // get the sample count
-                const sampleCount = selectedSampleArray.length;
-                // get aliquots per sample from freezeForm
-                const aliquotsPerSample = this.freezeForm.get('aliquots_per_sample').value;
-                // calculate a totalAliquots number to patch into freezeForm control
-                const totalAliquots = sampleCount * aliquotsPerSample;
+            // get the sample count
+            const sampleCount = selectedSampleArray.length;
+            // get aliquots per sample from freezeForm
+            const aliquotsPerSample = this.freezeForm.get('aliquots_per_sample').value;
+            // calculate a totalAliquots number to patch into freezeForm control
+            const totalAliquots = sampleCount * aliquotsPerSample;
 
-                this.currentBoxShareMax = (Math.trunc(nextAvailable.available_spots_in_box / aliquotsPerSample) * aliquotsPerSample);
+            this.currentBoxShareMax = (Math.trunc(nextAvailable.available_spots_in_box / aliquotsPerSample) * aliquotsPerSample);
 
-                this.freezeForm.patchValue({
-                  total_aliquots: totalAliquots,
-                  available_spots_in_box: nextAvailable.available_spots_in_box,
-                  next_empty_box: {
-                    aliquot_count_share: 0,
-                    available_spots_in_box: nextAvailable.next_empty_box.available_spots_in_box,
-                    rack: nextAvailable.next_empty_box.rack,
-                    box: nextAvailable.next_empty_box.box,
-                    row: nextAvailable.next_empty_box.row,
-                    spot: nextAvailable.next_empty_box.spot
-                  }
-                });
-
-                // if there is no current box for the study
-                if (nextAvailable.not_found) {
-                  // show no current box message
-                  this.noCurrentBoxMessage = nextAvailable.not_found;
-                  this.noCurrentBoxFlag = true;
-                }
-
-                // if there is a box with aliquots for the study ('box' field will exist in this case)
-                if (nextAvailable.box) {
-                  // show both current box loc and next loc box
-                  this.noCurrentBoxFlag = false;
-                  this.freezeForm.patchValue({
-                    aliquot_count_share: 0,
-                    rack: nextAvailable.rack,
-                    box: nextAvailable.box,
-                    row: nextAvailable.row,
-                    spot: nextAvailable.spot
-                  });
-                }
-
-                // show the freeze modal if not showing already
-                if (this.freezerLocationAssignModalActive === false) {
-                  this.freezerLocationAssignModalActive = true;
-                }
-
-              },
-              error => {
-                // this.lastOccupiedSpotLoading = false;
-                // this.showLastOccupiedSpot = false;
-                // this.showLastOccupiedSpotError = true;
+            this.freezeForm.patchValue({
+              total_aliquots: totalAliquots,
+              available_spots_in_box: nextAvailable.available_spots_in_box,
+              next_empty_box: {
+                aliquot_count_share: 0,
+                available_spots_in_box: nextAvailable.next_empty_box.available_spots_in_box,
+                rack: nextAvailable.next_empty_box.rack,
+                box: nextAvailable.next_empty_box.box,
+                row: nextAvailable.next_empty_box.row,
+                spot: nextAvailable.next_empty_box.spot
               }
-            )
+            });
 
-          // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
-          // request last occupied spot
-          // this._freezerLocationsService.getLastOccupiedSpot()
-          //   .subscribe(
-          //     (lastOccupiedSpot) => {
-          //       this.lastOccupiedSpot = lastOccupiedSpot[0];
-          //       this.lastOccupiedSpotLoading = false;
-          //       this.showLastOccupiedSpot = true;
-          //       this.showLastOccupiedSpotError = false;
-          //     },
-          //     error => {
-          //       this.lastOccupiedSpotLoading = false;
-          //       this.showLastOccupiedSpot = false;
-          //       this.showLastOccupiedSpotError = true;
-          //     }
-          //   )
+            // if there is no current box for the study
+            if (nextAvailable.not_found) {
+              // show no current box message
+              this.noCurrentBoxMessage = nextAvailable.not_found;
+              this.noCurrentBoxFlag = true;
+            }
 
-        }
-      }
+            // if there is a box with aliquots for the study ('box' field will exist in this case)
+            if (nextAvailable.box) {
+              // show both current box loc and next loc box
+              this.noCurrentBoxFlag = false;
+              this.freezeForm.patchValue({
+                aliquot_count_share: 0,
+                rack: nextAvailable.rack,
+                box: nextAvailable.box,
+                row: nextAvailable.row,
+                spot: nextAvailable.spot
+              });
+            }
+
+            // show the freeze modal if not showing already
+            if (this.freezerLocationAssignModalActive === false) {
+              this.freezerLocationAssignModalActive = true;
+            }
+
+          },
+          error => {
+            // this.lastOccupiedSpotLoading = false;
+            // this.showLastOccupiedSpot = false;
+            // this.showLastOccupiedSpotError = true;
+          }
+        )
+
+      // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
+      // request last occupied spot
+      // this._freezerLocationsService.getLastOccupiedSpot()
+      //   .subscribe(
+      //     (lastOccupiedSpot) => {
+      //       this.lastOccupiedSpot = lastOccupiedSpot[0];
+      //       this.lastOccupiedSpotLoading = false;
+      //       this.showLastOccupiedSpot = true;
+      //       this.showLastOccupiedSpotError = false;
+      //     },
+      //     error => {
+      //       this.lastOccupiedSpotLoading = false;
+      //       this.showLastOccupiedSpot = false;
+      //       this.showLastOccupiedSpotError = true;
+      //     }
+      //   )
     }
     this.selectedStudy = this.selected[0].study;
   }
