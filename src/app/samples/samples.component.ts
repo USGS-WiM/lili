@@ -268,7 +268,7 @@ export class SamplesComponent implements OnInit {
       sample_type: [{ value: null, disabled: true }, Validators.required],
       filter_type: [{ value: null, disabled: true }, Validators.required], // required when not disabled
       study: [{ value: null, disabled: true }, Validators.required],  // study name, maps to study id
-      study_site_name: [{ value: null, disabled: true }],
+      study_site_name: [{ value: '', disabled: true }],
       collaborator_sample_id: [{ value: null, disabled: true }, Validators.required],
       sampler_name: [{ value: '', disabled: true }],
       sample_notes: [{ value: '', disabled: true }],
