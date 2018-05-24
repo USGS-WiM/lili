@@ -393,7 +393,7 @@ export class SamplesComponent implements OnInit {
             }
           }
           // TODO: Remove this line below. TEMPORARY for populating samplerNames array until web service fix.
-          this.samplerNames.push("Aaron Firnstahl", "Joel Stokdyk", "Blake Draper", "Aaaron Stephenson");
+          //this.samplerNames.push("Aaron Firnstahl", "Joel Stokdyk", "Blake Draper", "Aaaron Stephenson");
           // console.log("Pegnegs array pre-sorted: ", this.pegnegs)
           // sort pegnegs by date order
           this.pegnegs.sort(function (a, b) {
@@ -1121,6 +1121,18 @@ export class SamplesComponent implements OnInit {
     }
   }
 
+  trimDecimalPlaces(number, places) {
+    let numString = number.toString();
+    let decimalPlaces = numString.split(".")[1].length;
+
+    if (decimalPlaces > places) {
+      let trimmedNumber = number.toFixed(places);
+      return trimmedNumber;
+    }
+
+    return number;
+  }
+
   onClosesampleVolumeError() {
     this.sampleVolumeErrorFlag = false;
   }
@@ -1295,6 +1307,9 @@ export class SamplesComponent implements OnInit {
             // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
             formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
               this.getConversionFactorToLiters(formValue.meter_reading_unit))
+
+            // send value through trimDecimalPlaces funciton to trim decimal places if they exceed 10
+            formValue.total_volume_or_mass_sampled = this.trimDecimalPlaces(formValue.total_volume_or_mass_sampled, 10);
           }
         }
 
@@ -1311,6 +1326,9 @@ export class SamplesComponent implements OnInit {
             // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
             formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
               this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
+
+            // send value through trimDecimalPlaces funciton to trim decimal places if they exceed 10
+            formValue.total_volume_or_mass_sampled = this.trimDecimalPlaces(formValue.total_volume_or_mass_sampled, 10);
           }
         }
 
@@ -1360,6 +1378,9 @@ export class SamplesComponent implements OnInit {
           // use meter readings, subtraction, and meter_reading_unit to establish total_volume_or_mass_sampled
           formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
             this.getConversionFactorToLiters(formValue.meter_reading_unit))
+
+          // send value through trimDecimalPlaces funciton to trim decimal places if they exceed 10
+          formValue.total_volume_or_mass_sampled = this.trimDecimalPlaces(formValue.total_volume_or_mass_sampled, 10);
         }
 
 
@@ -1375,6 +1396,9 @@ export class SamplesComponent implements OnInit {
           // use total_volume_sampled_initial + total_volume_sampled_unit_initial to establish total_volume_or_mass_sampled
           formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
             this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
+
+          // send value through trimDecimalPlaces funciton to trim decimal places if they exceed 10
+          formValue.total_volume_or_mass_sampled = this.trimDecimalPlaces(formValue.total_volume_or_mass_sampled, 10);
         }
 
 
