@@ -241,13 +241,14 @@
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleCreateError">
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Submission error. Sample not submitted.</span>
+                                    <span>{{errorMessage}}</span>
                                     <div class="alert-actions">
                                         <a class="alert-action" (click)="onSubmitSample('add', addSampleForm.value)">Try again</a>
                                     </div>
                                 </div>
                             </clr-alert>
 
-                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess">
+                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess" [clrAlertClosable]="false">
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Sample successfully submitted. ID: {{createdSampleID}} </span>
                                     <div class="alert-actions">
@@ -407,6 +408,7 @@
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleCreateError">
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Submission error. Sample not submitted.</span>
+                                    <span>{{errorMessage}}</span>
                                     <div class="alert-actions">
                                         <a class="alert-action" (click)="onSubmitSample('addPegNeg', addPegNegForm.value)">Try again</a>
                                     </div>
@@ -651,6 +653,7 @@
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleEditError">
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">Submission error. Sample not updated.</span>
+                                <span>{{errorMessage}}</span>
                                 <div class="alert-actions">
                                     <a class="alert-action" (click)="onSubmitSample('add', editSampleForm.value)">Try again</a>
                                 </div>
@@ -715,6 +718,7 @@
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABCreateError">
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Submission error. Analysis Batch not created.</span>
+                                    <span>{{errorMessage}}</span>
                                     <div class="alert-actions">
                                         <a class="alert-action" (click)="onSubmitAB(createABForm.value)">Try again</a>
                                     </div>
@@ -822,6 +826,7 @@
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFCSVCreateError">
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">Submission error. FCSV records not submitted.</span>
+                                <span>{{errorMessage}}</span>
                                 <div class="alert-actions">
                                     <a class="alert-action" (click)="onSubmitFCSV(editFCSVForm.value)">Try again</a>
                                 </div>
@@ -888,6 +893,7 @@
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFCSVEditError">
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">Submission error. FCSV not edited.</span>
+                                <span>{{errorMessage}}</span>
                                 <div class="alert-actions">
                                     <a class="alert-action" (click)="onSubmitFCSV(editFCSVForm.value)">Try again</a>
                                 </div>
@@ -996,9 +1002,9 @@
                                     Next available box is always shown. If the study of the current sample selection has
                                     any aliquots already stored, current box for the study is shown. Select share of total
                                     aliquots for each box. Suggested starting locations (based on current freezer status)
-                                    are provided but can be changed. Note that sample-aliquot sets are not split across boxes. In order
-                                    to enforce this, the maximum share of total for the current box may be less than spots
-                                    available in that box.
+                                    are provided but can be changed. Note that sample-aliquot sets are not split across boxes.
+                                    In order to enforce this, the maximum share of total for the current box may be less
+                                    than spots available in that box.
                                 </label>
                             </clr-tree-node>
                         </ng-container>
@@ -1091,6 +1097,7 @@
                 <clr-alert [clrAlertType]="'alert-danger'" *ngIf="freezeErrorFlag">
                     <div clr-alert-item class="alert-item">
                         <span class="alert-text">Submission error. Aliquot records not recorded.</span>
+                        <span>{{errorMessage}}</span>
                         <div class="alert-actions">
                             <a class="alert-action" (click)="onSubmitFreezerLocation(freezeForm.value)">Try again</a>
                         </div>
