@@ -406,7 +406,7 @@ export class SamplesComponent implements OnInit {
 
         },
         error => {
-          this.errorMessage = <any>error
+          this.errorMessage = error
         }
       );
 
@@ -417,43 +417,43 @@ export class SamplesComponent implements OnInit {
           this.freezers = freezers;
         },
         error => {
-          this.errorMessage = <any>error
+          this.errorMessage = error
         });
 
     // on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
     this._sampleTypeService.getSampleTypes()
       .subscribe(sampleTypes => this.sampleTypes = sampleTypes,
-        error => this.errorMessage = <any>error);
+        error => this.errorMessage = error);
 
     // on init, call getFilterTypes function of the SampleTypeService, set results to the sampleTypes var
     this._filterTypeService.getFilterTypes()
       .subscribe(filterTypes => this.filterTypes = filterTypes,
-        error => this.errorMessage = <any>error);
+        error => this.errorMessage = error);
 
     // on init, call getConcentrationTypes function of the ConcentrationTypeService, set results to the sampleTypes var
     this._concentrationTypeService.getConcentrationTypes()
       .subscribe(concentrationTypes => this.concentrationTypes = concentrationTypes,
-        error => this.errorMessage = <any>error);
+        error => this.errorMessage = error);
 
     // on init, call getMatrices function of the MatrixService, set results to the matrices var
     this._matrixService.getMatrices()
       .subscribe(matrices => this.matrices = matrices,
-        error => this.errorMessage = <any>error);
+        error => this.errorMessage = error);
 
     // on init, call getStudies function of the StudyService, set results to the studies var
     this._studyService.getStudies()
       .subscribe(studies => this.studies = studies,
-        error => this.errorMessage = <any>error);
+        error => this.errorMessage = error);
 
     // on init, call getUnits function of the UnitService, set results to the units var
     this._unitService.getUnits()
       .subscribe(units => this.units = units,
-        error => this.errorMessage = <any>error);
+        error => this.errorMessage = error);
 
     // on init, call getUsers function of the UserService, set results to the units var
     this._userService.getUsers()
       .subscribe(users => this.users = users,
-        error => this.errorMessage = <any>error);
+        error => this.errorMessage = error);
 
     this.freezeForm.get('freezer').valueChanges.subscribe(val => {
       // set the maxes for freezer location inputs
@@ -998,7 +998,7 @@ export class SamplesComponent implements OnInit {
               this.reloadSamplesTable();
             },
             error => {
-              this.errorMessage = <any>error;
+              this.errorMessage = error;
               this.submitLoading = false;
               this.showFCSVEditSuccess = false;
               this.showFCSVEditError = true;
@@ -1072,7 +1072,7 @@ export class SamplesComponent implements OnInit {
           this.createdABID = ab.id;
         },
         error => {
-          this.errorMessage = <any>error;
+          this.errorMessage = error;
           this.submitLoading = false;
           this.showABCreateError = true;
         }
@@ -1151,6 +1151,7 @@ export class SamplesComponent implements OnInit {
     this.showFCSVEditError = false;
     this.showABCreateSuccess = false;
     this.showABCreateError = false;
+    this.errorMessage = '';
   }
 
   reloadSamplesTable() {
@@ -1174,7 +1175,7 @@ export class SamplesComponent implements OnInit {
           this.samplesLoading = false;
         },
         error => {
-          this.errorMessage = <any>error
+          this.errorMessage = error
         }
       );
   }
@@ -1252,6 +1253,7 @@ export class SamplesComponent implements OnInit {
     this.showSampleEditError = false;
     this.showSampleEditSuccess = false;
     this.submitLoading = true;
+    this.errorMessage = '';
 
     let meterVolumesPresent: boolean = false;
     let directTVSPresent: boolean = false;
@@ -1279,7 +1281,7 @@ export class SamplesComponent implements OnInit {
               this.reloadSamplesTable();
             },
             error => {
-              this.errorMessage = <any>error;
+              this.errorMessage = error;
               this.submitLoading = false;
               this.showSampleEditError = true;
             }
@@ -1349,7 +1351,7 @@ export class SamplesComponent implements OnInit {
                 this.reloadSamplesTable();
               },
               error => {
-                this.errorMessage = <any>error;
+                this.errorMessage = error;
                 this.submitLoading = false;
                 this.sampleVolumeErrorFlag = false;
                 this.showSampleCreateError = true;
@@ -1433,7 +1435,7 @@ export class SamplesComponent implements OnInit {
                 this.reloadSamplesTable();
               },
               error => {
-                this.errorMessage = <any>error;
+                this.errorMessage = error;
                 this.submitLoading = false;
                 this.showSampleCreateError = true;
               }
