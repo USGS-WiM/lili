@@ -308,6 +308,7 @@ export class DataUploadComponent implements OnInit {
           this.resultsSubmissionReady = true;
         },
         error => {
+          this.errorMessage = error;
           this.pcrReplicateBatchIDErrorFlag = true;
           this.resultsSubmissionReady = false;
         }
@@ -366,6 +367,7 @@ export class DataUploadComponent implements OnInit {
           this.dilutionFactorsCalculated = true;
         },
         error => {
+          this.errorMessage = error;
           this.inhLoadingFlag = false;
           this.inhRawErrorMessage = <any>error
           this.inhRawErrorFlag = true;
@@ -374,6 +376,8 @@ export class DataUploadComponent implements OnInit {
   }
 
   submitRawTargetResults() {
+
+    this.errorMessage = '';
 
     this._pcrReplicateBatchService.update(this.parsedRawTargetResults_pcrBatchID, this.parsedRawTargetResults)
       .subscribe(
@@ -386,6 +390,7 @@ export class DataUploadComponent implements OnInit {
           this.validationResponseReady = true;
         },
         error => {
+          this.errorMessage = error;
           this.resultsSubmissionErrorFlag = true;
           this.resultsSubmissionSuccessFlag = false;
         }
@@ -393,6 +398,8 @@ export class DataUploadComponent implements OnInit {
   }
 
   onUpdatePCRReplicates(selectedReps) {
+
+    this.errorMessage = '';
     this.replicateUpdateSuccessFlag = false;
     this.replicateUpdateErrorFlag = false;
     this.submitLoading = true;
@@ -420,6 +427,7 @@ export class DataUploadComponent implements OnInit {
           this.replicatesLoading = false;
         },
         error => {
+          this.errorMessage = error;
           this.replicateUpdateSuccessFlag = false;
           this.replicateUpdateErrorFlag = true;
           this.submitLoading = false;
@@ -438,6 +446,7 @@ export class DataUploadComponent implements OnInit {
   }
 
   submitInhibitions(dilutionsFormValue) {
+    this.errorMessage = '';
     this.submitLoading = true;
     this.inhibitionUpdateSuccessFlag = false;
     this.inhibitionUpdateErrorFlag = false;
@@ -455,6 +464,7 @@ export class DataUploadComponent implements OnInit {
           this.submitLoading = false;
         },
         error => {
+          this.errorMessage = error;
           this.inhibitionUpdateSuccessFlag = false;
           this.inhibitionUpdateErrorFlag = true;
           this.submitLoading = false;
@@ -463,6 +473,8 @@ export class DataUploadComponent implements OnInit {
   }
 
   resetInhibitions() {
+
+    this.errorMessage = '';
 
     this.inhibitionUpdateSuccessFlag = false;
     this.inhibitionUpdateErrorFlag = false;
