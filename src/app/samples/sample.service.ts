@@ -35,6 +35,84 @@ export class SampleService {
       .catch(this.handleError);
   }
 
+  public querySamplesCount(queryFormValue): Observable<any> {
+
+    let queryString = '?';
+
+    if (queryFormValue.from_id !== null) {
+      queryString = queryString + '&from_id=' + queryFormValue.from_id.toString();
+    }
+    if (queryFormValue.to_id !== null) {
+      queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
+    }
+    if (queryFormValue.study !== null) {
+      queryString = queryString + 'study=' + queryFormValue.study.toString();
+    }
+    if (queryFormValue.matrix !== null) {
+      queryString = queryString + '&matrix=' + queryFormValue.matrix.toString();
+    }
+    if (queryFormValue.sample_type !== null) {
+      queryString = queryString + '&sample_type=' + queryFormValue.sample_type.toString();
+    }
+    if (queryFormValue.collaborator_sample_id !== null) {
+      queryString = queryString + '&collaborator_sample_id =' + queryFormValue.collaborator_sample_id.toString();
+    }
+    if (queryFormValue.from_collection_start_date !== null) {
+      queryString = queryString + '&from_collection_start_date =' + queryFormValue.from_collection_start_date.toString();
+    }
+    if (queryFormValue.to_collection_start_date !== null) {
+      queryString = queryString + '&to_collection_start_date =' + queryFormValue.to_collection_start_date.toString();
+    }
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.SAMPLES_URL + 'get_count/' + queryString, options)
+      .map((response: Response) => <ISample[]>response.json())
+      .catch(this.handleError);
+  }
+
+  public querySamples(queryFormValue): Observable<ISample[]> {
+
+    let queryString = '?';
+
+    if (queryFormValue.from_id !== null) {
+      queryString = queryString + '&from_id=' + queryFormValue.from_id.toString();
+    }
+    if (queryFormValue.to_id !== null) {
+      queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
+    }
+    if (queryFormValue.study !== null) {
+      queryString = queryString + 'study=' + queryFormValue.study.toString();
+    }
+    if (queryFormValue.matrix !== null) {
+      queryString = queryString + '&matrix=' + queryFormValue.matrix.toString();
+    }
+    if (queryFormValue.sample_type !== null) {
+      queryString = queryString + '&sample_type=' + queryFormValue.sample_type.toString();
+    }
+    if (queryFormValue.collaborator_sample_id !== null) {
+      queryString = queryString + '&collaborator_sample_id =' + queryFormValue.collaborator_sample_id.toString();
+    }
+    if (queryFormValue.from_collection_start_date !== null) {
+      queryString = queryString + '&from_collection_start_date =' + queryFormValue.from_collection_start_date.toString();
+    }
+    if (queryFormValue.to_collection_start_date !== null) {
+      queryString = queryString + '&to_collection_start_date =' + queryFormValue.to_collection_start_date.toString();
+    }
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+
+    return this._http.get(APP_SETTINGS.SAMPLES_URL + queryString, options)
+      .map((response: Response) => <ISample[]>response.json())
+      .catch(this.handleError);
+
+  }
+
   public getSampleSelection(sampleList: number[]): Observable<ISample[]> {
 
     let options = new RequestOptions({

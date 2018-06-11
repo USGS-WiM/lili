@@ -1293,7 +1293,6 @@
 </clr-modal>
 <!-- end print modal -->
 
-
 <!-- begin Missing FCSV Error Modal -->
 <clr-modal [(clrModalOpen)]="showHideMissingFCSVErrorModal">
     <h3 class="modal-title">
@@ -1334,10 +1333,83 @@
 </clr-modal>
 <!-- end SampleLabelModal -->
 
+
+<div class="card-text">
+    <!-- begin form -->
+    <form class="form compact" [formGroup]="sampleQueryForm" (ngSubmit)="onSubmitSampleQuery(sampleQueryForm.value)">
+        <section class="form-block">
+
+            <div class="form-group">
+                <label [ngClass]="{'required': addSampleForm.get('study').enabled}">Study</label>
+                <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
+                    <div class="select">
+                        <select id="studySelect" name="study" formControlName="study">
+                            <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
+                        </select>
+                    </div>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>Sample ID Range</label>
+                <span>From</span>
+                <input type="text" formControlName="from_id">
+                <span>To</span>
+                <input type="text" formControlName="to_id">
+            </div>
+
+            <div class="form-group">
+                <label>Collection Start Date Range</label>
+                <span>From</span>
+                <input type="date" formControlName="from_collection_start_date">
+                <span>To</span>
+                <input type="date" formControlName="to_collection_start_date">
+            </div>
+
+            <div class="form-group">
+                <label>Collaborator Sample ID</label>
+                <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id">
+            </div>
+
+            <div class="form-group">
+                <label>Matrix</label>
+                <div class="select">
+                    <select id="matrixSelect" name="matrix" formControlName="matrix">
+                        <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Sample type</label>
+                <div class="select">
+                    <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
+                        <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
+                    </select>
+                </div>
+            </div>
+
+        </section>
+
+        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleQuerySizeErrorFlag">
+            <div class="alert-item">
+                <span class="alert-text">Your query results are too large. Please narrow your search.</span>
+            </div>
+        </clr-alert>
+
+        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Submit</button>
+    </form>
+</div>
+
+<div *ngIf="sampleQueryComplete">
+    <h4>Query returned {{samplesCount}} sample records</h4>
+</div>
+
+
+
 <!-- begin samples table -->
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
 
         <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="samplesLoading" [clDgRowSelection]="true">
 
@@ -1551,6 +1623,8 @@
                     <date-updated-filter [dateField]="'modified_date'" #dateUpdatedFilter></date-updated-filter>
                 </clr-dg-filter>
             </clr-dg-column>
+
+            <clr-dg-placeholder>No samples</clr-dg-placeholder>
 
             <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
                 <clr-dg-cell>{{sample.id}}</clr-dg-cell>

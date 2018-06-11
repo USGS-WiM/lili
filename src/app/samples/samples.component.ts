@@ -75,6 +75,9 @@ export class SamplesComponent implements OnInit {
   matrixSelected: IMatrix;
   unitValue;
 
+  samplesCount: null;
+  sampleQueryComplete: boolean = false;
+
   samplesLoading: boolean = false;
 
   onlyOneStudySelected: boolean;
@@ -145,6 +148,10 @@ export class SamplesComponent implements OnInit {
   showHideMissingFCSVErrorModal: boolean = false;
   // aliquotLabelTextArray = [{"aliquot_string": "", "collaborator_sample_id": ""}]
   aliquotLabelTextArray = [];
+
+  sampleQueryForm: FormGroup;
+
+  sampleQuerySizeErrorFlag = false;
 
   // edit sample form
   editSampleForm = new FormGroup({
@@ -314,6 +321,19 @@ export class SamplesComponent implements OnInit {
     this.fcsvArray = this.createFCSVForm.get('fcsv_array') as FormArray;
   }
 
+  buildSampleQueryForm() {
+    this.sampleQueryForm = this.formBuilder.group({
+      study: null,
+      from_id: null,
+      to_id: null,
+      from_collection_start_date: null,
+      to_collection_start_date: null,
+      collaborator_sample_id: null,
+      sample_type: null,
+      matrix: null
+    })
+  }
+
   constructor(private _sampleService: SampleService,
     private _finalConcentratedSampleVolumeService: FinalConcentratedSampleVolumeService,
     private _studyService: StudyService,
@@ -329,6 +349,7 @@ export class SamplesComponent implements OnInit {
     private _analysisBatchService: AnalysisBatchService,
     private formBuilder: FormBuilder
   ) {
+    this.buildSampleQueryForm();
     this.buildAddSampleForm();
     this.buildCreateFCSVForm();
     this.buildFreezeForm();
@@ -370,7 +391,7 @@ export class SamplesComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.samplesLoading = true;
+    //this.samplesLoading = true;
 
     // on init, get sample form config object from App Utilities and set to local displayConfig var
     this.displayConfig = APP_UTILITIES.SAMPLE_FORM_CONFIG;
@@ -379,36 +400,36 @@ export class SamplesComponent implements OnInit {
     this.recordTypes = APP_SETTINGS.SAMPLE_RECORD_TYPES;
 
     // on init, call getSamples function of the SampleService, set results to the allSamples var
-    this._sampleService.getSamples()
-      .subscribe(
-        (samples) => {
-          this.allSamples = samples
-          this.samplesLoading = false;
-          for (let sample of samples) {
-            if (sample.record_type === 2) {
-              this.pegnegs.push(sample);
-            }
-            if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
-              this.samplerNames.push(sample.sampler_name)
-            }
-          }
-          // TODO: Remove this line below. TEMPORARY for populating samplerNames array until web service fix.
-          //this.samplerNames.push("Aaron Firnstahl", "Joel Stokdyk", "Blake Draper", "Aaaron Stephenson");
-          // console.log("Pegnegs array pre-sorted: ", this.pegnegs)
-          // sort pegnegs by date order
-          this.pegnegs.sort(function (a, b) {
-            const c: Date = new Date(a.collection_start_date);
-            const d: Date = new Date(b.collection_start_date);
-            return (d.getTime()) - (c.getTime());
-          });
-          // console.log("Pegnegs array post-sorted: ", this.pegnegs)
-          console.log("Sampler names: ", this.samplerNames)
+    // this._sampleService.getSamples()
+    //   .subscribe(
+    //     (samples) => {
+    //       this.allSamples = samples
+    //       this.samplesLoading = false;
+    //       for (let sample of samples) {
+    //         if (sample.record_type === 2) {
+    //           this.pegnegs.push(sample);
+    //         }
+    //         if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
+    //           this.samplerNames.push(sample.sampler_name)
+    //         }
+    //       }
+    //       // TODO: Remove this line below. TEMPORARY for populating samplerNames array until web service fix.
+    //       //this.samplerNames.push("Aaron Firnstahl", "Joel Stokdyk", "Blake Draper", "Aaaron Stephenson");
+    //       // console.log("Pegnegs array pre-sorted: ", this.pegnegs)
+    //       // sort pegnegs by date order
+    //       this.pegnegs.sort(function (a, b) {
+    //         const c: Date = new Date(a.collection_start_date);
+    //         const d: Date = new Date(b.collection_start_date);
+    //         return (d.getTime()) - (c.getTime());
+    //       });
+    //       // console.log("Pegnegs array post-sorted: ", this.pegnegs)
+    //       console.log("Sampler names: ", this.samplerNames)
 
-        },
-        error => {
-          this.errorMessage = error
-        }
-      );
+    //     },
+    //     error => {
+    //       this.errorMessage = error
+    //     }
+    //   );
 
     // on init, call getFreezers function of the FreezerService, set results to the freezers var
     this._freezerService.getFreezers()
@@ -1151,6 +1172,8 @@ export class SamplesComponent implements OnInit {
     this.showFCSVEditError = false;
     this.showABCreateSuccess = false;
     this.showABCreateError = false;
+    this.sampleQuerySizeErrorFlag = false;
+    this.sampleQueryComplete = false;
     this.errorMessage = '';
   }
 
@@ -1160,24 +1183,35 @@ export class SamplesComponent implements OnInit {
     // set sample loading to true to put spinner over table while it updates.
     this.samplesLoading = true;
     this.pegnegs = [];
-    // retrieve samples again, reload the table
-    // call getSamples function of the SampleService, set results to the allSamples var
-    this._sampleService.getSamples()
+    // retrieve samples again, reload the table based on current query
+    // call querySamples function of the SampleService, set results to the allSamples var
+    this._sampleService.querySamples(this.sampleQueryForm.value)
       .subscribe(
         (samples) => {
+          this.sampleQueryComplete = true;
           this.allSamples = samples
-          for (let item of samples) {
-            if (item.record_type === 2) {
-              // push all sample records of type Control into the pegnegs array.
-              this.pegnegs.push(item);
+          this.samplesLoading = false;
+          for (let sample of samples) {
+            if (sample.record_type === 2) {
+              this.pegnegs.push(sample);
+            }
+            if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
+              this.samplerNames.push(sample.sampler_name)
             }
           }
-          this.samplesLoading = false;
+          // sort pegnegs by date order
+          this.pegnegs.sort(function (a, b) {
+            const c: Date = new Date(a.collection_start_date);
+            const d: Date = new Date(b.collection_start_date);
+            return (d.getTime()) - (c.getTime());
+          });
         },
         error => {
-          this.errorMessage = error
+          this.errorMessage = error;
+          this.submitLoading = false;
         }
       );
+
   }
 
   resetAddSampleForm() {
@@ -1445,5 +1479,64 @@ export class SamplesComponent implements OnInit {
       default:
       // do something defaulty
     }
+  }
+
+  onSubmitSampleQuery(formValue) {
+
+    this.resetFlags();
+
+    this.submitLoading = true;
+
+    // set functional limit for amount of samples to display in the table at once
+    const countLimit = 300;
+
+    this._sampleService.querySamplesCount(formValue)
+      .subscribe(
+        (count) => {
+
+          this.submitLoading = false;
+          // if count exceeds limit, show error message
+          if (count.count >= countLimit) {
+            this.sampleQuerySizeErrorFlag = true;
+          } else if (count.count < countLimit) {
+
+            this.samplesLoading = false;
+
+            // if sample query count does not exceed functional limit, query for actual results, and set results to the allSamples var
+            this._sampleService.querySamples(formValue)
+              .subscribe(
+                (samples) => {
+                  this.samplesCount = count.count;
+                  this.sampleQueryComplete = true;
+                  this.allSamples = samples
+                  this.samplesLoading = false;
+                  for (let sample of samples) {
+                    if (sample.record_type === 2) {
+                      this.pegnegs.push(sample);
+                    }
+                    if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
+                      this.samplerNames.push(sample.sampler_name)
+                    }
+                  }
+                  // sort pegnegs by date order
+                  this.pegnegs.sort(function (a, b) {
+                    const c: Date = new Date(a.collection_start_date);
+                    const d: Date = new Date(b.collection_start_date);
+                    return (d.getTime()) - (c.getTime());
+                  });
+                },
+                error => {
+                  this.errorMessage = error;
+                  this.submitLoading = false;
+                }
+              );
+          }
+        },
+        error => {
+          this.errorMessage = error;
+          this.submitLoading = false;
+        }
+      );
+
   }
 }
