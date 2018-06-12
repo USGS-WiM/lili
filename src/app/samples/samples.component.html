@@ -168,7 +168,7 @@
 
                             <div class="form-group">
                                 <label for="tvsInput">Total Volume (or mass) Sampled</label>
-                                <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
+                                <input type="text" id="tvsInput" formControlName="total_volume_or_mass_sampled">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
@@ -332,27 +332,6 @@
                                 <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
                             </div>
 
-                            <!-- <div class="form-group">
-                                <label for="collectStartTime">Collection Start Time (HH:MM)</label>
-                                <label for="collectStartTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addPegNegForm.get('collection_start_time').invalid && (addPegNegForm.get('collection_start_time').dirty || addPegNegForm.get('collection_start_time').touched)">
-                                    <input id="collectStartTime" type="text" formControlName="collection_start_time">
-                                    <span class="tooltip-content">Must follow format HH:MM</span>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="collectEndDateInput">Collection End Date</label>
-                                <input type="date" id="collectEndDateInput" formControlName="collection_end_date">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="collectEndTime">Collection End Time (HH:MM)</label>
-                                <label for="collectEndTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addPegNegForm.get('collection_end_time').invalid && (addPegNegForm.get('collection_end_time').dirty || addPegNegForm.get('collection_end_time').touched)">
-                                    <input id="collectEndTime" type="text" formControlName="collection_end_time">
-                                    <span class="tooltip-content">Must follow format HH:MM</span>
-                                </label>
-                            </div> -->
-
                             <div class="form-group">
                                 <label for="imrInput">Initial Meter Reading</label>
                                 <input type="text" id="imrInput" formControlName="meter_reading_initial">
@@ -405,9 +384,16 @@
                                 <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                             </div>
 
+                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleVolumeErrorFlag" (clrAlertClosedChange)="onClosesampleVolumeError()">
+                                <div class="alert-item">
+                                    <span class="alert-text">Please provide a sample volume using meter readings and units or total volume sampled
+                                        and units.</span>
+                                </div>
+                            </clr-alert>
+
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleCreateError">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Submission error. Sample not submitted.</span>
+                                    <span class="alert-text">Submission error. Pegneg (sample record) not submitted.</span>
                                     <span>{{errorMessage}}</span>
                                     <div class="alert-actions">
                                         <a class="alert-action" (click)="onSubmitSample('addPegNeg', addPegNegForm.value)">Try again</a>
@@ -415,7 +401,7 @@
                                 </div>
                             </clr-alert>
 
-                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess">
+                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess" [clrAlertClosable]="false">
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Pegneg (sample record) successfully submitted. ID: {{createdSampleID}}</span>
                                     <div class="alert-actions">
@@ -538,7 +524,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="samplerNameInput" class="required">Sampler Name</label>
+                            <label for="samplerNameInput">Sampler Name</label>
                             <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
                             <datalist id="samplerNames">
                                 <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
@@ -587,12 +573,13 @@
 
                         <div class="form-group">
                             <label for="tvsInput">Total Volume (or mass) Sampled</label>
-                            <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
-                            <div class="select">
-                                <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
+                            <input type="text" id="tvsInput" formControlName="total_volume_or_mass_sampled">
+                            <span>{{this.editSampleForm.get('total_volume_sampled_unit_initial')}}</span>
+                            <!-- <div class="select">
+                                <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial" readonly>
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="form-group">
@@ -1335,7 +1322,7 @@
 
 
 <div class="card-text">
-    <!-- begin form -->
+    <!-- begin sample query form -->
     <form class="form compact" [formGroup]="sampleQueryForm" (ngSubmit)="onSubmitSampleQuery(sampleQueryForm.value)">
         <section class="form-block">
 
@@ -1344,6 +1331,9 @@
                 <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
                     <div class="select">
                         <select id="studySelect" name="study" formControlName="study">
+                            <option value="">
+                                <span class="all">ALL STUDIES</span>
+                            </option>
                             <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
                         </select>
                     </div>
@@ -1375,6 +1365,9 @@
                 <label>Matrix</label>
                 <div class="select">
                     <select id="matrixSelect" name="matrix" formControlName="matrix">
+                        <option value="">
+                            <span class="all">ALL MATRICES</span>
+                        </option>
                         <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}</option>
                     </select>
                 </div>
@@ -1384,6 +1377,9 @@
                 <label>Sample type</label>
                 <div class="select">
                     <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
+                        <option value="">
+                            <span class="all">ALL SAMPLE TYPES</span>
+                        </option>
                         <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
                     </select>
                 </div>

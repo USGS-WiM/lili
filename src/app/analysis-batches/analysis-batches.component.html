@@ -1055,6 +1055,45 @@
 <!-- end no target error modal -->
 
 
+<div class="card-text">
+    <!-- begin sample query form -->
+    <form class="form compact" [formGroup]="abQueryForm" (ngSubmit)="onSubmitABQuery(abQueryForm.value)">
+        <section class="form-block">
+
+            <div class="form-group">
+                <label>Study</label>
+                <div class="select">
+                    <select id="studySelect" name="study" formControlName="study">
+                        <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Analysis Batch ID Range</label>
+                <span>From</span>
+                <input type="text" formControlName="from_id">
+                <span>To</span>
+                <input type="text" formControlName="to_id">
+            </div>
+
+        </section>
+
+        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="abQuerySizeErrorFlag">
+            <div class="alert-item">
+                <span class="alert-text">Your query results are too large. Please narrow your search.</span>
+            </div>
+        </clr-alert>
+
+        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Submit</button>
+    </form>
+</div>
+
+<div *ngIf="abQueryComplete">
+    <h4>Query returned {{abCount}} Analysis Batch records</h4>
+</div>
+
+
 <!-- begin Analysis batches table -->
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -1154,6 +1193,8 @@
             </clr-dg-column>
 
             <!-- begin data table rows -->
+
+            <clr-dg-placeholder>No Analysis Batches</clr-dg-placeholder>
 
             <clr-dg-row *clrDgItems="let ab of allAnalysisBatchSummaries" [clrDgItem]="ab">
 

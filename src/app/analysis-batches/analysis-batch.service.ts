@@ -55,6 +55,55 @@ export class AnalysisBatchService {
       .catch(this.handleError);
   }
 
+  public queryAnalysisBatchesCount(queryFormValue): Observable<any> {
+
+    let queryString = '?';
+
+    if (queryFormValue.from_id !== null) {
+      queryString = queryString + '&from_id=' + queryFormValue.from_id.toString();
+    }
+    if (queryFormValue.to_id !== null) {
+      queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
+    }
+    if (queryFormValue.study !== null && queryFormValue.study !== '') {
+      queryString = queryString + 'study=' + queryFormValue.study.toString();
+    }
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.ANALYSIS_BATCH_SUMMARY_URL + 'get_count/' + queryString, options)
+      .map((response: Response) => <IAnalysisBatch[]>response.json())
+      .catch(this.handleError);
+
+  }
+
+
+  public queryAnalysisBatches(queryFormValue): Observable<IAnalysisBatchSummary[]> {
+
+    let queryString = '?';
+
+    if (queryFormValue.from_id !== null) {
+      queryString = queryString + '&from_id=' + queryFormValue.from_id.toString();
+    }
+    if (queryFormValue.to_id !== null) {
+      queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
+    }
+    if (queryFormValue.study !== null && queryFormValue.study !== '') {
+      queryString = queryString + 'study=' + queryFormValue.study.toString();
+    }
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.ANALYSIS_BATCH_SUMMARY_URL + queryString, options)
+      .map((response: Response) => <IAnalysisBatch[]>response.json())
+      .catch(this.handleError);
+
+  }
+
   // get sample-inhibition objects, i.e. inhibitions per sample
   getSampleInhibitions(sampleList: number[]): Observable<any[]> {
 

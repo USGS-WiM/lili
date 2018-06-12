@@ -132,6 +132,10 @@ export class AnalysisBatchesComponent implements OnInit {
   selectedAB: IAnalysisBatchSummary;
   errorMessage: string;
 
+  abQueryComplete: boolean = false;
+  abQuerySizeErrorFlag: boolean = false;
+  abCount;
+
   // booleans for edit AB tabs
   sampleListActive: boolean;
   detailsActive: boolean;
@@ -168,6 +172,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   isNumberPattern: RegExp = (/^[0-9]*$/);
 
+  abQueryForm: FormGroup;
+
   // edit AB form
   editABForm = new FormGroup({
     id: new FormControl(''),
@@ -198,6 +204,14 @@ export class AnalysisBatchesComponent implements OnInit {
     } else {
       return null;
     }
+  }
+
+  buildABQueryForm() {
+    this.abQueryForm = this.formBuilder.group({
+      study: null,
+      from_id: null,
+      to_id: null
+    })
   }
 
   buildBatchExtPosForm() {
@@ -291,13 +305,14 @@ export class AnalysisBatchesComponent implements OnInit {
     private _extractionBatchService: ExtractionBatchService,
     private _unitService: UnitService
   ) {
+    this.buildABQueryForm();
     this.buildExtractForm();
     this.buildBatchExtPosForm();
   }
 
   ngOnInit() {
 
-    this.analysisBatchesLoading = true;
+    // this.analysisBatchesLoading = true;
 
     this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
 
@@ -307,14 +322,14 @@ export class AnalysisBatchesComponent implements OnInit {
         error => this.errorMessage = <any>error);
 
     // on init, call getAnalysisBatchSummaries function of the AnalysisBatchService, set results to the allAnalysisBatches var
-    this._analysisBatchService.getAnalysisBatchSummaries()
-      .subscribe(
-        (analysisBatches) => {
-          this.allAnalysisBatchSummaries = analysisBatches;
-          this.analysisBatchesLoading = false;
-        },
-        error => { this.errorMessage = <any>error }
-      );
+    // this._analysisBatchService.getAnalysisBatchSummaries()
+    //   .subscribe(
+    //     (analysisBatches) => {
+    //       this.allAnalysisBatchSummaries = analysisBatches;
+    //       this.analysisBatchesLoading = false;
+    //     },
+    //     error => { this.errorMessage = <any>error }
+    //   );
 
     // on init, call getExtractionMethods function of the EXtractionMethodService, set results to allExtractionMethods var
     this._extractionMethodService.getExtractionMethods()
@@ -479,6 +494,52 @@ export class AnalysisBatchesComponent implements OnInit {
     }
   }
 
+  reloadAnalysisBatchesTable() {
+
+    this.allAnalysisBatchSummaries = [];
+    // set sample loading to true to put spinner over table while it updates.
+    this.analysisBatchesLoading = true;
+
+    // set functional limit for amount of samples to display in the table at once
+    const countLimit = 50;
+
+    this._analysisBatchService.queryAnalysisBatchesCount(this.abQueryForm.value)
+      .subscribe(
+        (count) => {
+
+          this.submitLoading = false;
+          // if count exceeds limit, show error message
+          if (count.count >= countLimit) {
+            this.abQuerySizeErrorFlag = true;
+          } else if (count.count < countLimit) {
+
+            this.analysisBatchesLoading = true;
+
+            // if AB query count does not exceed functional limit, query for actual results, and set results to the allSamples var
+            this._analysisBatchService.queryAnalysisBatches(this.abQueryForm.value)
+              .subscribe(
+                (analysisBatches) => {
+                  this.abCount = count.count;
+                  this.abQueryComplete = true;
+                  this.allAnalysisBatchSummaries = analysisBatches;
+                  this.analysisBatchesLoading = false;
+                },
+                error => {
+                  this.errorMessage = error;
+                  this.submitLoading = false;
+                  this.analysisBatchesLoading = false;
+                }
+              );
+          }
+        },
+        error => {
+          this.errorMessage = error;
+          this.submitLoading = false;
+        }
+      );
+
+  }
+
   resetExtractWizard() {
     // reset extract form, specifying default values for neccesary fields
     this.extractForm.reset({ qpcr_template_volume: 6, qpcr_reaction_volume: 20, new_rt: { template_volume: 6, reaction_volume: 20 } });
@@ -500,6 +561,8 @@ export class AnalysisBatchesComponent implements OnInit {
     this.submitLoading = false;
     this.showBatchExtPosError = false;
     this.showBatchExtPosSuccess = false;
+    this.abQuerySizeErrorFlag = false;
+    this.abQueryComplete = false;
   }
 
   retrieveABData(abID) {
@@ -980,6 +1043,7 @@ export class AnalysisBatchesComponent implements OnInit {
               this.editABForm.reset();
               this.submitLoading = false;
               this.showABEditSuccess = true;
+              this.reloadAnalysisBatchesTable();
             },
             error => {
               this.errorMessage = <any>error;
@@ -1185,4 +1249,52 @@ export class AnalysisBatchesComponent implements OnInit {
         }
       );
   }
-}
+
+  onSubmitABQuery(formValue) {
+
+    this.resetFlags();
+
+
+    this.submitLoading = true;
+
+    // set functional limit for amount of samples to display in the table at once
+    const countLimit = 300;
+
+    this._analysisBatchService.queryAnalysisBatchesCount(formValue)
+      .subscribe(
+        (count) => {
+
+          this.submitLoading = false;
+          // if count exceeds limit, show error message
+          if (count.count >= countLimit) {
+            this.abQuerySizeErrorFlag = true;
+          } else if (count.count < countLimit) {
+
+            this.analysisBatchesLoading = true;
+
+            // if AB query count does not exceed functional limit, query for actual results, and set results to the allSamples var
+            this._analysisBatchService.queryAnalysisBatches(formValue)
+              .subscribe(
+                (analysisBatches) => {
+                  this.abCount = count.count;
+                  this.abQueryComplete = true;
+                  this.allAnalysisBatchSummaries = analysisBatches;
+                  this.analysisBatchesLoading = false;
+                },
+                error => {
+                  this.errorMessage = error;
+                  this.submitLoading = false;
+                  this.analysisBatchesLoading = false;
+                }
+              );
+          }
+        },
+        error => {
+          this.errorMessage = error;
+          this.submitLoading = false;
+        }
+      );
+
+  }
+
+};

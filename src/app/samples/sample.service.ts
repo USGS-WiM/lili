@@ -45,13 +45,13 @@ export class SampleService {
     if (queryFormValue.to_id !== null) {
       queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
     }
-    if (queryFormValue.study !== null) {
+    if (queryFormValue.study !== null && queryFormValue.study !== '') {
       queryString = queryString + 'study=' + queryFormValue.study.toString();
     }
-    if (queryFormValue.matrix !== null) {
+    if (queryFormValue.matrix !== null && queryFormValue.matrix !== '') {
       queryString = queryString + '&matrix=' + queryFormValue.matrix.toString();
     }
-    if (queryFormValue.sample_type !== null) {
+    if (queryFormValue.sample_type !== null && queryFormValue.sample_type !== '') {
       queryString = queryString + '&sample_type=' + queryFormValue.sample_type.toString();
     }
     if (queryFormValue.collaborator_sample_id !== null) {
@@ -83,13 +83,13 @@ export class SampleService {
     if (queryFormValue.to_id !== null) {
       queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
     }
-    if (queryFormValue.study !== null) {
+    if (queryFormValue.study !== null && queryFormValue.study !== '') {
       queryString = queryString + 'study=' + queryFormValue.study.toString();
     }
-    if (queryFormValue.matrix !== null) {
+    if (queryFormValue.matrix !== null && queryFormValue.matrix !== '') {
       queryString = queryString + '&matrix=' + queryFormValue.matrix.toString();
     }
-    if (queryFormValue.sample_type !== null) {
+    if (queryFormValue.sample_type !== null && queryFormValue.sample_type !== '') {
       queryString = queryString + '&sample_type=' + queryFormValue.sample_type.toString();
     }
     if (queryFormValue.collaborator_sample_id !== null) {

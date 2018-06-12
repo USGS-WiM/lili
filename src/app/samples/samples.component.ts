@@ -1183,35 +1183,58 @@ export class SamplesComponent implements OnInit {
     // set sample loading to true to put spinner over table while it updates.
     this.samplesLoading = true;
     this.pegnegs = [];
-    // retrieve samples again, reload the table based on current query
-    // call querySamples function of the SampleService, set results to the allSamples var
-    this._sampleService.querySamples(this.sampleQueryForm.value)
+    this.submitLoading = true;
+    // set functional limit for amount of samples to display in the table at once
+    const countLimit = 50;
+
+    this._sampleService.querySamplesCount(this.sampleQueryForm.value)
       .subscribe(
-        (samples) => {
-          this.sampleQueryComplete = true;
-          this.allSamples = samples
-          this.samplesLoading = false;
-          for (let sample of samples) {
-            if (sample.record_type === 2) {
-              this.pegnegs.push(sample);
-            }
-            if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
-              this.samplerNames.push(sample.sampler_name)
-            }
+        (count) => {
+
+          this.submitLoading = false;
+          // if count exceeds limit, show error message
+          if (count.count >= countLimit) {
+            this.sampleQuerySizeErrorFlag = true;
+            this.samplesLoading = false;
+          } else if (count.count < countLimit) {
+
+            this.samplesLoading = true;
+
+            // if sample query count does not exceed functional limit, query for actual results, and set results to the allSamples var
+            this._sampleService.querySamples(this.sampleQueryForm.value)
+              .subscribe(
+                (samples) => {
+                  this.samplesCount = count.count;
+                  this.sampleQueryComplete = true;
+                  this.allSamples = samples
+                  this.samplesLoading = false;
+                  for (let sample of samples) {
+                    if (sample.record_type === 2) {
+                      this.pegnegs.push(sample);
+                    }
+                    if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
+                      this.samplerNames.push(sample.sampler_name)
+                    }
+                  }
+                  // sort pegnegs by date order
+                  this.pegnegs.sort(function (a, b) {
+                    const c: Date = new Date(a.collection_start_date);
+                    const d: Date = new Date(b.collection_start_date);
+                    return (d.getTime()) - (c.getTime());
+                  });
+                },
+                error => {
+                  this.errorMessage = error;
+                  this.submitLoading = false;
+                }
+              );
           }
-          // sort pegnegs by date order
-          this.pegnegs.sort(function (a, b) {
-            const c: Date = new Date(a.collection_start_date);
-            const d: Date = new Date(b.collection_start_date);
-            return (d.getTime()) - (c.getTime());
-          });
         },
         error => {
           this.errorMessage = error;
           this.submitLoading = false;
         }
       );
-
   }
 
   resetAddSampleForm() {
@@ -1376,7 +1399,6 @@ export class SamplesComponent implements OnInit {
           this._sampleService.create(formValue)
             .subscribe(
               (sample) => {
-                this.allSamples.push(formValue);
                 this.resetAddSampleForm();
                 this.sampleVolumeErrorFlag = false;
                 this.submitLoading = false;
@@ -1461,11 +1483,10 @@ export class SamplesComponent implements OnInit {
           this._sampleService.create(formValue)
             .subscribe(
               (sample) => {
-                this.allSamples.push(formValue);
                 this.resetAddPegNegForm();
                 this.submitLoading = false;
-                this.showSampleCreateSuccess = true;
                 this.createdSampleID = sample.id;
+                this.showSampleCreateSuccess = true;
                 this.reloadSamplesTable();
               },
               error => {
@@ -1500,7 +1521,7 @@ export class SamplesComponent implements OnInit {
             this.sampleQuerySizeErrorFlag = true;
           } else if (count.count < countLimit) {
 
-            this.samplesLoading = false;
+            this.samplesLoading = true;
 
             // if sample query count does not exceed functional limit, query for actual results, and set results to the allSamples var
             this._sampleService.querySamples(formValue)
