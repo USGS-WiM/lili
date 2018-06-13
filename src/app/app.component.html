@@ -11,7 +11,18 @@
                     <span style="font-size:x-large; font-weight: bold;">LI</span>MS</span>
             </a>
         </div>
+
         <div class="header-actions">
+            <clr-dropdown>
+                <button class="nav-text" clrDropdownTrigger>
+                    <!-- {{ first_name }} {{ last_name }} -->
+                    {{currentUser.first_name}} {{currentUser.last_name}}
+                    <clr-icon shape="caret down"></clr-icon>
+                </button>
+                <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+                    <a href="javascript:void(0)" (click)="onLogout();" clrDropdownItem>Log out</a>
+                </clr-dropdown-menu>
+            </clr-dropdown>
         </div>
     </clr-header>
 
@@ -34,6 +45,10 @@
         </div>
         <nav class="sidenav" [clr-nav-level]="1">
             <section class="sidenav-content">
+
+                <!-- <a class="nav-link " href="#" [routerLink]="['/login']" routerLinkActive="active">
+                    <clr-icon shape="login"></clr-icon> Login
+                </a> -->
 
                 <a class="nav-link " href="#" [routerLink]="['/home']" routerLinkActive="active">
                     <clr-icon shape="home"></clr-icon> Home

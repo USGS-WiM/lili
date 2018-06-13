@@ -123,7 +123,8 @@
                 </div>
                 <clr-alert [clrAlertType]="'alert-danger'" *ngIf="resultsSubmissionErrorFlag">
                   <div clr-alert-item class="alert-item">
-                    <span class="alert-text">Submission error. Results not uploaded to database.</span><span>{{errorMessage}}</span>
+                    <span class="alert-text">Submission error. Results not uploaded to database.</span>
+                    <span>{{errorMessage}}</span>
                     <div class="alert-actions">
                       <a class="alert-action" (click)="submitRawTargetResults()">Try again</a>
                     </div>
@@ -220,12 +221,20 @@
 
               <div class="row">
                 <div class="col-lg-12 col-sm-12">
-                  <label>Note: validity displayed below is based on negative controls only.</label>
+                  <span>
+                    <label>Note: validity displayed below is based on negative controls only, including Peg Neg.</label>
+                    <clr-signpost>
+                      <clr-signpost-content *clrIfOpen>
+                        <span>How validity is calculated: if (replicate value is valid) and (all parent control values are valid)
+                          and (all linked pegneg values are valid) then replicate is valid</span>
+                      </clr-signpost-content>
+                    </clr-signpost>
+                  </span>
                 </div>
               </div>
               <div class="row">
                 <div class="col-lg-6 col-sm-12">
-                  <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="replicatesLoading" >
+                  <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="replicatesLoading">
                     <clr-dg-action-bar>
                       <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="showHideOverrideValidityModal = true">
@@ -420,7 +429,8 @@
                   </section>
                   <clr-alert [clrAlertType]="'alert-danger'" *ngIf="inhibitionUpdateErrorFlag">
                     <div clr-alert-item class="alert-item">
-                      <span class="alert-text">Submission error. Inhibition dilution factors not submitted.</span><span>{{errorMessage}}</span>
+                      <span class="alert-text">Submission error. Inhibition dilution factors not submitted.</span>
+                      <span>{{errorMessage}}</span>
                       <div class="alert-actions">
                         <a class="alert-action" (click)="submitInhibitions(dilutionsForm.value)">Try again</a>
                       </div>
@@ -487,7 +497,8 @@
         </ul>
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="replicateUpdateErrorFlag">
           <div clr-alert-item class="alert-item">
-            <span class="alert-text">Submission error. Replicate validity not updated.</span><span>{{errorMessage}}</span>
+            <span class="alert-text">Submission error. Replicate validity not updated.</span>
+            <span>{{errorMessage}}</span>
             <div class="alert-actions">
               <a class="alert-action" (click)="onUpdatePCRReplicates(selected)">Try again</a>
             </div>

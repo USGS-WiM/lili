@@ -18,7 +18,7 @@ export class ServerTestService {
 
   testLIDEServices(): Observable<any> {
 
-    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
+    let options = new RequestOptions({ headers: APP_SETTINGS.ADMIN_MIN_AUTH_JSON_HEADERS});
 
     return this._http.get(APP_SETTINGS.ROOT_URL, options)
       // return this._http.get(this._matricesUrl)

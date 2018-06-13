@@ -13,6 +13,8 @@ export class APP_SETTINGS {
     public static get API_USERNAME(): string { return 'admin' };
     public static get API_PASSWORD(): string { return 'lideadmin' };
 
+    public static get IS_LOGGEDIN(): boolean { return (!!sessionStorage.getItem('username') && !!sessionStorage.getItem('password')); };
+
     public static get ROOT_URL(): string { return this._API_ENDPOINT };
     public static get AUTH_URL(): string { return this._API_ENDPOINT + 'auth/' };
     public static get STUDIES_URL(): string { return this._API_ENDPOINT + 'studies/' };
@@ -79,7 +81,29 @@ export class APP_SETTINGS {
         }
     }
 
+    public static get MIN_JSON_HEADERS() { return new Headers({ 'Accept': 'application/json' }) };
+    public static get JSON_HEADERS() { return new Headers({ 'Accept': 'application/json', 'Content-Type': 'application/json' }) };
 
+    public static get AUTH_HEADERS() {
+        return new Headers({
+            'Authorization': 'Basic ' +
+                btoa(sessionStorage.getItem('username') + ':' + sessionStorage.getItem('password'))
+        })
+    };
+    public static get MIN_AUTH_JSON_HEADERS() {
+        return new Headers({
+            'Authorization': 'Basic ' + btoa(sessionStorage.getItem('username') + ':' + sessionStorage.getItem('password')),
+            'Accept': 'application/json'
+        }
+        )
+    };
+    public static get AUTH_JSON_HEADERS() {
+        return new Headers({
+            'Authorization': 'Basic ' + btoa(sessionStorage.getItem('username') + ':' + sessionStorage.getItem('password')),
+            'Accept': 'application/json', 'Content-Type': 'application/json'
+        }
+        )
+    };
 
     // public static get WATER_MATRIX_ID() {
     //     return 1;
@@ -93,23 +117,26 @@ export class APP_SETTINGS {
     //     return 4;
     // }
 
-    public static get MIN_JSON_HEADERS() { return new Headers({ 'Accept': 'application/json' }) };
-    public static get JSON_HEADERS() { return new Headers({ 'Accept': 'application/json', 'Content-Type': 'application/json' }) };
     // line below is for headers stored in local storage. todo: revisit and implement this
     // public static get AUTH_HEADERS() { return new Headers({ 'Authorization': 'Basic ' + btoa(sessionStorage.getItem('username') + ':' + sessionStorage.getItem('password'))}) };
-    public static get AUTH_HEADERS() { return new Headers({ 'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD) }); };
-    public static get MIN_AUTH_JSON_HEADERS() {
+    // public static get AUTH_HEADERS() {
+    //     return new Headers({
+    //         'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD)
+    //     });
+    // };
+    public static get ADMIN_MIN_AUTH_JSON_HEADERS() {
         return new Headers({
             'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD),
             'Accept': 'application/json'
         }
         );
     };
-    public static get AUTH_JSON_HEADERS() {
+    public static get ADMIN_AUTH_JSON_HEADERS() {
         return new Headers({
             'Authorization': 'Basic ' + btoa(this.API_USERNAME + ':' + this.API_PASSWORD),
             'Accept': 'application/json', 'Content-Type': 'application/json'
         }
         );
     };
+
 }
