@@ -125,7 +125,7 @@ export class AnalysisBatchesComponent implements OnInit {
   extractionDetailArray: ISampleExtraction[] = [];
   inhibitionDetailArray: IInhibition[] = [];
   rtDetailArray: IReverseTranscription[] = [];
-  targetDetailArray;
+  targetDetailArray = [];
 
   selected = [];
   selectedSamples = [];
@@ -1082,13 +1082,12 @@ export class AnalysisBatchesComponent implements OnInit {
         for (let target of this.extractionBatchArray[0].targets) {
           this.targetDetailArray.push(target);
         }
-        // show the target details modal if not showing already
-        if (this.showHideTargetDetailModal === false) {
-          this.showHideTargetDetailModal = true;
-        }
-        this.targetDetailLoading = true;
+
+        this.showHideTargetDetailModal = true;
+        this.targetDetailLoading = false;
       } else {
         this.showHideNoTargetErrorModal = true;
+        this.targetDetailLoading = false;
       }
 
     } else {
