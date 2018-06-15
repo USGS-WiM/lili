@@ -69,6 +69,10 @@ import { RecordTypeService } from "./SHARED/record-type.service";
 import { MultiStudyFilterComponent } from './FILTERS/multi-study-filter/multi-study-filter.component';
 import { DataUploadComponent } from './data-upload/data-upload.component';
 import { FinalSampleMeanConcentrationService } from "./results/final-sample-mean-concentration.service";
+import { AuthenticationComponent } from './authentication/authentication.component';
+import { AuthenticationService } from "./authentication/authentication.service";
+import { AuthenticationGuard } from "./authentication/authentication.guard";
+import { CurrentUserService } from "./authentication/current-user.service";
 
 @NgModule({
     declarations: [
@@ -105,7 +109,8 @@ import { FinalSampleMeanConcentrationService } from "./results/final-sample-mean
         SampleLabelComponent,
         RecordTypeFilter,
         MultiStudyFilterComponent,
-        DataUploadComponent
+        DataUploadComponent,
+        AuthenticationComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -116,7 +121,9 @@ import { FinalSampleMeanConcentrationService } from "./results/final-sample-mean
         ClarityModule.forRoot(),
         ROUTING
     ],
-    providers: [ConcentrationTypeService,
+    providers: [
+        AuthenticationService,
+        ConcentrationTypeService,
         ConcentrationResolve,
         UnitService,
         UnitResolve,
@@ -142,7 +149,9 @@ import { FinalSampleMeanConcentrationService } from "./results/final-sample-mean
         UserResolve,
         ServerTestService,
         RecordTypeService,
-        FinalSampleMeanConcentrationService
+        FinalSampleMeanConcentrationService,
+        AuthenticationGuard,
+        CurrentUserService
     ],
     bootstrap: [AppComponent]
 })

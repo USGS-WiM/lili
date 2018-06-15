@@ -13,8 +13,10 @@ import { TargetService } from './targets/target.service';
 import { ExtractionMethodService } from './extraction-batches/extraction-method.service';
 import { ConcentrationTypeService } from './concentration-types/concentration-types.service';
 import { ServerTestService } from './SHARED/server-test.service';
+import { AuthenticationService } from './authentication/authentication.service';
 
 import { APP_SETTINGS } from './app.settings';
+import { CurrentUserService } from './authentication/current-user.service';
 
 @Component({
     selector: 'my-app',
@@ -31,7 +33,18 @@ export class AppComponent implements OnInit {
 
     public liliVersion: string = '';
 
-    constructor(private router: Router, private _serverTestService: ServerTestService) {
+    currentUser;
+
+    constructor(
+        private router: Router,
+        private _serverTestService: ServerTestService,
+        public authenticationService: AuthenticationService,
+        public currentUserService: CurrentUserService
+    ) {
+
+        currentUserService.currentUser.subscribe(user => {
+            this.currentUser = user
+        });
     }
 
     ngOnInit() {
@@ -46,7 +59,29 @@ export class AppComponent implements OnInit {
                     console.log(error);
                     this.servicesFailFlag = true;
                 }
-            )
+            );
+
+
+
+        if ((!!sessionStorage.getItem('username') && !!sessionStorage.getItem('password'))) {
+
+            this.currentUserService.updateCurrentUser({
+                "first_name": sessionStorage.getItem('first_name'),
+                "last_name": sessionStorage.getItem('last_name')
+            });
+
+        } else {
+            this.currentUserService.updateCurrentUser({
+                "first_name": "Logged Out",
+                "last_name": ""
+            });
+        }
+
 
     }
+
+    onLogout() {
+        this.authenticationService.logout();
+    }
+
 }

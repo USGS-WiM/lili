@@ -42,10 +42,10 @@ export class ConcentrationTypesComponent implements OnInit {
     this.showHideAdd = false; this.showHideEdit = false; this.showHideDelete = false;
     this.showCTCreateError = false; this.showCTEditError = false; this.showCTDeleteError = false;
     this.showCTCreateSuccess = false; this.showCTEditSuccess = false; this.showCTDeleteSuccess = false;
-    this.submitLoading = false;    
+    this.submitLoading = false;
   }
 
-  public showAddModal(){
+  public showAddModal() {
     this.showHideAdd = !this.showHideAdd;
     //reset these to false in case Add Concentration is clicked more than once
     this.showCTCreateError = false;
@@ -90,36 +90,36 @@ export class ConcentrationTypesComponent implements OnInit {
         // update a record
         this._concentrationService.update(formValue)
           .subscribe(
-          (updatedConcentrationT) => {
-            this.selectedCTName = updatedConcentrationT.name;
-            this.updateCTArray(formValue);
-            this.selectedConcentration = undefined; // the radio button becomes unselected upon save, but Edit this One is still enabled. This disables the edit button
-            //this.editCTForm.reset(); // don't want to reset it. keep the content they just saved in the inputs rather than empty inputs
-            this.submitLoading = false;
-            this.showCTEditSuccess = true;
-            this._cdr.detectChanges(); //fix for ExpressionChangedAfterItHasBeenCheckedError (see https://github.com/angular/angular/issues/17572 )
-          },
-          error => {
-            this.errorMessage = <any>error;
-            this.submitLoading = false;
-            this.showCTEditError = true;
-          });
+            (updatedConcentrationT) => {
+              this.selectedCTName = updatedConcentrationT.name;
+              this.updateCTArray(formValue);
+              this.selectedConcentration = undefined; // the radio button becomes unselected upon save, but Edit this One is still enabled. This disables the edit button
+              //this.editCTForm.reset(); // don't want to reset it. keep the content they just saved in the inputs rather than empty inputs
+              this.submitLoading = false;
+              this.showCTEditSuccess = true;
+              this._cdr.detectChanges(); //fix for ExpressionChangedAfterItHasBeenCheckedError (see https://github.com/angular/angular/issues/17572 )
+            },
+            error => {
+              this.errorMessage = <any>error;
+              this.submitLoading = false;
+              this.showCTEditError = true;
+            });
         break;
       case 'add':
         // add a record
         this._concentrationService.create(formValue)
           .subscribe(
-          (newConcentration) => {
-            this.ConcentrationTypes.push(newConcentration);
-            this.addCTForm.reset();
-            this.submitLoading = false;
-            this.showCTCreateSuccess = true;
-          },
-          error => {
-            this.errorMessage = <any>error;
-            this.submitLoading = false;
-            this.showCTCreateError = true;
-          }
+            (newConcentration) => {
+              this.ConcentrationTypes.push(newConcentration);
+              this.addCTForm.reset();
+              this.submitLoading = false;
+              this.showCTCreateSuccess = true;
+            },
+            error => {
+              this.errorMessage = <any>error;
+              this.submitLoading = false;
+              this.showCTCreateError = true;
+            }
           );
         break;
       default:
@@ -128,7 +128,7 @@ export class ConcentrationTypesComponent implements OnInit {
   }
 
   // show delete concentration type modal
-  public deleteCT(selectedConcentration){
+  public deleteCT(selectedConcentration) {
     this.showCTDeleteSuccess = false; //reset this
     this.showCTDeleteError = false; //reset this too
     this.selectedCTName = selectedConcentration.name;
@@ -136,10 +136,10 @@ export class ConcentrationTypesComponent implements OnInit {
     // show the delete concentration form if not showing already
     if (this.showHideDelete === false) {
       this.showHideDelete = true;
-    }    
+    }
   }
 
-  public submitDelete(){
+  public submitDelete() {
     //get the index to be deleted by the id
     let ind: number;
     this.ConcentrationTypes.some((pdh, index, _ary) => {
@@ -147,22 +147,22 @@ export class ConcentrationTypesComponent implements OnInit {
       return pdh.id === this.selectedCTId;
     });
     this._concentrationService.delete(this.selectedCTId)
-    .subscribe(
-      () => {
-      this.selectedCTName = ""; 
-      this.ConcentrationTypes.splice(ind,1);
-      this.selectedConcentration = undefined; // the radio button becomes unselected upon save, but Edit this One is still enabled. This disables the edit button
-      //this.editCTForm.reset(); // don't want to reset it. keep the content they just saved in the inputs rather than empty inputs
-      this.submitLoading = false;
-      this.showCTDeleteSuccess = true;
-      this._cdr.detectChanges();
-    },
-    error => {
-      this.errorMessage = <any>error;
-      this.submitLoading = false;
-      this.showCTDeleteError = true;
-    }
-    );
+      .subscribe(
+        () => {
+          this.selectedCTName = "";
+          this.ConcentrationTypes.splice(ind, 1);
+          this.selectedConcentration = undefined; // the radio button becomes unselected upon save, but Edit this One is still enabled. This disables the edit button
+          //this.editCTForm.reset(); // don't want to reset it. keep the content they just saved in the inputs rather than empty inputs
+          this.submitLoading = false;
+          this.showCTDeleteSuccess = true;
+          this._cdr.detectChanges();
+        },
+        error => {
+          this.errorMessage = <any>error;
+          this.submitLoading = false;
+          this.showCTDeleteError = true;
+        }
+      );
   }
 
 }

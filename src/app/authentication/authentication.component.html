@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+    <div class="card">
+      <div class="card-block">
+        <div class="card-text">
+          <p>Welcome to
+            <span class="standoutMore">lili</span>
+            <br>
+            <!-- <span class="standout">L</span>aboratory for
+            <span class="standout">I</span>nfectious Disease and Environment
+            <span class="standout">L</span>aboratory
+            <span class="standout">I</span>nformation Management System. -->
+        </div>
+      </div>
+
+      <div class="card-block">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
+          <label class="title">
+            <h5 class="hint">Please login</h5>
+          </label>
+          <p>
+            <div class="login-group">
+              <input class="username" type="text" id="login_username" placeholder="Username" formControlName="username">
+              <input class="password" type="password" id="login_password" placeholder="Password" formControlName="password">
+            </div>
+            <p>
+
+            </p>
+            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="authenticationErrorFlag">
+              <div clr-alert-item class="alert-item">
+                <span class="alert-text">Invalid username/password combination</span>
+              </div>
+            </clr-alert>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <!-- <p>
+          <button class="btn btn-danger-outline" (click)="onLogout()">Logout</button> -->
+      </div>
+    </div>
+  </div>
+</div>

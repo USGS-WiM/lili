@@ -6,6 +6,8 @@
 import { ModuleWithProviders } from '@angular/core/src/metadata/ng_module';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthenticationComponent } from './authentication/authentication.component';
+import { AuthenticationGuard } from './authentication/authentication.guard';
 import { HomeComponent } from './home/home.component';
 import { StudiesComponent } from './studies/studies.component';
 import { SamplesComponent } from './samples/samples.component';
@@ -26,18 +28,20 @@ import { DataUploadComponent } from './data-upload/data-upload.component';
 
 
 export const ROUTES: Routes = [
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'home', component: HomeComponent },
-    { path: 'studies', component: StudiesComponent },
-    { path: 'samples', component: SamplesComponent },
-    { path: 'analysisbatches', component: AnalysisBatchesComponent },
-    { path: 'analysisbatchworksheet/:id', component: AnalysisBatchWorksheetComponent },
-    { path: 'dataupload', component: DataUploadComponent },
-    { path: 'results', component: ResultsComponent },
-    { path: 'reports', component: ReportsComponent },
+    { path: 'login', component: AuthenticationComponent },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'home', component: HomeComponent, canActivate: [AuthenticationGuard] },
+    { path: 'studies', component: StudiesComponent, canActivate: [AuthenticationGuard] },
+    { path: 'samples', component: SamplesComponent, canActivate: [AuthenticationGuard] },
+    { path: 'analysisbatches', component: AnalysisBatchesComponent, canActivate: [AuthenticationGuard] },
+    { path: 'analysisbatchworksheet/:id', component: AnalysisBatchWorksheetComponent, canActivate: [AuthenticationGuard] },
+    { path: 'dataupload', component: DataUploadComponent, canActivate: [AuthenticationGuard] },
+    { path: 'results', component: ResultsComponent, canActivate: [AuthenticationGuard] },
+    { path: 'reports', component: ReportsComponent, canActivate: [AuthenticationGuard] },
     {
         path: 'admin',
         component: AdminComponent,
+        canActivate: [AuthenticationGuard],
         resolve: {
             concentrationTypes: ConcentrationResolve,
             units: UnitResolve,
