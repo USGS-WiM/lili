@@ -168,7 +168,7 @@
 
                             <div class="form-group">
                                 <label for="tvsInput">Total Volume (or mass) Sampled</label>
-                                <input type="text" id="tvsInput" formControlName="total_volume_or_mass_sampled">
+                                <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
@@ -1389,11 +1389,11 @@
 
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleQuerySizeErrorFlag">
             <div class="alert-item">
-                <span class="alert-text">Your query results are too large. Please narrow your search.</span>
+                <span class="alert-text">Your query results are too large (greater than {{queryCountLimit}}). Please narrow your search.</span>
             </div>
         </clr-alert>
 
-        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Submit</button>
+        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Submit Sample Search</button>
     </form>
 </div>
 

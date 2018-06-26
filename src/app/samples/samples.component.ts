@@ -136,6 +136,8 @@ export class SamplesComponent implements OnInit {
 
   initialMeterReading = 2;
 
+  queryCountLimit;
+
   currentFreezerDimensions = {
     "racks": null,
     "boxes": null,
@@ -291,6 +293,7 @@ export class SamplesComponent implements OnInit {
       meter_reading_initial: [{ value: null, disabled: true }, [Validators.min(0), this.validateInitialMeterReading.bind(this)]],
       meter_reading_final: [{ value: null, disabled: true }, [Validators.min(0), this.validateFinalMeterReading.bind(this)]],
       meter_reading_unit: [{ value: null, disabled: true }],
+      // total_volume_sampled_initial is the intital volume entered, before conversion based on unit selection
       total_volume_sampled_initial: [{ value: null, disabled: true }],
       total_volume_sampled_unit_initial: [{ value: null, disabled: true }],
       sample_volume_initial: [{ value: null, disabled: true }],
@@ -390,6 +393,8 @@ export class SamplesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.queryCountLimit = APP_SETTINGS.QUERY_COUNT_LIMIT;
 
     //this.samplesLoading = true;
 
@@ -1185,7 +1190,7 @@ export class SamplesComponent implements OnInit {
     this.pegnegs = [];
     this.submitLoading = true;
     // set functional limit for amount of samples to display in the table at once
-    const countLimit = 50;
+    const countLimit = 2000;
 
     this._sampleService.querySamplesCount(this.sampleQueryForm.value)
       .subscribe(
@@ -1509,7 +1514,7 @@ export class SamplesComponent implements OnInit {
     this.submitLoading = true;
 
     // set functional limit for amount of samples to display in the table at once
-    const countLimit = 300;
+    const countLimit = 2000;
 
     this._sampleService.querySamplesCount(formValue)
       .subscribe(

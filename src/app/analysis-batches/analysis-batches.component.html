@@ -1079,7 +1079,7 @@
 
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="abQuerySizeErrorFlag">
             <div class="alert-item">
-                <span class="alert-text">Your query results are too large. Please narrow your search.</span>
+                <span class="alert-text">Your query results are too large (greater than {{queryCountLimit}}). Please narrow your search.</span>
             </div>
         </clr-alert>
 
