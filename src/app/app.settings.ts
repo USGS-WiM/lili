@@ -8,12 +8,14 @@ export class APP_SETTINGS {
     private static _environment: string = 'development';
     private static production: boolean = false;
     private static _API_ENDPOINT: string = APP_SETTINGS._environment === 'production' ? 'https://lidedev.wim.usgs.gov/lideservices/' : 'https://lidedev.wim.usgs.gov/lideservices/';
-    //private static _API_ENDPOINT: string = APP_SETTINGS._environment === 'production' ? 'https://lidetest.wim.usgs.gov/lideservices/' : 'https://lidetest.wim.usgs.gov/lideservices/';
+    // private static _API_ENDPOINT: string = APP_SETTINGS._environment === 'production' ? 'https://lidetest.wim.usgs.gov/lideservices/' : 'https://lidetest.wim.usgs.gov/lideservices/';
     public static set environment(env: string) { this._environment = env };
     public static get API_USERNAME(): string { return 'admin' };
     public static get API_PASSWORD(): string { return 'lideadmin' };
 
     public static get IS_LOGGEDIN(): boolean { return (!!sessionStorage.getItem('username') && !!sessionStorage.getItem('password')); };
+
+    public static get QUERY_COUNT_LIMIT(): number { return 2000 };
 
     public static get ROOT_URL(): string { return this._API_ENDPOINT };
     public static get AUTH_URL(): string { return this._API_ENDPOINT + 'auth/' };

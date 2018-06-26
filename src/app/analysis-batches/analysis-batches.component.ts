@@ -136,6 +136,7 @@ export class AnalysisBatchesComponent implements OnInit {
   abQuerySizeErrorFlag: boolean = false;
   abCount;
 
+  queryCountLimit;
   // booleans for edit AB tabs
   sampleListActive: boolean;
   detailsActive: boolean;
@@ -313,6 +314,8 @@ export class AnalysisBatchesComponent implements OnInit {
   ngOnInit() {
 
     // this.analysisBatchesLoading = true;
+
+    this.queryCountLimit = APP_SETTINGS.QUERY_COUNT_LIMIT;
 
     this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
 
@@ -501,7 +504,7 @@ export class AnalysisBatchesComponent implements OnInit {
     this.analysisBatchesLoading = true;
 
     // set functional limit for amount of samples to display in the table at once
-    const countLimit = 50;
+    const countLimit = APP_SETTINGS.QUERY_COUNT_LIMIT;
 
     this._analysisBatchService.queryAnalysisBatchesCount(this.abQueryForm.value)
       .subscribe(
@@ -1257,7 +1260,7 @@ export class AnalysisBatchesComponent implements OnInit {
     this.submitLoading = true;
 
     // set functional limit for amount of samples to display in the table at once
-    const countLimit = 300;
+    const countLimit = APP_SETTINGS.QUERY_COUNT_LIMIT;
 
     this._analysisBatchService.queryAnalysisBatchesCount(formValue)
       .subscribe(
