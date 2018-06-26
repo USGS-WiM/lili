@@ -59,10 +59,10 @@ export class AnalysisBatchService {
 
     let queryString = '?';
 
-    if (queryFormValue.from_id !== null) {
+    if (queryFormValue.from_id !== null && queryFormValue.from_id !== '') {
       queryString = queryString + '&from_id=' + queryFormValue.from_id.toString();
     }
-    if (queryFormValue.to_id !== null) {
+    if (queryFormValue.to_id !== null && queryFormValue.to_id !== '') {
       queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
     }
     if (queryFormValue.study !== null && queryFormValue.study !== '') {
@@ -84,10 +84,10 @@ export class AnalysisBatchService {
 
     let queryString = '?';
 
-    if (queryFormValue.from_id !== null) {
+    if (queryFormValue.from_id !== null && queryFormValue.from_id !== '') {
       queryString = queryString + '&from_id=' + queryFormValue.from_id.toString();
     }
-    if (queryFormValue.to_id !== null) {
+    if (queryFormValue.to_id !== null && queryFormValue.to_id !== '') {
       queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
     }
     if (queryFormValue.study !== null && queryFormValue.study !== '') {

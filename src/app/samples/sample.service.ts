@@ -35,14 +35,40 @@ export class SampleService {
       .catch(this.handleError);
   }
 
+  public getSamplerNames(): Observable<any> {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.SAMPLES_URL + 'get_sampler_names/', options)
+      .map((response: Response) => <any[]>response.json())
+      // .do(data => console.log('Samples data: ' + JSON.stringify(data)))
+      .catch(this.handleError);
+
+  }
+
+  // get sample-inhibition objects, i.e. inhibitions per sample
+  getSampleInhibitions(sampleList: number[]): Observable<any[]> {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.SAMPLE_INHIBITIONS_URL + '?id=' + sampleList, options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError);
+  }
+
+
   public querySamplesCount(queryFormValue): Observable<any> {
 
     let queryString = '?';
 
-    if (queryFormValue.from_id !== null) {
+    if (queryFormValue.from_id !== null && queryFormValue.from_id !== '') {
       queryString = queryString + '&from_id=' + queryFormValue.from_id.toString();
     }
-    if (queryFormValue.to_id !== null) {
+    if (queryFormValue.to_id !== null && queryFormValue.to_id !== '') {
       queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
     }
     if (queryFormValue.study !== null && queryFormValue.study !== '') {
@@ -54,13 +80,13 @@ export class SampleService {
     if (queryFormValue.sample_type !== null && queryFormValue.sample_type !== '') {
       queryString = queryString + '&sample_type=' + queryFormValue.sample_type.toString();
     }
-    if (queryFormValue.collaborator_sample_id !== null) {
+    if (queryFormValue.collaborator_sample_id !== null && queryFormValue.collaborator_sample_id !== '') {
       queryString = queryString + '&collaborator_sample_id =' + queryFormValue.collaborator_sample_id.toString();
     }
-    if (queryFormValue.from_collection_start_date !== null) {
+    if (queryFormValue.from_collection_start_date !== null && queryFormValue.from_collection_start_date !== "") {
       queryString = queryString + '&from_collection_start_date =' + queryFormValue.from_collection_start_date.toString();
     }
-    if (queryFormValue.to_collection_start_date !== null) {
+    if (queryFormValue.to_collection_start_date !== null && queryFormValue.to_collection_start_date !== "") {
       queryString = queryString + '&to_collection_start_date =' + queryFormValue.to_collection_start_date.toString();
     }
 
@@ -77,10 +103,10 @@ export class SampleService {
 
     let queryString = '?';
 
-    if (queryFormValue.from_id !== null) {
+    if (queryFormValue.from_id !== null && queryFormValue.from_id !== '') {
       queryString = queryString + '&from_id=' + queryFormValue.from_id.toString();
     }
-    if (queryFormValue.to_id !== null) {
+    if (queryFormValue.to_id !== null && queryFormValue.to_id !== '') {
       queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
     }
     if (queryFormValue.study !== null && queryFormValue.study !== '') {
@@ -92,13 +118,13 @@ export class SampleService {
     if (queryFormValue.sample_type !== null && queryFormValue.sample_type !== '') {
       queryString = queryString + '&sample_type=' + queryFormValue.sample_type.toString();
     }
-    if (queryFormValue.collaborator_sample_id !== null) {
+    if (queryFormValue.collaborator_sample_id !== null && queryFormValue.collaborator_sample_id !== '') {
       queryString = queryString + '&collaborator_sample_id =' + queryFormValue.collaborator_sample_id.toString();
     }
-    if (queryFormValue.from_collection_start_date !== null) {
+    if (queryFormValue.from_collection_start_date !== null && queryFormValue.from_collection_start_date !== "") {
       queryString = queryString + '&from_collection_start_date =' + queryFormValue.from_collection_start_date.toString();
     }
-    if (queryFormValue.to_collection_start_date !== null) {
+    if (queryFormValue.to_collection_start_date !== null && queryFormValue.to_collection_start_date !== "") {
       queryString = queryString + '&to_collection_start_date =' + queryFormValue.to_collection_start_date.toString();
     }
 
