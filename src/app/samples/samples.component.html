@@ -1172,6 +1172,48 @@
 </clr-modal>
 <!-- end freezer location lookup modal-->
 
+<!-- begin inhibition lookup modal -->
+<clr-modal [(clrModalOpen)]="showHideInhibitionModal">
+    <h3 class="modal-title">
+        <clr-icon shape="view-list"></clr-icon> View Sample Inhibitions: Sample {{selectedSampleId}}</h3>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div *ngIf="selectedSampleInhibitionArray.length === 0">
+                    <h4>There are no inhibitions associated with this sample.</h4>
+                </div>
+
+                <div *ngIf="selectedSampleInhibitionArray.length > 0">
+                    <div *ngFor="let inhibition of selectedSampleInhibitionArray; let i = index">
+                        <label for="inhibitionTable">Inhibition {{i+1}}</label>
+                        <table class="table table-vertical table-compact" id="inhibitionTable">
+                            <tbody>
+                                <tr>
+                                    <th>Inhibition Date</th>
+                                    <td>{{inhibition.inhibition_date | date:'shortDate' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Dilution Factor</th>
+                                    <td>{{inhibition.dilution_factor == null ? "Not Calculated": inhibition.dilution_factor}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Inhibition Type</th>
+                                    <td>{{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</clr-modal>
+<!-- end inhibition location lookup modal-->
+
 <!-- begin freezer choice modal -->
 <clr-modal [(clrModalOpen)]="showHideFreezerChoiceModal">
     <h3 class="modal-title">
@@ -1343,9 +1385,9 @@
             <div class="form-group">
                 <label>Sample ID Range</label>
                 <span>From</span>
-                <input type="text" formControlName="from_id">
+                <input type="number" formControlName="from_id">
                 <span>To</span>
-                <input type="text" formControlName="to_id">
+                <input type="number" formControlName="to_id">
             </div>
 
             <div class="form-group">
@@ -1393,7 +1435,7 @@
             </div>
         </clr-alert>
 
-        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Submit Sample Search</button>
+        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Filter Samples</button>
     </form>
 </div>
 
@@ -1425,6 +1467,9 @@
                         <clr-icon shape="note-edit"></clr-icon> Edit FCSV</button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openFreezerChoice()">
                         <clr-icon shape="thermometer"></clr-icon> Freezer</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="openInhibitionModal(selected)"
+                        [clrLoading]="sampleInhibitionsLoadingFlag">
+                        <clr-icon shape="view-list"></clr-icon> View Inhibitions</button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openPrintLabelModal(selected)">
                         <clr-icon shape="printer"></clr-icon> Print Labels</button>
                     <!-- <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1">

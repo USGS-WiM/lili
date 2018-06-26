@@ -63,6 +63,7 @@ export class SamplesComponent implements OnInit {
   showHideFreezerChoiceModal: boolean = false;
   showHideFreezerLocationLookupModal: boolean = false;
   showHideMultipleSamplesErrorModal: boolean = false;
+  showHideInhibitionModal: boolean = false;
   showLabelModal: boolean = false;
   sampleSelected: boolean = false;
   displayConfig: Object = {};
@@ -113,6 +114,8 @@ export class SamplesComponent implements OnInit {
 
   addSampleForm: FormGroup;
 
+  selectedSampleInhibitionArray = [];
+
   createdSampleID;
   createdABID;
   createdFCSVID;
@@ -120,6 +123,8 @@ export class SamplesComponent implements OnInit {
   createFCSVForm: FormGroup;
   fcsvArray: FormArray;
   fcsvValuesMissingFlag: boolean = false;
+
+  sampleInhibitionsLoadingFlag: boolean = false;
 
   lastOccupiedSpot;
   showLastOccupiedSpot;
@@ -154,6 +159,8 @@ export class SamplesComponent implements OnInit {
   sampleQueryForm: FormGroup;
 
   sampleQuerySizeErrorFlag = false;
+
+  nucleicAcidTypes = [];
 
   // edit sample form
   editSampleForm = new FormGroup({
@@ -396,6 +403,8 @@ export class SamplesComponent implements OnInit {
 
     this.queryCountLimit = APP_SETTINGS.QUERY_COUNT_LIMIT;
 
+    this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
+
     //this.samplesLoading = true;
 
     // on init, get sample form config object from App Utilities and set to local displayConfig var
@@ -435,6 +444,17 @@ export class SamplesComponent implements OnInit {
     //       this.errorMessage = error
     //     }
     //   );
+
+    // on init call getSamplerNames of the SampleService, set results to the samplerNames var
+
+    this._sampleService.getSamplerNames()
+      .subscribe(
+        (samplerNamesResponse) => {
+          this.samplerNames = samplerNamesResponse.sampler_names;
+        },
+        error => {
+          this.errorMessage = error
+        });
 
     // on init, call getFreezers function of the FreezerService, set results to the freezers var
     this._freezerService.getFreezers()
@@ -665,6 +685,32 @@ export class SamplesComponent implements OnInit {
       this.showHidePrintModal = true;
     }
 
+  }
+
+  openInhibitionModal(selected) {
+    this.sampleInhibitionsLoadingFlag = true;
+
+    const selectedSampleID = selected[0].id;
+
+    this.selectedSampleId = selectedSampleID;
+
+    this._sampleService.getSampleInhibitions(selectedSampleID)
+      .subscribe(
+        (sampleInhibitions) => {
+          this.selectedSampleInhibitionArray = sampleInhibitions[0].inhibitions;
+          this.showHideInhibitionModal = true;
+          this.sampleInhibitionsLoadingFlag = false;
+        },
+        error => {
+          this.errorMessage = error
+          this.sampleInhibitionsLoadingFlag = false;
+        });
+
+
+    // show the print modal if not showing already
+    if (this.showHideInhibitionModal === false) {
+      this.showHideInhibitionModal = true;
+    }
   }
 
 
@@ -1179,6 +1225,7 @@ export class SamplesComponent implements OnInit {
     this.showABCreateError = false;
     this.sampleQuerySizeErrorFlag = false;
     this.sampleQueryComplete = false;
+    this.sampleInhibitionsLoadingFlag = false;
     this.errorMessage = '';
   }
 
@@ -1217,9 +1264,9 @@ export class SamplesComponent implements OnInit {
                     if (sample.record_type === 2) {
                       this.pegnegs.push(sample);
                     }
-                    if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
-                      this.samplerNames.push(sample.sampler_name)
-                    }
+                    // if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
+                    //   this.samplerNames.push(sample.sampler_name)
+                    // }
                   }
                   // sort pegnegs by date order
                   this.pegnegs.sort(function (a, b) {
@@ -1540,9 +1587,9 @@ export class SamplesComponent implements OnInit {
                     if (sample.record_type === 2) {
                       this.pegnegs.push(sample);
                     }
-                    if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
-                      this.samplerNames.push(sample.sampler_name)
-                    }
+                    // if (!(this.isInArray(sample.sampler_name, this.samplerNames))) {
+                    //   this.samplerNames.push(sample.sampler_name)
+                    // }
                   }
                   // sort pegnegs by date order
                   this.pegnegs.sort(function (a, b) {

@@ -1062,6 +1062,9 @@
                 <label>Study</label>
                 <div class="select">
                     <select id="studySelect" name="study" formControlName="study">
+                        <option value="">
+                            <span class="all">ALL STUDIES</span>
+                        </option>
                         <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
                     </select>
                 </div>
@@ -1070,9 +1073,9 @@
             <div class="form-group">
                 <label>Analysis Batch ID Range</label>
                 <span>From</span>
-                <input type="text" formControlName="from_id">
+                <input type="number" formControlName="from_id">
                 <span>To</span>
-                <input type="text" formControlName="to_id">
+                <input type="number" formControlName="to_id">
             </div>
 
         </section>
@@ -1083,7 +1086,7 @@
             </div>
         </clr-alert>
 
-        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Submit</button>
+        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Filter Analysis Batches</button>
     </form>
 </div>
 
