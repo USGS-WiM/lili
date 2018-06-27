@@ -74,7 +74,7 @@ export class SamplesComponent implements OnInit {
   studyStoredValue;
   // var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
-  unitValue;
+  //unitValue;
 
   samplesCount: null;
   sampleQueryComplete: boolean = false;
@@ -529,10 +529,10 @@ export class SamplesComponent implements OnInit {
 
   }
 
-  onUnitChange(unitValue) {
-    // sets the var unitValue used for meter reading unit display
-    this.unitValue = parseInt(unitValue, 10);
-  }
+  // onUnitChange(unitValue) {
+  //   // sets the var unitValue used for meter reading unit display
+  //   this.unitValue = parseInt(unitValue, 10);
+  // }
 
   deselectAll() {
     this.selected = [];
@@ -726,9 +726,6 @@ export class SamplesComponent implements OnInit {
     if (this.showHideEdit === false) {
       this.showHideEdit = true;
     }
-
-    // sets the var unitValue used for meter reading unit display
-    this.unitValue = selectedSample.meter_reading_unit;
 
     this.editSampleForm.setValue({
       id: selectedSample.id,
@@ -1194,15 +1191,21 @@ export class SamplesComponent implements OnInit {
   }
 
   trimDecimalPlaces(number, places) {
-    let numString = number.toString();
-    let decimalPlaces = numString.split(".")[1].length;
 
-    if (decimalPlaces > places) {
-      let trimmedNumber = number.toFixed(places);
-      return trimmedNumber;
+    if (Number.isInteger(number)) {
+      return number;
+
+    } else {
+
+      let numString = number.toString();
+      let decimalPlaces = numString.split(".")[1].length;
+
+      if (decimalPlaces > places) {
+        let trimmedNumber = number.toFixed(places);
+        return trimmedNumber;
+      }
+
     }
-
-    return number;
   }
 
   onClosesampleVolumeError() {
@@ -1419,7 +1422,7 @@ export class SamplesComponent implements OnInit {
             formValue.total_volume_or_mass_sampled = ((formValue.meter_reading_final - formValue.meter_reading_initial) /
               this.getConversionFactorToLiters(formValue.meter_reading_unit))
 
-            // send value through trimDecimalPlaces funciton to trim decimal places if they exceed 10
+            // send value through trimDecimalPlaces function to trim decimal places if they exceed 10
             formValue.total_volume_or_mass_sampled = this.trimDecimalPlaces(formValue.total_volume_or_mass_sampled, 10);
           }
         }
@@ -1438,7 +1441,7 @@ export class SamplesComponent implements OnInit {
             formValue.total_volume_or_mass_sampled = (formValue.total_volume_sampled_initial /
               this.getConversionFactorToLiters(formValue.total_volume_sampled_unit_initial))
 
-            // send value through trimDecimalPlaces funciton to trim decimal places if they exceed 10
+            // send value through trimDecimalPlaces function to trim decimal places if they exceed 10
             formValue.total_volume_or_mass_sampled = this.trimDecimalPlaces(formValue.total_volume_or_mass_sampled, 10);
           }
         }

@@ -151,7 +151,7 @@
                                     <span class="tooltip-content">Must be greater than 0 and less than Final Meter Reading</span>
                                 </label>
                                 <div class="select">
-                                    <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
+                                    <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                     </select>
                                 </div>
@@ -163,7 +163,8 @@
                                     <input id="fmrInput" type="number" formControlName="meter_reading_final">
                                     <span class="tooltip-content">Must be greater than 0 and greater than Initial Meter Reading</span>
                                 </label>
-                                <label *ngIf="this.units">{{this.unitValue | displayValue:'symbol':this.units}}</label>
+                                <label *ngIf="this.units">{{addSampleForm.get('meter_reading_unit').value | displayValue:'symbol':this.units}}</label>
+
                             </div>
 
                             <div class="form-group">
@@ -336,7 +337,7 @@
                                 <label for="imrInput">Initial Meter Reading</label>
                                 <input type="text" id="imrInput" formControlName="meter_reading_initial">
                                 <div class="select">
-                                    <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
+                                    <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                     </select>
                                 </div>
@@ -345,7 +346,7 @@
                             <div class="form-group">
                                 <label for="fmrInput">Final Meter Reading</label>
                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                                <label *ngIf="this.units">{{this.unitValue | displayValue:'symbol':this.units}}</label>
+                                <label *ngIf="this.units">{{addPegNegForm.get('meter_reading_unit').value | displayValue:'symbol':this.units}}</label>
                             </div>
 
                             <div class="form-group">
@@ -557,7 +558,7 @@
                             <label for="imrInput">Initial Meter Reading</label>
                             <input type="text" id="imrInput" formControlName="meter_reading_initial">
                             <div class="select">
-                                <select id="imrSelect" formControlName="meter_reading_unit" (change)="onUnitChange($event.target.value)">
+                                <select id="imrSelect" formControlName="meter_reading_unit" >
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                 </select>
                             </div>
@@ -567,14 +568,14 @@
                             <label for="fmrInput">Final Meter Reading</label>
                             <input type="text" id="fmrInput" formControlName="meter_reading_final">
                             <label *ngIf="sampleSelected">
-                                <span>{{this.unitValue | displayValue:'symbol':this.units }}</span>
+                                <label *ngIf="this.units">{{editSampleForm.get('meter_reading_unit').value | displayValue:'symbol':this.units}}</label>
                             </label>
                         </div>
 
                         <div class="form-group">
                             <label for="tvsInput">Total Volume (or mass) Sampled</label>
                             <input type="text" id="tvsInput" formControlName="total_volume_or_mass_sampled">
-                            <span>{{this.editSampleForm.get('total_volume_sampled_unit_initial')}}</span>
+                            <span>L</span>
                             <!-- <div class="select">
                                 <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial" readonly>
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
