@@ -913,6 +913,7 @@ export class SamplesComponent implements OnInit {
 
           },
           error => {
+            alert("There was an error retrieving the last occupied freezer spot.")
             // this.lastOccupiedSpotLoading = false;
             // this.showLastOccupiedSpot = false;
             // this.showLastOccupiedSpotError = true;
