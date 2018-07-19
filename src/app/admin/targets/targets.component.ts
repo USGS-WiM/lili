@@ -113,50 +113,50 @@ export class TargetsComponent implements OnInit {
         this.duplicateCodeFlag = true;
         this.submitLoading = false;
         return;
-      } else {
-        switch (formId) {
-          case 'edit':
-            // update a record
-            this._targetService.update(formValue)
-              .subscribe(
-                (updatedTarget) => {
-                  this.selectedTargetName = updatedTarget.name;
-                  this.selectedTargetCode = updatedTarget.code;
-                  this.selectedTargetType = updatedTarget.nucleic_acid_type;
-                  this.selectedTargetNote = updatedTarget.notes;
-                  this.updateTargetArray(formValue);
-                  this.selectedTarget = undefined;
-                  this.submitLoading = false;
-                  this.showTargetEditSuccess = true;
-                  this._cdr.detectChanges();
-                },
-                error => {
-                  this.errorMessage = <any>error;
-                  this.submitLoading = false;
-                  this.showTargetEditError = true;
-                });
-            break;
-          case 'add':
-            // add a record
-            this._targetService.create(formValue)
-              .subscribe(
-                (newST) => {
-                  this.Targets.push(newST);
-                  this.addTargetForm.reset();
-                  this.submitLoading = false;
-                  this.showTargetCreateSuccess = true;
-                },
-                error => {
-                  this.errorMessage = <any>error;
-                  this.submitLoading = false;
-                  this.showTargetCreateError = true;
-                }
-              );
-            break;
-          default:
-          // do something defaulty
-        }
       }
+    }
+
+    switch (formId) {
+      case 'edit':
+        // update a record
+        this._targetService.update(formValue)
+          .subscribe(
+            (updatedTarget) => {
+              this.selectedTargetName = updatedTarget.name;
+              this.selectedTargetCode = updatedTarget.code;
+              this.selectedTargetType = updatedTarget.nucleic_acid_type;
+              this.selectedTargetNote = updatedTarget.notes;
+              this.updateTargetArray(formValue);
+              this.selectedTarget = undefined;
+              this.submitLoading = false;
+              this.showTargetEditSuccess = true;
+              this._cdr.detectChanges();
+            },
+            error => {
+              this.errorMessage = <any>error;
+              this.submitLoading = false;
+              this.showTargetEditError = true;
+            });
+        break;
+      case 'add':
+        // add a record
+        this._targetService.create(formValue)
+          .subscribe(
+            (newST) => {
+              this.Targets.push(newST);
+              this.addTargetForm.reset();
+              this.submitLoading = false;
+              this.showTargetCreateSuccess = true;
+            },
+            error => {
+              this.errorMessage = <any>error;
+              this.submitLoading = false;
+              this.showTargetCreateError = true;
+            }
+          );
+        break;
+      default:
+      // do something defaulty
     }
   }
 
@@ -176,7 +176,7 @@ export class TargetsComponent implements OnInit {
     // get the index to be deleted by the id
     let ind: number;
     this.Targets.some((pdh, index, _ary) => {
-      if (pdh.id === this.selectedTargetId) {ind = index};
+      if (pdh.id === this.selectedTargetId) { ind = index };
       return pdh.id === this.selectedTargetId;
     });
     this._targetService.delete(this.selectedTargetId)

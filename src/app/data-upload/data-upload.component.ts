@@ -334,6 +334,13 @@ export class DataUploadComponent implements OnInit {
     inhResults.extraction_number = Number(fileMetadata[1]);
     if (type === "ID") { inhResults.nucleic_acid_type = 1 } else if (type === "IR") { inhResults.nucleic_acid_type = 2 }
 
+    // loop below removes any superfluous blank lines (Name = undefined) with a reverse loop conditional and splice
+    for (let i = rawInhResults.length - 1; i >= 0; --i) {
+      if (rawInhResults[i].Name === undefined) {
+        rawInhResults.splice(i, 1); // Remove blank lines
+      }
+    }
+
     for (let sample of rawInhResults) {
       if (sample.Name === "INH CONT") {
         inhResults.inh_pos_cq_value = Number(sample.Cp);

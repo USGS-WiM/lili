@@ -82,12 +82,12 @@
               </div>
             </clr-alert>
 
-            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="duplicateCodeFlag">
+            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="duplicateCodeFlag" [clrAlertClosable]="false">
               <div clr-alert-item class="alert-item">
                 <span class="alert-text">You have entered a target code that already exists. Please change your submission to a unique code.</span>
-                <!-- <div class="alert-actions">
+                <div class="alert-actions">
                   <a class="alert-action" (click)="duplicateCodeFlag = false">Close</a>
-                </div> -->
+                </div>
               </div>
             </clr-alert>
 
@@ -120,9 +120,7 @@
                 <label class="required">Nucleic Acid Type</label>
                 <label for="nucleic_acid_type" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addTargetForm.get('nucleic_acid_type').invalid && (addTargetForm.get('nucleic_acid_type').dirty || addTargetForm.get('nucleic_acid_type').touched)">
                   <select class="form-control" id="nucleic_acid_type" formControlName="nucleic_acid_type">
-                    <option value=""></option>
-                    <option value="DNA">DNA</option>
-                    <option value="RNA">RNA</option>
+                    <option *ngFor="let type of nucleicAcidTypes" [value]="type.id">{{type.name}}</option>
                   </select>
                   <span class="tooltip-content">Nucleic Acid Type is required.</span>
                 </label>

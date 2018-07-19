@@ -14,7 +14,7 @@
     <!-- <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button> -->
 
     <!-- Aliquot selection page -->
-    <clr-wizard-page>
+    <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
         <ng-template clrPageTitle>Aliquot Selection</ng-template>
         <div class="row">
             <div class="col-lg-10 col-md-10">
@@ -57,8 +57,21 @@
                     </form> -->
 
             </div>
-            <div class="col-lg-2 col-md-2"></div>
+
         </div>
+
+        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="aliquotSelectErrorFlag">
+            <div clr-alert-item class="alert-item">
+                <span class="alert-text">Missing aliquot selection for one or more samples. Please ensure that all samples have aliquots recorded
+                    and that one is selected for this Extraction.</span>
+            </div>
+        </clr-alert>
+
+        <ng-template clrPageButtons>
+            <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-next-aliquotPage'">Next</clr-wizard-button>
+        </ng-template>
     </clr-wizard-page>
     <!-- end Aliquot selection page -->
 

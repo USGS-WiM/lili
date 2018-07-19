@@ -106,8 +106,11 @@ export class AnalysisBatchesComponent implements OnInit {
 
   showHidePrintModal: boolean = false;
 
+  aliquotSelectErrorFlag: boolean = false;
   targetSelectErrorFlag: boolean = false;
   showHideNoTargetErrorModal: boolean = false;
+
+
 
   // aliquotSelectionArray: IAliquotSelection[] = [];
 
@@ -357,6 +360,28 @@ export class AnalysisBatchesComponent implements OnInit {
   }
 
   public doCustomClick(buttonType: string): void {
+
+    if ("custom-next-aliquotPage" === buttonType) {
+
+      this.aliquotSelectErrorFlag = false;
+
+      // boolean for missingAliquotSelection
+      let missingAliquotSelection = false;
+      // loop through extractions and check that an aliquot is selected for each one
+      for (let extraction of this.extractionArray.controls) {
+        if (extraction.get('aliquot_string').value === null && extraction.get('rack').value === null) {
+          missingAliquotSelection = true;
+        }
+      }
+      // throw error if aliquot selection missiing, else advance the wizard
+      if (missingAliquotSelection === true) {
+        this.aliquotSelectErrorFlag = true;
+      } else {
+        this.wizardExtract.next();
+      }
+
+    }
+
     if ("custom-next-targetPage" === buttonType) {
       this.targetSelectErrorFlag = false;
       if (this.selected.length < 1) {
