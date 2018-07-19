@@ -82,12 +82,12 @@
               </div>
             </clr-alert>
 
-            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="duplicateCodeFlag">
+            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="duplicateCodeFlag" [clrAlertClosable]="false">
               <div clr-alert-item class="alert-item">
                 <span class="alert-text">You have entered a target code that already exists. Please change your submission to a unique code.</span>
-                <!-- <div class="alert-actions">
+                <div class="alert-actions">
                   <a class="alert-action" (click)="duplicateCodeFlag = false">Close</a>
-                </div> -->
+                </div>
               </div>
             </clr-alert>
 
