@@ -107,14 +107,7 @@ export class TargetsComponent implements OnInit {
     this.showTargetCreateError = false;
     this.showTargetEditError = false;
     this.submitLoading = true;
-    // check if code exists already
-    for (let target of this.Targets) {
-      if (target.code === formValue.code) {
-        this.duplicateCodeFlag = true;
-        this.submitLoading = false;
-        return;
-      }
-    }
+
 
     switch (formId) {
       case 'edit':
@@ -139,12 +132,26 @@ export class TargetsComponent implements OnInit {
             });
         break;
       case 'add':
+
+        // check if code exists already
+        for (let target of this.Targets) {
+          if (target.code === formValue.code) {
+            this.duplicateCodeFlag = true;
+            this.submitLoading = false;
+            return;
+          }
+        }
         // add a record
         this._targetService.create(formValue)
           .subscribe(
-            (newST) => {
-              this.Targets.push(newST);
-              this.addTargetForm.reset();
+            (newTarget) => {
+              this.Targets.push(newTarget);
+              this.addTargetForm.reset({
+                name: '',
+                code: '',
+                nucleic_acid_type: '',
+                notes: ''
+              });
               this.submitLoading = false;
               this.showTargetCreateSuccess = true;
             },

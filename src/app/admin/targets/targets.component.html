@@ -12,8 +12,8 @@
                   <clr-icon shape="plus"></clr-icon> Add</button>
                 <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedTarget" (click)="editTarget(selectedTarget)">
                   <clr-icon shape="note-edit" size="16"></clr-icon> Edit</button>
-                <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedTarget" (click)="deleteTarget(selectedTarget)">
-                  <clr-icon shape="trash" size="16"></clr-icon> Delete </button>
+                <!-- <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedTarget" (click)="deleteTarget(selectedTarget)">
+                  <clr-icon shape="trash" size="16"></clr-icon> Delete </button> -->
               </div>
             </clr-dg-action-bar>
 
@@ -184,7 +184,7 @@
               <div class="form-group">
                 <label>Code</label>
                 <label for="code" aria-haspopup="true" role="tooltip" class="tooltip tooltip-sm">
-                  <input id="code" type="text" formControlName="code" size="40">
+                  <input id="code" type="text" formControlName="code" size="40" readonly>
                 </label>
               </div>
 
