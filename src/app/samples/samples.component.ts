@@ -1564,6 +1564,8 @@ export class SamplesComponent implements OnInit {
 
     this.submitLoading = true;
 
+    this.pegnegs = [];
+
     // set functional limit for amount of samples to display in the table at once
     const countLimit = 2000;
 
