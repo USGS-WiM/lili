@@ -7,6 +7,13 @@ import { ITarget } from '../targets/target';
 import { TargetService } from '../targets/target.service';
 import { Wizard, WizardPage, BUTTON_GROUP_DIRECTIVES } from "clarity-angular";
 
+import { IMatrix } from '../SHARED/matrix';
+import { ISampleType } from '../SHARED/sample-type';
+import { IStudy } from '../studies/study';
+
+import { MatrixService } from '../SHARED/matrix.service';
+import { StudyService } from '../studies/study.service';
+import { SampleTypeService } from '../SHARED/sample-type.service';
 
 import { APP_SETTINGS } from '../app.settings';
 import { APP_UTILITIES } from '../app.utilities';
@@ -22,12 +29,19 @@ export class ResultsComponent implements OnInit {
   @ViewChild("resultsQueryWizard") resultsQueryWizard: Wizard;
   allSamples: ISample[] = [];
   allTargets: ITarget[] = [];
+  sampleTypes: ISampleType[];
+  matrices: IMatrix[];
+  studies: IStudy[];
   samplesLoading: boolean = false;
   errorMessage: string;
+  samplesCount: null;
+  sampleQueryComplete: boolean = false;
 
   resultsLoaded: boolean = false;
 
   resultsQueryWizardActive: boolean = false;
+
+  submitLoading: boolean = false;
 
   sampleSelectErrorFlag: boolean = false;
   targetSelectErrorFlag: boolean = false;
@@ -36,6 +50,10 @@ export class ResultsComponent implements OnInit {
   results = [];
 
   nucleicAcidTypes = [];
+
+  sampleQueryForm: FormGroup;
+
+  sampleQuerySizeErrorFlag = false;
 
 
   resultsQuery = {
@@ -52,31 +70,66 @@ export class ResultsComponent implements OnInit {
     { fieldName: 'final_sample_mean_concentration_sci', colName: "Sample Mean Concentration (Sci)" }
   ]
 
+  buildSampleQueryForm() {
+    this.sampleQueryForm = this.formBuilder.group({
+      study: null,
+      from_id: null,
+      to_id: null,
+      from_collection_start_date: null,
+      to_collection_start_date: null,
+      collaborator_sample_id: null,
+      sample_type: null,
+      matrix: null
+    })
+  }
+
   constructor(private _sampleService: SampleService,
     private _targetService: TargetService,
-    private _finalSampleMeanConcentrationService: FinalSampleMeanConcentrationService
-  ) { }
+    private _finalSampleMeanConcentrationService: FinalSampleMeanConcentrationService,
+    private _studyService: StudyService,
+    private _sampleTypeService: SampleTypeService,
+    private _matrixService: MatrixService,
+    private formBuilder: FormBuilder
+  ) {
+    this.buildSampleQueryForm();
+  }
 
   ngOnInit() {
 
     this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
 
     // on init, call getSamples function of the SampleService, set results to the allSamples var
-    this._sampleService.getSamples()
-      .subscribe(
-        (samples) => {
-          this.allSamples = samples
-          this.samplesLoading = false;
-        },
-        error => {
-          this.errorMessage = <any>error
-        }
-      );
+    // this._sampleService.getSamples()
+    //   .subscribe(
+    //     (samples) => {
+    //       this.allSamples = samples
+    //       this.samplesLoading = false;
+    //     },
+    //     error => {
+    //       this.errorMessage = <any>error
+    //     }
+    //   );
 
     // on init, call getTargets function of the TargetService, set results to allTargets var
     this._targetService.getTargets()
       .subscribe(targets => this.allTargets = targets,
         error => this.errorMessage = <any>error);
+
+    // on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
+    this._sampleTypeService.getSampleTypes()
+      .subscribe(sampleTypes => this.sampleTypes = sampleTypes,
+        error => this.errorMessage = error);
+
+    // on init, call getMatrices function of the MatrixService, set results to the matrices var
+    this._matrixService.getMatrices()
+      .subscribe(matrices => this.matrices = matrices,
+        error => this.errorMessage = error);
+
+    // on init, call getStudies function of the StudyService, set results to the studies var
+    this._studyService.getStudies()
+      .subscribe(studies => this.studies = studies,
+        error => this.errorMessage = error);
+
   }
 
   deselectAll() {
@@ -92,6 +145,12 @@ export class ResultsComponent implements OnInit {
   exportToCSV() {
     const filename = 'LIDE_Results_' + APP_UTILITIES.TODAY + '.csv';
     APP_UTILITIES.downloadCSV({ filename: filename, data: this.results, headers: this.columns });
+  }
+
+  resetFlags() {
+    this.sampleQuerySizeErrorFlag = false;
+    this.sampleQueryComplete = false;
+    this.errorMessage = '';
   }
 
   public doCustomClick(buttonType: string): void {
@@ -162,6 +221,51 @@ export class ResultsComponent implements OnInit {
       this.resultsQuery.targets = [];
       this.resultsQueryWizard.reset();
     }
+  }
+
+  onSubmitSampleQuery(formValue) {
+
+    this.resetFlags();
+
+    this.submitLoading = true;
+
+    // set functional limit for amount of samples to display in the table at once
+    const countLimit = 2000;
+
+    this._sampleService.querySamplesCount(formValue)
+      .subscribe(
+        (count) => {
+
+          this.submitLoading = false;
+          // if count exceeds limit, show error message
+          if (count.count >= countLimit) {
+            this.sampleQuerySizeErrorFlag = true;
+          } else if (count.count < countLimit) {
+
+            this.samplesLoading = true;
+
+            // if sample query count does not exceed functional limit, query for actual results, and set results to the allSamples var
+            this._sampleService.querySamples(formValue)
+              .subscribe(
+                (samples) => {
+                  this.samplesCount = count.count;
+                  this.sampleQueryComplete = true;
+                  this.allSamples = samples
+                  this.samplesLoading = false;
+                },
+                error => {
+                  this.errorMessage = error;
+                  this.submitLoading = false;
+                }
+              );
+          }
+        },
+        error => {
+          this.errorMessage = error;
+          this.submitLoading = false;
+        }
+      );
+
   }
 
 
