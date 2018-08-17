@@ -36,6 +36,6 @@ export class SampleTypeFilter implements OnInit, Filter<any> {
   onSelect(value: any){
     console.log("Sample type has been selected");
     this.selectedSampleType = value;
-    this.changes.emit(true); 
+    this.changes.emit(true);
   }
 }

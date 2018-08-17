@@ -1,0 +1,8 @@
+<div class="select">
+  <select [(ngModel)]="selectedTarget" name="target" (ngModelChange)="onSelect($event)">
+    <option value="-1">
+      <span class="all">ALL TARGETS</span>
+    </option>
+    <option *ngFor="let target of allTargets" [ngValue]="target.id">{{target.name}}</option>
+  </select>
+</div>

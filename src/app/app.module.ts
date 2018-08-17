@@ -73,6 +73,7 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { AuthenticationService } from "./authentication/authentication.service";
 import { AuthenticationGuard } from "./authentication/authentication.guard";
 import { CurrentUserService } from "./authentication/current-user.service";
+import { TargetFilter } from './FILTERS/target-filter/target-filter.component';
 
 @NgModule({
     declarations: [
@@ -110,7 +111,8 @@ import { CurrentUserService } from "./authentication/current-user.service";
         RecordTypeFilter,
         MultiStudyFilterComponent,
         DataUploadComponent,
-        AuthenticationComponent
+        AuthenticationComponent,
+        TargetFilter
     ],
     imports: [
         BrowserAnimationsModule,
