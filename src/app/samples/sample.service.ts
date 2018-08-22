@@ -60,6 +60,18 @@ export class SampleService {
       .catch(this.handleError);
   }
 
+  getRecentPegnegs(): Observable<any[]> {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.SAMPLES_URL + 'get_recent_pegnegs/', options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError);
+  }
+
+
 
   public querySamplesCount(queryFormValue): Observable<any> {
 
@@ -72,7 +84,7 @@ export class SampleService {
       queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
     }
     if (queryFormValue.study !== null && queryFormValue.study !== '') {
-      queryString = queryString + 'study=' + queryFormValue.study.toString();
+      queryString = queryString + '&study=' + queryFormValue.study.toString();
     }
     if (queryFormValue.matrix !== null && queryFormValue.matrix !== '') {
       queryString = queryString + '&matrix=' + queryFormValue.matrix.toString();
@@ -81,13 +93,16 @@ export class SampleService {
       queryString = queryString + '&sample_type=' + queryFormValue.sample_type.toString();
     }
     if (queryFormValue.collaborator_sample_id !== null && queryFormValue.collaborator_sample_id !== '') {
-      queryString = queryString + '&collaborator_sample_id =' + queryFormValue.collaborator_sample_id.toString();
+      queryString = queryString + '&collaborator_sample_id=' + queryFormValue.collaborator_sample_id.toString();
     }
     if (queryFormValue.from_collection_start_date !== null && queryFormValue.from_collection_start_date !== "") {
-      queryString = queryString + '&from_collection_start_date =' + queryFormValue.from_collection_start_date.toString();
+      queryString = queryString + '&from_collection_start_date=' + queryFormValue.from_collection_start_date.toString();
     }
     if (queryFormValue.to_collection_start_date !== null && queryFormValue.to_collection_start_date !== "") {
-      queryString = queryString + '&to_collection_start_date =' + queryFormValue.to_collection_start_date.toString();
+      queryString = queryString + '&to_collection_start_date=' + queryFormValue.to_collection_start_date.toString();
+    }
+    if (queryFormValue.record_type !== null && queryFormValue.record_type !== '') {
+      queryString = queryString + '&record_type=' + queryFormValue.record_type.toString();
     }
 
     let options = new RequestOptions({
@@ -110,7 +125,7 @@ export class SampleService {
       queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
     }
     if (queryFormValue.study !== null && queryFormValue.study !== '') {
-      queryString = queryString + 'study=' + queryFormValue.study.toString();
+      queryString = queryString + '&study=' + queryFormValue.study.toString();
     }
     if (queryFormValue.matrix !== null && queryFormValue.matrix !== '') {
       queryString = queryString + '&matrix=' + queryFormValue.matrix.toString();
@@ -119,13 +134,16 @@ export class SampleService {
       queryString = queryString + '&sample_type=' + queryFormValue.sample_type.toString();
     }
     if (queryFormValue.collaborator_sample_id !== null && queryFormValue.collaborator_sample_id !== '') {
-      queryString = queryString + '&collaborator_sample_id =' + queryFormValue.collaborator_sample_id.toString();
+      queryString = queryString + '&collaborator_sample_id=' + queryFormValue.collaborator_sample_id.toString();
     }
     if (queryFormValue.from_collection_start_date !== null && queryFormValue.from_collection_start_date !== "") {
-      queryString = queryString + '&from_collection_start_date =' + queryFormValue.from_collection_start_date.toString();
+      queryString = queryString + '&from_collection_start_date=' + queryFormValue.from_collection_start_date.toString();
     }
     if (queryFormValue.to_collection_start_date !== null && queryFormValue.to_collection_start_date !== "") {
-      queryString = queryString + '&to_collection_start_date =' + queryFormValue.to_collection_start_date.toString();
+      queryString = queryString + '&to_collection_start_date=' + queryFormValue.to_collection_start_date.toString();
+    }
+    if (queryFormValue.record_type !== null && queryFormValue.record_type !== '') {
+      queryString = queryString + '&record_type=' + queryFormValue.record_type.toString();
     }
 
     let options = new RequestOptions({

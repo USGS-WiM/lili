@@ -66,7 +66,7 @@ export class AnalysisBatchService {
       queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
     }
     if (queryFormValue.study !== null && queryFormValue.study !== '') {
-      queryString = queryString + 'study=' + queryFormValue.study.toString();
+      queryString = queryString + '&study=' + queryFormValue.study.toString();
     }
 
     let options = new RequestOptions({
@@ -91,7 +91,7 @@ export class AnalysisBatchService {
       queryString = queryString + '&to_id=' + queryFormValue.to_id.toString();
     }
     if (queryFormValue.study !== null && queryFormValue.study !== '') {
-      queryString = queryString + 'study=' + queryFormValue.study.toString();
+      queryString = queryString + '&study=' + queryFormValue.study.toString();
     }
 
     let options = new RequestOptions({

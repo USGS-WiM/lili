@@ -303,6 +303,10 @@ export class DataUploadComponent implements OnInit {
       rawTargetResults.extraction_number, rawTargetResults.target, rawTargetResults.replicate_number)
       .subscribe(
         (pcrReplicateBatch) => {
+
+          if (pcrReplicateBatch.length === 0) {
+            alert("Replicate #" + rawTargetResults.replicate_number + " not found in database.");
+          }
           this.parsedRawTargetResults_pcrBatchID = pcrReplicateBatch[0].id;
           this.pcrReplicateBatchIDErrorFlag = false;
           this.resultsSubmissionReady = true;

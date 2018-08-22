@@ -22,7 +22,7 @@
 }
 
 .text-bold {
-    font-style: bold;
+    font-style: bold !important;
 }
 
 .suggestions {
@@ -51,3 +51,7 @@
 }
 
 .suggestions a:hover {background-color: #ddd}
+
+.pegneg-list-update {
+    // background-color: lightgray;
+}

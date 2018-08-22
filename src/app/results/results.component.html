@@ -228,6 +228,29 @@
 </div>
 
 <div class="row">
+    <div class="col-lg-12 col-sm-12">
+      <span>
+        <label>Note: Sample Mean Concentration may not not yet be calculated if sample/target combination is missing valid controls or all replicates. Click 'i' for full business rules.</label>
+        <clr-signpost>
+          <clr-signpost-content *clrIfOpen  [clrPosition]="'right-bottom'">
+            All replicate records are considered invalid by default. They are only made valid if all of the following checks pass:
+            <p>1.All the parent controls (Peg Neg, Ext Neg, RT Neg, PCR Neg) for this replicate have been entered
+              into the database
+              <p>2. The replicate’s related Peg Neg’s replicates with same target as this data replicate are all
+                valid (if no related Peg Neg, this check does not apply), if even a single one of the Peg Neg
+                replicates is invalid then the data replicate is set to invalid.
+                <p>3. The replicate's parent replicate batch negative controls (Ext Neg, RT Neg, PCR Neg) are all
+                  valid, if even a single one of the controls is invalid then the data replicate is set to invalid.
+                  <p>4. The replicate’s CQ value and GC/reaction are greater than or equal to zero.
+                    <p>Alternately, the user has the option to manually override the system-determined validity.
+
+          </clr-signpost-content>
+        </clr-signpost>
+      </span>
+    </div>
+  </div>
+
+<div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="resultsLoaded && results.length === 0">
         There are no results for your query.
     </div>

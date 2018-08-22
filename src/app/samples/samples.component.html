@@ -14,8 +14,8 @@
                     <clr-signpost>
                         <clr-icon shape="info-standard" clrSignpostTrigger></clr-icon>
                         <clr-signpost-content *clrIfOpen>
-                            <p>Select a matrix to activate inputs and begin. Invalid inputs for the selected matrix will remain
-                                disabled.
+                            <p>Select a matrix to activate inputs and begin. Invalid inputs for the selected matrix will
+                                remain disabled.
                             </p>
                         </clr-signpost-content>
                     </clr-signpost>
@@ -60,7 +60,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label [ngClass]="{'required': addSampleForm.get('collaborator_sample_id').enabled}">Collaborator Sample ID</label>
+                                <label [ngClass]="{'required': addSampleForm.get('collaborator_sample_id').enabled}">Collaborator
+                                    Sample ID</label>
                                 <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collaborator_sample_id').invalid && (addSampleForm.get('collaborator_sample_id').dirty || addSampleForm.get('collaborator_sample_id').touched)">
                                     <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id">
                                     <span class="tooltip-content">Collaborator ID is required.</span>
@@ -71,7 +72,9 @@
                                 <label>Filtered</label>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="filteredToggle" formControlName="filter_flag">
-                                    <label for="filteredToggle">{{this.addSampleForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
+                                    <label for="filteredToggle">{{this.addSampleForm.controls.filter_flag.value ? "Yes" :
+                                        "No"}}
+                                    </label>
                                 </div>
                             </div>
 
@@ -79,7 +82,8 @@
                                 <label>Secondary Concentration</label>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
-                                    <label for="secondaryConcToggle">{{this.addSampleForm.controls.secondary_concentration_flag.value ? "Yes" : "No"}}</label>
+                                    <label for="secondaryConcToggle">{{this.addSampleForm.controls.secondary_concentration_flag.value
+                                        ? "Yes" : "No"}}</label>
                                 </div>
                             </div>
 
@@ -110,7 +114,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="samplerNameInput" [ngClass]="{'required': addSampleForm.get('sampler_name').enabled}">Sampler Name</label>
+                                <label for="samplerNameInput" [ngClass]="{'required': addSampleForm.get('sampler_name').enabled}">Sampler
+                                    Name
+                                </label>
                                 <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
                                 <datalist id="samplerNames">
                                     <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
@@ -118,7 +124,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="collectStartDateInput" [ngClass]="{'required': addSampleForm.get('collection_start_date').enabled}">Collection Start Date</label>
+                                <label for="collectStartDateInput" [ngClass]="{'required': addSampleForm.get('collection_start_date').enabled}">Collection
+                                    Start Date</label>
                                 <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
                             </div>
 
@@ -226,17 +233,18 @@
                                     <div class="select">
                                         <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
                                             <option value="">NO PEGNEG ASSOCIATION</option>
-                                            <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date | date:'shortDate'}}</option>
+                                            <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date
+                                                | date:'shortDate'}}</option>
                                         </select>
                                     </div>
-                                    *Must query/filter samples (below) to populate this list.
+                                    20 most recent pegnegs shown by default.
                                 </label>
                             </div>
 
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleVolumeErrorFlag" (clrAlertClosedChange)="onClosesampleVolumeError()">
                                 <div class="alert-item">
-                                    <span class="alert-text">Please provide a sample volume using meter readings and units or total volume sampled
-                                        and units.</span>
+                                    <span class="alert-text">Please provide a sample volume using meter readings and units
+                                        or total volume sampled and units.</span>
                                 </div>
                             </clr-alert>
 
@@ -245,7 +253,9 @@
                                     <span class="alert-text">Submission error. Sample not submitted.</span>
                                     <span>{{errorMessage}}</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="onSubmitSample('add', addSampleForm.value)">Try again</a>
+                                        <a class="alert-action" (click)="onSubmitSample('add', addSampleForm.value)">Try
+                                            again
+                                        </a>
                                     </div>
                                 </div>
                             </clr-alert>
@@ -266,6 +276,29 @@
                         <p>Form status: {{ addSampleForm.status | json }}</p> -->
                     </form>
                     <!-- end form -->
+
+                    <div class="form-group" class="pegneg-list-update">
+                        <label class="text-bold"><b><i>Update Pegneg selection list</i></b></label>
+                        <label>
+                            <label>&nbsp;&nbsp;From:</label><input type="date" [formControl]="pegnegFromDate"><label>To:</label><input
+                                type="date" [formControl]="pegnegToDate"><button class="btn btn-link" [clrLoading]="pegnegListLoading"
+                                (click)="updatePegnegList()">Update</button>
+                        </label>
+
+                    </div>
+
+                    <clr-alert [clrAlertType]="'alert-danger'" *ngIf="pegnegQuerySizeErrorFlag">
+                        <div class="alert-item">
+                            <span class="alert-text">Pegneg results too large. Please narrow your date range.</span>
+                        </div>
+                    </clr-alert>
+
+                    <clr-alert [clrAlertType]="'alert-danger'" *ngIf="pegnegQueryBlankFlag">
+                        <div class="alert-item">
+                            <span class="alert-text">No pegneg results. Please expand your date range.</span>
+                        </div>
+                    </clr-alert>
+
                 </div>
             </div>
             <!-- end card -->
@@ -299,7 +332,9 @@
                                 <label>Filtered</label>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="filteredToggle" formControlName="filter_flag">
-                                    <label for="filteredToggle">{{this.addPegNegForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
+                                    <label for="filteredToggle">{{this.addPegNegForm.controls.filter_flag.value ? "Yes" :
+                                        "No"}}
+                                    </label>
                                 </div>
                             </div>
 
@@ -307,7 +342,8 @@
                                 <label>Secondary Concentration</label>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
-                                    <label for="secondaryConcToggle">{{this.addPegNegForm.controls.secondary_concentration_flag.value ? "Yes" : "No"}}</label>
+                                    <label for="secondaryConcToggle">{{this.addPegNegForm.controls.secondary_concentration_flag.value
+                                        ? "Yes" : "No"}}</label>
                                 </div>
                             </div>
 
@@ -322,7 +358,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="samplerNameInput" [ngClass]="{'required': addPegNegForm.get('sampler_name').enabled}">Sampler Name</label>
+                                <label for="samplerNameInput" [ngClass]="{'required': addPegNegForm.get('sampler_name').enabled}">Sampler
+                                    Name
+                                </label>
                                 <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
                                 <datalist id="samplerNames">
                                     <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
@@ -330,7 +368,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="collectStartDateInput" [ngClass]="{'required': addPegNegForm.get('collection_start_date').enabled}">Collection Start Date</label>
+                                <label for="collectStartDateInput" [ngClass]="{'required': addPegNegForm.get('collection_start_date').enabled}">Collection
+                                    Start Date</label>
                                 <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
                             </div>
 
@@ -388,8 +427,8 @@
 
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleVolumeErrorFlag" (clrAlertClosedChange)="onClosesampleVolumeError()">
                                 <div class="alert-item">
-                                    <span class="alert-text">Please provide a sample volume using meter readings and units or total volume sampled
-                                        and units.</span>
+                                    <span class="alert-text">Please provide a sample volume using meter readings and units
+                                        or total volume sampled and units.</span>
                                 </div>
                             </clr-alert>
 
@@ -398,7 +437,9 @@
                                     <span class="alert-text">Submission error. Pegneg (sample record) not submitted.</span>
                                     <span>{{errorMessage}}</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="onSubmitSample('addPegNeg', addPegNegForm.value)">Try again</a>
+                                        <a class="alert-action" (click)="onSubmitSample('addPegNeg', addPegNegForm.value)">Try
+                                            again
+                                        </a>
                                     </div>
                                 </div>
                             </clr-alert>
@@ -496,7 +537,8 @@
                             <label class="required">Secondary Concentration</label>
                             <div class="toggle-switch">
                                 <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
-                                <label for="secondaryConcToggle">{{this.editSampleForm.controls.secondary_concentration_flag.value ? "Yes" : "No"}}</label>
+                                <label for="secondaryConcToggle">{{this.editSampleForm.controls.secondary_concentration_flag.value
+                                    ? "Yes" : "No"}}</label>
                             </div>
                         </div>
 
@@ -559,7 +601,7 @@
                             <label for="imrInput">Initial Meter Reading</label>
                             <input type="text" id="imrInput" formControlName="meter_reading_initial">
                             <div class="select">
-                                <select id="imrSelect" formControlName="meter_reading_unit" >
+                                <select id="imrSelect" formControlName="meter_reading_unit">
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
                                 </select>
                             </div>
@@ -633,9 +675,11 @@
                                 <div class="select">
                                     <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
                                         <option value="">NO PEGNEG ASSOCIATION</option>
-                                        <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date | date:'shortDate'}}</option>
+                                        <option *ngFor="let pegneg of pegnegs" [value]="pegneg.id">ID:{{pegneg.id}} Date:{{pegneg.collection_start_date
+                                            | date:'shortDate'}}</option>
                                     </select>
                                 </div>
+                                20 most recent pegnegs shown by default.
                             </label>
                         </div>
 
@@ -664,6 +708,29 @@
                     <!--<p>Form value: {{ editSampleForm.value | json }}</p>
                     <p>Form status: {{ editSampleForm.status | json }}</p> -->
                 </form>
+
+
+                <div class="form-group" class="pegneg-list-update">
+                    <label class="text-bold"><b><i>Update Pegneg selection list</i></b></label>
+                    <label>
+                        <label>&nbsp;&nbsp;From:</label><input type="date" [formControl]="pegnegFromDate"><label>To:</label><input
+                            type="date" [formControl]="pegnegToDate"><button class="btn btn-link" [clrLoading]="pegnegListLoading"
+                            (click)="updatePegnegList()">Update</button>
+                    </label>
+
+                </div>
+
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="pegnegQuerySizeErrorFlag">
+                    <div class="alert-item">
+                        <span class="alert-text">Pegneg results too large. Please narrow your date range.</span>
+                    </div>
+                </clr-alert>
+
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="pegnegQueryBlankFlag">
+                    <div class="alert-item">
+                        <span class="alert-text">No pegneg results. Please expand your date range.</span>
+                    </div>
+                </clr-alert>
             </div>
 
         </div>
@@ -744,7 +811,8 @@
 <!-- begin Add FCSV modal -->
 <clr-modal [(clrModalOpen)]="addFCSVModalActive" [clrModalSize]="'xl'">
     <h3 class="modal-title">
-        <clr-icon shape="plus" size="26"></clr-icon>&nbsp;Add Final Concentrated Sample Volume (FCSV)</h3>
+        <clr-icon shape="plus" size="26"></clr-icon>&nbsp;Add Final Concentrated Sample Volume (FCSV)
+    </h3>
     <div class="modal-body">
 
         <div class="row">
@@ -807,8 +875,8 @@
 
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="fcsvValuesMissingFlag">
                             <div clr-alert-item class="alert-item">
-                                <span class="alert-text">Values missing. Each sample selected must have a final concentrated sample volume value,
-                                    input units, and a concentration type selected.</span>
+                                <span class="alert-text">Values missing. Each sample selected must have a final concentrated
+                                    sample volume value, input units, and a concentration type selected.</span>
                             </div>
                         </clr-alert>
 
@@ -848,7 +916,8 @@
 <!-- begin Edit FCSV modal -->
 <clr-modal [(clrModalOpen)]="editFCSVModalActive">
     <h3 class="modal-title">
-        <clr-icon shape="note" size="26"></clr-icon>&nbsp;Edit Final Concentrated Sample Volume</h3>
+        <clr-icon shape="note" size="26"></clr-icon>&nbsp;Edit Final Concentrated Sample Volume
+    </h3>
     <div class="modal-body">
 
         <div class="row">
@@ -911,7 +980,8 @@
 <!-- begin freezer location assignment modal -->
 <clr-modal [(clrModalOpen)]="freezerLocationAssignModalActive" [clrModalSize]="'lg'">
     <h3 class="modal-title">
-        <clr-icon shape="thermometer"></clr-icon> Freezer Location Assignment</h3>
+        <clr-icon shape="thermometer"></clr-icon> Freezer Location Assignment
+    </h3>
     <div class="modal-body">
         <!-- <div class="row"> -->
         <!-- <div class="col-lg-12 "> -->
@@ -987,10 +1057,10 @@
                     <ng-template clrIfExpanded>
                         <ng-container>
                             <clr-tree-node>
-                                <label>Choose starting location for aliquots. Maximum value is displayed to the right of each input.
-                                    Next available box is always shown. If the study of the current sample selection has
-                                    any aliquots already stored, current box for the study is shown. Select share of total
-                                    aliquots for each box. Suggested starting locations (based on current freezer status)
+                                <label>Choose starting location for aliquots. Maximum value is displayed to the right of
+                                    each input. Next available box is always shown. If the study of the current sample selection
+                                    has any aliquots already stored, current box for the study is shown. Select share of
+                                    total aliquots for each box. Suggested starting locations (based on current freezer status)
                                     are provided but can be changed. Note that sample-aliquot sets are not split across boxes.
                                     In order to enforce this, the maximum share of total for the current box may be less
                                     than spots available in that box.
@@ -1095,7 +1165,8 @@
 
                 <clr-alert [clrAlertType]="'alert-danger'" *ngIf="aliquotCountErrorFlag ">
                     <div clr-alert-item class="alert-item">
-                        <span class="alert-text">The aliquot share count exceeds total number of aliquots expected. Please adjust and submit again.</span>
+                        <span class="alert-text">The aliquot share count exceeds total number of aliquots expected. Please
+                            adjust and submit again.</span>
                         <!-- <div class="alert-actions">
                             <a class="alert-action" (click)="onSubmitFreezerLocation(freezeForm.value)">Try again</a>
                         </div> -->
@@ -1127,7 +1198,8 @@
 <!-- begin freezer location lookup modal -->
 <clr-modal [(clrModalOpen)]="showHideFreezerLocationLookupModal">
     <h3 class="modal-title">
-        <clr-icon shape="thermometer"></clr-icon> Freezer Location Lookup</h3>
+        <clr-icon shape="thermometer"></clr-icon> Freezer Location Lookup
+    </h3>
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-12">
@@ -1177,7 +1249,8 @@
 <!-- begin inhibition lookup modal -->
 <clr-modal [(clrModalOpen)]="showHideInhibitionModal">
     <h3 class="modal-title">
-        <clr-icon shape="view-list"></clr-icon> View Sample Inhibitions: Sample {{selectedSampleId}}</h3>
+        <clr-icon shape="view-list"></clr-icon> View Sample Inhibitions: Sample {{selectedSampleId}}
+    </h3>
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-12">
@@ -1219,7 +1292,8 @@
 <!-- begin freezer choice modal -->
 <clr-modal [(clrModalOpen)]="showHideFreezerChoiceModal">
     <h3 class="modal-title">
-        <clr-icon shape="thermometer"></clr-icon> Freezer</h3>
+        <clr-icon shape="thermometer"></clr-icon> Freezer
+    </h3>
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-12">
@@ -1243,7 +1317,8 @@
 <!-- begin freeze warning modal -->
 <clr-modal [(clrModalOpen)]="showHideFreezeWarningModal">
     <h3 class="modal-title">
-        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Multiple Studies Error</h3>
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Multiple Studies Error
+    </h3>
     <div class="modal-body">
         <p>The selected set of samples is associated with more than one study. Please adjust selection.</p>
     </div>
@@ -1256,7 +1331,8 @@
 <!-- begin FCSV exists warning modal -->
 <clr-modal [(clrModalOpen)]="showHideFCSVExistsErrorModal">
     <h3 class="modal-title">
-        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Existing FCSV Error</h3>
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Existing FCSV Error
+    </h3>
     <div class="modal-body">
         <p>One or more samples in your selection already has a final concentrated sample volume recorded. Please adjust selection.</p>
     </div>
@@ -1290,7 +1366,8 @@
                             <label for="">Sample {{sample.id}}</label>
 
                             <div *ngIf="sample.aliquots.length === 0">
-                                <clr-icon shape="times-circle"></clr-icon> No aliquots recorded for this sample</div>
+                                <clr-icon shape="times-circle"></clr-icon> No aliquots recorded for this sample
+                            </div>
 
                             <div *ngIf="sample.aliquots.length > 0">
 
@@ -1327,11 +1404,12 @@
 <!-- begin Missing FCSV Error Modal -->
 <clr-modal [(clrModalOpen)]="showHideMissingFCSVErrorModal">
     <h3 class="modal-title">
-        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Missing FCSV Error</h3>
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Missing FCSV Error
+    </h3>
     <div class="modal-body">
-        <p>One or more samples in your selection lacks a value for final concentrated sample volume where one is required. FCSV
-            is a prerequisite to creation and storage of aliquots for samples with the matrix water, wastewater, or forage/sediment/soil.
-            Please add an FCSV for samples of those matrices in your selection and try again. </p>
+        <p>One or more samples in your selection lacks a value for final concentrated sample volume where one is required.
+            FCSV is a prerequisite to creation and storage of aliquots for samples with the matrix water, wastewater, or
+            forage/sediment/soil. Please add an FCSV for samples of those matrices in your selection and try again. </p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="showHideMissingFCSVErrorModal = false">Return</button>
@@ -1342,7 +1420,8 @@
 <!-- begin Multiple SamplesErrorModal -->
 <clr-modal [(clrModalOpen)]="showHideMultipleSamplesErrorModal">
     <h3 class="modal-title">
-        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Multiple Samples Error</h3>
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Multiple Samples Error
+    </h3>
     <div class="modal-body">
         <p>You many only freeze one sample at a time. Please reduce your selection to one sample and try again. </p>
     </div>
@@ -1433,7 +1512,8 @@
 
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleQuerySizeErrorFlag">
             <div class="alert-item">
-                <span class="alert-text">Your query results are too large (greater than {{queryCountLimit}}). Please narrow your search.</span>
+                <span class="alert-text">Your query results are too large (greater than {{queryCountLimit}}). Please narrow
+                    your search.</span>
             </div>
         </clr-alert>
 
@@ -1685,7 +1765,8 @@
                 <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
                 <clr-dg-cell>
-                    <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.final_concentrated_sample_volume | number : '1.2-6' }}</span>
+                    <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.final_concentrated_sample_volume
+                        | number : '1.2-6' }}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>
                     <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.concentration_type}}</span>
@@ -1694,8 +1775,10 @@
                     <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.notes}}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>{{sample.total_volume_or_mass_sampled | number : '1.2-6' }}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial | number : '1.2-6' }} {{sample.meter_reading_unit | displayValue:'symbol':this.units}}</clr-dg-cell>
-                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final | number : '1.2-6' }} {{sample.meter_reading_unit | displayValue:'symbol':this.units}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial | number : '1.2-6' }} {{sample.meter_reading_unit
+                    | displayValue:'symbol':this.units}}</clr-dg-cell>
+                <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_final | number : '1.2-6' }} {{sample.meter_reading_unit
+                    | displayValue:'symbol':this.units}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.dissolution_volume | number : '1.2-6' }}</clr-dg-cell>
                 <clr-dg-cell>{{sample.post_dilution_volume | number : '1.2-6' }}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.filterTypes">{{sample.filter_type_string}}</clr-dg-cell>
