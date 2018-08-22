@@ -79,7 +79,8 @@ export class ResultsComponent implements OnInit {
       to_collection_start_date: null,
       collaborator_sample_id: null,
       sample_type: null,
-      matrix: null
+      matrix: null,
+      record_type: null
     })
   }
 

@@ -166,6 +166,7 @@ export class SamplesComponent implements OnInit {
   pegnegQuerySizeErrorFlag = false;
   pegnegQueryBlankFlag = false;
   pegnegListLoading = false;
+  selectedSamplePegneg;
 
   nucleicAcidTypes = [];
 
@@ -566,11 +567,11 @@ export class SamplesComponent implements OnInit {
             this._sampleService.querySamples(pegnegQuery)
               .subscribe(
                 (samples) => {
-            
+
                   this.sampleQueryComplete = true;
                   this.pegnegs = samples
                   this.pegnegListLoading = false;
-                
+
                   // sort pegnegs by date order
                   this.pegnegs.sort(function (a, b) {
                     const c: Date = new Date(a.collection_start_date);
@@ -578,7 +579,7 @@ export class SamplesComponent implements OnInit {
                     return (d.getTime()) - (c.getTime());
                   });
 
-                  if (this.pegnegs.length === 0 ) {
+                  if (this.pegnegs.length === 0) {
                     this.pegnegQueryBlankFlag = true;
                   }
                 },
@@ -781,46 +782,108 @@ export class SamplesComponent implements OnInit {
 
   editSample(selectedSample) {
 
-    // show the edit sample modal if not showing already
-    if (this.showHideEdit === false) {
-      this.showHideEdit = true;
+    this.selectedSamplePegneg = null;
+
+    if (selectedSample.peg_neg) {
+
+      this._sampleService.getSampleSelection(selectedSample.peg_neg)
+        .subscribe(
+          (pegnegArray) => {
+            this.selectedSamplePegneg = pegnegArray[0];
+
+
+            this.editSampleForm.setValue({
+              id: selectedSample.id,
+              matrix: selectedSample.matrix,
+              study: selectedSample.study,
+              sample_type: selectedSample.sample_type,
+              collaborator_sample_id: selectedSample.collaborator_sample_id,
+              filter_flag: selectedSample.filter_flag,
+              secondary_concentration_flag: selectedSample.secondary_concentration_flag,
+              study_site_name: selectedSample.study_site_name,
+              sample_description: selectedSample.sample_description,
+              sampler_name: selectedSample.sampler_name,
+              sample_notes: selectedSample.sample_notes,
+              arrival_date: selectedSample.arrival_date,
+              arrival_notes: selectedSample.arrival_notes,
+              collection_start_date: selectedSample.collection_start_date,
+              collection_start_time: selectedSample.collection_start_time,
+              collection_end_date: selectedSample.collection_end_date,
+              collection_end_time: selectedSample.collection_end_time,
+              meter_reading_initial: selectedSample.meter_reading_initial,
+              meter_reading_final: selectedSample.meter_reading_final,
+              meter_reading_unit: selectedSample.meter_reading_unit,
+              total_volume_sampled_initial: selectedSample.total_volume_sampled_initial,
+              total_volume_sampled_unit_initial: selectedSample.total_volume_sampled_unit_initial,
+              total_volume_or_mass_sampled: selectedSample.total_volume_or_mass_sampled,
+              post_dilution_volume: selectedSample.post_dilution_volume,
+              filter_type: selectedSample.filter_type,
+              filter_born_on_date: selectedSample.filter_born_on_date,
+              dissolution_volume: selectedSample.dissolution_volume,
+              elution_notes: selectedSample.elution_notes,
+              technician_initials: selectedSample.technician_initials,
+              sample_volume_initial: selectedSample.sample_volume_initial,
+              peg_neg: selectedSample.peg_neg
+            })
+
+            // show the edit sample modal if not showing already
+            if (this.showHideEdit === false) {
+              this.showHideEdit = true;
+            }
+
+            this.sampleSelected = true;
+          },
+          error => {
+            this.errorMessage = error
+            alert("Error retrieving Peg Neg for selected sample. ")
+          });
+
+
+    } else {
+
+      this.editSampleForm.setValue({
+        id: selectedSample.id,
+        matrix: selectedSample.matrix,
+        study: selectedSample.study,
+        sample_type: selectedSample.sample_type,
+        collaborator_sample_id: selectedSample.collaborator_sample_id,
+        filter_flag: selectedSample.filter_flag,
+        secondary_concentration_flag: selectedSample.secondary_concentration_flag,
+        study_site_name: selectedSample.study_site_name,
+        sample_description: selectedSample.sample_description,
+        sampler_name: selectedSample.sampler_name,
+        sample_notes: selectedSample.sample_notes,
+        arrival_date: selectedSample.arrival_date,
+        arrival_notes: selectedSample.arrival_notes,
+        collection_start_date: selectedSample.collection_start_date,
+        collection_start_time: selectedSample.collection_start_time,
+        collection_end_date: selectedSample.collection_end_date,
+        collection_end_time: selectedSample.collection_end_time,
+        meter_reading_initial: selectedSample.meter_reading_initial,
+        meter_reading_final: selectedSample.meter_reading_final,
+        meter_reading_unit: selectedSample.meter_reading_unit,
+        total_volume_sampled_initial: selectedSample.total_volume_sampled_initial,
+        total_volume_sampled_unit_initial: selectedSample.total_volume_sampled_unit_initial,
+        total_volume_or_mass_sampled: selectedSample.total_volume_or_mass_sampled,
+        post_dilution_volume: selectedSample.post_dilution_volume,
+        filter_type: selectedSample.filter_type,
+        filter_born_on_date: selectedSample.filter_born_on_date,
+        dissolution_volume: selectedSample.dissolution_volume,
+        elution_notes: selectedSample.elution_notes,
+        technician_initials: selectedSample.technician_initials,
+        sample_volume_initial: selectedSample.sample_volume_initial,
+        peg_neg: selectedSample.peg_neg
+      })
+
+      // show the edit sample modal if not showing already
+      if (this.showHideEdit === false) {
+        this.showHideEdit = true;
+      }
     }
 
-    this.editSampleForm.setValue({
-      id: selectedSample.id,
-      matrix: selectedSample.matrix,
-      study: selectedSample.study,
-      sample_type: selectedSample.sample_type,
-      collaborator_sample_id: selectedSample.collaborator_sample_id,
-      filter_flag: selectedSample.filter_flag,
-      secondary_concentration_flag: selectedSample.secondary_concentration_flag,
-      study_site_name: selectedSample.study_site_name,
-      sample_description: selectedSample.sample_description,
-      sampler_name: selectedSample.sampler_name,
-      sample_notes: selectedSample.sample_notes,
-      arrival_date: selectedSample.arrival_date,
-      arrival_notes: selectedSample.arrival_notes,
-      collection_start_date: selectedSample.collection_start_date,
-      collection_start_time: selectedSample.collection_start_time,
-      collection_end_date: selectedSample.collection_end_date,
-      collection_end_time: selectedSample.collection_end_time,
-      meter_reading_initial: selectedSample.meter_reading_initial,
-      meter_reading_final: selectedSample.meter_reading_final,
-      meter_reading_unit: selectedSample.meter_reading_unit,
-      total_volume_sampled_initial: selectedSample.total_volume_sampled_initial,
-      total_volume_sampled_unit_initial: selectedSample.total_volume_sampled_unit_initial,
-      total_volume_or_mass_sampled: selectedSample.total_volume_or_mass_sampled,
-      post_dilution_volume: selectedSample.post_dilution_volume,
-      filter_type: selectedSample.filter_type,
-      filter_born_on_date: selectedSample.filter_born_on_date,
-      dissolution_volume: selectedSample.dissolution_volume,
-      elution_notes: selectedSample.elution_notes,
-      technician_initials: selectedSample.technician_initials,
-      sample_volume_initial: selectedSample.sample_volume_initial,
-      peg_neg: selectedSample.peg_neg
-    })
 
-    this.sampleSelected = true;
+
+
 
   }
 
@@ -1297,7 +1360,6 @@ export class SamplesComponent implements OnInit {
     this.allSamples = [];
     // set sample loading to true to put spinner over table while it updates.
     this.samplesLoading = true;
-    this.pegnegs = [];
     this.submitLoading = true;
     // set functional limit for amount of samples to display in the table at once
     const countLimit = 2000;
@@ -1380,6 +1442,7 @@ export class SamplesComponent implements OnInit {
       technician_initials: { value: '', disabled: true },
       dissolution_volume: { value: null, disabled: true },
       post_dilution_volume: { value: null, disabled: true },
+      record_type: { value: null, disabled: true },
       peg_neg: null
     });
   }
@@ -1620,8 +1683,6 @@ export class SamplesComponent implements OnInit {
     this.resetFlags();
 
     this.submitLoading = true;
-
-    //this.pegnegs = [];
 
     // set functional limit for amount of samples to display in the table at once
     const countLimit = 2000;

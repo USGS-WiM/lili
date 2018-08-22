@@ -467,7 +467,7 @@
 </div>
 
 <!-- edit sample modal -->
-<clr-modal [(clrModalOpen)]="showHideEdit">
+<clr-modal [(clrModalOpen)]="showHideEdit" [clrModalSize]="'lg'">
     <h3 class="modal-title">Edit Sample</h3>
     <div class="modal-body">
 
@@ -669,8 +669,15 @@
                             <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                         </div>
 
+
+                        <div>
+                            <label *ngIf="selectedSamplePegneg">Current Associated Peg Neg:&nbsp;&nbsp;ID:{{selectedSamplePegneg.id}}&nbsp;Date:{{selectedSamplePegneg.collection_start_date
+                                | date:'shortDate'}}</label>
+                        </div>
+
+
                         <div class="form-group">
-                            <label>Peg Neg</label>
+                            <label>Update Peg Neg</label>
                             <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
                                 <div class="select">
                                     <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
