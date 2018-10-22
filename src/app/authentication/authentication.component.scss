@@ -1,9 +1,134 @@
-.standout {
-    font-size: x-large;
-    font-weight: bold;
-}
+@import '../app.variables.scss';
 
-.standoutMore {
-    font-size: xx-large;
-    font-weight: bold;
+// Login/Authentication page
+// Login/Authentication page
+// Login/Authentication page
+
+#loginPage{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+
+    #loginCard{
+        display: block;
+        width: 280px;
+        height: auto;
+        background-color: white;
+        box-sizing: border-box;
+        padding: 20px;
+        border-radius: 3px;
+        margin: 0 auto;
+        box-shadow: $cardshadow;
+
+        #loginMessage{
+            display: block;
+
+            img{
+                display: block;
+                height: 44px;
+                width: auto;
+                margin-bottom: 15px;
+            }
+
+            h1{
+                font-size: 20px;
+                font-weight: 700;
+                margin: 0;
+                padding: 0;
+                line-height: 24px;
+                color: $black;
+
+                b{
+                    font-weight: 700;
+                }
+            }
+
+            h2{
+                display: block;
+                font-size: 16px;
+                opacity: 0.6;
+                margin: 0;
+                padding: 0;
+                margin-bottom: 15px;
+                margin-top: 5px;
+                color: $text;
+                line-height: 18px;
+            }
+        }
+
+        #loginForm{
+
+            label{
+                display: block;
+                font-size: 12px;
+                font-weight: 400;
+                color: $textlight;
+                height: 16px;
+
+            }
+            input{
+                display: block;
+                width: 100%;
+                font-size: 16px;
+                box-sizing: border-box;
+                padding: 6px 0 0 0;
+                font-weight: 500;
+                height: auto;
+                margin-bottom: 8px;
+                color: $text;
+
+                &:-webkit-autofill {
+                    -webkit-box-shadow: inset 0 0 0px 9999px white;
+                    box-shadow: inset 0 0 0px 9999px white;
+                }
+            }
+
+            #loginError{
+                display: block;
+                box-sizing: border-box;
+                padding: 6px 10px;
+                font-weight: 400;
+                margin-top: 20px;
+                font-weight: 400;
+                line-height: 11px;
+                font-size: 11px;
+                border: none;
+                border-left: 3px solid red;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                background: fade-out($red, 0.75);
+                color: $black;
+
+                b{
+                    font-weight: 800;
+                    padding-top: 5px;
+                }
+            }
+
+
+            button{
+                margin-top: 20px;
+                width: 100%;
+                text-align: center;
+                font-weight: 600;
+                background-color: $blue;
+                color: $white;
+                border: none;
+                transition: $transition;
+                box-shadow: none;
+
+                &:focus,
+                &:hover{
+                    background-color: darken($blue, 10%);
+                    transition: $transition;
+                }
+
+                &:focus{
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
 }

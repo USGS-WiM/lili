@@ -1,14 +1,24 @@
 <clr-main-container>
     <clr-header>
         <div class="branding">
-            <a href="#" class="nav-link">
-                <!--<span class="clr-icon ars-logo"></span>-->
-                <span class="clr-icon lili-icon"></span>
+            <a href="#" id="brandingLink">
+                <div id="brandingLogo"></div>
+                <span id="brandingTitle">lili</span>
+                <span id="brandingTitleFull">
+                    <div>
+                        <b>L</b>aboratory for 
+                        <br/>
+                        <b>I</b>nfectious Disease 
+                        <br/>and Environment <b>LI</b>MS 
+                    </div>
+                </span>
+                <!-- <span class="clr-icon lili-icon"></span>
                 <span class="title">
                     <span style="font-size:xx-large; font-weight: bold;">lili</span>
                     <span style="font-size:x-large; font-weight: bold;">L</span>aboratory for
                     <span style="font-size:x-large; font-weight: bold;">I</span>nfectious Disease and Environment
-                    <span style="font-size:x-large; font-weight: bold;">LI</span>MS</span>
+                    <span style="font-size:x-large; font-weight: bold;">LI</span>MS
+                </span> -->
             </a>
         </div>
 
@@ -26,7 +36,7 @@
         </div>
     </clr-header>
 
-    <div *ngIf="servicesFailFlag" class="alert alert-app-level alert-danger" style="margin-bottom:24px">
+    <div *ngIf="servicesFailFlag" class="alert alert-app-level alert-danger">
         <div class="alert-items">
             <div class="alert-item static">
                 <div class="alert-icon-wrapper">
@@ -46,65 +56,65 @@
         <nav class="sidenav" [clr-nav-level]="1">
             <section class="sidenav-content">
 
-                <!-- <a class="nav-link " href="#" [routerLink]="['/login']" routerLinkActive="active">
-                    <clr-icon shape="login"></clr-icon> Login
-                </a> -->
+                <div class="sidenav-scroll">
+                    <!-- <a class="nav-link " href="#" [routerLink]="['/login']" routerLinkActive="active">
+                            <clr-icon shape="login"></clr-icon> Login
+                        </a> -->
 
-                <a class="nav-link " href="#" [routerLink]="['/home']" routerLinkActive="active">
-                    <clr-icon shape="home"></clr-icon> Home
-                </a>
+                    <a class="nav-link " href="#" [routerLink]="['/home']" routerLinkActive="active">
+                        <clr-icon shape="home"></clr-icon> Home
+                    </a>
 
-                <a class="nav-link" href="#" [routerLink]="['/studies']" routerLinkActive="active">
-                    <clr-icon shape="view-list"></clr-icon> Studies
-                </a>
+                    <a class="nav-link" href="#" [routerLink]="['/studies']" routerLinkActive="active">
+                        <clr-icon shape="view-list"></clr-icon> Studies
+                    </a>
 
-                <a class="nav-link" href="#" [routerLink]="['/samples']" routerLinkActive="active">
-                    <clr-icon shape="view-list"></clr-icon> Samples
-                </a>
+                    <a class="nav-link" href="#" [routerLink]="['/samples']" routerLinkActive="active">
+                        <clr-icon shape="view-list"></clr-icon> Samples
+                    </a>
 
-                <a class="nav-link" href="#" [routerLink]="['/analysisbatches']" routerLinkActive="active">
-                    <clr-icon shape="view-list"></clr-icon> Analysis Batches
-                </a>
+                    <a class="nav-link" href="#" [routerLink]="['/analysisbatches']" routerLinkActive="active">
+                        <clr-icon shape="view-list"></clr-icon> Analysis Batches
+                    </a>
 
-                <!-- <section class="nav-group collapsible">
-                    <input id="results" type="checkbox">
-                    <label for="results" ><clr-icon shape="line-chart"></clr-icon> Results</label>
-                    <ul class="nav-list">
-                        <li>
-                            <a class="nav-link" href="#" [routerLink]="['/results']" routerLinkActive="active">
-                                <clr-icon shape="upload"></clr-icon> Upload 
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link"><clr-icon shape="check-circle"></clr-icon> Review</a>
-                        </li>
-                    </ul>
-                </section> -->
+                    <!-- <section class="nav-group collapsible">
+                        <input id="results" type="checkbox">
+                        <label for="results" ><clr-icon shape="line-chart"></clr-icon> Results</label>
+                        <ul class="nav-list">
+                            <li>
+                                <a class="nav-link" href="#" [routerLink]="['/results']" routerLinkActive="active">
+                                    <clr-icon shape="upload"></clr-icon> Upload 
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link"><clr-icon shape="check-circle"></clr-icon> Review</a>
+                            </li>
+                        </ul>
+                        </section> -->
 
-                <a class="nav-link" href="#" [routerLink]="['/dataupload']" routerLinkActive="active">
-                    <clr-icon shape="upload"></clr-icon> Data Upload
-                </a>
+                    <a class="nav-link" href="#" [routerLink]="['/dataupload']" routerLinkActive="active">
+                        <clr-icon shape="upload"></clr-icon> Data Upload
+                    </a>
 
-                <a class="nav-link" href="#" [routerLink]="['/results']" routerLinkActive="active">
-                    <clr-icon shape="line-chart"></clr-icon> Results
-                </a>
+                    <a class="nav-link" href="#" [routerLink]="['/results']" routerLinkActive="active">
+                        <clr-icon shape="line-chart"></clr-icon> Results
+                    </a>
 
-                <a class="nav-link" href="#" [routerLink]="['/reports']" routerLinkActive="active">
-                    <clr-icon shape="clipboard"></clr-icon> Reports
-                </a>
+                    <a class="nav-link" href="#" [routerLink]="['/reports']" routerLinkActive="active">
+                        <clr-icon shape="clipboard"></clr-icon> Reports
+                    </a>
 
-                <a class="nav-link" href="#" [routerLink]="['/admin']" routerLinkActive="active">
-                    <clr-icon shape="cog"></clr-icon> Admin
-                </a>
+                    <a class="nav-link" href="#" [routerLink]="['/admin']" routerLinkActive="active">
+                        <clr-icon shape="cog"></clr-icon> Admin
+                    </a>
+                </div>
 
                 <div class="colophon">
-                    <span>lili Lab Information Management System</span>
-                    <br>
-                    <span>Laboratory for Infectious Disease and Environment</span>
-                    <br>
-                    <span>Developed by USGS Web Informatics and Mapping (WIM)</span>
-                    <br>
-                    <span>Version {{liliVersion}}</span>
+                    <div>lili Lab Information Management System</div>
+                    <div>Laboratory for Infectious Disease and Environment</div>
+                    <hr/>
+                    <div>Developed by USGS Web Informatics and Mapping (WIM)</div>
+                    <div>Version {{liliVersion}}</div>
                 </div>
 
             </section>

@@ -1,41 +1,30 @@
-<div class="row">
-  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-    <div class="card">
-      <div class="card-block">
-        <div class="card-text">
-          <p>Welcome to
-            <span class="standoutMore">lili</span>
-            <br>
-            <!-- <span class="standout">L</span>aboratory for
-            <span class="standout">I</span>nfectious Disease and Environment
-            <span class="standout">L</span>aboratory
-            <span class="standout">I</span>nformation Management System. -->
-        </div>
-      </div>
+<div id="loginPage">
+  
+  <div id="loginCard">
 
-      <div class="card-block">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
-          <label class="title">
-            <h5 class="hint">Please login</h5>
-          </label>
-          <p>
-            <div class="login-group">
-              <input class="username" type="text" id="login_username" placeholder="Username" formControlName="username">
-              <input class="password" type="password" id="login_password" placeholder="Password" formControlName="password">
-            </div>
-            <p>
-
-            </p>
-            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="authenticationErrorFlag">
-              <div clr-alert-item class="alert-item">
-                <span class="alert-text">Invalid username/password combination</span>
-              </div>
-            </clr-alert>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-        <!-- <p>
-          <button class="btn btn-danger-outline" (click)="onLogout()">Logout</button> -->
-      </div>
+    <div id="loginMessage">
+      <img src="../../images/lili_black.png"/>
+      <h1>Welcome to <b>lili</b></h1>
+      <h2>Please sign in to continue.</h2>
     </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)" id="loginForm">
+      <label for="login_username">Username</label>
+      <input class="username" type="text" id="login_username" placeholder="" formControlName="username">
+      <label for="login_password">Password</label>
+      <input class="password" type="password" id="login_password" placeholder="" formControlName="password">
+
+      <div id="loginError" *ngIf="authenticationErrorFlag">
+          There was an error with your Email / Password combination.
+          <br/>
+          <b>Please try again.</b>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Sign In</button>
+    </form>
+      <!-- <button class="btn btn-danger-outline" (click)="onLogout()">Logout</button> -->
+
+    
   </div>
+
 </div>

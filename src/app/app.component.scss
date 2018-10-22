@@ -1,6 +1,4 @@
-// Copyright (c) 2016 VMware, Inc. All Rights Reserved.
-// This software is released under MIT license.
-// The full license information can be found in LICENSE in the root directory of this project.
+@import 'app.variables.scss';
 
 .clr-icon {
   &.ars-logo {
@@ -26,32 +24,211 @@
   }
 }
 
-.alert-icon, .clr-icon {
-  display: inline-block;
-  height: 30px;
-  width: 30px;
-  padding: 0;
-  background-repeat: no-repeat;
-  background-size: contain;
-  vertical-align: middle;
-}
-.sidenav-content {
-  position: relative;
-  padding-bottom: 50px;
-}
-
-.colophon {
-  font-size:x-small;
-  padding: 5px;
-  bottom: 2px;
-  position: absolute;
-  vertical-align: bottom;
-  height: 50px;
-  line-height: 1.5em;
-}
-
-@media only screen and ( max-height: 450px ){
-  .colophon { display: none}
-}
 
 
+
+//===============================================================================
+//===============================================================================
+// Global Elements
+// Global Elements
+// Global Elements
+//===============================================================================
+//===============================================================================
+
+*,
+*:focus,
+*:active{
+  outline: none !important;
+  outline-style: none !important;
+  outline-width: 0px !important;
+  outline: 0px auto transparent !important;
+  outline-color: transparent !important;
+}
+button:focus{
+  outline: none !important;
+}
+a:focus{
+  outline: none !important;
+}
+
+.main-container{
+  background-color: $lightbg;
+}
+
+
+// Heder/nav
+.main-container .header{
+  background-color: #090923;
+
+  #brandingLink{
+    display: flex;
+
+    #brandingLogo{
+      background-image: url('../images/lili_white.png');
+      background-repeat: no-repeat;
+      background-size: 80% auto;
+      background-position: center center;
+      display: block;
+      height: 100%;
+      width: 60px;
+      position: relative;
+    }
+    #brandingTitle{
+      font-size: 32px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-weight: 700;
+      box-sizing: border-box;
+      transition: 0.2s;
+      padding-top: 2px;
+    }
+    #brandingTitleFull{
+      font-weight: 400;
+      font-size: 10.5px;
+      color: fade-out($white, 0.6);
+      box-sizing: border-box;
+      padding-left: 10px;
+      line-height: 11px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      b{
+        transition: $transition;
+      }
+    }
+
+    &:hover{
+      b{
+        color: $white;
+        transition: $transition;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 544px){
+  #brandingTitleFull {
+    opacity: 0 !important;
+    transition: 0.2s;
+  }
+  .open-hamburger-menu{
+    #brandingTitle{
+      transition: 0.2s;
+    }
+    #brandingTitleFull {
+      opacity: 1 !important;
+      transition: 0.2s;
+    }
+  }
+}
+
+
+
+
+// Alerts
+// Alerts
+.alert-app-level{
+
+  &.alert-danger{
+    background-color: $red;
+  }
+
+  .alert-icon-wrapper{
+    position: relative;
+    top: 0px;
+
+    .alert-icon{
+      height: 24px;
+      width: 24px;
+    }
+  }
+  .alert-text{
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 13px;
+  }
+}
+
+
+// Sidebar
+// Sidebar
+// Sidebar
+.sidenav{
+
+  @media screen and (max-width: 768px){
+    background-color: $blue !important;
+    padding-top: 60px !important;
+  }
+
+  .sidenav-content{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    background-color: $white;
+
+    .sidenav-scroll{
+      flex-grow: 3;
+      overflow-y: auto;
+      box-sizing: border-box;
+      padding-top: 20px;
+    }
+
+    .colophon {
+      font-size:10px;
+      line-height: 9px;
+      color: rgba(10,20,40,0.45);
+      box-sizing: border-box;
+      padding: 10px;
+      letter-spacing: -0.1px;
+
+      div{
+        display: block;
+        padding: 1px 0;
+      }
+
+      hr{
+        margin: 5px 0;
+        border: none;
+        border-bottom: 1px dashed $textlight;
+      }
+
+      @media only screen and ( max-height: 450px ){
+
+      }
+    }
+    
+
+    .nav-link {
+      margin: 0;
+      box-sizing: border-box;
+      padding: 8px 0 8px 30px;
+      font-size: 13px;
+      color: $text;
+      border-left: 4px solid transparent;
+      transition: $transition;
+      border-radius: 0;
+
+      clr-icon{
+        position: relative;
+        top: -1px;
+        left: -5px;
+      }
+
+      &:hover{
+        background-color: #ffffff;
+        color: $black;
+        cursor: pointer !important;
+        border-left: 4px solid $blue;
+        transition: $transition;
+      }
+      &:focus{
+        text-decoration: underline;
+      }
+    }
+  }
+}
