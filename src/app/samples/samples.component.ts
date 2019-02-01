@@ -1644,7 +1644,7 @@ export class SamplesComponent implements OnInit {
         formValue.matrix = APP_SETTINGS.PEGNEG_FIELD_VALUES.matrix;
         formValue.filter_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.filter_type;
         formValue.sample_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.sample_type;
-        formValue.collaborator_sample_id = 'pegneg' + currentDate + '_' + currentTime;
+        formValue.collaborator_sample_id = 'pegneg' + currentDate;
         formValue.study = APP_SETTINGS.PEGNEG_FIELD_VALUES.study;
         // formValue.collection_start_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_start_time;
         // formValue.collection_end_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_end_time;
