@@ -27,6 +27,17 @@ export class PcrReplicateBatchService {
       .catch(this.handleError);
   }
 
+  public validate(targetResults): Observable<any> {
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.post(APP_SETTINGS.REPLICATE_BATCH_URL + 'validate/', targetResults, options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError);
+  }
+
   public update(pcrBatchID, targetResults): Observable<any> {
 
     let options = new RequestOptions({

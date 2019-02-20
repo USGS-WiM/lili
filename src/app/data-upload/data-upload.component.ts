@@ -386,6 +386,7 @@ export class DataUploadComponent implements OnInit {
       )
   }
 
+  // outgoing, old function
   submitRawTargetResults() {
 
     this.errorMessage = '';
@@ -406,6 +407,49 @@ export class DataUploadComponent implements OnInit {
           this.resultsSubmissionSuccessFlag = false;
         }
       )
+  }
+
+  // TODO: new validate function
+  validateTargetResults() {
+
+    this.errorMessage = '';
+
+    this._pcrReplicateBatchService.validate(this.parsedRawTargetResults)
+      .subscribe(
+        (results) => {
+          console.log(results);
+
+          // temporary for testing
+          for (const rep of results.updated_pcrreplicates) {
+
+            rep.validation_errors.push({
+              "field": "cq_value",
+              "message": "cq_value ('cp') is missing",
+              "severity": 2
+            })
+            rep.validation_errors.push({
+              "field": "gc_reaction",
+              "message": "gc_reaction ('concentration') is missing",
+              "severity": 2
+            })
+          }
+
+          this.parsedRawTargetResults_pcrBatchID = results.id;
+          this.pcrReplicateBatchIDErrorFlag = false;
+
+          this.pcrResultsValidationObject = results;
+          this.pcrResultsValidationReplicates = results.updated_pcrreplicates;
+          this.resultsSubmissionErrorFlag = false;
+          this.resultsSubmissionSuccessFlag = true;
+          this.validationResponseReady = true;
+        },
+        error => {
+          this.errorMessage = error;
+          this.resultsSubmissionErrorFlag = true;
+          this.resultsSubmissionSuccessFlag = false;
+        }
+      )
+
   }
 
   onUpdatePCRReplicates(selectedReps) {
