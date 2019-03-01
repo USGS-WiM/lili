@@ -36,12 +36,17 @@ export class DataUploadComponent implements OnInit {
   pcrResultsValidationObject;
   pcrResultsValidationReplicates = [];
   parsedRawTargetResults_pcrBatchID;
+
+  pcrResultsObject;
+  pcrResultsReplicates = [];
+
   // showResultsDisplay: boolean = false;
   rawResultsParsed: boolean = false;
   resultsSubmissionReady: boolean = false;
   validationResponseReady: boolean = false;
   rawInhResultsParsed: boolean = false;
   replicatesLoading: boolean = false;
+  validationLoading: boolean = false;
 
   textFileNameTargetCode;
   inhTextFileNameNAType;
@@ -77,6 +82,8 @@ export class DataUploadComponent implements OnInit {
   resetFlags() {
     this.resultsSubmissionSuccessFlag = false;
     this.resultsSubmissionErrorFlag = false;
+    this.rawResultsParsed = false;
+    this.validationResponseReady = false;
   }
 
   buildDilutionsForm() {
@@ -389,17 +396,18 @@ export class DataUploadComponent implements OnInit {
   // outgoing, old function
   submitRawTargetResults() {
 
+    this.validationResponseReady = false;
+    this.resultsSubmissionSuccessFlag = false;
+
     this.errorMessage = '';
 
     this._pcrReplicateBatchService.update(this.parsedRawTargetResults_pcrBatchID, this.parsedRawTargetResults)
       .subscribe(
         (results) => {
-          console.log(results);
-          this.pcrResultsValidationObject = results;
-          this.pcrResultsValidationReplicates = results.pcrreplicates;
-          this.resultsSubmissionErrorFlag = false;
+          this.pcrResultsObject = results;
+          this.pcrResultsReplicates = results.pcrreplicates;
           this.resultsSubmissionSuccessFlag = true;
-          this.validationResponseReady = true;
+          // this.finishResultsSubmission();
         },
         error => {
           this.errorMessage = error;
@@ -413,6 +421,8 @@ export class DataUploadComponent implements OnInit {
   validateTargetResults() {
 
     this.errorMessage = '';
+
+    this.validationLoading = true;
 
     this._pcrReplicateBatchService.validate(this.parsedRawTargetResults)
       .subscribe(
@@ -439,14 +449,13 @@ export class DataUploadComponent implements OnInit {
 
           this.pcrResultsValidationObject = results;
           this.pcrResultsValidationReplicates = results.updated_pcrreplicates;
-          this.resultsSubmissionErrorFlag = false;
-          this.resultsSubmissionSuccessFlag = true;
+          this.validationLoading = false;
           this.validationResponseReady = true;
         },
         error => {
           this.errorMessage = error;
-          this.resultsSubmissionErrorFlag = true;
-          this.resultsSubmissionSuccessFlag = false;
+          this.validationLoading = false;
+          //this.resultsSubmissionErrorFlag = true;
         }
       )
 
@@ -459,9 +468,8 @@ export class DataUploadComponent implements OnInit {
     this.replicateUpdateErrorFlag = false;
     this.submitLoading = true;
 
-
     this.replicatesLoading = true;
-    this.pcrResultsValidationReplicates = [];
+    this.pcrResultsReplicates = [];
 
     let repArray = [];
 
@@ -475,7 +483,7 @@ export class DataUploadComponent implements OnInit {
     this._pcrReplicateService.update(repArray)
       .subscribe(
         (results) => {
-          this.pcrResultsValidationReplicates = results;
+          this.pcrResultsReplicates = results;
           this.replicateUpdateSuccessFlag = true;
           this.replicateUpdateErrorFlag = false;
           this.submitLoading = false;
@@ -491,13 +499,17 @@ export class DataUploadComponent implements OnInit {
       )
   }
 
-  finishValidation() {
+  finishResultsSubmission() {
     this.rawResultsParsed = false;
     this.resultsSubmissionReady = false;
     this.validationResponseReady = false;
-    this.resultsSubmissionSuccessFlag = false;
     this.resultsSubmissionErrorFlag = false;
+    this.replicateUpdateSuccessFlag = false;
     this.clearFileInput(document.getElementById("targetFileInput"));
+  }
+
+  resetResultsUpload() {
+
   }
 
   submitInhibitions(dilutionsFormValue) {
