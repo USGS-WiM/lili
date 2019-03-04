@@ -722,6 +722,11 @@ export class AnalysisBatchesComponent implements OnInit {
       this._sampleService.getSampleSelection(sampleList)
         .subscribe((sampleSelection) => {
 
+          // sort the sample selection by sample ID
+          sampleSelection.sort(function (a, b) {
+            return (a.id - b.id);
+          });
+
           for (let extraction of this.rePrintWorksheetData.sampleextractions) {
             for (let sample of sampleSelection) {
               if (sample.id === extraction.sample) {
@@ -737,6 +742,7 @@ export class AnalysisBatchesComponent implements OnInit {
                       sample: sample.aliquots[0].sample,
                       spot: sample.aliquots[0].freezer_location.spot,
                     };
+
                     extractionSubmission.push(extractionSubmit);
                   }// end if aliquots.length
                 }// end if sample.aliquots
@@ -785,6 +791,11 @@ export class AnalysisBatchesComponent implements OnInit {
           }
         }
       }
+
+      // sort the sample selection by sample ID
+      this.extractWizWorksheetData.new_sample_extractions.sort(function (a, b) {
+        return (a.sample - b.sample);
+      });
 
       // local var to hold extraction number
       let extractionNumber;
@@ -1258,6 +1269,8 @@ export class AnalysisBatchesComponent implements OnInit {
     const ebSubmissionArray = [];
 
     for (let extraction_batch of formValue.extraction_batches) {
+      // remove 'number' field only used for display - not needed for PATCH request
+      delete extraction_batch.number;
       ebSubmissionArray.push(extraction_batch);
     }
 
