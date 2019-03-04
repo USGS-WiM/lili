@@ -505,6 +505,7 @@ export class DataUploadComponent implements OnInit {
     this.validationResponseReady = false;
     this.resultsSubmissionErrorFlag = false;
     this.replicateUpdateSuccessFlag = false;
+    this.resultsSubmissionSuccessFlag = false;
     this.clearFileInput(document.getElementById("targetFileInput"));
   }
 
