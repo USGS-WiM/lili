@@ -33,10 +33,17 @@ export class ExtractionBatchService {
       headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
     });
 
-    return this._http.put(APP_SETTINGS.EXTRACTION_BATCHES_URL + formValue.id + '/', formValue, options)
+    return this._http.patch(APP_SETTINGS.EXTRACTION_BATCHES_URL + formValue.id + '/', formValue, options)
       .map((response: Response) => <any[]>response.json())
       .catch(this.handleError);
 
+  }
+
+  public delete(id: number): Observable<any> {
+    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
+
+    return this._http.delete(APP_SETTINGS.EXTRACTION_BATCHES_URL + id, options)
+      .catch(this.handleError);
   }
 
   public bulkUpdate(ebSubmissionArray): Observable<IExtractionBatch> {

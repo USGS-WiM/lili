@@ -429,20 +429,20 @@ export class DataUploadComponent implements OnInit {
         (results) => {
           console.log(results);
 
-          // temporary for testing
-          for (const rep of results.updated_pcrreplicates) {
+          // use only for testing
+          // for (const rep of results.updated_pcrreplicates) {
 
-            rep.validation_errors.push({
-              "field": "cq_value",
-              "message": "cq_value ('cp') is missing",
-              "severity": 2
-            })
-            rep.validation_errors.push({
-              "field": "gc_reaction",
-              "message": "gc_reaction ('concentration') is missing",
-              "severity": 2
-            })
-          }
+          //   rep.validation_errors.push({
+          //     "field": "cq_value",
+          //     "message": "cq_value ('cp') is missing",
+          //     "severity": 2
+          //   })
+          //   rep.validation_errors.push({
+          //     "field": "gc_reaction",
+          //     "message": "gc_reaction ('concentration') is missing",
+          //     "severity": 2
+          //   })
+          // }
 
           this.parsedRawTargetResults_pcrBatchID = results.id;
           this.pcrReplicateBatchIDErrorFlag = false;
@@ -458,7 +458,6 @@ export class DataUploadComponent implements OnInit {
           //this.resultsSubmissionErrorFlag = true;
         }
       )
-
   }
 
   onUpdatePCRReplicates(selectedReps) {
