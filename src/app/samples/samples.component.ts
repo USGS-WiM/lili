@@ -1326,6 +1326,8 @@ export class SamplesComponent implements OnInit {
       if (decimalPlaces > places) {
         let trimmedNumber = number.toFixed(places);
         return trimmedNumber;
+      } else {
+        return number;
       }
 
     }
@@ -1675,6 +1677,12 @@ export class SamplesComponent implements OnInit {
         break;
       default:
       // do something defaulty
+    }
+  }
+
+  addLeadingZero(value, control) {
+    if (value.charAt(0) === '.') {
+      control.setValue('0' + value);
     }
   }
 

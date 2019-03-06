@@ -54,6 +54,10 @@ export class AnalysisBatchDetailComponent implements OnInit {
   selectedABID: number;
 
   showHideEditTargetList: boolean = false;
+  showHideEBDeleteConfirm: boolean = false;
+
+  showEBDeleteSuccess: boolean = false;
+  showEBDeleteError: boolean = false;
 
   targetListEditLocked: boolean = false;
 
@@ -105,29 +109,29 @@ export class AnalysisBatchDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.ABDetailsLoading = true;
-
+    // this.ABDetailsLoading = true;
     this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
+    this.retrieveABData();
 
-    // on init, call the getAnalysisBatchDetail function of the AnalyisBatchService, set results to selectedABDetail var
-    this._analysisBatchService.getAnalysisBatchDetail(this.selectedABSummary.id)
-      .subscribe(
-        (analysisBatchDetail) => {
-          this.selectedABDetail = analysisBatchDetail;
-          this.extractionBatchArray = analysisBatchDetail.extractionbatches
-          this.samplesArray = analysisBatchDetail.samples;
-          this.selectedABID = analysisBatchDetail.id;
-          // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
-          this.ABDetailsLoading = false;
-          if (analysisBatchDetail.extractionbatches.length < 1) {
-            this.noExtractionsFlag = true;
-          }
-        },
-        error => {
-          this.ABDetailsLoading = false;
-          this.errorMessage = <any>error
-        }
-      );
+    // call the getAnalysisBatchDetail function of the AnalyisBatchService, set results to selectedABDetail var
+    // this._analysisBatchService.getAnalysisBatchDetail(this.selectedABSummary.id)
+    //   .subscribe(
+    //     (analysisBatchDetail) => {
+    //       this.selectedABDetail = analysisBatchDetail;
+    //       this.extractionBatchArray = analysisBatchDetail.extractionbatches
+    //       this.samplesArray = analysisBatchDetail.samples;
+    //       this.selectedABID = analysisBatchDetail.id;
+    //       // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
+    //       this.ABDetailsLoading = false;
+    //       if (analysisBatchDetail.extractionbatches.length < 1) {
+    //         this.noExtractionsFlag = true;
+    //       }
+    //     },
+    //     error => {
+    //       this.ABDetailsLoading = false;
+    //       this.errorMessage = <any>error
+    //     }
+    //   );
 
     // on init, call getExtractionMethods function of the EXtractionMethodService, set results to allExtractionMethods var
     this._extractionMethodService.getExtractionMethods()
@@ -159,8 +163,52 @@ export class AnalysisBatchDetailComponent implements OnInit {
     // }
   }
 
+  retrieveABData() {
+    this.ABDetailsLoading = true;
+
+    // call the getAnalysisBatchDetail function of the AnalyisBatchService, set results to selectedABDetail var
+    this._analysisBatchService.getAnalysisBatchDetail(this.selectedABSummary.id)
+      .subscribe(
+        (analysisBatchDetail) => {
+          this.selectedABDetail = analysisBatchDetail;
+          this.extractionBatchArray = analysisBatchDetail.extractionbatches
+          this.samplesArray = analysisBatchDetail.samples;
+          this.selectedABID = analysisBatchDetail.id;
+          // this.extractionDetailArray = this.buildABExtractionArray(analysisBatchDetail.extractionbatches);
+          this.ABDetailsLoading = false;
+          if (analysisBatchDetail.extractionbatches.length < 1) {
+            this.noExtractionsFlag = true;
+          }
+        },
+        error => {
+          this.ABDetailsLoading = false;
+          this.errorMessage = <any>error
+        }
+      );
+
+
+  }
+
   deselectAll() {
     this.selected = [];
+  }
+
+  public deleteExtractionBatch(extractionBatchID) {
+
+    this.showEBDeleteSuccess = false;
+    this.showEBDeleteError = false;
+
+    this._extractionBatchService.delete(extractionBatchID)
+      .subscribe(
+        () => {
+          this.showEBDeleteSuccess = true;
+          this.retrieveABData();
+        },
+        error => {
+          this.showEBDeleteError = true;
+          this.errorMessage = <any>error;
+        });
+
   }
 
   public buildABExtractionArray(extractionBatchArray) {
@@ -251,6 +299,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
           (updatedExtractionBatch) => {
             this.extractionEditSuccessFlag = true;
             this.extractionEditErrorFlag = false;
+            this.retrieveABData();
           },
           error => {
             this.errorMessage = <any>error

@@ -17,7 +17,8 @@
                 date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               </span>
 
-              <button class="stack-action btn btn-sm btn-link " (click)="editExtractionBatch(extractionbatch)" type="button">Edit</button>
+              <button class="stack-action btn btn-sm btn-link " (click)="editExtractionBatch(extractionbatch)"
+                type="button">Edit</button>
               <ng-template [clrIfExpanded]="false">
                 <clr-tree-node>
                   <div class="extraction-row">
@@ -37,14 +38,28 @@
                             <th>Extraction Method</th>
                             <td>{{extractionbatch.extraction_method.name}}</td>
                           </tr>
+                          <tr>
+                            <th>Extraction Positive Cq Value</th>
+                            <td>{{extractionbatch.ext_pos_cq_value}}</td>
+                          </tr>
+                          <tr>
+                            <th>Extraction Positive GC/Reaction</th>
+                            <td>{{extractionbatch.ext_pos_cq_value}}</td>
+                          </tr>
+                          <tr>
+                            <th>Extraction Positive Validity</th>
+                            <td>{{ext_pos_invalid ? "Invalid" : "Valid"}}</td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
 
                     <div *ngFor="let rt of extractionbatch.reverse_transcriptions">
                       <label>
-                        <span>Reverse Transcription&nbsp;&nbsp;&nbsp;&nbsp;{{rt.rt_date | date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        <button class="stack-action btn btn-sm btn-link " (click)="editRT(rt)" type="button">Edit</button>
+                        <span>Reverse
+                          Transcription&nbsp;&nbsp;&nbsp;&nbsp;{{rt.rt_date | date:'shortDate'}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <button class="stack-action btn btn-sm btn-link " (click)="editRT(rt)"
+                          type="button">Edit</button>
                       </label>
                       <table class="table table-vertical table-compact">
                         <tbody>
@@ -135,7 +150,9 @@
                               </tr>
                               <tr>
                                 <th>Dilution Factor</th>
-                                <td>{{inhibition.dilution_factor == null ? "Not Calculated": inhibition.dilution_factor}}</td>
+                                <td>
+                                  {{inhibition.dilution_factor == null ? "Not Calculated": inhibition.dilution_factor}}
+                                </td>
                               </tr>
                               <tr>
                                 <th>Inhibition Type</th>
@@ -161,8 +178,8 @@
   <h3 class="modal-title">Edit Extraction</h3>
   <div class="modal-body">
     <span>Analysis Batch {{selectedABID}}</span>
-    <form id="editExtractionBatchForm" class="compact" [formGroup]="editExtractionBatchForm" (ngSubmit)="onSubmit('editEB', editExtractionBatchForm.value)"
-      [hidden]="submitted">
+    <form id="editExtractionBatchForm" class="compact" [formGroup]="editExtractionBatchForm"
+      (ngSubmit)="onSubmit('editEB', editExtractionBatchForm.value)">
       <section class="form-block">
         <div class="form-group">
           <label for="extractionNo">Extraction No.</label>
@@ -202,13 +219,17 @@
           <div clr-alert-item class="alert-item">
             <span class="alert-text">Extraction data successfully updated</span>
             <div class="alert-actions">
-              <a class="alert-action" (click)="showHideEditExtractionDetail = false; extractionEditSuccessFlag = false">Close</a>
+              <a class="alert-action"
+                (click)="showHideEditExtractionDetail = false; extractionEditSuccessFlag = false">Close</a>
             </div>
           </div>
         </clr-alert>
 
-        <button class="btn btn-primary" type="submit" [disabled]="editExtractionBatchForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
-        <button class="btn btn-info" (click)="showHideEditExtractionDetail = !showHideEditExtractionDetail">Close</button>
+        <button class="btn btn-warning" (click)="showHideEditExtractionDetail = false; showHideEBDeleteConfirm = true">Delete Extraction</button>
+        <button class="btn btn-primary" type="submit" [disabled]="editExtractionBatchForm.invalid"
+          [clrLoading]="submitLoading">Save Edits</button>
+        <button class="btn btn-info"
+          (click)="showHideEditExtractionDetail = !showHideEditExtractionDetail">Close</button>
       </section>
     </form>
   </div>
@@ -280,7 +301,8 @@
               <clr-dg-action-bar>
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
-                    <clr-icon shape="window-close" size="16"></clr-icon> Deselect All</button>
+                    <clr-icon shape="window-close" size="16"></clr-icon> Deselect All
+                  </button>
                 </div>
               </clr-dg-action-bar>
 
@@ -311,3 +333,37 @@
     </div>
   </div>
 </clr-modal>
+
+<!-- delete Extraction confirm Modal -->
+<clr-modal [(clrModalOpen)]="showHideEBDeleteConfirm">
+    <h3 class="modal-title">
+      <clr-icon shape="times" size="16"></clr-icon> Delete Extraction Batch</h3>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showEBDeleteError">
+            <div clr-alert-item class="alert-item">
+              <span class="alert-text">Submission error. Extraction not deleted.</span>
+              <div class="alert-actions">
+                <a class="alert-action" (click)="deleteExtractionBatch(editExtractionBatchForm.get('id').value)">Try again</a>
+              </div>
+            </div>
+          </clr-alert>
+  
+          <clr-alert [clrAlertType]="'alert-success'" *ngIf="showEBDeleteSuccess">
+            <div clr-alert-item class="alert-item">
+              <span class="alert-text">Extraction successfully deleted.</span>
+            </div>
+          </clr-alert>
+  
+          <div>
+            <p>Are you sure you want to delete the Extraction Batch
+              <b>{{editExtractionBatchForm.get('id').value}}</b> ?</p>
+  
+            <button class="btn btn-primary" type="button" (click)="deleteExtractionBatch(editExtractionBatchForm.get('id').value)" [clrLoading]="submitLoading">Delete</button>
+            <button class="btn btn-info" (click)="showHideEBDeleteConfirm = !showHideEBDeleteConfirm">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </clr-modal>

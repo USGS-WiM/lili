@@ -303,7 +303,8 @@
                 <clr-dg-cell>{{fsmc.collaborator_sample_id}}</clr-dg-cell>
                 <clr-dg-cell>{{fsmc.collection_start_date | date:'shortDate'}}</clr-dg-cell>
                 <clr-dg-cell>{{fsmc.target | displayValue:'name': allTargets }}</clr-dg-cell>
-                <clr-dg-cell>{{fsmc.final_sample_mean_concentration_sci}}</clr-dg-cell>
+                <!-- <clr-dg-cell>{{fsmc.final_sample_mean_concentration_sci}}</clr-dg-cell> -->
+                <clr-dg-cell>{{fsmc.final_sample_mean_concentration_sci === "" ? "No Result" : fsmc.final_sample_mean_concentration_sci}}</clr-dg-cell>
             </clr-dg-row>
 
             <clr-dg-footer>

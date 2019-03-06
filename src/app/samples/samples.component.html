@@ -176,7 +176,7 @@
 
                             <div class="form-group">
                                 <label for="tvsInput">Total Volume (or mass) Sampled</label>
-                                <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial">
+                                <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial" (ngModelChange)="addLeadingZero($event, addSampleForm.get('total_volume_sampled_initial'))">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
