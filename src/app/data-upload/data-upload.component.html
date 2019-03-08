@@ -137,6 +137,12 @@
             </div>
             <!-- end raw results display -->
 
+            <!---------- Loading spinner---------->
+            <span class="spinner spinner-lg" *ngIf="validationLoading || replicatesLoading">
+              Loading...
+            </span>
+            <!---------- Loading spinner---------->
+
             <!---------- Success/fail alerts---------->
             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="resultsSubmissionErrorFlag">
               <div clr-alert-item class="alert-item">
@@ -272,9 +278,9 @@
                       <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-warning" (click)="finishResultsSubmission()">
                           <clr-icon shape="window-close"></clr-icon> Cancel and Reset
-                            </button>
-                            <button class=" btn btn-sm btn-success" (click)="submitRawTargetResults()">
-                            <clr-icon shape="check"></clr-icon> Submit Results
+                        </button>
+                        <button class=" btn btn-sm btn-success" (click)="submitRawTargetResults()">
+                          <clr-icon shape="check"></clr-icon> Submit Results
                         </button>
                       </div>
                     </clr-dg-action-bar>

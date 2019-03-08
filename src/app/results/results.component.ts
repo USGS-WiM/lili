@@ -14,6 +14,7 @@ import { IStudy } from '../studies/study';
 import { MatrixService } from '../SHARED/matrix.service';
 import { StudyService } from '../studies/study.service';
 import { SampleTypeService } from '../SHARED/sample-type.service';
+import { PcrReplicateService } from '../pcr-replicates/pcr-replicate.service';
 
 import { APP_SETTINGS } from '../app.settings';
 import { APP_UTILITIES } from '../app.utilities';
@@ -37,6 +38,8 @@ export class ResultsComponent implements OnInit {
   samplesCount: null;
   sampleQueryComplete: boolean = false;
 
+  resultsLoading: boolean = false;
+
   resultsLoaded: boolean = false;
 
   resultsQueryWizardActive: boolean = false;
@@ -54,6 +57,10 @@ export class ResultsComponent implements OnInit {
   sampleQueryForm: FormGroup;
 
   sampleQuerySizeErrorFlag = false;
+
+  showMissingDetailsModal: boolean = false;
+
+  missingReplicates = [];
 
 
   resultsQuery = {
@@ -90,6 +97,7 @@ export class ResultsComponent implements OnInit {
     private _studyService: StudyService,
     private _sampleTypeService: SampleTypeService,
     private _matrixService: MatrixService,
+    private _pcrReplicateService: PcrReplicateService,
     private formBuilder: FormBuilder
   ) {
     this.buildSampleQueryForm();
@@ -98,18 +106,6 @@ export class ResultsComponent implements OnInit {
   ngOnInit() {
 
     this.nucleicAcidTypes = APP_SETTINGS.NUCLEIC_ACID_TYPES;
-
-    // on init, call getSamples function of the SampleService, set results to the allSamples var
-    // this._sampleService.getSamples()
-    //   .subscribe(
-    //     (samples) => {
-    //       this.allSamples = samples
-    //       this.samplesLoading = false;
-    //     },
-    //     error => {
-    //       this.errorMessage = <any>error
-    //     }
-    //   );
 
     // on init, call getTargets function of the TargetService, set results to allTargets var
     this._targetService.getTargets()
@@ -152,6 +148,44 @@ export class ResultsComponent implements OnInit {
     this.sampleQuerySizeErrorFlag = false;
     this.sampleQueryComplete = false;
     this.errorMessage = '';
+  }
+
+  openMissingDetails(missingElement, fsmc) {
+
+    this.missingReplicates = [];
+
+    if (missingElement === 'rep') {
+
+      let replicateList = [];
+
+      for (let rep of fsmc.sample_target_replicates.missing_replicates) {
+        replicateList.push(rep.id);
+      }
+
+      this._pcrReplicateService.getPCRReplicates(replicateList)
+        .subscribe(
+          (replicates) => {
+            this.missingReplicates = replicates;
+            // attach the AB and Extraction info to the complete PCR replicate record for display purposes
+            for (let replicate of this.missingReplicates) {
+              for (let rep of fsmc.sample_target_replicates.missing_replicates) {
+                if (rep.id === replicate.id) {
+                  replicate.analysis_batch = rep.analysis_batch;
+                  replicate.extraction_number = rep.extraction_number;
+                  replicate.replicate_number = rep.replicate_number;
+                }
+              }
+            }
+            this.showMissingDetailsModal = true;
+
+          },
+          error => {
+            this.errorMessage = error;
+            this.submitLoading = false;
+          }
+        );
+    }
+
   }
 
   public doCustomClick(buttonType: string): void {
@@ -203,6 +237,7 @@ export class ResultsComponent implements OnInit {
     if ("custom-finish" === buttonType) {
 
       this.resultsLoaded = false;
+      this.resultsLoading = true;
 
       this._finalSampleMeanConcentrationService.queryFinalSampleMeanConcentrations(this.resultsQuery)
         .subscribe(
@@ -210,9 +245,11 @@ export class ResultsComponent implements OnInit {
             console.log(results);
             this.results = results;
             this.resultsLoaded = true;
+            this.resultsLoading = false;
           },
           error => {
             this.errorMessage = <any>error
+            this.resultsLoading = false;
           }
         );
 
@@ -237,7 +274,6 @@ export class ResultsComponent implements OnInit {
       .subscribe(
         (count) => {
 
-          this.submitLoading = false;
           // if count exceeds limit, show error message
           if (count.count >= countLimit) {
             this.sampleQuerySizeErrorFlag = true;
@@ -253,10 +289,12 @@ export class ResultsComponent implements OnInit {
                   this.sampleQueryComplete = true;
                   this.allSamples = samples
                   this.samplesLoading = false;
+                  this.submitLoading = false;
                 },
                 error => {
                   this.errorMessage = error;
                   this.submitLoading = false;
+                  this.resultsLoading = false;
                 }
               );
           }

@@ -396,6 +396,7 @@ export class DataUploadComponent implements OnInit {
   // outgoing, old function
   submitRawTargetResults() {
 
+    this.replicatesLoading = true;
     this.validationResponseReady = false;
     this.resultsSubmissionSuccessFlag = false;
 
@@ -407,12 +408,14 @@ export class DataUploadComponent implements OnInit {
           this.pcrResultsObject = results;
           this.pcrResultsReplicates = results.pcrreplicates;
           this.resultsSubmissionSuccessFlag = true;
+          this.replicatesLoading = false;
           // this.finishResultsSubmission();
         },
         error => {
           this.errorMessage = error;
           this.resultsSubmissionErrorFlag = true;
           this.resultsSubmissionSuccessFlag = false;
+          this.replicatesLoading = false;
         }
       )
   }
