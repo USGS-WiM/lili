@@ -102,7 +102,9 @@
                             </div>
                         </clr-alert>
 
-                        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading"><clr-icon shape="filter"></clr-icon> Filter Samples</button>
+                        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">
+                            <clr-icon shape="filter"></clr-icon> Filter Samples
+                        </button>
                     </form>
                 </div>
 
@@ -347,10 +349,10 @@
                     <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.missing_replicates"
                         (click)="openMissingDetails('rep', fsmc)">Replicates missing&nbsp;<span
                             class="badge">{{fsmc.sample_target_replicates.missing_replicates.length}}</span></a>
-                    <!-- <br>
+                    <br>
                     <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.missing_inhibitions"
                         (click)="openMissingDetails('inh', fsmc)">Inhibitions missing&nbsp;<span
-                            class="badge">{{fsmc.sample_target_replicates.missing_inhibitions.length}}</span></a> -->
+                            class="badge">{{fsmc.sample_target_replicates.missing_inhibitions.length}}</span></a>
                 </clr-dg-cell>
             </clr-dg-row>
 
@@ -367,12 +369,13 @@
 <!-- missing details Modal -->
 <clr-modal [(clrModalOpen)]="showMissingDetailsModal">
     <h3 class="modal-title">
-        <clr-icon shape="warning-standard" size="16"></clr-icon> Missing Replicates
+        <span *ngIf="detailType === 'rep'">Missing Replicates</span><span *ngIf="detailType === 'inh'">Missing
+            Inhibitions</span>
     </h3>
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-12">
-                <div>
+                <div *ngIf="detailType === 'rep'">
                     <clr-tree-node *ngFor="let replicate of missingReplicates">
                         <span>AB {{replicate.analysis_batch}}, Extraction {{replicate.extraction_number}}, Replicate
                             {{replicate.replicate_number}}
@@ -450,6 +453,14 @@
 
                     <button class="btn btn-info"
                         (click)="showMissingDetailsModal = !showMissingDetailsModal">Close</button>
+                </div>
+
+                <div *ngIf="detailType === 'inh'">
+                    <ul>
+                        <li *ngFor="let inh of missingInhibitions"> <span>Inhibition ID {{inh.id}}. AB
+                                {{inh.analysis_batch}}, Extraction {{inh.extraction_number}}, Sample
+                                {{inh.sample}} ({{inh.nucleic_acid_type}})</span></li>
+                    </ul>
                 </div>
             </div>
         </div>

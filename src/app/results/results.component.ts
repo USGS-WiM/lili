@@ -61,6 +61,9 @@ export class ResultsComponent implements OnInit {
   showMissingDetailsModal: boolean = false;
 
   missingReplicates = [];
+  missingInhibitions = [];
+
+  detailType;
 
 
   resultsQuery = {
@@ -153,8 +156,10 @@ export class ResultsComponent implements OnInit {
   openMissingDetails(missingElement, fsmc) {
 
     this.missingReplicates = [];
+    this.missingReplicates = [];
 
     if (missingElement === 'rep') {
+      this.detailType = 'rep';
 
       let replicateList = [];
 
@@ -184,6 +189,11 @@ export class ResultsComponent implements OnInit {
             this.submitLoading = false;
           }
         );
+    } else if (missingElement === 'inh') {
+      this.detailType = 'inh';
+      this.missingInhibitions = fsmc.sample_target_replicates.missing_inhibitions;
+      this.showMissingDetailsModal = true;
+
     }
 
   }
