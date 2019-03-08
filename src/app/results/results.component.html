@@ -27,18 +27,22 @@
 
                 <!-- Begin sample query form -->
                 <div class="card-text">
-                    <form class="form compact" [formGroup]="sampleQueryForm" (ngSubmit)="onSubmitSampleQuery(sampleQueryForm.value)">
+                    <form class="form compact" [formGroup]="sampleQueryForm"
+                        (ngSubmit)="onSubmitSampleQuery(sampleQueryForm.value)">
                         <section class="form-block">
 
                             <div class="form-group">
                                 <label [ngClass]="{'required': sampleQueryForm.get('study').enabled}">Study</label>
-                                <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="sampleQueryForm.get('study').invalid && (sampleQueryForm.get('study').dirty || sampleQueryForm.get('study').touched)">
+                                <label for="studySelect" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="sampleQueryForm.get('study').invalid && (sampleQueryForm.get('study').dirty || sampleQueryForm.get('study').touched)">
                                     <div class="select">
                                         <select id="studySelect" name="study" formControlName="study">
                                             <option value="">
                                                 <span class="all">ALL STUDIES</span>
                                             </option>
-                                            <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
+                                            <option *ngFor="let study of studies" [value]="study.id">{{study.name}}
+                                            </option>
                                         </select>
                                     </div>
                                 </label>
@@ -93,11 +97,12 @@
 
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleQuerySizeErrorFlag">
                             <div class="alert-item">
-                                <span class="alert-text">Your query results are too large (greater than {{queryCountLimit}}). Please narrow your search.</span>
+                                <span class="alert-text">Your query results are too large (greater than
+                                    {{queryCountLimit}}). Please narrow your search.</span>
                             </div>
                         </clr-alert>
 
-                        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Filter Samples</button>
+                        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading"><clr-icon shape="filter"></clr-icon> Filter Samples</button>
                     </form>
                 </div>
 
@@ -108,12 +113,14 @@
 
 
                 <div class="in-wizard-datagrid">
-                    <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="samplesLoading" [clDgRowSelection]="true" class="datagrid-compact">
+                    <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="samplesLoading" [clDgRowSelection]="true"
+                        class="datagrid-compact">
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
-                                    <clr-icon shape="window-close" size="16"></clr-icon> Deselect All</button>
+                                    <clr-icon shape="window-close" size="16"></clr-icon> Deselect All
+                                </button>
                             </div>
                         </clr-dg-action-bar>
 
@@ -141,7 +148,8 @@
                         <clr-dg-column [clrDgField]="'collection_start_date'">
                             Collect Start Date
                             <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
-                                <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
+                                <collection-start-date-filter [dateField]="'collection_start_date'"
+                                    #CollectionStartDateFilter></collection-start-date-filter>
                             </clr-dg-filter>
                         </clr-dg-column>
 
@@ -153,7 +161,8 @@
                         </clr-dg-row>
 
                         <clr-dg-footer>
-                            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} samples
+                            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
+                            samples
                             <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
                         </clr-dg-footer>
                     </clr-datagrid>
@@ -185,7 +194,8 @@
                         <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
                             <clr-dg-cell>{{target.name}}</clr-dg-cell>
                             <clr-dg-cell>{{target.code}}</clr-dg-cell>
-                            <clr-dg-cell>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes }}</clr-dg-cell>
+                            <clr-dg-cell>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes }}
+                            </clr-dg-cell>
                         </clr-dg-row>
 
                         <clr-dg-footer>{{allTargets.length}} targets</clr-dg-footer>
@@ -212,7 +222,8 @@
                 <p>
                     <label>Targets:</label>
                     <ul class="list">
-                        <li *ngFor="let target of resultsQuery.targets">{{target | displayValue:'name': allTargets}}</li>
+                        <li *ngFor="let target of resultsQuery.targets">{{target | displayValue:'name': allTargets}}
+                        </li>
                     </ul>
 
                     <ng-template clrPageButtons>
@@ -229,28 +240,45 @@
 
 <div class="row">
     <div class="col-lg-12 col-sm-12">
-      <span>
-        <label>Note: Sample Mean Concentration may not not yet be calculated if sample/target combination is missing valid controls or all replicates. Click 'i' for full business rules.</label>
-        <clr-signpost>
-          <clr-signpost-content *clrIfOpen  [clrPosition]="'right-bottom'">
-            All replicate records are considered invalid by default. They are only made valid if all of the following checks pass:
-            <p>1.All the parent controls (Peg Neg, Ext Neg, RT Neg, PCR Neg) for this replicate have been entered
-              into the database
-              <p>2. The replicate’s related Peg Neg’s replicates with same target as this data replicate are all
-                valid (if no related Peg Neg, this check does not apply), if even a single one of the Peg Neg
-                replicates is invalid then the data replicate is set to invalid.
-                <p>3. The replicate's parent replicate batch negative controls (Ext Neg, RT Neg, PCR Neg) are all
-                  valid, if even a single one of the controls is invalid then the data replicate is set to invalid.
-                  <p>4. The replicate’s CQ value and GC/reaction are greater than or equal to zero.
-                    <p>Alternately, the user has the option to manually override the system-determined validity.
+        <span>
+            <label>Note: Sample Mean Concentration may not not yet be calculated if sample/target combination is missing
+                valid controls or all replicates. Click 'i' for full business rules.</label>
+            <clr-signpost>
+                <clr-signpost-content *clrIfOpen [clrPosition]="'right-bottom'">
+                    All replicate records are considered invalid by default. They are only made valid if all of the
+                    following checks pass:
+                    <p>1.All the parent controls (Peg Neg, Ext Neg, RT Neg, PCR Neg) for this replicate have been
+                        entered
+                        into the database
+                        <p>2. The replicate’s related Peg Neg’s replicates with same target as this data replicate are
+                            all
+                            valid (if no related Peg Neg, this check does not apply), if even a single one of the Peg
+                            Neg
+                            replicates is invalid then the data replicate is set to invalid.
+                            <p>3. The replicate's parent replicate batch negative controls (Ext Neg, RT Neg, PCR Neg)
+                                are all
+                                valid, if even a single one of the controls is invalid then the data replicate is set to
+                                invalid.
+                                <p>4. The replicate’s CQ value and GC/reaction are greater than or equal to zero.
+                                    <p>Alternately, the user has the option to manually override the system-determined
+                                        validity.
 
-          </clr-signpost-content>
-        </clr-signpost>
-      </span>
+                </clr-signpost-content>
+            </clr-signpost>
+        </span>
     </div>
-  </div>
+</div>
 
 <div class="row">
+    <!---------- Loading spinner---------->
+    <span class="spinner spinner-lg" *ngIf="resultsLoading">
+        Loading...
+    </span>
+    <!---------- Loading spinner---------->
+</div>
+
+<div class="row">
+
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="resultsLoaded && results.length === 0">
         There are no results for your query.
     </div>
@@ -261,7 +289,8 @@
             <clr-dg-action-bar>
                 <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-secondary" (click)="exportToCSV()">
-                        <clr-icon shape="export" size="16"></clr-icon> Export to CSV</button>
+                        <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                    </button>
                 </div>
             </clr-dg-action-bar>
 
@@ -281,7 +310,8 @@
             <clr-dg-column [clrDgField]="'collection_start_date'">
                 Collect Start Date
                 <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
-                    <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
+                    <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter>
+                    </collection-start-date-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
@@ -298,13 +328,30 @@
                 </ng-container>
             </clr-dg-column>
 
+            <clr-dg-column>
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    No Result Details
+                </ng-container>
+            </clr-dg-column>
+
             <clr-dg-row *clrDgItems="let fsmc of results" [clrDgItem]="fsmc">
                 <clr-dg-cell>{{fsmc.sample}}</clr-dg-cell>
                 <clr-dg-cell>{{fsmc.collaborator_sample_id}}</clr-dg-cell>
                 <clr-dg-cell>{{fsmc.collection_start_date | date:'shortDate'}}</clr-dg-cell>
                 <clr-dg-cell>{{fsmc.target | displayValue:'name': allTargets }}</clr-dg-cell>
                 <!-- <clr-dg-cell>{{fsmc.final_sample_mean_concentration_sci}}</clr-dg-cell> -->
-                <clr-dg-cell>{{fsmc.final_sample_mean_concentration_sci === "" ? "No Result" : fsmc.final_sample_mean_concentration_sci}}</clr-dg-cell>
+                <clr-dg-cell>
+                    {{fsmc.final_sample_mean_concentration_sci === "" ? "No Result" : fsmc.final_sample_mean_concentration_sci}}
+                </clr-dg-cell>
+                <clr-dg-cell>
+                    <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.missing_replicates"
+                        (click)="openMissingDetails('rep', fsmc)">Replicates missing&nbsp;<span
+                            class="badge">{{fsmc.sample_target_replicates.missing_replicates.length}}</span></a>
+                    <!-- <br>
+                    <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.missing_inhibitions"
+                        (click)="openMissingDetails('inh', fsmc)">Inhibitions missing&nbsp;<span
+                            class="badge">{{fsmc.sample_target_replicates.missing_inhibitions.length}}</span></a> -->
+                </clr-dg-cell>
             </clr-dg-row>
 
             <clr-dg-footer>
@@ -316,3 +363,95 @@
 
     </div>
 </div>
+
+<!-- missing details Modal -->
+<clr-modal [(clrModalOpen)]="showMissingDetailsModal">
+    <h3 class="modal-title">
+        <clr-icon shape="warning-standard" size="16"></clr-icon> Missing Replicates
+    </h3>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <div>
+                    <clr-tree-node *ngFor="let replicate of missingReplicates">
+                        <span>AB {{replicate.analysis_batch}}, Extraction {{replicate.extraction_number}}, Replicate
+                            {{replicate.replicate_number}}
+                        </span>
+
+                        <ng-template [clrIfExpanded]="false">
+                            <clr-tree-node>
+                                <div class="extraction-row">
+
+                                    <div>
+                                        <table class="table table-vertical table-compact ">
+                                            <tbody>
+                                                <tr>
+                                                    <th><span class="text-bold">Replicate Concentration</span></th>
+                                                    <td>{{replicate.replicate_concentration}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>GC/Reaction</th>
+                                                    <td>{{replicate.gc_reaction}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Cq value</th>
+                                                    <td>{{replicate.cq_value}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Volume Extracted</th>
+                                                    <td>{{replicate.calculation_values.extraction_volume}} µL</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Volume Eluted</th>
+                                                    <td>{{replicate.calculation_values.elution_volume}} µL</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Final Concentrated Sample Volume</th>
+                                                    <td>{{replicate.calculation_values.final_concentrated_sample_volume}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Inhibition Dilution Factor</th>
+                                                    <td>{{replicate.calculation_values.inhibition_dilution_factor}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>qPCR Reaction Volume</th>
+                                                    <td>{{replicate.calculation_values.qpcr_reaction_volume}} µL</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>qPCR Template Volume</th>
+                                                    <td>{{replicate.calculation_values.qpcr_template_volume}} µL</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Sample Dilution Factor</th>
+                                                    <td>{{replicate.calculation_values.sample_dilution_factor}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Total Volume or Mass Sampled</th>
+                                                    <td>{{replicate.calculation_values.total_volume_or_mass_sampled}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <span *ngIf="replicate.invalid_reasons.length > 0"><span
+                                                class="text-bold">Invalid Reasons:</span> <span class="label"
+                                                *ngFor="let reason of replicate.invalid_reasons">{{reason}}</span></span>
+                                        <hr>
+                                        <span *ngIf="replicate.no_concentration_reasons.length > 0"><span
+                                                class="text-bold">No concentration reasons:</span> <span class="label"
+                                                *ngFor="let reason of replicate.no_concentration_reasons">{{reason}}</span></span>
+
+                                    </div>
+
+                                </div>
+                            </clr-tree-node>
+                        </ng-template>
+                    </clr-tree-node>
+
+                    <button class="btn btn-info"
+                        (click)="showMissingDetailsModal = !showMissingDetailsModal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</clr-modal>

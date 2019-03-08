@@ -81,8 +81,8 @@
                       <table class="table table-vertical table-compact ">
                         <tbody>
                           <tr *ngFor="let target of extractionbatch.targets">
-                            <th>{{target.id | displayValue:'name':this.allTargets}}</th>
-                            <td>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes }}</td>
+                            <th>{{target.id | displayValue:'name':this.allTargets}}&nbsp;({{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}})</th>
+                            <td>{{target.replicates}}&nbsp;replicate<span *ngIf="target.replicates > 1">s</span></td>
                           </tr>
                         </tbody>
                       </table>
