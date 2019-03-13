@@ -425,21 +425,8 @@ export class SamplesComponent implements OnInit {
     // on init, get sample record types object from App Settings and set to local recordTypes var
     this.recordTypes = APP_SETTINGS.SAMPLE_RECORD_TYPES;
 
-    // on init call getRecentPegnegs function of the SampleService, set results to the pegnegs var
-    this._sampleService.getRecentPegnegs()
-      .subscribe(
-        (pegnegs) => {
-          this.pegnegs = pegnegs
-          this.pegnegs.sort(function (a, b) {
-            const c: Date = new Date(a.collection_start_date);
-            const d: Date = new Date(b.collection_start_date);
-            return (d.getTime()) - (c.getTime());
-          });
-        },
-        error => {
-          this.errorMessage = error
-        }
-      );
+    // on init call call populatePegnegList();
+    this.populatePegnegList();
 
     // on init call getSamplerNames of the SampleService, set results to the samplerNames var
     this._sampleService.getSamplerNames()
@@ -522,6 +509,23 @@ export class SamplesComponent implements OnInit {
 
     });
 
+  }
+
+  populatePegnegList() {
+    this._sampleService.getRecentPegnegs()
+      .subscribe(
+        (pegnegs) => {
+          this.pegnegs = pegnegs
+          this.pegnegs.sort(function (a, b) {
+            const c: Date = new Date(a.collection_start_date);
+            const d: Date = new Date(b.collection_start_date);
+            return (d.getTime()) - (c.getTime());
+          });
+        },
+        error => {
+          this.errorMessage = error
+        }
+      );
   }
 
   // onUnitChange(unitValue) {
@@ -1646,7 +1650,7 @@ export class SamplesComponent implements OnInit {
         formValue.matrix = APP_SETTINGS.PEGNEG_FIELD_VALUES.matrix;
         formValue.filter_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.filter_type;
         formValue.sample_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.sample_type;
-        formValue.collaborator_sample_id = 'pegneg' + currentDate;
+        formValue.collaborator_sample_id = 'pegneg_' + formValue.collection_start_date;
         formValue.study = APP_SETTINGS.PEGNEG_FIELD_VALUES.study;
         // formValue.collection_start_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_start_time;
         // formValue.collection_end_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_end_time;
@@ -1666,6 +1670,7 @@ export class SamplesComponent implements OnInit {
                 this.createdSampleID = sample.id;
                 this.showSampleCreateSuccess = true;
                 this.reloadSamplesTable();
+                this.populatePegnegList();
               },
               error => {
                 this.errorMessage = error;

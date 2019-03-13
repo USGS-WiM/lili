@@ -58,13 +58,12 @@ export class ResultsComponent implements OnInit {
 
   sampleQuerySizeErrorFlag = false;
 
-  showMissingDetailsModal: boolean = false;
+  showReplicateDetailsModal: boolean = false;
 
-  missingReplicates = [];
+  replicateDetailArray = [];
   missingInhibitions = [];
 
-  detailType;
-
+  replicateCategoryString;
 
   resultsQuery = {
     samples: [],
@@ -153,48 +152,56 @@ export class ResultsComponent implements OnInit {
     this.errorMessage = '';
   }
 
-  openMissingDetails(missingElement, fsmc) {
+  openReplicateDetails(category, fsmc) {
 
-    this.missingReplicates = [];
-    this.missingReplicates = [];
+    switch (category) {
+      case 'positive_concentrations':
+        this.replicateCategoryString = 'Replicates with Positive Concentrations'
+        break;
+      case 'negative_concentrations':
+        this.replicateCategoryString = 'Replicates with Negative Concentrations'
+        break;
+      case 'qpcr_results_null':
+        this.replicateCategoryString = 'Replicates with Null/Absent qPCR Values'
+        break;
+      case 'concentration_calc_values_null':
+        this.replicateCategoryString = 'Replicates with Concentration Calculation Values Missing'
+        break;
+      case 'invalid':
+        this.replicateCategoryString = 'Replicates made invalid by non-compliant controls'
+        break;
+      default:
+        this.replicateCategoryString = 'Replicates'
+    }
 
-    if (missingElement === 'rep') {
-      this.detailType = 'rep';
+    this.replicateDetailArray = [];
+    let replicateIDArray = [];
 
-      let replicateList = [];
+    for (let rep of fsmc.sample_target_replicates[category]) {
+      replicateIDArray.push(rep.id);
+    }
 
-      for (let rep of fsmc.sample_target_replicates.missing_replicates) {
-        replicateList.push(rep.id);
-      }
-
-      this._pcrReplicateService.getPCRReplicates(replicateList)
-        .subscribe(
-          (replicates) => {
-            this.missingReplicates = replicates;
-            // attach the AB and Extraction info to the complete PCR replicate record for display purposes
-            for (let replicate of this.missingReplicates) {
-              for (let rep of fsmc.sample_target_replicates.missing_replicates) {
-                if (rep.id === replicate.id) {
-                  replicate.analysis_batch = rep.analysis_batch;
-                  replicate.extraction_number = rep.extraction_number;
-                  replicate.replicate_number = rep.replicate_number;
-                }
+    this._pcrReplicateService.getPCRReplicates(replicateIDArray)
+      .subscribe(
+        (replicates) => {
+          this.replicateDetailArray = replicates;
+          // attach the AB and Extraction info to the complete PCR replicate record for display purposes
+          for (let replicate of this.replicateDetailArray) {
+            for (let rep of fsmc.sample_target_replicates.missing_replicates) {
+              if (rep.id === replicate.id) {
+                replicate.analysis_batch = rep.analysis_batch;
+                replicate.extraction_number = rep.extraction_number;
+                replicate.replicate_number = rep.replicate_number;
               }
             }
-            this.showMissingDetailsModal = true;
-
-          },
-          error => {
-            this.errorMessage = error;
-            this.submitLoading = false;
           }
-        );
-    } else if (missingElement === 'inh') {
-      this.detailType = 'inh';
-      this.missingInhibitions = fsmc.sample_target_replicates.missing_inhibitions;
-      this.showMissingDetailsModal = true;
-
-    }
+          this.showReplicateDetailsModal = true;
+        },
+        error => {
+          this.errorMessage = error;
+          this.submitLoading = false;
+        }
+      );
 
   }
 
