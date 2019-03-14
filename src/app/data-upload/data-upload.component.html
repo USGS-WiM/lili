@@ -454,7 +454,8 @@
                     <clr-dg-column [clrDgField]="'code'">Cq Value</clr-dg-column>
                     <clr-dg-column [clrDgField]="'type'">GC/Reaction</clr-dg-column>
                     <clr-dg-column [clrDgField]="'type'">Concentration</clr-dg-column>
-                    <clr-dg-column [clrDgField]="'type'">Valid</clr-dg-column>
+                    <clr-dg-column [clrDgField]="'type'">Validity</clr-dg-column>
+                    <clr-dg-column [clrDgField]="'type'">Invalid Reasons</clr-dg-column>
 
                     <clr-dg-row *clrDgItems="let rep of pcrResultsReplicates" [clrDgItem]="rep">
                       <clr-dg-cell>{{rep.sample}}</clr-dg-cell>
@@ -464,6 +465,21 @@
                       <clr-dg-cell>
                         <span class="label"
                           [ngClass]="{'label-danger' : rep.invalid, 'label-success': !rep.invalid}">{{rep.invalid ? "Invalid" : "Valid"}}</span>
+                      </clr-dg-cell>
+                      <clr-dg-cell>
+                        <ul>
+                          <li *ngIf="rep.invalid_reasons.peg_neg_invalid">PEG NEG is invalid
+                          </li>
+                          <li *ngIf="rep.invalid_reasons.ext_neg_missing">Extraction Negative is missing</li>
+                          <li *ngIf="rep.invalid_reasons.ext_neg_positive">Extraction Negative
+                            is invalid</li>
+                          <li *ngIf="rep.invalid_reasons.rt_neg_missing">RT Negative is missing</li>
+                          <li *ngIf="rep.invalid_reasons.rt_neg_positive">RT Negative is invalid
+                          </li>
+                          <li *ngIf="rep.invalid_reasons.pcr_neg_missing">PCR Negative is missing</li>
+                          <li *ngIf="rep.invalid_reasons.pcr_neg_positive">PCR Negative is
+                            invalid</li>
+                        </ul>
                       </clr-dg-cell>
                     </clr-dg-row>
                     <clr-dg-footer>{{pcrResultsReplicates.length}} reps</clr-dg-footer>

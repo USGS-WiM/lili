@@ -207,6 +207,14 @@ export class DataUploadComponent implements OnInit {
   }
 
   loadTargetFile(fileInput: any) {
+
+    this.rawResultsParsed = false;
+    this.resultsSubmissionReady = false;
+    this.validationResponseReady = false;
+    this.resultsSubmissionErrorFlag = false;
+    this.replicateUpdateSuccessFlag = false;
+    this.resultsSubmissionSuccessFlag = false;
+
     this.targetFileNameErrorFlag = false;
     let self = this;
     let input = fileInput.target
