@@ -161,10 +161,10 @@ export class ResultsComponent implements OnInit {
       case 'negative_concentrations':
         this.replicateCategoryString = 'Replicates with Negative Concentrations'
         break;
-      case 'qpcr_results_null':
-        this.replicateCategoryString = 'Replicates with Null/Absent qPCR Values'
+      case 'qpcr_results_missing':
+        this.replicateCategoryString = 'Replicates with Missing qPCR Values'
         break;
-      case 'concentration_calc_values_null':
+      case 'concentration_calc_values_missing':
         this.replicateCategoryString = 'Replicates with Concentration Calculation Values Missing'
         break;
       case 'invalid':
@@ -187,7 +187,7 @@ export class ResultsComponent implements OnInit {
           this.replicateDetailArray = replicates;
           // attach the AB and Extraction info to the complete PCR replicate record for display purposes
           for (let replicate of this.replicateDetailArray) {
-            for (let rep of fsmc.sample_target_replicates.missing_replicates) {
+            for (let rep of fsmc.sample_target_replicates[category]) {
               if (rep.id === replicate.id) {
                 replicate.analysis_batch = rep.analysis_batch;
                 replicate.extraction_number = rep.extraction_number;

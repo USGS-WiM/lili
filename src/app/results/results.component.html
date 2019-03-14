@@ -355,7 +355,7 @@
                     <a class="label label-blue clickable"
                         *ngIf="fsmc.sample_target_replicates.positive_concentration_count > 0"
                         (click)="openReplicateDetails('positive_concentrations', fsmc)">Positive
-                        Concentrations&nbsp;<span class="badge">{{fsmc.sample_target_replicates.positive_concentration_count}</span></a>
+                        Concentrations&nbsp;<span class="badge">{{fsmc.sample_target_replicates.positive_concentration_count}}</span></a>
                     <br>
                     <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.negative_concentrations_count >0"
                         (click)="openReplicateDetails('negative_concentrations', fsmc)">Negative Concentrations&nbsp;<span
@@ -363,13 +363,13 @@
                 </clr-dg-cell>
                 <clr-dg-cell>
                     <a class="label label-blue clickable"
-                        *ngIf="fsmc.sample_target_replicates.qpcr_results_null_count > 0"
-                        (click)="openReplicateDetails('qpcr_results_null', fsmc)">Null/Absent qPCR Values&nbsp;<span
-                            class="badge">{{fsmc.sample_target_replicates.qpcr_results_null_count}</span></a>
+                        *ngIf="fsmc.sample_target_replicates.qpcr_results_missing_count > 0"
+                        (click)="openReplicateDetails('qpcr_results_missing', fsmc)">Missing qPCR Values&nbsp;<span
+                            class="badge">{{fsmc.sample_target_replicates.qpcr_results_missing_count}}</span></a>
                     <br>
-                    <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.concentration_calc_values_null_count > 0"
-                        (click)="openReplicateDetails('concentration_calc_values_null', fsmc)">Calculation Values Missing&nbsp;<span
-                            class="badge">{{fsmc.sample_target_replicates.negative_concentration_count}}</span></a>
+                    <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.concentration_calc_values_missing_count > 0"
+                        (click)="openReplicateDetails('concentration_calc_values_missing', fsmc)">Calculation Values Missing&nbsp;<span
+                            class="badge">{{fsmc.sample_target_replicates.concentration_calc_values_missing_count}}</span></a>
                     <br>
                     <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.invalid_count > 0"
                         (click)="openReplicateDetails('invalid', fsmc)">Invalid per controls&nbsp;<span
@@ -485,14 +485,13 @@
                                         <ul>
                                             <li *ngIf="replicate.invalid_reasons.peg_neg_invalid">PEG NEG is invalid
                                             </li>
-                                            <li *ngIf="replicate.invalid_reasons.ext_neg_null">Extraction Negative is
-                                                null</li>
+                                            <li *ngIf="replicate.invalid_reasons.ext_neg_missing">Extraction Negative is missing</li>
                                             <li *ngIf="replicate.invalid_reasons.ext_neg_positive">Extraction Negative
                                                 is invalid</li>
-                                            <li *ngIf="replicate.invalid_reasons.rt_neg_null">RT Negative is null</li>
+                                            <li *ngIf="replicate.invalid_reasons.rt_neg_missing">RT Negative is missing</li>
                                             <li *ngIf="replicate.invalid_reasons.rt_neg_positive">RT Negative is invalid
                                             </li>
-                                            <li *ngIf="replicate.invalid_reasons.pcr_neg_null">PCR Negative is null</li>
+                                            <li *ngIf="replicate.invalid_reasons.pcr_neg_missing">PCR Negative is missing</li>
                                             <li *ngIf="replicate.invalid_reasons.pcr_neg_positive">PCR Negative is
                                                 invalid</li>
                                         </ul>
