@@ -74,6 +74,7 @@ import { AuthenticationService } from "./authentication/authentication.service";
 import { AuthenticationGuard } from "./authentication/authentication.guard";
 import { CurrentUserService } from "./authentication/current-user.service";
 import { TargetFilter } from './FILTERS/target-filter/target-filter.component';
+import { ReverseTranscriptionService } from "./SHARED/reverse-transcription.service";
 
 @NgModule({
     declarations: [
@@ -152,6 +153,7 @@ import { TargetFilter } from './FILTERS/target-filter/target-filter.component';
         ServerTestService,
         RecordTypeService,
         FinalSampleMeanConcentrationService,
+        ReverseTranscriptionService,
         AuthenticationGuard,
         CurrentUserService
     ],
