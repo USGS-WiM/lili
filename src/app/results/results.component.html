@@ -6,7 +6,9 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <p>
-            <button class="btn btn-outline" (click)="openResultsQueryWizard()"><clr-icon shape="search"></clr-icon> Open Results Query Builder</button>
+            <button class="btn btn-outline" (click)="openResultsQueryWizard()">
+                <clr-icon shape="search"></clr-icon> Open Results Query Builder
+            </button>
 
     </div>
 </div>
@@ -339,7 +341,7 @@
                             class="badge">{{fsmc.sample_target_replicates.positive_concentration_count}}</span></a>
                     <br>
                     <a class="label label-blue clickable"
-                        *ngIf="fsmc.sample_target_replicates.negative_concentrations_count >0"
+                        *ngIf="fsmc.sample_target_replicates.negative_concentration_count > 0"
                         (click)="openReplicateDetails('negative_concentrations', fsmc)">Negative
                         Concentrations&nbsp;<span
                             class="badge">{{fsmc.sample_target_replicates.negative_concentration_count}}</span></a>
@@ -538,6 +540,23 @@
                                         <ul>
                                             <li *ngIf="replicate.invalid_reasons.peg_neg_invalid">PEG NEG is invalid
                                             </li>
+                                            <li *ngIf="replicate.invalid_reasons.peg_neg_missing">PEG NEG is missing
+                                                <clr-tree-node><span>Missing PEG NEGs</span>
+                                                    <ng-template [clrIfExpanded]="false">
+                                                        <clr-tree-node>
+                                                            <ul>
+                                                                <li
+                                                                    *ngFor="let item of replicate.invalid_reasons.peg_neg_missing_replicates">
+                                                                    AB {{item.analysis_batch}}, Extraction
+                                                                    {{item.extraction_number}}, Replicate
+                                                                    {{item.replicate_number}}, Sample {{item.sample}},
+                                                                    {{item.target | displayValue:'name': allTargets}}
+                                                                </li>
+                                                            </ul>
+                                                        </clr-tree-node>
+                                                    </ng-template>
+                                                </clr-tree-node>
+                                            </li>
                                             <li *ngIf="replicate.invalid_reasons.ext_neg_missing">Extraction Negative is
                                                 missing</li>
                                             <li *ngIf="replicate.invalid_reasons.ext_neg_positive">Extraction Negative
@@ -551,6 +570,7 @@
                                             <li *ngIf="replicate.invalid_reasons.pcr_neg_positive">PCR Negative is
                                                 invalid</li>
                                         </ul>
+
                                     </div>
                                 </div>
                             </clr-tree-node>
