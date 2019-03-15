@@ -288,41 +288,29 @@ export class DataUploadComponent implements OnInit {
       if (rep.Name === "EXT NEG") {
         if (rep.Cp === "") { rawTargetResults.ext_neg_cq_value = null; } else { rawTargetResults.ext_neg_cq_value = Number(rep.Cp) }
         // tslint:disable-next-line:max-line-length
-        if (rep.Concentration === "") { rawTargetResults.ext_neg_gc_reaction = null; } else { rawTargetResults.ext_neg_gc_reaction = Number(rep.Cp) }
-
-        // rawTargetResults.ext_neg_cq_value = Number(rep.Cp);
-        // rawTargetResults.ext_neg_gc_reaction = Number(rep.Concentration);
+        if (rep.Concentration === "") { rawTargetResults.ext_neg_gc_reaction = null; } else { rawTargetResults.ext_neg_gc_reaction = Number(rep.Concentration) }
       }
       if (rep.Name === "PCR NEG") {
         if (rep.Cp === "") { rawTargetResults.pcr_neg_cq_value = null; } else { rawTargetResults.pcr_neg_cq_value = Number(rep.Cp) }
         // tslint:disable-next-line:max-line-length
-        if (rep.Concentration === "") { rawTargetResults.pcr_neg_gc_reaction = null; } else { rawTargetResults.pcr_neg_gc_reaction = Number(rep.Cp) }
-
-        // rawTargetResults.pcr_neg_cq_value = Number(rep.Cp);
-        // rawTargetResults.pcr_neg_gc_reaction = Number(rep.Concentration);
+        if (rep.Concentration === "") { rawTargetResults.pcr_neg_gc_reaction = null; } else { rawTargetResults.pcr_neg_gc_reaction = Number(rep.Concentration) }
       }
       if (rep.Name === "POS") {
         if (rep.Cp === "") { rawTargetResults.pcr_pos_cq_value = null; } else { rawTargetResults.pcr_pos_cq_value = Number(rep.Cp) }
         // tslint:disable-next-line:max-line-length
-        if (rep.Concentration === "") { rawTargetResults.pcr_pos_gc_reaction = null; } else { rawTargetResults.pcr_pos_gc_reaction = Number(rep.Cp) }
-
-        // rawTargetResults.pcr_pos_cq_value = Number(rep.Cp);
-        // rawTargetResults.pcr_pos_gc_reaction = Number(rep.Concentration);
+        if (rep.Concentration === "") { rawTargetResults.pcr_pos_gc_reaction = null; } else { rawTargetResults.pcr_pos_gc_reaction = Number(rep.Concentration) }
       }
       if (rep.Name === "RT NEG") {
         if (rep.Cp === "") { rawTargetResults.rt_neg_cq_value = null; } else { rawTargetResults.rt_neg_cq_value = Number(rep.Cp) }
         // tslint:disable-next-line:max-line-length
-        if (rep.Concentration === "") { rawTargetResults.rt_neg_gc_reaction = null; } else { rawTargetResults.rt_neg_gc_reaction = Number(rep.Cp) }
-
-        // rawTargetResults.rt_neg_cq_value = Number(rep.Cp);
-        // rawTargetResults.rt_neg_gc_reaction = Number(rep.Concentration);
+        if (rep.Concentration === "") { rawTargetResults.rt_neg_gc_reaction = null; } else { rawTargetResults.rt_neg_gc_reaction = Number(rep.Concentration) }
       }
 
       if (numbersOnlyPattern.test(rep.Name)) {
 
         // these two lines set blank values to null, and coerce non-blank values to numbers
         if (rep.Cp === "") { rep.Cp = null; } else { rep.Cp = Number(rep.Cp) }
-        if (rep.Concentration === "") { rep.Concentration = null; } else { rep.Concentration = Number(rep.Cp) }
+        if (rep.Concentration === "") { rep.Concentration = null; } else { rep.Concentration = Number(rep.Concentration) }
 
         rawTargetResults.updated_pcrreplicates.push({
           "sample": Number(rep.Name),

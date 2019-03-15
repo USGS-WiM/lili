@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <p>
-            <button class="btn btn-outline" (click)="openResultsQueryWizard()">Open Results Query Builder</button>
+            <button class="btn btn-outline" (click)="openResultsQueryWizard()"><clr-icon shape="search"></clr-icon> Open Results Query Builder</button>
 
     </div>
 </div>
@@ -241,33 +241,13 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-12 col-sm-12">
-        <span>
-            <label>Note: Sample Mean Concentration may not not yet be calculated if sample/target combination is missing
-                valid controls or all replicates. Click 'i' for full business rules.</label>
-            <clr-signpost>
-                <clr-signpost-content *clrIfOpen [clrPosition]="'right-bottom'">
-                    All replicate records are considered invalid by default. They are only made valid if all of the
-                    following checks pass:
-                    <p>1.All the parent controls (Peg Neg, Ext Neg, RT Neg, PCR Neg) for this replicate have been
-                        entered
-                        into the database
-                        <p>2. The replicate’s related Peg Neg’s replicates with same target as this data replicate are
-                            all
-                            valid (if no related Peg Neg, this check does not apply), if even a single one of the Peg
-                            Neg
-                            replicates is invalid then the data replicate is set to invalid.
-                            <p>3. The replicate's parent replicate batch negative controls (Ext Neg, RT Neg, PCR Neg)
-                                are all
-                                valid, if even a single one of the controls is invalid then the data replicate is set to
-                                invalid.
-                                <p>4. The replicate’s CQ value and GC/reaction are greater than or equal to zero.
-                                    <p>Alternately, the user has the option to manually override the system-determined
-                                        validity.
+    <div class="col-lg-8 col-sm-12">
 
-                </clr-signpost-content>
-            </clr-signpost>
-        </span>
+        <span><label>Note: Sample Mean Concentration may not not yet be calculated if sample/target combination is
+                missing
+                valid controls or all replicates. Click 'Details' to view full business rules and replicate details
+                explanations.</label>
+            <button class="btn btn-outline btn-sm" (click)="showBusinessRulesModal = true">Details</button></span>
     </div>
 </div>
 
@@ -355,10 +335,13 @@
                     <a class="label label-blue clickable"
                         *ngIf="fsmc.sample_target_replicates.positive_concentration_count > 0"
                         (click)="openReplicateDetails('positive_concentrations', fsmc)">Positive
-                        Concentrations&nbsp;<span class="badge">{{fsmc.sample_target_replicates.positive_concentration_count}}</span></a>
+                        Concentrations&nbsp;<span
+                            class="badge">{{fsmc.sample_target_replicates.positive_concentration_count}}</span></a>
                     <br>
-                    <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.negative_concentrations_count >0"
-                        (click)="openReplicateDetails('negative_concentrations', fsmc)">Negative Concentrations&nbsp;<span
+                    <a class="label label-blue clickable"
+                        *ngIf="fsmc.sample_target_replicates.negative_concentrations_count >0"
+                        (click)="openReplicateDetails('negative_concentrations', fsmc)">Negative
+                        Concentrations&nbsp;<span
                             class="badge">{{fsmc.sample_target_replicates.negative_concentration_count}}</span></a>
                 </clr-dg-cell>
                 <clr-dg-cell>
@@ -367,8 +350,10 @@
                         (click)="openReplicateDetails('qpcr_results_missing', fsmc)">Missing qPCR Values&nbsp;<span
                             class="badge">{{fsmc.sample_target_replicates.qpcr_results_missing_count}}</span></a>
                     <br>
-                    <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.concentration_calc_values_missing_count > 0"
-                        (click)="openReplicateDetails('concentration_calc_values_missing', fsmc)">Calculation Values Missing&nbsp;<span
+                    <a class="label label-blue clickable"
+                        *ngIf="fsmc.sample_target_replicates.concentration_calc_values_missing_count > 0"
+                        (click)="openReplicateDetails('concentration_calc_values_missing', fsmc)">Calculation Values
+                        Missing&nbsp;<span
                             class="badge">{{fsmc.sample_target_replicates.concentration_calc_values_missing_count}}</span></a>
                     <br>
                     <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.invalid_count > 0"
@@ -386,6 +371,74 @@
 
     </div>
 </div>
+
+<!-- business rules Modal -->
+<clr-modal [(clrModalOpen)]="showBusinessRulesModal" [clrModalSize]="'xl'">
+    <h3 class="modal-title">
+        <span>Business Rules & Replicate Details Explanation</span>
+    </h3>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <div>
+                    <h4>Business Rules</h4>
+                    All replicate records are considered invalid by default. They are only made valid if all
+                    of the
+                    following checks pass:
+                    <p>1.All the parent controls (Peg Neg, Ext Neg, RT Neg, PCR Neg) for this replicate have
+                        been
+                        entered
+                        into the database
+                        <p>2. The replicate’s related Peg Neg’s replicates with same target as this data
+                            replicate are
+                            all
+                            valid (if no related Peg Neg, this check does not apply), if even a single one
+                            of the Peg
+                            Neg
+                            replicates is invalid then the data replicate is set to invalid.
+                            <p>3. The replicate's parent replicate batch negative controls (Ext Neg, RT Neg,
+                                PCR Neg)
+                                are all
+                                valid, if even a single one of the controls is invalid then the data
+                                replicate is set to
+                                invalid.
+                                <p>4. The replicate’s CQ value and GC/reaction are greater than or equal to
+                                    zero.
+                                    <p>Alternately, the user has the option to manually override the
+                                        system-determined
+                                        validity.
+                                        <hr>
+                                        <h4>Replicate details explanation</h4>
+                                        <h5>Complete Replicates</h5>
+                                        <span class="label label-blue">Positive concentrations</span> replicates
+                                        that are fully complete with all
+                                        necessary values - concentration has been calculated and is a
+                                        positive number indicating presence of target.<br>
+                                        <span class="label label-blue">Negative concentrations</span> replicates
+                                        that are fully complete with all
+                                        necessary values - concentration has been calculated and is 0,
+                                        indicating absence of target.
+
+                                        <h5>Incomplete Replicates</h5>
+                                        <span class="label label-blue">Missing qPCR Values</span> replicates
+                                        with Cq value and/or GC/Reaction
+                                        missing, which most likely means the qPCR results text file
+                                        containing that replicate was not uploaded.<br>
+                                        <span class="label label-blue">Calculation Values
+                                            Missing</span>replicates where concentration is not
+                                        calculated because of one of the critical concentration calculation
+                                        values are missing.<br>
+                                        <span class="label label-blue">Invalid per controls</span> replicates
+                                        that are invalid because associated
+                                        controls are invalid/noncompliant.<br>
+
+                                        <button class="btn btn-info"
+                                            (click)="showBusinessRulesModal = !showBusinessRulesModal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</clr-modal>
 
 <!-- replicate details Modal -->
 <clr-modal [(clrModalOpen)]="showReplicateDetailsModal">
@@ -485,13 +538,16 @@
                                         <ul>
                                             <li *ngIf="replicate.invalid_reasons.peg_neg_invalid">PEG NEG is invalid
                                             </li>
-                                            <li *ngIf="replicate.invalid_reasons.ext_neg_missing">Extraction Negative is missing</li>
+                                            <li *ngIf="replicate.invalid_reasons.ext_neg_missing">Extraction Negative is
+                                                missing</li>
                                             <li *ngIf="replicate.invalid_reasons.ext_neg_positive">Extraction Negative
                                                 is invalid</li>
-                                            <li *ngIf="replicate.invalid_reasons.rt_neg_missing">RT Negative is missing</li>
+                                            <li *ngIf="replicate.invalid_reasons.rt_neg_missing">RT Negative is missing
+                                            </li>
                                             <li *ngIf="replicate.invalid_reasons.rt_neg_positive">RT Negative is invalid
                                             </li>
-                                            <li *ngIf="replicate.invalid_reasons.pcr_neg_missing">PCR Negative is missing</li>
+                                            <li *ngIf="replicate.invalid_reasons.pcr_neg_missing">PCR Negative is
+                                                missing</li>
                                             <li *ngIf="replicate.invalid_reasons.pcr_neg_positive">PCR Negative is
                                                 invalid</li>
                                         </ul>
