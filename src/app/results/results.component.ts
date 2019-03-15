@@ -59,6 +59,7 @@ export class ResultsComponent implements OnInit {
   sampleQuerySizeErrorFlag = false;
 
   showReplicateDetailsModal: boolean = false;
+  showBusinessRulesModal: boolean = false;
 
   replicateDetailArray = [];
   missingInhibitions = [];
