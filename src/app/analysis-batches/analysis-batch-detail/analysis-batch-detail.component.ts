@@ -21,6 +21,7 @@ import { ExtractionMethodService } from '../../extraction-batches/extraction-met
 import { TargetService } from '../../targets/target.service';
 import { UnitService } from '../../units/unit.service';
 import { ExtractionBatchService } from 'app/extraction-batches/extraction-batch.service';
+import { ReverseTranscriptionService } from 'app/SHARED/reverse-transcription.service';
 
 @Component({
   selector: 'analysis-batch-detail',
@@ -68,6 +69,9 @@ export class AnalysisBatchDetailComponent implements OnInit {
   extractionEditErrorFlag: boolean = false;
   extractionEditSuccessFlag: boolean = false;
 
+  rtEditErrorFlag: boolean = false;
+  rtEditSuccessFlag: boolean = false;
+
   submitted;
 
   selected = [];
@@ -95,7 +99,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   editRTForm = new FormGroup({
     id: new FormControl(''),
-    rt_number: new FormControl(''),
+    // rt_number: new FormControl(''),
     template_volume: new FormControl(''),
     reaction_volume: new FormControl(''),
     rt_date: new FormControl('')
@@ -104,6 +108,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
   constructor(private _analysisBatchService: AnalysisBatchService,
     private _extractionMethodService: ExtractionMethodService,
     private _extractionBatchService: ExtractionBatchService,
+    private _reverseTranscriptionService: ReverseTranscriptionService,
     private _targetService: TargetService,
     private _unitService: UnitService
   ) { }
@@ -253,7 +258,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
     this.editRTForm.setValue({
       id: rt.id,
-      rt_number: rt.rt_number,
+      // rt_number: rt.rt_number,
       template_volume: rt.template_volume,
       reaction_volume: rt.reaction_volume,
       rt_date: rt.rt_date
@@ -293,20 +298,40 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   onSubmit(formID, formValue) {
 
+    this.submitLoading = true;
+
     if (formID === "editEB") {
       this._extractionBatchService.update(formValue)
         .subscribe(
           (updatedExtractionBatch) => {
             this.extractionEditSuccessFlag = true;
             this.extractionEditErrorFlag = false;
+            this.submitLoading = false;
             this.retrieveABData();
           },
           error => {
             this.errorMessage = <any>error
             this.extractionEditSuccessFlag = false;
             this.extractionEditErrorFlag = true;
+            this.submitLoading = false;
           }
         );
+    } else if (formID === 'editRT') {
+      this._reverseTranscriptionService.update(formValue)
+      .subscribe(
+        (updatedRT) => {
+          this.rtEditSuccessFlag = true;
+          this.rtEditErrorFlag = false;
+          this.submitLoading = false;
+          this.retrieveABData();
+        },
+        error => {
+          this.errorMessage = <any>error
+          this.rtEditSuccessFlag = false;
+          this.rtEditErrorFlag = true;
+          this.submitLoading = false;
+        }
+      );
     }
 
   }

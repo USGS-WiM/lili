@@ -240,13 +240,13 @@
   <div class="modal-body">
     <span>Analysis Batch {{selectedABID}}</span>
 
-    <form id="editRTForm" class="compact" [formGroup]="editRTForm" (ngSubmit)="onSubmit('edit', editRTForm.value)">
+    <form id="editRTForm" class="compact" [formGroup]="editRTForm" (ngSubmit)="onSubmit('editRT', editRTForm.value)">
       <section class="form-block">
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="rtNo">RT No. </label>
           <input type="text" id="rtNo" size="10" formControlName="rt_number" readonly>
-        </div>
+        </div> -->
 
         <div class="form-group">
           <label for="templateVol">Template Volume</label>
@@ -270,7 +270,26 @@
           <input type="date" id="rtDateInput" formControlName="rt_date">
         </div>
 
-        <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid">Save Edits</button>
+        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="rtEditErrorFlag">
+            <div clr-alert-item class="alert-item">
+              <span class="alert-text">Submission error. RT data not updated.</span>
+              <div class="alert-actions">
+                <a class="alert-action" (click)="onSubmit('editRT', editRTForm.value)">Try again</a>
+              </div>
+            </div>
+          </clr-alert>
+  
+          <clr-alert [clrAlertType]="'alert-success'" *ngIf="rtEditSuccessFlag">
+            <div clr-alert-item class="alert-item">
+              <span class="alert-text">RT data successfully updated</span>
+              <div class="alert-actions">
+                <a class="alert-action"
+                  (click)="showHideEditRTDetail = false;">Close</a>
+              </div>
+            </div>
+          </clr-alert>
+
+        <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
         <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail">Close</button>
 
       </section>

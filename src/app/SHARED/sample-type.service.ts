@@ -11,7 +11,6 @@ import { ISampleType } from './sample-type';
 
 @Injectable()
 export class SampleTypeService {
-  private _sampleTypeUrl = 'https://raw.githubusercontent.com/USGS-WiM/lide-lims/master/src/app/demo-services/sample-type.json';
 
   constructor(private _http: Http) { }
 
