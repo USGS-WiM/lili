@@ -174,7 +174,7 @@
   </div>
 </div>
 
-<clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditExtractionDetail">
+<clr-modal class="modal-sm" [(clrModalOpen)]="showHideEditExtractionDetail" [clrModalClosable]="false">
   <h3 class="modal-title">Edit Extraction</h3>
   <div class="modal-body">
     <span>Analysis Batch {{selectedABID}}</span>
@@ -220,7 +220,7 @@
             <span class="alert-text">Extraction data successfully updated</span>
             <div class="alert-actions">
               <a class="alert-action"
-                (click)="showHideEditExtractionDetail = false; extractionEditSuccessFlag = false">Close</a>
+                (click)="showHideEditExtractionDetail = false; extractionEditSuccessFlag = false; extractionEditErrorFlag = false;">Close</a>
             </div>
           </div>
         </clr-alert>
@@ -235,7 +235,7 @@
   </div>
 </clr-modal>
 
-<clr-modal class="modal-sm" *ngIf="selectedABDetail" [(clrModalOpen)]="showHideEditRTDetail">
+<clr-modal class="modal-sm" *ngIf="selectedABDetail" [(clrModalOpen)]="showHideEditRTDetail" [clrModalClosable]="false">
   <h3 class="modal-title">Edit RT Details</h3>
   <div class="modal-body">
     <span>Analysis Batch {{selectedABID}}</span>
@@ -284,13 +284,13 @@
               <span class="alert-text">RT data successfully updated</span>
               <div class="alert-actions">
                 <a class="alert-action"
-                  (click)="showHideEditRTDetail = false;">Close</a>
+                  (click)="showHideEditRTDetail = false; rtEditSuccessFlag = false; rtEditErrorFlag = false;">Close</a>
               </div>
             </div>
           </clr-alert>
 
         <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
-        <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail">Close</button>
+        <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail; rtEditSuccessFlag = false; rtEditErrorFlag = false;">Close</button>
 
       </section>
     </form>
