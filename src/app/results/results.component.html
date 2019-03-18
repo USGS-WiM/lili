@@ -359,7 +359,7 @@
                             class="badge">{{fsmc.sample_target_replicates.concentration_calc_values_missing_count}}</span></a>
                     <br>
                     <a class="label label-blue clickable" *ngIf="fsmc.sample_target_replicates.invalid_count > 0"
-                        (click)="openReplicateDetails('invalid', fsmc)">Invalid per controls&nbsp;<span
+                        (click)="openReplicateDetails('invalids', fsmc)">Invalid per controls&nbsp;<span
                             class="badge">{{fsmc.sample_target_replicates.invalid_count}}</span></a>
                 </clr-dg-cell>
             </clr-dg-row>
@@ -521,8 +521,8 @@
                                         </table>
                                         <ul>
                                             <li *ngIf="replicate.missing_calculation_values.inhibition_dilution_factor">
-                                                Missing Inhibition Dilution Factor <span>(Inhibition ID
-                                                    {{replicate.inhibition.id}}. AB
+                                                Missing Inhibition Dilution Factor <span>(Inhibition 
+                                                    {{replicate.inhibition.id}}, AB
                                                     {{replicate.inhibition.analysis_batch}}, Extraction
                                                     {{replicate.inhibition.extraction_number}}, Sample
                                                     {{replicate.inhibition.sample}}
