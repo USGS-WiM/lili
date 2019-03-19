@@ -229,6 +229,14 @@
                       </tr>
                     </tbody>
                   </table>
+                  <div *ngFor="let error of pcrResultsValidationObject.validation_errors">
+                    <clr-alert [clrAlertSizeSmall]="true" [clrAlertClosable]="false"
+                      [clrAlertType]="error.severity == 1 ? 'alert-danger': error.severity == 2 ? 'alert-warning' : 'alert-warning'">
+                      <div clr-alert-item class="alert-item">
+                        <span class="alert-text">{{error.message}}</span>
+                      </div>
+                    </clr-alert>
+                  </div>
                 </div>
               </div>
               <!-- title and info -->
