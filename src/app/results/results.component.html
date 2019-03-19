@@ -510,18 +510,23 @@
                                                 </tr>
                                                 <tr>
                                                     <th>Post Dilution Volume</th>
-                                                    <td>{{replicate.calculation_values.post_dilution_value}}</td>
+                                                    <td>{{replicate.calculation_values.post_dilution_volume}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Total Volume or Mass Sampled</th>
                                                     <td>{{replicate.calculation_values.total_volume_or_mass_sampled}}
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <th>Matrix Code</th>
+                                                    <td>{{replicate.calculation_values.matrix_code}}
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                         <ul>
                                             <li *ngIf="replicate.missing_calculation_values.inhibition_dilution_factor">
-                                                Missing Inhibition Dilution Factor <span>(Inhibition 
+                                                Missing Inhibition Dilution Factor <span>(Inhibition
                                                     {{replicate.inhibition.id}}, AB
                                                     {{replicate.inhibition.analysis_batch}}, Extraction
                                                     {{replicate.inhibition.extraction_number}}, Sample
