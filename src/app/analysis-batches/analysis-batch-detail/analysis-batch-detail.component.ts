@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms/";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormArray, Validators, PatternValidator } from "@angular/forms/";
 
 import { IAnalysisBatchSummary } from '../analysis-batch-summary';
 import { IAnalysisBatchDetail } from '../analysis-batch-detail';
@@ -22,6 +22,7 @@ import { TargetService } from '../../targets/target.service';
 import { UnitService } from '../../units/unit.service';
 import { ExtractionBatchService } from 'app/extraction-batches/extraction-batch.service';
 import { ReverseTranscriptionService } from 'app/SHARED/reverse-transcription.service';
+import { PcrReplicateBatchService } from '../../pcr-replicates/pcr-replicate-batch.service';
 
 @Component({
   selector: 'analysis-batch-detail',
@@ -60,6 +61,8 @@ export class AnalysisBatchDetailComponent implements OnInit {
   showEBDeleteSuccess: boolean = false;
   showEBDeleteError: boolean = false;
 
+  showBulkSubmitNegResults: boolean = false;
+
   targetListEditLocked: boolean = false;
 
   currentExtractionNo: number;
@@ -68,14 +71,23 @@ export class AnalysisBatchDetailComponent implements OnInit {
   submitLoading: boolean = false;
   extractionEditErrorFlag: boolean = false;
   extractionEditSuccessFlag: boolean = false;
+  batchSubmitNegResultsErrorFlag: boolean = false;
+  batchSubmitNegResultsSuccessFlag: boolean = false;
 
   rtEditErrorFlag: boolean = false;
   rtEditSuccessFlag: boolean = false;
+
+  bulkSubmitNegResultsForm: FormGroup;
+  pcrreplicatebatch_array: FormArray;
+
+  replicateColumnCount;
 
   submitted;
 
   selected = [];
   nucleicAcidTypes = [];
+
+
 
   editExtractionBatchForm = new FormGroup({
     id: new FormControl(''),
@@ -105,13 +117,32 @@ export class AnalysisBatchDetailComponent implements OnInit {
     rt_date: new FormControl('')
   })
 
-  constructor(private _analysisBatchService: AnalysisBatchService,
+  buildBulkSubmitNegResultsForm() {
+    this.bulkSubmitNegResultsForm = this.formBuilder.group({
+      pcr_batches: this.formBuilder.array([
+        this.formBuilder.group({
+          extraction_batch: null,
+          target: null,
+          replicate_number: null,
+          pcr_pos_cq_value: null
+        })
+      ])
+    })
+    this.pcrreplicatebatch_array = this.bulkSubmitNegResultsForm.get("pcr_batches") as FormArray;
+  }
+
+  constructor(
+    private _analysisBatchService: AnalysisBatchService,
     private _extractionMethodService: ExtractionMethodService,
     private _extractionBatchService: ExtractionBatchService,
     private _reverseTranscriptionService: ReverseTranscriptionService,
     private _targetService: TargetService,
-    private _unitService: UnitService
-  ) { }
+    private _unitService: UnitService,
+    private pcrReplicateBatchService: PcrReplicateBatchService,
+    private formBuilder: FormBuilder,
+  ) {
+    this.buildBulkSubmitNegResultsForm();
+  }
 
   ngOnInit() {
     // this.ABDetailsLoading = true;
@@ -249,6 +280,40 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
   }
 
+  openBulkSubmitNegResults(extractionbatch) {
+
+    this.currentExtractionNo = extractionbatch.extraction_number;
+    // reset the pcrreplicate batch form array controls to a blank array
+    this.pcrreplicatebatch_array.controls = [];
+    for (let target of extractionbatch.targets) {
+
+      for (let i = 0; i < target.replicates; i++) {
+
+        let pcrRepBatchFormGroup: FormGroup = this.formBuilder.group({
+          extraction_batch: this.formBuilder.control(extractionbatch.id),
+          target: this.formBuilder.control(target.id),
+          replicate_number: this.formBuilder.control(i + 1),
+          pcr_pos_cq_value: this.formBuilder.control(null),
+        });
+        this.pcrreplicatebatch_array.push(pcrRepBatchFormGroup);
+
+      }
+
+      // these lines are for creating a replicate columns, but not used in current design
+      // instantiate a blank array to store a list of replicate counts for all the targets
+      // let replicateCountArray = [];
+      // add the replicate count for each target to the replicateCountArray
+      // replicateCountArray.push(target.replicates);
+      //this.replicateColumnCount = Math.max.apply(null, replicateCountArray);
+
+    }
+    // show the bulk submit neg results modal if not showing already
+    if (this.showBulkSubmitNegResults === false) {
+      this.showBulkSubmitNegResults = true;
+    }
+
+  }
+
   resetAB() {
     this.selected = [];
     this.extractionTargetArray = [];
@@ -274,7 +339,7 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
     this.resetAB();
 
-    this.currentExtractionNo = extraction.extraction_no;
+    this.currentExtractionNo = extraction.extraction_number;
 
     // build the target list by looping through the AB data and adding all targets to a local array
     for (let extTarget of extraction.targets) {
@@ -318,20 +383,36 @@ export class AnalysisBatchDetailComponent implements OnInit {
         );
     } else if (formID === 'editRT') {
       this._reverseTranscriptionService.update(formValue)
-      .subscribe(
-        (updatedRT) => {
-          this.rtEditSuccessFlag = true;
-          this.rtEditErrorFlag = false;
-          this.submitLoading = false;
-          this.retrieveABData();
-        },
-        error => {
-          this.errorMessage = <any>error
-          this.rtEditSuccessFlag = false;
-          this.rtEditErrorFlag = true;
-          this.submitLoading = false;
-        }
-      );
+        .subscribe(
+          (updatedRT) => {
+            this.rtEditSuccessFlag = true;
+            this.rtEditErrorFlag = false;
+            this.submitLoading = false;
+            this.retrieveABData();
+          },
+          error => {
+            this.errorMessage = <any>error
+            this.rtEditSuccessFlag = false;
+            this.rtEditErrorFlag = true;
+            this.submitLoading = false;
+          }
+        );
+    } else if (formID === 'bulkSubmitNegResults') {
+      this.pcrReplicateBatchService.postBulkNegativeResults(formValue.pcr_batches)
+        .subscribe(
+          (response) => {
+            this.batchSubmitNegResultsSuccessFlag = true;
+            this.batchSubmitNegResultsErrorFlag = false;
+            this.submitLoading = false;
+            this.retrieveABData();
+          },
+          error => {
+            this.errorMessage = <any>error
+            this.batchSubmitNegResultsSuccessFlag = false;
+            this.batchSubmitNegResultsErrorFlag = true;
+            this.submitLoading = false;
+          }
+        );
     }
 
   }

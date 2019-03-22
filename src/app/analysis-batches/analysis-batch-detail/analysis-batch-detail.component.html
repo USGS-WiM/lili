@@ -23,6 +23,10 @@
                 <clr-tree-node>
                   <div class="extraction-row">
 
+                    <button class="btn btn-sm btn-outline" type="button"
+                      (click)="openBulkSubmitNegResults(extractionbatch)">Bulk
+                      Submit Negative Results</button>
+
                     <div>
                       <table class="table table-vertical table-compact ">
                         <tbody>
@@ -40,15 +44,15 @@
                           </tr>
                           <tr>
                             <th>Extraction Positive Cq Value</th>
-                            <td>{{extractionbatch.ext_pos_cq_value}}</td>
+                            <td>{{extractionbatch.ext_pos_dna_cq_value}}</td>
                           </tr>
-                          <tr>
+                          <!-- <tr>
                             <th>Extraction Positive GC/Reaction</th>
-                            <td>{{extractionbatch.ext_pos_cq_value}}</td>
-                          </tr>
+                            <td>{{extractionbatch.ext_pos_dna_cq_value}}</td>
+                          </tr> -->
                           <tr>
                             <th>Extraction Positive Validity</th>
-                            <td>{{ext_pos_invalid ? "Invalid" : "Valid"}}</td>
+                            <td>{{ext_pos_dna_invalid ? "Invalid" : "Valid"}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -81,7 +85,9 @@
                       <table class="table table-vertical table-compact ">
                         <tbody>
                           <tr *ngFor="let target of extractionbatch.targets">
-                            <th>{{target.id | displayValue:'name':this.allTargets}}&nbsp;({{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}})</th>
+                            <th>
+                              {{target.id | displayValue:'name':this.allTargets}}&nbsp;({{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}})
+                            </th>
                             <td>{{target.replicates}}&nbsp;replicate<span *ngIf="target.replicates > 1">s</span></td>
                           </tr>
                         </tbody>
@@ -225,7 +231,8 @@
           </div>
         </clr-alert>
 
-        <button class="btn btn-warning" (click)="showHideEditExtractionDetail = false; showHideEBDeleteConfirm = true">Delete Extraction</button>
+        <button class="btn btn-warning"
+          (click)="showHideEditExtractionDetail = false; showHideEBDeleteConfirm = true">Delete Extraction</button>
         <button class="btn btn-primary" type="submit" [disabled]="editExtractionBatchForm.invalid"
           [clrLoading]="submitLoading">Save Edits</button>
         <button class="btn btn-info"
@@ -271,26 +278,28 @@
         </div>
 
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="rtEditErrorFlag">
-            <div clr-alert-item class="alert-item">
-              <span class="alert-text">Submission error. RT data not updated.</span>
-              <div class="alert-actions">
-                <a class="alert-action" (click)="onSubmit('editRT', editRTForm.value)">Try again</a>
-              </div>
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Submission error. RT data not updated.</span>
+            <div class="alert-actions">
+              <a class="alert-action" (click)="onSubmit('editRT', editRTForm.value)">Try again</a>
             </div>
-          </clr-alert>
-  
-          <clr-alert [clrAlertType]="'alert-success'" *ngIf="rtEditSuccessFlag">
-            <div clr-alert-item class="alert-item">
-              <span class="alert-text">RT data successfully updated</span>
-              <div class="alert-actions">
-                <a class="alert-action"
-                  (click)="showHideEditRTDetail = false; rtEditSuccessFlag = false; rtEditErrorFlag = false;">Close</a>
-              </div>
-            </div>
-          </clr-alert>
+          </div>
+        </clr-alert>
 
-        <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
-        <button class="btn btn-info" (click)="showHideEditRTDetail= !showHideEditRTDetail; rtEditSuccessFlag = false; rtEditErrorFlag = false;">Close</button>
+        <clr-alert [clrAlertType]="'alert-success'" *ngIf="rtEditSuccessFlag">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">RT data successfully updated</span>
+            <div class="alert-actions">
+              <a class="alert-action"
+                (click)="showHideEditRTDetail = false; rtEditSuccessFlag = false; rtEditErrorFlag = false;">Close</a>
+            </div>
+          </div>
+        </clr-alert>
+
+        <button class="btn btn-primary" type="submit" [disabled]="editRTForm.invalid" [clrLoading]="submitLoading">Save
+          Edits</button>
+        <button class="btn btn-info"
+          (click)="showHideEditRTDetail= !showHideEditRTDetail; rtEditSuccessFlag = false; rtEditErrorFlag = false;">Close</button>
 
       </section>
     </form>
@@ -347,7 +356,7 @@
     <div class="row">
       <div class="col-lg-12">
         <button class="btn btn-primary" type="submit" (click)="updateABTargetList()">Save Edits</button>
-        <button class="btn btn-info" (click)="showHideEditTargetList = !showHideEditTargetList">Close</button>
+        <button class="btn btn-info" (click)="showHideEditTargetList= !showHideEditTargetList">Close</button>
       </div>
     </div>
   </div>
@@ -355,34 +364,119 @@
 
 <!-- delete Extraction confirm Modal -->
 <clr-modal [(clrModalOpen)]="showHideEBDeleteConfirm">
-    <h3 class="modal-title">
-      <clr-icon shape="times" size="16"></clr-icon> Delete Extraction Batch</h3>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-lg-12">
-          <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showEBDeleteError">
-            <div clr-alert-item class="alert-item">
-              <span class="alert-text">Submission error. Extraction not deleted.</span>
-              <div class="alert-actions">
-                <a class="alert-action" (click)="deleteExtractionBatch(editExtractionBatchForm.get('id').value)">Try again</a>
-              </div>
+  <h3 class="modal-title">
+    <clr-icon shape="times" size="16"></clr-icon> Delete Extraction Batch
+  </h3>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showEBDeleteError">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Submission error. Extraction not deleted.</span>
+            <div class="alert-actions">
+              <a class="alert-action" (click)="deleteExtractionBatch(editExtractionBatchForm.get('id').value)">Try
+                again</a>
             </div>
-          </clr-alert>
-  
-          <clr-alert [clrAlertType]="'alert-success'" *ngIf="showEBDeleteSuccess">
-            <div clr-alert-item class="alert-item">
-              <span class="alert-text">Extraction successfully deleted.</span>
-            </div>
-          </clr-alert>
-  
-          <div>
-            <p>Are you sure you want to delete the Extraction Batch
-              <b>{{editExtractionBatchForm.get('id').value}}</b> ?</p>
-  
-            <button class="btn btn-primary" type="button" (click)="deleteExtractionBatch(editExtractionBatchForm.get('id').value)" [clrLoading]="submitLoading">Delete</button>
-            <button class="btn btn-info" (click)="showHideEBDeleteConfirm = !showHideEBDeleteConfirm">Close</button>
           </div>
+        </clr-alert>
+
+        <clr-alert [clrAlertType]="'alert-success'" *ngIf="showEBDeleteSuccess">
+          <div clr-alert-item class="alert-item">
+            <span class="alert-text">Extraction successfully deleted.</span>
+          </div>
+        </clr-alert>
+
+        <div>
+          <p>Are you sure you want to delete the Extraction Batch
+            <b>{{editExtractionBatchForm.get('id').value}}</b> ?</p>
+
+          <button class="btn btn-primary" type="button"
+            (click)="deleteExtractionBatch(editExtractionBatchForm.get('id').value)"
+            [clrLoading]="submitLoading">Delete</button>
+          <button class="btn btn-info" (click)="showHideEBDeleteConfirm = !showHideEBDeleteConfirm">Close</button>
         </div>
       </div>
     </div>
-  </clr-modal>
+  </div>
+</clr-modal>
+
+
+<!-- bulk submit negative results modal -->
+<clr-modal [(clrModalOpen)]="showBulkSubmitNegResults" [clrModalSize]="'lg'">
+  <h3 class="modal-title">Bulk Submit Negative Results for Extraction {{currentExtractionNo}} </h3>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col-lg-12">
+        Using this form assumes all sample replicates and negative controls for Extraction
+        {{currentExtractionNo}} of Analysis Batch {{selectedABID}} have a negative qPCR result.
+      </div>
+
+      <div class="col-lg-12" *ngIf="pcrreplicatebatch_array.controls.length > 0">
+
+        <form class="compact" [formGroup]="bulkSubmitNegResultsForm"
+          (ngSubmit)="onSubmit('bulkSubmitNegResults', bulkSubmitNegResultsForm.value)">
+          <section class="form-block">
+            <div formArrayName="pcr_batches">
+
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <label class="text-bold required">PCR Pos Cq Value</label>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-0 col-xs-0">
+                </div>
+              </div>
+
+              <div class="form-group row" *ngFor="let target of pcrreplicatebatch_array.controls; let i = index"
+                [formGroupName]="i">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                  <label><span
+                      class="text-bold">{{target.controls.target.value | displayValue:'name':this.allTargets}}</span>
+                    Rep {{target.controls.replicate_number.value}} </label>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <input class="form-control" type="number" placeholder="PCR Pos Cq" size="10" class="fcsv-input"
+                    formControlName="pcr_pos_cq_value">
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-0 col-xs-0">
+                </div>
+              </div>
+            </div>
+
+            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="batchSubmitNegResultsErrorFlag">
+              <div clr-alert-item class="alert-item">
+                <span class="alert-text">Submission error. Negative results not submitted.</span>
+                <div class="alert-actions">
+                  <a class="alert-action" (click)="onSubmit('editRT', editRTForm.value)">Try again</a>
+                </div>
+              </div>
+            </clr-alert>
+
+            <clr-alert [clrAlertType]="'alert-success'" *ngIf="batchSubmitNegResultsSuccessFlag ">
+              <div clr-alert-item class="alert-item">
+                <span class="alert-text">Negative results successfully submitted</span>
+                <div class="alert-actions">
+                  <a class="alert-action"
+                    (click)="showBulkSubmitNegResults = false; batchSubmitNegResultsSuccessFlag = false; batchSubmitNegResultsErrorFlag = false;">Close</a>
+                </div>
+              </div>
+            </clr-alert>
+            <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Submit</button>
+            <button class="btn btn-info"
+              (click)="showBulkSubmitNegResults= !showBulkSubmitNegResults; batchSubmitNegResultsSuccessFlag = false; batchSubmitNegResultsErrorFlag = false;">Close</button>
+
+          </section>
+        </form>
+
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-lg-12">
+        <button class="btn btn-primary" type="submit" (click)="updateABTargetList()">Submit</button>
+        <button class="btn btn-info" (click)="showBulkSubmitNegResults= !showBulkSubmitNegResults">Close</button>
+      </div>
+    </div> -->
+  </div>
+</clr-modal>

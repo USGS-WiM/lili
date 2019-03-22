@@ -224,8 +224,8 @@ export class AnalysisBatchesComponent implements OnInit {
         this.formBuilder.group({
           id: null,
           number: null,
-          ext_pos_cq_value: null,
-          rt_pos_cq_value: null
+          ext_pos_dna_cq_value: null,
+          ext_pos_rna_rt_cq_value: null
         })
       ])
     })
@@ -1240,8 +1240,8 @@ export class AnalysisBatchesComponent implements OnInit {
             let ebFormGroup: FormGroup = this.formBuilder.group({
               id: this.formBuilder.control(extractionBatch.id),
               number: this.formBuilder.control(extractionBatch.extraction_number),
-              ext_pos_cq_value: this.formBuilder.control(null),
-              rt_pos_cq_value: this.formBuilder.control(null),
+              ext_pos_dna_cq_value: this.formBuilder.control(null),
+              ext_pos_rna_rt_cq_value: this.formBuilder.control(null),
             });
             this.EB_array.push(ebFormGroup);
           }

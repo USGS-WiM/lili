@@ -22,7 +22,7 @@ export interface IExtractionBatch {
     inhibitions: IInhibition[];
     reverse_transcriptions: IReverseTranscription[];
     targets: ITarget[],
-    ext_pos_cq_value: boolean,
+    ext_pos_dna_cq_value: number,
     ext_pos_gc_reaction: boolean,
-    ext_pos_invalid: boolean
+    ext_pos_dna_invalid: boolean
 }
