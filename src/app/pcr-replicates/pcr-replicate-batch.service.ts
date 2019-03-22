@@ -49,6 +49,16 @@ export class PcrReplicateBatchService {
       .catch(this.handleError);
   }
 
+  postBulkNegativeResults(replicateArray) {
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.post(APP_SETTINGS.REPLICATE_BATCH_URL + 'bulk_load_negatives/', replicateArray, options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError);
+  }
+
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(JSON.stringify(error.json()) || 'Server error');
