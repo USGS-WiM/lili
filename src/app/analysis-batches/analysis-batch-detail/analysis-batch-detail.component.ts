@@ -124,7 +124,8 @@ export class AnalysisBatchDetailComponent implements OnInit {
           extraction_batch: null,
           target: null,
           replicate_number: null,
-          pcr_pos_cq_value: null
+          pcr_pos_cq_value: null,
+          include: false
         })
       ])
     })
@@ -285,28 +286,41 @@ export class AnalysisBatchDetailComponent implements OnInit {
     this.currentExtractionNo = extractionbatch.extraction_number;
     // reset the pcrreplicate batch form array controls to a blank array
     this.pcrreplicatebatch_array.controls = [];
-    for (let target of extractionbatch.targets) {
+    // for (let target of extractionbatch.targets) {
 
-      for (let i = 0; i < target.replicates; i++) {
+    //   for (let i = 0; i < target.replicates; i++) {
 
-        let pcrRepBatchFormGroup: FormGroup = this.formBuilder.group({
-          extraction_batch: this.formBuilder.control(extractionbatch.id),
-          target: this.formBuilder.control(target.id),
-          replicate_number: this.formBuilder.control(i + 1),
-          pcr_pos_cq_value: this.formBuilder.control(null),
-        });
-        this.pcrreplicatebatch_array.push(pcrRepBatchFormGroup);
+    //     let pcrRepBatchFormGroup: FormGroup = this.formBuilder.group({
+    //       extraction_batch: this.formBuilder.control(extractionbatch.id),
+    //       target: this.formBuilder.control(target.id),
+    //       replicate_number: this.formBuilder.control(i + 1),
+    //       pcr_pos_cq_value: this.formBuilder.control(null),
+    //     });
+    //     this.pcrreplicatebatch_array.push(pcrRepBatchFormGroup);
 
-      }
+    //   }
 
-      // these lines are for creating a replicate columns, but not used in current design
-      // instantiate a blank array to store a list of replicate counts for all the targets
-      // let replicateCountArray = [];
-      // add the replicate count for each target to the replicateCountArray
-      // replicateCountArray.push(target.replicates);
-      //this.replicateColumnCount = Math.max.apply(null, replicateCountArray);
 
+    //   // these lines are for creating a replicate columns, but not used in current design
+    //   // instantiate a blank array to store a list of replicate counts for all the targets
+    //   // let replicateCountArray = [];
+    //   // add the replicate count for each target to the replicateCountArray
+    //   // replicateCountArray.push(target.replicates);
+    //   //this.replicateColumnCount = Math.max.apply(null, replicateCountArray);
+
+    // }
+
+    for (let replicate of extractionbatch.pcrreplicatebatches) {
+      let pcrRepBatchFormGroup: FormGroup = this.formBuilder.group({
+        extraction_batch: this.formBuilder.control(replicate.extraction_batch),
+        target: this.formBuilder.control(replicate.target),
+        replicate_number: this.formBuilder.control(replicate.replicate_number),
+        pcr_pos_cq_value: this.formBuilder.control({ value: replicate.pcr_pos_cq_value, disabled: replicate.pcr_pos_cq_value === null ? false : true }),
+        include: this.formBuilder.control({ value: false, disabled: replicate.pcr_pos_cq_value === null ? false : true })
+      });
+      this.pcrreplicatebatch_array.push(pcrRepBatchFormGroup);
     }
+
     // show the bulk submit neg results modal if not showing already
     if (this.showBulkSubmitNegResults === false) {
       this.showBulkSubmitNegResults = true;
@@ -398,7 +412,19 @@ export class AnalysisBatchDetailComponent implements OnInit {
           }
         );
     } else if (formID === 'bulkSubmitNegResults') {
-      this.pcrReplicateBatchService.postBulkNegativeResults(formValue.pcr_batches)
+
+      // remove the include = false replicates and then remove the include field
+      const pcrBatchArray = [];
+      for (let rep of formValue.pcr_batches) {
+        if (rep.include) {
+          if (rep.include) {
+            delete rep.include;
+            pcrBatchArray.push(rep);
+          }
+        }
+      }
+
+      this.pcrReplicateBatchService.postBulkNegativeResults(pcrBatchArray)
         .subscribe(
           (response) => {
             this.batchSubmitNegResultsSuccessFlag = true;
