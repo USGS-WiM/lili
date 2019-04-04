@@ -286,7 +286,7 @@ export class APP_UTILITIES {
         return result;
     }
 
-    public static downloadCSV(args: any) {
+    public static generateCSV(args: any) {
         let data, filename, link;
         let csv = this.convertArrayOfObjectsToCSV({
             data: args.data,

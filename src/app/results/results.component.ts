@@ -143,8 +143,8 @@ export class ResultsComponent implements OnInit {
   }
 
   exportToCSV() {
-    const filename = 'LIDE_Results_' + APP_UTILITIES.TODAY + '.csv';
-    APP_UTILITIES.downloadCSV({ filename: filename, data: this.results, headers: this.columns });
+    const filename = 'LIDE_Results_Report' + APP_UTILITIES.TODAY + '.csv';
+    APP_UTILITIES.generateCSV({ filename: filename, data: this.results, headers: this.columns });
   }
 
   resetFlags() {
