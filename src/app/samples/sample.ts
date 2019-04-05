@@ -41,4 +41,7 @@ export interface ISample {
     created_by: string;
     modified_date: string;
     modified_by: string;
+    fcsv?: string;
+    fcsv_concentration_type_string?: string;
+    fcsv_notes?: string
 }

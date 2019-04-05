@@ -23,15 +23,20 @@
 
                 <div class="card-text">
                     <!-- begin form -->
-                    <form class="form compact" [formGroup]="addSampleForm" (ngSubmit)="onSubmitSample('add', addSampleForm.value)">
+                    <form class="form compact" [formGroup]="addSampleForm"
+                        (ngSubmit)="onSubmitSample('add', addSampleForm.value)">
                         <section class="form-block">
 
                             <div class="form-group">
                                 <label class="required">Matrix</label>
-                                <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
+                                <label for="matrixSelect" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="addSampleForm.get('matrix').invalid && (addSampleForm.get('matrix').dirty || addSampleForm.get('matrix').touched)">
                                     <div class="select">
-                                        <select id="matrixSelect" name="matrix" formControlName="matrix" (change)="onMatrixSelect($event.target.value)">
-                                            <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}</option>
+                                        <select id="matrixSelect" name="matrix" formControlName="matrix"
+                                            (change)="onMatrixSelect($event.target.value)">
+                                            <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}
+                                            </option>
                                         </select>
                                     </div>
                                 </label>
@@ -39,31 +44,42 @@
 
                             <div class="form-group">
                                 <label [ngClass]="{'required': addSampleForm.get('study').enabled}">Study</label>
-                                <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
+                                <label for="studySelect" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
                                     <div class="select">
                                         <select id="studySelect" name="study" formControlName="study">
-                                            <option *ngFor="let study of studies" [value]="study.id">{{study.name}}</option>
+                                            <option *ngFor="let study of studies" [value]="study.id">{{study.name}}
+                                            </option>
                                         </select>
                                     </div>
                                 </label>
                             </div>
 
                             <div class="form-group">
-                                <label [ngClass]="{'required': addSampleForm.get('sample_type').enabled}">Sample type</label>
-                                <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('sample_type').invalid && (addSampleForm.get('sample_type').dirty || addSampleForm.get('sample_type').touched)">
+                                <label [ngClass]="{'required': addSampleForm.get('sample_type').enabled}">Sample
+                                    type</label>
+                                <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="addSampleForm.get('sample_type').invalid && (addSampleForm.get('sample_type').dirty || addSampleForm.get('sample_type').touched)">
                                     <div class="select">
                                         <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
-                                            <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
+                                            <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">
+                                                {{sampleType.name}}</option>
                                         </select>
                                     </div>
                                 </label>
                             </div>
 
                             <div class="form-group">
-                                <label [ngClass]="{'required': addSampleForm.get('collaborator_sample_id').enabled}">Collaborator
+                                <label
+                                    [ngClass]="{'required': addSampleForm.get('collaborator_sample_id').enabled}">Collaborator
                                     Sample ID</label>
-                                <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collaborator_sample_id').invalid && (addSampleForm.get('collaborator_sample_id').dirty || addSampleForm.get('collaborator_sample_id').touched)">
-                                    <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id">
+                                <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="addSampleForm.get('collaborator_sample_id').invalid && (addSampleForm.get('collaborator_sample_id').dirty || addSampleForm.get('collaborator_sample_id').touched)">
+                                    <input id="collabSampleIdInput" type="text"
+                                        formControlName="collaborator_sample_id">
                                     <span class="tooltip-content">Collaborator ID is required.</span>
                                 </label>
                             </div>
@@ -81,7 +97,8 @@
                             <div class="form-group">
                                 <label>Secondary Concentration</label>
                                 <div class="toggle-switch">
-                                    <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
+                                    <input type="checkbox" id="secondaryConcToggle"
+                                        formControlName="secondary_concentration_flag">
                                     <label for="secondaryConcToggle">{{this.addSampleForm.controls.secondary_concentration_flag.value
                                         ? "Yes" : "No"}}</label>
                                 </div>
@@ -95,12 +112,14 @@
 
                             <div class="form-group">
                                 <label for="sampleDescInput">Sample Description</label>
-                                <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em"></textarea>
+                                <textarea id="sampleDescInput" rows="2" formControlName="sample_description"
+                                    style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="sampleNotesInput">Sample Notes</label>
-                                <textarea id="sampleNotesInput" rows="2" formControlName="sample_notes" style="max-width:25em"></textarea>
+                                <textarea id="sampleNotesInput" rows="2" formControlName="sample_notes"
+                                    style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
@@ -110,21 +129,26 @@
 
                             <div class="form-group">
                                 <label for="arrivalNotesInput">Arrival Notes</label>
-                                <textarea id="arrivalNotesInput" rows="2" formControlName="arrival_notes" style="max-width:25em"></textarea>
+                                <textarea id="arrivalNotesInput" rows="2" formControlName="arrival_notes"
+                                    style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
-                                <label for="samplerNameInput" [ngClass]="{'required': addSampleForm.get('sampler_name').enabled}">Sampler
+                                <label for="samplerNameInput"
+                                    [ngClass]="{'required': addSampleForm.get('sampler_name').enabled}">Sampler
                                     Name
                                 </label>
-                                <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
+                                <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text"
+                                    formControlName="sampler_name">
                                 <datalist id="samplerNames">
-                                    <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
+                                    <option *ngFor="let item of samplerNames" (click)="selectName(item)"
+                                        value="{{item}}">
                                 </datalist>
                             </div>
 
                             <div class="form-group">
-                                <label for="collectStartDateInput" [ngClass]="{'required': addSampleForm.get('collection_start_date').enabled}">Collection
+                                <label for="collectStartDateInput"
+                                    [ngClass]="{'required': addSampleForm.get('collection_start_date').enabled}">Collection
                                     Start Date</label>
                                 <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
                             </div>
@@ -132,7 +156,9 @@
                             <!--begin variable display section-->
                             <div class="form-group">
                                 <label for="collectStartTime">Collection Start Time (HH:MM)</label>
-                                <label for="collectStartTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collection_start_time').invalid && (addSampleForm.get('collection_start_time').dirty || addSampleForm.get('collection_start_time').touched)">
+                                <label for="collectStartTime" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="addSampleForm.get('collection_start_time').invalid && (addSampleForm.get('collection_start_time').dirty || addSampleForm.get('collection_start_time').touched)">
                                     <input id="collectStartTime" type="text" formControlName="collection_start_time">
                                     <span class="tooltip-content">Must follow format HH:MM</span>
                                 </label>
@@ -145,7 +171,9 @@
 
                             <div class="form-group">
                                 <label>Collection End Time (HH:MM)</label>
-                                <label for="collectEndTime" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('collection_end_time').invalid && (addSampleForm.get('collection_end_time').dirty || addSampleForm.get('collection_end_time').touched)">
+                                <label for="collectEndTime" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="addSampleForm.get('collection_end_time').invalid && (addSampleForm.get('collection_end_time').dirty || addSampleForm.get('collection_end_time').touched)">
                                     <input id="collectEndTime" type="text" formControlName="collection_end_time">
                                     <span class="tooltip-content">Must follow format HH:MM</span>
                                 </label>
@@ -153,9 +181,12 @@
 
                             <div class="form-group">
                                 <label for="imrInput">Initial Meter Reading</label>
-                                <label for="imrInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('meter_reading_initial').invalid && (addSampleForm.get('meter_reading_initial').dirty || addSampleForm.get('meter_reading_initial').touched)">
+                                <label for="imrInput" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="addSampleForm.get('meter_reading_initial').invalid && (addSampleForm.get('meter_reading_initial').dirty || addSampleForm.get('meter_reading_initial').touched)">
                                     <input type="number" id="imrInput" formControlName="meter_reading_initial">
-                                    <span class="tooltip-content">Must be greater than 0 and less than Final Meter Reading</span>
+                                    <span class="tooltip-content">Must be greater than 0 and less than Final Meter
+                                        Reading</span>
                                 </label>
                                 <div class="select">
                                     <select id="meter_reading_initialUnitSelect" formControlName="meter_reading_unit">
@@ -166,17 +197,22 @@
 
                             <div class="form-group">
                                 <label>Final Meter Reading</label>
-                                <label for="fmrInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('meter_reading_final').invalid && (addSampleForm.get('meter_reading_final').dirty || addSampleForm.get('meter_reading_final').touched)">
+                                <label for="fmrInput" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="addSampleForm.get('meter_reading_final').invalid && (addSampleForm.get('meter_reading_final').dirty || addSampleForm.get('meter_reading_final').touched)">
                                     <input id="fmrInput" type="number" formControlName="meter_reading_final">
-                                    <span class="tooltip-content">Must be greater than 0 and greater than Initial Meter Reading</span>
+                                    <span class="tooltip-content">Must be greater than 0 and greater than Initial Meter
+                                        Reading</span>
                                 </label>
-                                <label *ngIf="this.units">{{addSampleForm.get('meter_reading_unit').value | displayValue:'symbol':this.units}}</label>
+                                <label
+                                    *ngIf="this.units">{{addSampleForm.get('meter_reading_unit').value | displayValue:'symbol':this.units}}</label>
 
                             </div>
 
                             <div class="form-group">
                                 <label for="tvsInput">Total Volume (or mass) Sampled</label>
-                                <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial" (ngModelChange)="addLeadingZero($event, addSampleForm.get('total_volume_sampled_initial'))">
+                                <input type="text" id="tvsInput" formControlName="total_volume_sampled_initial"
+                                    (ngModelChange)="addLeadingZero($event, addSampleForm.get('total_volume_sampled_initial'))">
                                 <div class="select">
                                     <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial">
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
@@ -191,11 +227,15 @@
                             </div>
 
                             <div class="form-group">
-                                <label [ngClass]="{'required': addSampleForm.get('filter_type').enabled}">Filter Type</label>
-                                <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('filter_type').invalid && (addSampleForm.get('filter_type').dirty || addSampleForm.get('filter_type').touched)">
+                                <label [ngClass]="{'required': addSampleForm.get('filter_type').enabled}">Filter
+                                    Type</label>
+                                <label for="filterSelect" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="addSampleForm.get('filter_type').invalid && (addSampleForm.get('filter_type').dirty || addSampleForm.get('filter_type').touched)">
                                     <div class="select">
                                         <select id="filterSelect" name="filterType" formControlName="filter_type">
-                                            <option *ngFor="let filterType of filterTypes" [value]="filterType.id">{{filterType.name}}</option>
+                                            <option *ngFor="let filterType of filterTypes" [value]="filterType.id">
+                                                {{filterType.name}}</option>
                                         </select>
                                     </div>
                                 </label>
@@ -214,7 +254,8 @@
 
                             <div class="form-group">
                                 <label for="eluteNotesInput">Elution Notes</label>
-                                <textarea id="eluteNotesInput" rows="2" formControlName="elution_notes" style="max-width:25em"></textarea>
+                                <textarea id="eluteNotesInput" rows="2" formControlName="elution_notes"
+                                    style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
@@ -229,7 +270,8 @@
 
                             <div class="form-group">
                                 <label>Peg Neg</label>
-                                <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
+                                <label for="pegNegSelect" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm">
                                     <div class="select">
                                         <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
                                             <option value="">NO PEGNEG ASSOCIATION</option>
@@ -241,9 +283,11 @@
                                 </label>
                             </div>
 
-                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleVolumeErrorFlag" (clrAlertClosedChange)="onClosesampleVolumeError()">
+                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleVolumeErrorFlag"
+                                (clrAlertClosedChange)="onClosesampleVolumeError()">
                                 <div class="alert-item">
-                                    <span class="alert-text">Please provide a sample volume using meter readings and units
+                                    <span class="alert-text">Please provide a sample volume using meter readings and
+                                        units
                                         or total volume sampled and units.</span>
                                 </div>
                             </clr-alert>
@@ -260,17 +304,22 @@
                                 </div>
                             </clr-alert>
 
-                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess" [clrAlertClosable]="false">
+                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess"
+                                [clrAlertClosable]="false">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Sample successfully submitted. ID: {{createdSampleID}} </span>
+                                    <span class="alert-text">Sample successfully submitted. ID: {{createdSampleID}}
+                                    </span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="showHideAdd = false; showSampleCreateSuccess = false; resetFlags()">Close</a>
+                                        <a class="alert-action"
+                                            (click)="showHideAdd = false; showSampleCreateSuccess = false; resetFlags()">Close</a>
                                     </div>
                                 </div>
                             </clr-alert>
 
-                            <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                            <button class="btn btn-info" (click)="showHideAdd = !showHideAdd; resetFlags()">Close</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="addSampleForm.invalid"
+                                [clrLoading]="submitLoading">Submit</button>
+                            <button class="btn btn-info"
+                                (click)="showHideAdd = !showHideAdd; resetFlags()">Close</button>
                         </section>
                         <!--<p>Form value: {{ addSampleForm.value | json }}</p>
                         <p>Form status: {{ addSampleForm.status | json }}</p> -->
@@ -280,9 +329,10 @@
                     <div class="form-group" class="pegneg-list-update">
                         <label class="text-bold"><b><i>Update Pegneg selection list</i></b></label>
                         <label>
-                            <label>&nbsp;&nbsp;From:</label><input type="date" [formControl]="pegnegFromDate"><label>To:</label><input
-                                type="date" [formControl]="pegnegToDate"><button class="btn btn-link" [clrLoading]="pegnegListLoading"
-                                (click)="updatePegnegList()">Update</button>
+                            <label>&nbsp;&nbsp;From:</label><input type="date"
+                                [formControl]="pegnegFromDate"><label>To:</label><input type="date"
+                                [formControl]="pegnegToDate"><button class="btn btn-link"
+                                [clrLoading]="pegnegListLoading" (click)="updatePegnegList()">Update</button>
                         </label>
 
                     </div>
@@ -324,7 +374,8 @@
 
                 <div class="card-text">
                     <!-- begin form -->
-                    <form class="form compact" [formGroup]="addPegNegForm" (ngSubmit)="onSubmitSample('addPegNeg', addPegNegForm.value)">
+                    <form class="form compact" [formGroup]="addPegNegForm"
+                        (ngSubmit)="onSubmitSample('addPegNeg', addPegNegForm.value)">
                         <section class="form-block">
 
 
@@ -341,7 +392,8 @@
                             <div class="form-group">
                                 <label>Secondary Concentration</label>
                                 <div class="toggle-switch">
-                                    <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
+                                    <input type="checkbox" id="secondaryConcToggle"
+                                        formControlName="secondary_concentration_flag">
                                     <label for="secondaryConcToggle">{{this.addPegNegForm.controls.secondary_concentration_flag.value
                                         ? "Yes" : "No"}}</label>
                                 </div>
@@ -349,26 +401,32 @@
 
                             <div class="form-group">
                                 <label for="pegnegDescInput">Description</label>
-                                <textarea id="pegnegDescInput" rows="2" formControlName="sample_description" style="max-width:25em"></textarea>
+                                <textarea id="pegnegDescInput" rows="2" formControlName="sample_description"
+                                    style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="pegnegNotesInput">Notes</label>
-                                <textarea id="pegnegNotesInput" rows="2" formControlName="sample_notes" style="max-width:25em"></textarea>
+                                <textarea id="pegnegNotesInput" rows="2" formControlName="sample_notes"
+                                    style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
-                                <label for="samplerNameInput" [ngClass]="{'required': addPegNegForm.get('sampler_name').enabled}">Sampler
+                                <label for="samplerNameInput"
+                                    [ngClass]="{'required': addPegNegForm.get('sampler_name').enabled}">Sampler
                                     Name
                                 </label>
-                                <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
+                                <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text"
+                                    formControlName="sampler_name">
                                 <datalist id="samplerNames">
-                                    <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
+                                    <option *ngFor="let item of samplerNames" (click)="selectName(item)"
+                                        value="{{item}}">
                                 </datalist>
                             </div>
 
                             <div class="form-group">
-                                <label for="collectStartDateInput" [ngClass]="{'required': addPegNegForm.get('collection_start_date').enabled}">Collection
+                                <label for="collectStartDateInput"
+                                    [ngClass]="{'required': addPegNegForm.get('collection_start_date').enabled}">Collection
                                     Start Date</label>
                                 <input type="date" id="collectStartDateInput" formControlName="collection_start_date">
                             </div>
@@ -386,7 +444,8 @@
                             <div class="form-group">
                                 <label for="fmrInput">Final Meter Reading</label>
                                 <input type="text" id="fmrInput" formControlName="meter_reading_final">
-                                <label *ngIf="this.units">{{addPegNegForm.get('meter_reading_unit').value | displayValue:'symbol':this.units}}</label>
+                                <label
+                                    *ngIf="this.units">{{addPegNegForm.get('meter_reading_unit').value | displayValue:'symbol':this.units}}</label>
                             </div>
 
                             <div class="form-group">
@@ -412,7 +471,8 @@
 
                             <div class="form-group">
                                 <label for="eluteNotesInput">Elution Notes</label>
-                                <textarea id="eluteNotesInput" rows="2" formControlName="elution_notes" style="max-width:25em"></textarea>
+                                <textarea id="eluteNotesInput" rows="2" formControlName="elution_notes"
+                                    style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
@@ -425,36 +485,45 @@
                                 <input id="eluteVolInput" type="text" formControlName="sample_volume_initial">
                             </div>
 
-                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleVolumeErrorFlag" (clrAlertClosedChange)="onClosesampleVolumeError()">
+                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleVolumeErrorFlag"
+                                (clrAlertClosedChange)="onClosesampleVolumeError()">
                                 <div class="alert-item">
-                                    <span class="alert-text">Please provide a sample volume using meter readings and units
+                                    <span class="alert-text">Please provide a sample volume using meter readings and
+                                        units
                                         or total volume sampled and units.</span>
                                 </div>
                             </clr-alert>
 
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleCreateError">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Submission error. Pegneg (sample record) not submitted.</span>
+                                    <span class="alert-text">Submission error. Pegneg (sample record) not
+                                        submitted.</span>
                                     <span>{{errorMessage}}</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="onSubmitSample('addPegNeg', addPegNegForm.value)">Try
+                                        <a class="alert-action"
+                                            (click)="onSubmitSample('addPegNeg', addPegNegForm.value)">Try
                                             again
                                         </a>
                                     </div>
                                 </div>
                             </clr-alert>
 
-                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess" [clrAlertClosable]="false">
+                            <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleCreateSuccess"
+                                [clrAlertClosable]="false">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Pegneg (sample record) successfully submitted. ID: {{createdSampleID}}</span>
+                                    <span class="alert-text">Pegneg (sample record) successfully submitted. ID:
+                                        {{createdSampleID}}</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="showHideAddPegNeg = false; showSampleCreateSuccess = false; resetFlags();">Close</a>
+                                        <a class="alert-action"
+                                            (click)="showHideAddPegNeg = false; showSampleCreateSuccess = false; resetFlags();">Close</a>
                                     </div>
                                 </div>
                             </clr-alert>
 
-                            <button class="btn btn-primary" type="submit" [disabled]="addPegNegForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                            <button class="btn btn-info" (click)="showHideAddPegNeg = !showHideAddPegNeg; resetFlags();">Close</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="addPegNegForm.invalid"
+                                [clrLoading]="submitLoading">Submit</button>
+                            <button class="btn btn-info"
+                                (click)="showHideAddPegNeg = !showHideAddPegNeg; resetFlags();">Close</button>
                         </section>
                     </form>
                     <!-- end form -->
@@ -473,7 +542,8 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm" (ngSubmit)="onSubmitSample('edit', editSampleForm.value)">
+                <form id="editSampleForm" class="compact" [formGroup]="editSampleForm"
+                    (ngSubmit)="onSubmitSample('edit', editSampleForm.value)">
                     <section class="form-block">
 
                         <div class="form-group">
@@ -483,10 +553,14 @@
 
                         <div class="form-group">
                             <label class="required">Matrix</label>
-                            <label for="matrixSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('matrix').invalid && (editSampleForm.get('matrix').dirty || editSampleForm.get('matrix').touched)">
+                            <label for="matrixSelect" aria-haspopup="true" role="tooltip"
+                                class="tooltip tooltip-validation tooltip-sm"
+                                [class.invalid]="editSampleForm.get('matrix').invalid && (editSampleForm.get('matrix').dirty || editSampleForm.get('matrix').touched)">
                                 <div class="select">
-                                    <select id="matrixSelect" name="matrix" formControlName="matrix" (change)="onMatrixSelect($event.target.value)">
-                                        <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}</option>
+                                    <select id="matrixSelect" name="matrix" formControlName="matrix"
+                                        (change)="onMatrixSelect($event.target.value)">
+                                        <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}
+                                        </option>
                                     </select>
                                 </div>
                             </label>
@@ -494,7 +568,9 @@
 
                         <div class="form-group">
                             <label class="required">Study</label>
-                            <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('study').invalid && (editSampleForm.get('study').dirty || editSampleForm.get('study').touched)">
+                            <label for="studySelect" aria-haspopup="true" role="tooltip"
+                                class="tooltip tooltip-validation tooltip-sm"
+                                [class.invalid]="editSampleForm.get('study').invalid && (editSampleForm.get('study').dirty || editSampleForm.get('study').touched)">
                                 <div class="select">
                                     <select id="studySelect" name="study" formControlName="study">
                                         <option value="">
@@ -508,10 +584,13 @@
 
                         <div class="form-group">
                             <label class="required">Sample type</label>
-                            <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
+                            <label for="sampleTypeSelect" aria-haspopup="true" role="tooltip"
+                                class="tooltip tooltip-validation tooltip-sm"
+                                [class.invalid]="editSampleForm.get('sample_type').invalid && (editSampleForm.get('sample_type').dirty || editSampleForm.get('sample_type').touched)">
                                 <div class="select">
                                     <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
-                                        <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
+                                        <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">
+                                            {{sampleType.name}}</option>
                                     </select>
                                 </div>
                             </label>
@@ -519,7 +598,9 @@
 
                         <div class="form-group">
                             <label class="required">Collaborator Sample ID</label>
-                            <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('collaborator_sample_id').invalid && (editSampleForm.get('collaborator_sample_id').dirty || editSampleForm.get('collaborator_sample_id').touched)">
+                            <label for="collabSampleIdInput" aria-haspopup="true" role="tooltip"
+                                class="tooltip tooltip-validation tooltip-sm"
+                                [class.invalid]="editSampleForm.get('collaborator_sample_id').invalid && (editSampleForm.get('collaborator_sample_id').dirty || editSampleForm.get('collaborator_sample_id').touched)">
                                 <input id="collabSampleIdInput" type="text" formControlName="collaborator_sample_id">
                                 <span class="tooltip-content">Collaborator ID is required.</span>
                             </label>
@@ -529,14 +610,16 @@
                             <label class="required">Filtered</label>
                             <div class="toggle-switch">
                                 <input type="checkbox" id="filteredToggle" formControlName="filter_flag">
-                                <label for="filteredToggle">{{this.editSampleForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
+                                <label
+                                    for="filteredToggle">{{this.editSampleForm.controls.filter_flag.value ? "Yes" : "No"}}</label>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="required">Secondary Concentration</label>
                             <div class="toggle-switch">
-                                <input type="checkbox" id="secondaryConcToggle" formControlName="secondary_concentration_flag">
+                                <input type="checkbox" id="secondaryConcToggle"
+                                    formControlName="secondary_concentration_flag">
                                 <label for="secondaryConcToggle">{{this.editSampleForm.controls.secondary_concentration_flag.value
                                     ? "Yes" : "No"}}</label>
                             </div>
@@ -549,12 +632,14 @@
 
                         <div class="form-group">
                             <label for="sampleDescInput">Sample Description</label>
-                            <textarea id="sampleDescInput" rows="2" formControlName="sample_description" style="max-width:25em"></textarea>
+                            <textarea id="sampleDescInput" rows="2" formControlName="sample_description"
+                                style="max-width:25em"></textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="sampleDescInput">Sample Notes</label>
-                            <textarea id="sampleDescInput" rows="2" formControlName="sample_notes" style="max-width:25em"></textarea>
+                            <textarea id="sampleDescInput" rows="2" formControlName="sample_notes"
+                                style="max-width:25em"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -564,12 +649,14 @@
 
                         <div class="form-group">
                             <label for="sampleDescInput">Arrival Notes</label>
-                            <textarea id="sampleDescInput" rows="2" formControlName="arrival_notes" style="max-width:25em"></textarea>
+                            <textarea id="sampleDescInput" rows="2" formControlName="arrival_notes"
+                                style="max-width:25em"></textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="samplerNameInput">Sampler Name</label>
-                            <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text" formControlName="sampler_name">
+                            <input id="samplerNameInput" list="samplerNames" name="samplerName" type="text"
+                                formControlName="sampler_name">
                             <datalist id="samplerNames">
                                 <option *ngFor="let item of samplerNames" (click)="selectName(item)" value="{{item}}">
                             </datalist>
@@ -611,7 +698,8 @@
                             <label for="fmrInput">Final Meter Reading</label>
                             <input type="text" id="fmrInput" formControlName="meter_reading_final">
                             <label *ngIf="sampleSelected">
-                                <label *ngIf="this.units">{{editSampleForm.get('meter_reading_unit').value | displayValue:'symbol':this.units}}</label>
+                                <label
+                                    *ngIf="this.units">{{editSampleForm.get('meter_reading_unit').value | displayValue:'symbol':this.units}}</label>
                             </label>
                         </div>
 
@@ -634,10 +722,13 @@
 
                         <div class="form-group">
                             <label>Filter Type</label>
-                            <label for="filterSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editSampleForm.get('filter_type').invalid && (editSampleForm.get('filter_type').dirty || editSampleForm.get('filter_type').touched)">
+                            <label for="filterSelect" aria-haspopup="true" role="tooltip"
+                                class="tooltip tooltip-validation tooltip-sm"
+                                [class.invalid]="editSampleForm.get('filter_type').invalid && (editSampleForm.get('filter_type').dirty || editSampleForm.get('filter_type').touched)">
                                 <div class="select">
                                     <select id="filterSelect" name="filterType" formControlName="filter_type">
-                                        <option *ngFor="let filterType of filterTypes" [value]="filterType.id">{{filterType.name}}</option>
+                                        <option *ngFor="let filterType of filterTypes" [value]="filterType.id">
+                                            {{filterType.name}}</option>
                                     </select>
                                 </div>
                             </label>
@@ -656,7 +747,8 @@
 
                         <div class="form-group">
                             <label for="eluteNotesInput">Elution Notes</label>
-                            <textarea id="eluteNotesInput" rows="2" formControlName="elution_notes" style="max-width:25em"></textarea>
+                            <textarea id="eluteNotesInput" rows="2" formControlName="elution_notes"
+                                style="max-width:25em"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -678,7 +770,8 @@
 
                         <div class="form-group">
                             <label>Update Peg Neg</label>
-                            <label for="pegNegSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
+                            <label for="pegNegSelect" aria-haspopup="true" role="tooltip"
+                                class="tooltip tooltip-validation tooltip-sm">
                                 <div class="select">
                                     <select id="pegNegSelect" name="peg_neg" formControlName="peg_neg">
                                         <option value="">NO PEGNEG ASSOCIATION</option>
@@ -695,7 +788,8 @@
                                 <span class="alert-text">Submission error. Sample not updated.</span>
                                 <span>{{errorMessage}}</span>
                                 <div class="alert-actions">
-                                    <a class="alert-action" (click)="onSubmitSample('add', editSampleForm.value)">Try again</a>
+                                    <a class="alert-action" (click)="onSubmitSample('add', editSampleForm.value)">Try
+                                        again</a>
                                 </div>
                             </div>
                         </clr-alert>
@@ -704,13 +798,16 @@
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">Sample successfully updated</span>
                                 <div class="alert-actions">
-                                    <a class="alert-action" (click)="showHideEdit = false; showSampleEditSuccess = false; resetFlags();">Close</a>
+                                    <a class="alert-action"
+                                        (click)="showHideEdit = false; showSampleEditSuccess = false; resetFlags();">Close</a>
                                 </div>
                             </div>
                         </clr-alert>
 
-                        <button class="btn btn-primary" type="submit" [disabled]="editSampleForm.invalid">Save Edits</button>
-                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit; resetFlags();">Close</button>
+                        <button class="btn btn-primary" type="submit" [disabled]="editSampleForm.invalid">Save
+                            Edits</button>
+                        <button class="btn btn-info"
+                            (click)="showHideEdit = !showHideEdit; resetFlags();">Close</button>
                     </section>
                     <!--<p>Form value: {{ editSampleForm.value | json }}</p>
                     <p>Form status: {{ editSampleForm.status | json }}</p> -->
@@ -720,8 +817,9 @@
                 <div class="form-group" class="pegneg-list-update">
                     <label class="text-bold"><b><i>Update Pegneg selection list</i></b></label>
                     <label>
-                        <label>&nbsp;&nbsp;From:</label><input type="date" [formControl]="pegnegFromDate"><label>To:</label><input
-                            type="date" [formControl]="pegnegToDate"><button class="btn btn-link" [clrLoading]="pegnegListLoading"
+                        <label>&nbsp;&nbsp;From:</label><input type="date"
+                            [formControl]="pegnegFromDate"><label>To:</label><input type="date"
+                            [formControl]="pegnegToDate"><button class="btn btn-link" [clrLoading]="pegnegListLoading"
                             (click)="updatePegnegList()">Update</button>
                     </label>
 
@@ -753,10 +851,12 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="createABForm" class="compact" [formGroup]="createABForm" (ngSubmit)="onSubmitAB(createABForm.value)">
+                <form id="createABForm" class="compact" [formGroup]="createABForm"
+                    (ngSubmit)="onSubmitAB(createABForm.value)">
                     <section class="form-block">
 
-                        <clr-stack-label>You have selected the following samples for inclusion in a new Analysis Batch:</clr-stack-label>
+                        <clr-stack-label>You have selected the following samples for inclusion in a new Analysis Batch:
+                        </clr-stack-label>
 
                         <ul class="list compact">
                             <li *ngFor="let sample of selected">Sample {{sample.id}} ({{sample.study_string}})</li>
@@ -770,12 +870,14 @@
 
                             <div class="form-group">
                                 <label for="abDescInput">Analysis Batch Description</label>
-                                <textarea id="abDescInput" rows="2" formControlName="analysis_batch_description" style="max-width:25em"></textarea>
+                                <textarea id="abDescInput" rows="2" formControlName="analysis_batch_description"
+                                    style="max-width:25em"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="abNotesInput">Analysis Batch Notes</label>
-                                <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
+                                <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes"
+                                    style="max-width:25em"></textarea>
                             </div>
 
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABCreateError">
@@ -790,15 +892,19 @@
 
                             <clr-alert [clrAlertType]="'alert-success'" *ngIf="showABCreateSuccess">
                                 <div clr-alert-item class="alert-item">
-                                    <span class="alert-text">Analysis Batch successfully created. ID: {{createdABID}}</span>
+                                    <span class="alert-text">Analysis Batch successfully created. ID:
+                                        {{createdABID}}</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="showHideABModal = false; showABCreateSuccess = false; resetFlags();">Close</a>
+                                        <a class="alert-action"
+                                            (click)="showHideABModal = false; showABCreateSuccess = false; resetFlags();">Close</a>
                                     </div>
                                 </div>
                             </clr-alert>
 
-                            <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                            <button class="btn btn-info" (click)="showHideABModal= !showHideABModal; resetFlags();">Close</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="createABForm.invalid"
+                                [clrLoading]="submitLoading">Submit</button>
+                            <button class="btn btn-info"
+                                (click)="showHideABModal= !showHideABModal; resetFlags();">Close</button>
 
                     </section>
                 </form>
@@ -824,7 +930,8 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <form class="compact" [formGroup]="createFCSVForm" (ngSubmit)="onSubmitFCSV('add', createFCSVForm.value)">
+                <form class="compact" [formGroup]="createFCSVForm"
+                    (ngSubmit)="onSubmitFCSV('add', createFCSVForm.value)">
                     <section class="form-block">
 
                         <div formArrayName="fcsv_array">
@@ -842,25 +949,30 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row" *ngFor="let fcsv of fcsvArray.controls, let i = index" [formGroupName]="i">
+                            <div class="form-group row" *ngFor="let fcsv of fcsvArray.controls, let i = index"
+                                [formGroupName]="i">
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Sample {{fcsv.controls.sample.value}}</label>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <input class="form-control" type="text" placeholder="FCSV" size="10" class="fcsv-input" formControlName="final_concentrated_sample_volume">
+                                    <input class="form-control" type="text" placeholder="FCSV" size="10"
+                                        class="fcsv-input" formControlName="final_concentrated_sample_volume">
                                     <div class="select">
                                         <select id="fcsvUnitSelect" formControlName="fcsv_units">
-                                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+                                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 select">
                                     <select formControlName="concentration_type">
-                                        <option *ngFor="let type of concentrationTypes" [value]="type.id">{{type.name}}</option>
+                                        <option *ngFor="let type of concentrationTypes" [value]="type.id">{{type.name}}
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                    <input class="form-control" type="text" placeholder="FCSV Notes" size="35" formControlName="notes">
+                                    <input class="form-control" type="text" placeholder="FCSV Notes" size="35"
+                                        formControlName="notes">
                                 </div>
                             </div>
 
@@ -868,21 +980,25 @@
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                     <label>Update units for all samples</label>
                                     <div class="select">
-                                        <select id="fcsvUnitSelectBulk" (change)="onFCSVUnitSelectBulk($event.target.value)">
+                                        <select id="fcsvUnitSelectBulk"
+                                            (change)="onFCSVUnitSelectBulk($event.target.value)">
                                             <option [value]="null"></option>
-                                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+                                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <br>
-                            <label>Note: FCSV is converted to milliliters (mL) for storage and results calculation. </label>
+                            <label>Note: FCSV is converted to milliliters (mL) for storage and results calculation.
+                            </label>
 
                         </div>
 
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="fcsvValuesMissingFlag">
                             <div clr-alert-item class="alert-item">
-                                <span class="alert-text">Values missing. Each sample selected must have a final concentrated
+                                <span class="alert-text">Values missing. Each sample selected must have a final
+                                    concentrated
                                     sample volume value, input units, and a concentration type selected.</span>
                             </div>
                         </clr-alert>
@@ -901,13 +1017,16 @@
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">FCSV records successfully submitted.</span>
                                 <div class="alert-actions">
-                                    <a class="alert-action" (click)="editFCSVModalActive = false; showFCSVCreateSuccess = false; resetFlags();">Close</a>
+                                    <a class="alert-action"
+                                        (click)="editFCSVModalActive = false; showFCSVCreateSuccess = false; resetFlags();">Close</a>
                                 </div>
                             </div>
                         </clr-alert>
 
-                        <button class="btn btn-primary" type="submit" [disabled]="createFCSVForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                        <button class="btn btn-info" (click)="addFCSVModalActive = !addFCSVModalActive; resetFlags();">Close</button>
+                        <button class="btn btn-primary" type="submit" [disabled]="createFCSVForm.invalid"
+                            [clrLoading]="submitLoading">Submit</button>
+                        <button class="btn btn-info"
+                            (click)="addFCSVModalActive = !addFCSVModalActive; resetFlags();">Close</button>
 
                     </section>
 
@@ -930,7 +1049,8 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <form id="editFCSVForm" class="compact" [formGroup]="editFCSVForm" (ngSubmit)="onSubmitFCSV('edit',editFCSVForm.value)">
+                <form id="editFCSVForm" class="compact" [formGroup]="editFCSVForm"
+                    (ngSubmit)="onSubmitFCSV('edit',editFCSVForm.value)">
                     <section class="form-block">
 
                         <div class="form-group">
@@ -944,7 +1064,8 @@
                             <label for="concentrationTypeSelect">
                                 <div class="select">
                                     <select id="concentrationTypeSelect" formControlName="concentration_type">
-                                        <option *ngFor="let type of concentrationTypes" [value]="type.id">{{type.name}}</option>
+                                        <option *ngFor="let type of concentrationTypes" [value]="type.id">{{type.name}}
+                                        </option>
                                     </select>
                                 </div>
                             </label>
@@ -952,7 +1073,8 @@
 
                         <div class="form-group">
                             <label for="fcsvNotesInput">Notes</label>
-                            <textarea id="fcsvNotesInput" rows="2" formControlName="notes" style="max-width:25em" formControlName="notes"></textarea>
+                            <textarea id="fcsvNotesInput" rows="2" formControlName="notes" style="max-width:25em"
+                                formControlName="notes"></textarea>
                         </div>
 
                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showFCSVEditError">
@@ -969,13 +1091,16 @@
                             <div clr-alert-item class="alert-item">
                                 <span class="alert-text">FCSV successfully updated.</span>
                                 <div class="alert-actions">
-                                    <a class="alert-action" (click)="editFCSVModalActive = false; showFCSVEditSuccess = false; resetFlags();">Close</a>
+                                    <a class="alert-action"
+                                        (click)="editFCSVModalActive = false; showFCSVEditSuccess = false; resetFlags();">Close</a>
                                 </div>
                             </div>
                         </clr-alert>
 
-                        <button class="btn btn-primary" type="submit" [disabled]="editFCSVForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                        <button class="btn btn-info" (click)="editFCSVModalActive = !editFCSVModalActive; resetFlags();">Close</button>
+                        <button class="btn btn-primary" type="submit" [disabled]="editFCSVForm.invalid"
+                            [clrLoading]="submitLoading">Submit</button>
+                        <button class="btn btn-info"
+                            (click)="editFCSVModalActive = !editFCSVModalActive; resetFlags();">Close</button>
                     </section>
                 </form>
             </div>
@@ -1031,7 +1156,8 @@
 
                 <div class="form-group">
                     <label for="aliquotCount" class="required">Aliquots per Sample</label>
-                    <input id="aliquotCount" type="number" min="1" formControlName="aliquots_per_sample" class="input-small-number">
+                    <input id="aliquotCount" type="number" min="1" formControlName="aliquots_per_sample"
+                        class="input-small-number">
                 </div>
 
                 <div class="form-group">
@@ -1065,10 +1191,13 @@
                         <ng-container>
                             <clr-tree-node>
                                 <label>Choose starting location for aliquots. Maximum value is displayed to the right of
-                                    each input. Next available box is always shown. If the study of the current sample selection
+                                    each input. Next available box is always shown. If the study of the current sample
+                                    selection
                                     has any aliquots already stored, current box for the study is shown. Select share of
-                                    total aliquots for each box. Suggested starting locations (based on current freezer status)
-                                    are provided but can be changed. Note that sample-aliquot sets are not split across boxes.
+                                    total aliquots for each box. Suggested starting locations (based on current freezer
+                                    status)
+                                    are provided but can be changed. Note that sample-aliquot sets are not split across
+                                    boxes.
                                     In order to enforce this, the maximum share of total for the current box may be less
                                     than spots available in that box.
                                 </label>
@@ -1100,22 +1229,26 @@
                 <div class="form-group row">
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="rack" class="required">Rack</label>
-                        <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}" formControlName="rack">
+                        <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}"
+                            formControlName="rack">
                         <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="box" class="required">Box</label>
-                        <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}" formControlName="box">
+                        <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}"
+                            formControlName="box">
                         <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="row" class="required">Row</label>
-                        <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}" formControlName="row">
+                        <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}"
+                            formControlName="row">
                         <span class="max-size-indicator">Max {{currentFreezerDimensions.rows}}</span>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="spot" class="required">Spot</label>
-                        <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}" formControlName="spot">
+                        <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}"
+                            formControlName="spot">
                         <span class="max-size-indicator">Max {{currentFreezerDimensions.spots}}</span>
                     </div>
                 </div>
@@ -1124,7 +1257,8 @@
             <section class="form-block" formGroupName="next_empty_box">
                 <label>
                     <span class="box-section-label">Next Available Box&nbsp;</span>|
-                    <span>&nbsp;Available spots: {{this.freezeForm.get('next_empty_box').get('available_spots_in_box').value}}
+                    <span>&nbsp;Available spots:
+                        {{this.freezeForm.get('next_empty_box').get('available_spots_in_box').value}}
                     </span>
                 </label>
                 <div class="form-group row">
@@ -1138,22 +1272,26 @@
                 <div class="form-group row">
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="rack" class="required">Rack</label>
-                        <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}" formControlName="rack">
+                        <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}"
+                            formControlName="rack">
                         <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="box" class="required">Box</label>
-                        <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}" formControlName="box">
+                        <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}"
+                            formControlName="box">
                         <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="row" class="required">Row</label>
-                        <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}" formControlName="row">
+                        <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}"
+                            formControlName="row">
                         <span class="max-size-indicator">Max {{currentFreezerDimensions.rows}}</span>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="spot" class="required">Spot</label>
-                        <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}" formControlName="spot">
+                        <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}"
+                            formControlName="spot">
                         <span class="max-size-indicator">Max {{currentFreezerDimensions.spots}}</span>
                     </div>
                 </div>
@@ -1172,7 +1310,8 @@
 
                 <clr-alert [clrAlertType]="'alert-danger'" *ngIf="aliquotCountErrorFlag ">
                     <div clr-alert-item class="alert-item">
-                        <span class="alert-text">The aliquot share count exceeds total number of aliquots expected. Please
+                        <span class="alert-text">The aliquot share count exceeds total number of aliquots expected.
+                            Please
                             adjust and submit again.</span>
                         <!-- <div class="alert-actions">
                             <a class="alert-action" (click)="onSubmitFreezerLocation(freezeForm.value)">Try again</a>
@@ -1184,12 +1323,15 @@
                     <div clr-alert-item class="alert-item">
                         <span class="alert-text">Sample aliquot records and locations successfully submitted.</span>
                         <div class="alert-actions">
-                            <a class="alert-action" (click)="freezerLocationAssignModalActive = false; freezeSuccessFlag = false; resetFlags();">Close</a>
+                            <a class="alert-action"
+                                (click)="freezerLocationAssignModalActive = false; freezeSuccessFlag = false; resetFlags();">Close</a>
                         </div>
                     </div>
                 </clr-alert>
-                <button type="button" class="btn btn-outline" (click)="freezerLocationAssignModalActive = !freezerLocationAssignModalActive; resetFlags()">Close</button>
-                <button type="submit" class="btn btn-primary" [disabled]="freezeForm.invalid" [clrLoading]="submitLoading">Submit</button>
+                <button type="button" class="btn btn-outline"
+                    (click)="freezerLocationAssignModalActive = !freezerLocationAssignModalActive; resetFlags()">Close</button>
+                <button type="submit" class="btn btn-primary" [disabled]="freezeForm.invalid"
+                    [clrLoading]="submitLoading">Submit</button>
 
             </section>
         </form>
@@ -1227,7 +1369,8 @@
                             <tr *ngFor="let sample of selected">
                                 <td class="left">{{sample.id}}</td>
                                 <td class="left">
-                                    <span *ngIf="sample.aliquots[0]">{{sample.aliquots[0].freezer_location.freezer}}</span>
+                                    <span
+                                        *ngIf="sample.aliquots[0]">{{sample.aliquots[0].freezer_location.freezer}}</span>
                                 </td>
                                 <td class="left">
                                     <span *ngIf="sample.aliquots[0]">{{sample.aliquots[0].freezer_location.rack}}</span>
@@ -1277,11 +1420,13 @@
                                 </tr>
                                 <tr>
                                     <th>Dilution Factor</th>
-                                    <td>{{inhibition.dilution_factor == null ? "Not Calculated": inhibition.dilution_factor}}</td>
+                                    <td>{{inhibition.dilution_factor == null ? "Not Calculated": inhibition.dilution_factor}}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Inhibition Type</th>
-                                    <td>{{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}</td>
+                                    <td>{{inhibition.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes}}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1310,9 +1455,11 @@
                 <br>
                 <div>
                     <button class="btn btn-primary" (click)="assignFreezerLocation(selected)">
-                        <clr-icon shape="plus"></clr-icon> Create</button>
+                        <clr-icon shape="plus"></clr-icon> Create
+                    </button>
                     <button class="btn btn-primary" (click)="lookupFreezerLocation()">
-                        <clr-icon shape="search"></clr-icon> Lookup</button>
+                        <clr-icon shape="search"></clr-icon> Lookup
+                    </button>
                 </div>
             </div>
         </div>
@@ -1341,7 +1488,8 @@
         <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Existing FCSV Error
     </h3>
     <div class="modal-body">
-        <p>One or more samples in your selection already has a final concentrated sample volume recorded. Please adjust selection.</p>
+        <p>One or more samples in your selection already has a final concentrated sample volume recorded. Please adjust
+            selection.</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="showHideFCSVExistsErrorModal = false">Return</button>
@@ -1379,8 +1527,10 @@
                             <div *ngIf="sample.aliquots.length > 0">
 
                                 <div class="checkbox-inline" *ngFor="let aliquot of sample.aliquots">
-                                    <input type="checkbox" checked [attr.id]="'aliquot' + aliquot.aliquot_string" [value]="aliquot.aliquot_string" (change)="includeExcludeLabel($event.target)">
-                                    <label [attr.for]="'aliquot' + aliquot.aliquot_string">{{aliquot.aliquot_string}}</label>
+                                    <input type="checkbox" checked [attr.id]="'aliquot' + aliquot.aliquot_string"
+                                        [value]="aliquot.aliquot_string" (change)="includeExcludeLabel($event.target)">
+                                    <label
+                                        [attr.for]="'aliquot' + aliquot.aliquot_string">{{aliquot.aliquot_string}}</label>
                                     <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 </div>
 
@@ -1401,9 +1551,11 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHidePrintModal = !showHidePrintModal; resetFlags();">Close</button>
+        <button type="button" class="btn btn-outline"
+            (click)="showHidePrintModal = !showHidePrintModal; resetFlags();">Close</button>
         <button type="submit" class="btn btn-primary" (click)="createLabelPDF()">
-            <clr-icon shape="list"></clr-icon> Preview & Print Labels</button>
+            <clr-icon shape="list"></clr-icon> Preview & Print Labels
+        </button>
     </div>
 </clr-modal>
 <!-- end print modal -->
@@ -1414,7 +1566,8 @@
         <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> Missing FCSV Error
     </h3>
     <div class="modal-body">
-        <p>One or more samples in your selection lacks a value for final concentrated sample volume where one is required.
+        <p>One or more samples in your selection lacks a value for final concentrated sample volume where one is
+            required.
             FCSV is a prerequisite to creation and storage of aliquots for samples with the matrix water, wastewater, or
             forage/sediment/soil. Please add an FCSV for samples of those matrices in your selection and try again. </p>
     </div>
@@ -1433,7 +1586,8 @@
         <p>You many only freeze one sample at a time. Please reduce your selection to one sample and try again. </p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showHideMultipleSamplesErrorModal = false">Return</button>
+        <button type="button" class="btn btn-outline"
+            (click)="showHideMultipleSamplesErrorModal = false">Return</button>
     </div>
 </clr-modal>
 <!-- end freeze warning modal -->
@@ -1445,7 +1599,8 @@
         <sample-label #sampleLabel></sample-label>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="showLabelModal = !showLabelModal; resetFlags()">Close</button>
+        <button type="button" class="btn btn-outline"
+            (click)="showLabelModal = !showLabelModal; resetFlags()">Close</button>
     </div>
 </clr-modal>
 <!-- end SampleLabelModal -->
@@ -1458,7 +1613,9 @@
 
             <div class="form-group">
                 <label [ngClass]="{'required': addSampleForm.get('study').enabled}">Study</label>
-                <label for="studySelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
+                <label for="studySelect" aria-haspopup="true" role="tooltip"
+                    class="tooltip tooltip-validation tooltip-sm"
+                    [class.invalid]="addSampleForm.get('study').invalid && (addSampleForm.get('study').dirty || addSampleForm.get('study').touched)">
                     <div class="select">
                         <select id="studySelect" name="study" formControlName="study">
                             <option value="">
@@ -1510,7 +1667,8 @@
                         <option value="">
                             <span class="all">ALL SAMPLE TYPES</span>
                         </option>
-                        <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
+                        <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}
+                        </option>
                     </select>
                 </div>
             </div>
@@ -1519,7 +1677,8 @@
 
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleQuerySizeErrorFlag">
             <div class="alert-item">
-                <span class="alert-text">Your query results are too large (greater than {{queryCountLimit}}). Please narrow
+                <span class="alert-text">Your query results are too large (greater than {{queryCountLimit}}). Please
+                    narrow
                     your search.</span>
             </div>
         </clr-alert>
@@ -1543,28 +1702,49 @@
             <clr-dg-action-bar>
                 <div class="btn-group">
                     <button class="btn btn-sm btn-secondary" (click)="addSample()">
-                        <clr-icon shape="plus"></clr-icon> Add Sample</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editSample(selected[0])">
-                        <clr-icon shape="note-edit" size="16"></clr-icon> Edit Sample</button>
+                        <clr-icon shape="plus"></clr-icon> Add Sample
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary"
+                        [disabled]="selected.length == 0 || selected.length > 1" (click)="editSample(selected[0])">
+                        <clr-icon shape="note-edit" size="16"></clr-icon> Edit Sample
+                    </button>
                     <button class="btn btn-sm btn-secondary" (click)="showHideAddPegNeg = !showHideAddPegNeg">
-                        <clr-icon shape="plus"></clr-icon> Add Peg Neg</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createAB(selected)">
-                        <clr-icon shape="plus"></clr-icon> Create Analysis Batch</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="createFCSV(selected)">
-                        <clr-icon shape="plus"></clr-icon> Add FCSV</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="editFCSV(selected)">
-                        <clr-icon shape="note-edit"></clr-icon> Edit FCSV</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openFreezerChoice()">
-                        <clr-icon shape="thermometer"></clr-icon> Freezer</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1" (click)="openInhibitionModal(selected)"
+                        <clr-icon shape="plus"></clr-icon> Add Peg Neg
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1"
+                        (click)="createAB(selected)">
+                        <clr-icon shape="plus"></clr-icon> Create Analysis Batch
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1"
+                        (click)="createFCSV(selected)">
+                        <clr-icon shape="plus"></clr-icon> Add FCSV
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary"
+                        [disabled]="selected.length == 0 || selected.length > 1" (click)="editFCSV(selected)">
+                        <clr-icon shape="note-edit"></clr-icon> Edit FCSV
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1"
+                        (click)="openFreezerChoice()">
+                        <clr-icon shape="thermometer"></clr-icon> Freezer
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary"
+                        [disabled]="selected.length == 0 || selected.length > 1" (click)="openInhibitionModal(selected)"
                         [clrLoading]="sampleInhibitionsLoadingFlag">
-                        <clr-icon shape="view-list"></clr-icon> View Inhibitions</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1" (click)="openPrintLabelModal(selected)">
-                        <clr-icon shape="printer"></clr-icon> Print Labels</button>
+                        <clr-icon shape="view-list"></clr-icon> View Inhibitions
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length < 1"
+                        (click)="openPrintLabelModal(selected)">
+                        <clr-icon shape="printer"></clr-icon> Print Labels
+                    </button>
                     <!-- <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected.length == 0 || selected.length > 1">
                         <clr-icon shape="trash"></clr-icon> Delete Sample</button> -->
                     <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
-                        <clr-icon shape="window-close" size="16"></clr-icon> Deselect All</button>
+                        <clr-icon shape="window-close" size="16"></clr-icon> Deselect All
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" (click)="exportToCSV()">
+                        <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                    </button>
+
 
                 </div>
             </clr-dg-action-bar>
@@ -1576,7 +1756,7 @@
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <clr-dg-column>
+            <clr-dg-column [clrDgField]="'analysisbatches'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Analysis Batches
                 </ng-container>
@@ -1589,21 +1769,27 @@
             </clr-dg-column>
 
             <clr-dg-column [clrDgField]="'study_string'">
-                Study
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Study
+                </ng-container>
                 <clr-dg-filter [clrDgFilter]="studyFilter">
                     <study-filter #studyFilter></study-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'sample_type'">
-                Sample Type
+            <clr-dg-column [clrDgField]="'sample_type_string'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Sample Type
+                </ng-container>
                 <clr-dg-filter [clrDgFilter]="sampleTypeFilter">
                     <sample-type-filter #sampleTypeFilter></sample-type-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'record_type'">
-                Record Type
+            <clr-dg-column [clrDgField]="'record_type_string'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Record Type
+                </ng-container>
                 <clr-dg-filter [clrDgFilter]="recordTypeFilter">
                     <record-type-filter #recordTypeFilter></record-type-filter>
                 </clr-dg-filter>
@@ -1615,38 +1801,40 @@
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'matrix'">
-                Matrix
+            <clr-dg-column [clrDgField]="'matrix_string'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Matrix
+                </ng-container>
                 <clr-dg-filter [clrDgFilter]="matrixTypeFilter">
                     <matrix-type-filter #matrixTypeFilter></matrix-type-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
-            <clr-dg-column>
+            <clr-dg-column [clrDgField]="'filter_flag'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     Filtered
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column>
+            <clr-dg-column [clrDgField]="'secondary_concentration_flag'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     2° Conc
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column>
+            <clr-dg-column [clrDgField]="'fcsv'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     FCSV (mL)
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_type'">
+            <clr-dg-column [clrDgField]="'fcsv_concentration_type_string'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     FCSV Type
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'final_concentrated_sample_volume_notes'">
+            <clr-dg-column [clrDgField]="'fcsv_notes'">
                 <ng-container *clrDgHideableColumn="{hidden: false}">
                     FCSV Notes
                 </ng-container>
@@ -1682,31 +1870,42 @@
                 </ng-container>
             </clr-dg-column>
 
-            <clr-dg-column [clrDgField]="'filter_type'">
-                Filter Type
+            <clr-dg-column [clrDgField]="'filter_type_string'">
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Filter Type
+                </ng-container>
                 <clr-dg-filter [clrDgFilter]="filterTypeFilter">
                     <filter-type-filter #filterTypeFilter></filter-type-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
             <clr-dg-column [clrDgField]="'filter_born_on_date'">
-                Filter Born On Date
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Filter Born On Date
+                </ng-container>
                 <clr-dg-filter [clrDgFilter]="filterBornOnDateFilter">
-                    <filter-born-on-date-filter [dateField]="'filter_born_on_date'" #filterBornOnDateFilter></filter-born-on-date-filter>
+                    <filter-born-on-date-filter [dateField]="'filter_born_on_date'" #filterBornOnDateFilter>
+                    </filter-born-on-date-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
             <clr-dg-column [clrDgField]="'collection_start_date'">
-                Collect Start Date
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Collect Start Date
+                </ng-container>
                 <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
-                    <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
+                    <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter>
+                    </collection-start-date-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
             <clr-dg-column [clrDgField]="'collection_end_date'">
-                Collect End Date
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Collect End Date
+                </ng-container>
                 <clr-dg-filter [clrDgFilter]="collectionEndDateFilter">
-                    <collection-end-date-filter [dateField]="'collection_end_date'" #collectionEndDateFilter></collection-end-date-filter>
+                    <collection-end-date-filter [dateField]="'collection_end_date'" #collectionEndDateFilter>
+                    </collection-end-date-filter>
                 </clr-dg-filter>
             </clr-dg-column>
 
@@ -1735,7 +1934,9 @@
             </clr-dg-column>
 
             <clr-dg-column [clrDgField]="'created_date'">
-                Date Added
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Date Added
+                </ng-container>
                 <clr-dg-filter [clrDgFilter]="dateAddedFilter">
                     <date-added-filter [dateField]="'created_date'" #dateAddedFilter></date-added-filter>
                 </clr-dg-filter>
@@ -1748,7 +1949,9 @@
             </clr-dg-column>
 
             <clr-dg-column [clrDgField]="'modified_date'">
-                Date Updated
+                <ng-container *clrDgHideableColumn="{hidden: false}">
+                    Date Updated
+                </ng-container>
                 <clr-dg-filter [clrDgFilter]="dateUpdatedFilter">
                     <date-updated-filter [dateField]="'modified_date'" #dateUpdatedFilter></date-updated-filter>
                 </clr-dg-filter>
@@ -1766,20 +1969,22 @@
                 <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.study_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.sample_type_string}}</clr-dg-cell>
-                <clr-dg-cell>{{sample.record_type | displayValue:'name':this.recordTypes}}</clr-dg-cell>
+                <!-- <clr-dg-cell>{{sample.record_type | displayValue:'name':this.recordTypes}}</clr-dg-cell> -->
+                <clr-dg-cell>{{sample.record_type_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.sample_description}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.matrix_string}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
                 <clr-dg-cell>
-                    <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.final_concentrated_sample_volume
-                        | number : '1.2-6' }}</span>
+                    <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.fcsv | number : '1.2-6' }}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>
-                    <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.concentration_type}}</span>
+                    <span
+                        *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.fcsv_concentration_type_string}}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>
-                    <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.final_concentrated_sample_volume.notes}}</span>
+                    <span
+                        *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.fcsv_notes}}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>{{sample.total_volume_or_mass_sampled | number : '1.2-6' }}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial | number : '1.2-6' }} {{sample.meter_reading_unit

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormArray, Validators, PatternValidator } from '@angular/forms';
 
 import { ISample } from './sample';
@@ -28,6 +28,8 @@ import { UserService } from '../SHARED/user.service';
 import { AnalysisBatchService } from '../analysis-batches/analysis-batch.service';
 
 import { StudyFilter } from '../FILTERS/study-filter/study-filter.component'
+
+import { DatagridColumn } from "clarity-angular";
 
 import { APP_UTILITIES } from '../app.utilities';
 import { APP_SETTINGS } from '../app.settings';
@@ -170,6 +172,38 @@ export class SamplesComponent implements OnInit {
 
   nucleicAcidTypes = [];
 
+  exportColumns = [
+    { fieldName: 'id', colName: "Sample ID" },
+    { fieldName: 'analysisbatches', colName: "Analysis Batches" },
+    { fieldName: 'collaborator_sample_id', colName: "Collaborator Sample ID" },
+    { fieldName: 'study_string', colName: "Study" },
+    { fieldName: 'sample_type_string', colName: "Sample Type" },
+    { fieldName: 'record_type_string', colName: "Record Type" },
+    { fieldName: 'sample_description', colName: "Sample Description" },
+    { fieldName: 'matrix_string', colName: "Matrix" },
+    { fieldName: 'filter_flag', colName: "Filtered" },
+    { fieldName: 'secondary_concentration_flag', colName: "Secondary Concentration" },
+    { fieldName: 'fcsv', colName: "FCSV (mL)" },
+    { fieldName: 'fcsv_concentration_type_string', colName: "FCSV Type" },
+    { fieldName: 'fcsv_notes', colName: "FCSV Notes" },
+    { fieldName: 'total_volume_or_mass_sampled', colName: "Total Volume Sampled (L)" },
+    { fieldName: 'meter_reading_initial', colName: "IMR" },
+    { fieldName: 'meter_reading_final', colName: "FMR" },
+    { fieldName: 'dissolution_volume', colName: "Dissolution Volume (mL)" },
+    { fieldName: 'post_dilution_volume', colName: "Volume After Dilution (uL)" },
+    { fieldName: 'filter_type_string', colName: "Filter Type" },
+    { fieldName: 'filter_born_on_date', colName: "Filter Born On Date" },
+    { fieldName: 'collection_start_date', colName: "Collect Start Date" },
+    { fieldName: 'collection_end_date', colName: "Collect End Date" },
+    { fieldName: 'study_site_name', colName: "Study Site Name" },
+    { fieldName: 'sampler_name', colName: "Sampler Name" },
+    { fieldName: 'sample_notes', colName: "Sample Notes" },
+    { fieldName: 'created_by', colName: "Added by" },
+    { fieldName: 'created_date', colName: "Date Added" },
+    { fieldName: 'modified_by ', colName: "Updated by" },
+    { fieldName: 'modified_date', colName: "Date Updated" }
+  ]
+
   // edit sample form
   editSampleForm = new FormGroup({
     // the following controls apply to every sample record, regardless of matrix selected
@@ -261,6 +295,8 @@ export class SamplesComponent implements OnInit {
     final_concentrated_sample_volume: new FormControl(null),
     notes: new FormControl('')
   });
+
+  @ViewChildren(DatagridColumn) columns: QueryList<DatagridColumn>;
 
   buildFreezeForm() {
     this.freezeForm = this.formBuilder.group({
@@ -535,6 +571,47 @@ export class SamplesComponent implements OnInit {
 
   deselectAll() {
     this.selected = [];
+  }
+
+  exportToCSV() {
+    const hiddenColumns = this.gethiddenColumns();
+    let slaveArray = [];
+    let exportData = slaveArray.concat(this.allSamples);
+
+    // new attempt
+    for (let item of exportData) {
+      for (let column of hiddenColumns) {
+        delete item[column.field]
+      }
+    }
+
+    // for (let i = 0; i < exportData.length; i++) {
+    //   for (let column of hiddenColumns) {
+    //     delete exportData[i][column.field]
+    //   }
+    // }
+
+
+
+    // loop through the exportData array
+    // for (let i = 0; i < exportData.length; i++) {
+    //   /// on each item, loop through the hiddenColumns array
+    //   for (let column of hiddenColumns) {
+
+    //     // if the property name of the exportData item matches the hiddenColumn field name, remove it
+    //     let propertyName = Object.getOwnPropertyNames(exportData[i])[i];
+    //     if (propertyName === column.field) {
+    //       delete exportData[i][propertyName];
+    //     }
+    //   }
+    // }
+
+    const filename = 'LIDE_Sample_Data_Report_' + APP_UTILITIES.TODAY + '.csv';
+    APP_UTILITIES.generateCSV({ filename: filename, data: exportData, headers: this.exportColumns });
+  }
+
+  gethiddenColumns() {
+    return this.columns.filter(column => column.hidden);
   }
 
   updatePegnegList() {
@@ -1390,6 +1467,13 @@ export class SamplesComponent implements OnInit {
                   this.samplesCount = count.count;
                   this.sampleQueryComplete = true;
                   this.allSamples = samples
+                  for (let sample of this.allSamples) {
+                    if (sample.final_concentrated_sample_volume) {
+                      sample.fcsv = sample.final_concentrated_sample_volume.final_concentrated_sample_volume;
+                      sample.fcsv_concentration_type_string = sample.final_concentrated_sample_volume.concentration_type_string;
+                      sample.fcsv_notes = sample.final_concentrated_sample_volume.notes;
+                    }
+                  }
                   this.samplesLoading = false;
                   // for (let sample of samples) {
                   //   if (sample.record_type === 2) {
@@ -1719,6 +1803,13 @@ export class SamplesComponent implements OnInit {
                   this.samplesCount = count.count;
                   this.sampleQueryComplete = true;
                   this.allSamples = samples
+                  for (let sample of this.allSamples) {
+                    if (sample.final_concentrated_sample_volume) {
+                      sample.fcsv = sample.final_concentrated_sample_volume.final_concentrated_sample_volume;
+                      sample.fcsv_concentration_type_string = sample.final_concentrated_sample_volume.concentration_type_string;
+                      sample.fcsv_notes = sample.final_concentrated_sample_volume.notes;
+                    }
+                  }
                   this.samplesLoading = false;
                   // for (let sample of samples) {
                   //   if (sample.record_type === 2) {
