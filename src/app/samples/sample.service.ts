@@ -169,6 +169,29 @@ export class SampleService {
 
   }
 
+  public queryFinalSampleMeanConcentrations(queryObject): Observable<any> {
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    let queryString = '';
+    queryString += '?sample=';
+    for (let sample of queryObject.samples) {
+      queryString += ((sample.toString()) + ',')
+    }
+    queryString = queryString.slice(0, -1);
+    queryString += '&target=';
+    for (let target of queryObject.targets) {
+      queryString += ((target.toString()) + ',')
+    }
+    queryString = queryString.slice(0, -1);
+
+    return this._http.get(APP_SETTINGS.SAMPLES_URL + 'finalsamplemeanconcentrations/' + queryString, options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError);
+
+  }
+
   public create(formValue: ISample): Observable<ISample> {
 
     let options = new RequestOptions({
