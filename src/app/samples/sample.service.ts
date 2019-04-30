@@ -104,6 +104,9 @@ export class SampleService {
     if (queryFormValue.record_type !== null && queryFormValue.record_type !== '') {
       queryString = queryString + '&record_type=' + queryFormValue.record_type.toString();
     }
+    if (queryFormValue.peg_neg !== null && queryFormValue.peg_neg !== '') {
+      queryString = queryString + '&peg_neg=' + queryFormValue.peg_neg.toString();
+    }
 
     let options = new RequestOptions({
       headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
@@ -144,6 +147,9 @@ export class SampleService {
     }
     if (queryFormValue.record_type !== null && queryFormValue.record_type !== '') {
       queryString = queryString + '&record_type=' + queryFormValue.record_type.toString();
+    }
+    if (queryFormValue.peg_neg !== null && queryFormValue.peg_neg !== '') {
+      queryString = queryString + '&peg_neg=' + queryFormValue.peg_neg.toString();
     }
 
     let options = new RequestOptions({
