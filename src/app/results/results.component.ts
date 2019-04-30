@@ -20,6 +20,8 @@ import { APP_SETTINGS } from '../app.settings';
 import { APP_UTILITIES } from '../app.utilities';
 
 import { FinalSampleMeanConcentrationService } from './final-sample-mean-concentration.service';
+import { sample } from 'rxjs/operators';
+import { sampleTime } from 'rxjs/operator/sampleTime';
 
 @Component({
   selector: 'app-results',
@@ -86,13 +88,14 @@ export class ResultsComponent implements OnInit, AfterViewInit {
   ]
 
   sampleRowColumns = [
-    { fieldName: 'id', colName: "Sample" }
+    { fieldName: 'id', colName: "Sample" },
+    { fieldName: 'collaborator_sample_id', colName: "Collaborator Sample ID" },
+    { fieldName: 'collection_start_date', colName: "Collection Start Date" }
     // array.push the target columns to this array
   ]
 
   targetRowColumns = [
-    { fieldName: 'id', colName: "Sample" },
-    { fieldName: 'collaborator_sample_id', colName: "Collaborator Sample ID" }
+    { fieldName: 'target_string', colName: "Target" },
     // array.push the target columns to this array
   ]
 
@@ -188,13 +191,44 @@ export class ResultsComponent implements OnInit, AfterViewInit {
         break;
       case 'targetRows':
 
-        //TODO: invert the data for targetRow export
-        APP_UTILITIES.generateCSV({ filename: filename, data: this.sampleResults, headers: this.targetRowColumns });
+        this.targetRowColumns = [
+          { fieldName: 'target_string', colName: "" }]
+
+        for (let sample of this.sampleResults) {
+          this.targetRowColumns.push({ fieldName: sample.id.toString(), colName: sample.id.toString() })
+        }
+        // tslint:disable-next-line:max-line-length
+        let targetRowArray = [{ 'target': 'collaborator_sample_id', 'target_string': 'Collaborator Sample ID' }, { 'target': 'collection_start_date', 'target_string': 'Collection Start Date' }];
+        for (let fsmc of this.sampleResults[0].final_sample_mean_concentrations) {
+          // initiate the targetRowArray
+          targetRowArray.push({ 'target': fsmc.target, 'target_string': fsmc.target_string })
+        }
+
+        for (let target of targetRowArray) {
+          for (let sample of this.sampleResults) {
+
+            let sampleID = sample.id.toString();
+            if (target.target === 'collaborator_sample_id') {
+              target[sampleID] = sample.collaborator_sample_id;
+            }
+            if (target.target === 'collection_start_date') {
+              target[sampleID] = sample.collection_start_date;
+            }
+
+            for (let fsmc of sample.final_sample_mean_concentrations) {
+              if (fsmc.target === target.target) {
+                target[sampleID] = fsmc.final_sample_mean_concentration;
+              }
+            }
+          }
+          delete target.target;
+        }
+        console.log(targetRowArray);
+        APP_UTILITIES.generateCSV({ filename: filename, data: targetRowArray, headers: this.targetRowColumns });
         break;
       default:
         this.replicateCategoryString = 'Replicates'
     }
-
 
 
   }
@@ -327,6 +361,13 @@ export class ResultsComponent implements OnInit, AfterViewInit {
               .subscribe(
                 (sampleResults) => {
                   this.sampleResults = sampleResults;
+                  for (let samp of this.sampleResults) {
+                    samp.final_sample_mean_concentrations.sort(function (a, b) {
+                      if (a.target_string < b.target_string) { return -1; }
+                      if (a.target_string > b.target_string) { return 1; }
+                      return 0;
+                    });
+                  }
                   this.sampleResultsLoaded = true;
                   this.sampleResultsLoading = false;
                 },

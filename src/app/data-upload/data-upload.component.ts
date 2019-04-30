@@ -394,7 +394,8 @@ export class DataUploadComponent implements OnInit {
             let formGroup: FormGroup = this.formBuilder.group({
               id: this.formBuilder.control(inh.id),
               sample: this.formBuilder.control(inh.sample),
-              dilution_factor: this.formBuilder.control(inh.suggested_dilution_factor)
+              dilution_factor: this.formBuilder.control(inh.suggested_dilution_factor),
+              cq_value: this.formBuilder.control(inh.cq_value)
             })
             this.inhibitionsArray.push(formGroup);
           }
