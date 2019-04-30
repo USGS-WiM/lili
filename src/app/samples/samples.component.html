@@ -1605,9 +1605,8 @@
 </clr-modal>
 <!-- end SampleLabelModal -->
 
-
+<!-- Begin Sample query form -->
 <div class="card-text">
-    <!-- begin sample query form -->
     <form class="form compact" [formGroup]="sampleQueryForm" (ngSubmit)="onSubmitSampleQuery(sampleQueryForm.value)">
         <section class="form-block">
 
@@ -1673,6 +1672,11 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label>Peg Neg (returns associated samples)</label>
+                <input type="number" formControlName="peg_neg">
+            </div>
+
         </section>
 
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleQuerySizeErrorFlag">
@@ -1686,6 +1690,7 @@
         <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">Filter Samples</button>
     </form>
 </div>
+<!-- End Sample query form -->
 
 <div *ngIf="sampleQueryComplete">
     <h4>Query returned {{samplesCount}} sample records</h4>
@@ -1976,15 +1981,15 @@
                 <clr-dg-cell>{{sample.filter_flag? "Yes" : "No"}}</clr-dg-cell>
                 <clr-dg-cell>{{sample.secondary_concentration_flag ? "Yes" : "No"}}</clr-dg-cell>
                 <clr-dg-cell>
-                    <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.fcsv | number : '1.2-6' }}</span>
+                    <span
+                        *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.fcsv | number : '1.2-6' }}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>
                     <span
                         *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.fcsv_concentration_type_string}}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>
-                    <span
-                        *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.fcsv_notes}}</span>
+                    <span *ngIf="sample.final_concentrated_sample_volume !== null">{{sample.fcsv_notes}}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>{{sample.total_volume_or_mass_sampled | number : '1.2-6' }}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial | number : '1.2-6' }} {{sample.meter_reading_unit

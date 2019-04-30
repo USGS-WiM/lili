@@ -104,6 +104,9 @@ export class SampleService {
     if (queryFormValue.record_type !== null && queryFormValue.record_type !== '') {
       queryString = queryString + '&record_type=' + queryFormValue.record_type.toString();
     }
+    if (queryFormValue.peg_neg !== null && queryFormValue.peg_neg !== '') {
+      queryString = queryString + '&peg_neg=' + queryFormValue.peg_neg.toString();
+    }
 
     let options = new RequestOptions({
       headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
@@ -145,6 +148,9 @@ export class SampleService {
     if (queryFormValue.record_type !== null && queryFormValue.record_type !== '') {
       queryString = queryString + '&record_type=' + queryFormValue.record_type.toString();
     }
+    if (queryFormValue.peg_neg !== null && queryFormValue.peg_neg !== '') {
+      queryString = queryString + '&peg_neg=' + queryFormValue.peg_neg.toString();
+    }
 
     let options = new RequestOptions({
       headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
@@ -165,6 +171,29 @@ export class SampleService {
 
     return this._http.get(APP_SETTINGS.SAMPLES_URL + '?id=' + sampleList, options)
       .map((response: Response) => <ISample[]>response.json())
+      .catch(this.handleError);
+
+  }
+
+  public queryFinalSampleMeanConcentrations(queryObject): Observable<any> {
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    let queryString = '';
+    queryString += '?sample=';
+    for (let sample of queryObject.samples) {
+      queryString += ((sample.toString()) + ',')
+    }
+    queryString = queryString.slice(0, -1);
+    queryString += '&target=';
+    for (let target of queryObject.targets) {
+      queryString += ((target.toString()) + ',')
+    }
+    queryString = queryString.slice(0, -1);
+
+    return this._http.get(APP_SETTINGS.SAMPLES_URL + 'finalsamplemeanconcentrations/' + queryString, options)
+      .map((response: Response) => <any[]>response.json())
       .catch(this.handleError);
 
   }
