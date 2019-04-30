@@ -109,7 +109,8 @@ export class ResultsComponent implements OnInit, AfterViewInit {
       collaborator_sample_id: null,
       sample_type: null,
       matrix: null,
-      record_type: null
+      record_type: null,
+      peg_neg: null
     })
   }
 
