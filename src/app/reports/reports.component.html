@@ -1,16 +1,541 @@
 <div class="row">
-    <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <h3>Reports</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <p>
+            <button class="btn btn-outline" (click)="openReportsQueryWizard()">
+                <clr-icon shape="search"></clr-icon> Open Reports Query Builder
+            </button>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <clr-wizard #reportsQueryWizard [(clrWizardOpen)]="reportsQueryWizardActive">
+                <clr-wizard-title>Reports Query Builder</clr-wizard-title>
+
+                <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+                <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+                <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+                <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+                <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
+                    <ng-template clrPageTitle>Select Samples</ng-template>
+
+                    <!-- Begin sample query form -->
+                    <div class="card-text">
+                        <form class="form compact" [formGroup]="sampleQueryForm"
+                            (ngSubmit)="onSubmitSampleQuery(sampleQueryForm.value)">
+                            <section class="form-block">
+
+                                <div class="form-group">
+                                    <label [ngClass]="{'required': sampleQueryForm.get('study').enabled}">Study</label>
+                                    <label for="studySelect" aria-haspopup="true" role="tooltip"
+                                        class="tooltip tooltip-validation tooltip-sm"
+                                        [class.invalid]="sampleQueryForm.get('study').invalid && (sampleQueryForm.get('study').dirty || sampleQueryForm.get('study').touched)">
+                                        <div class="select">
+                                            <select id="studySelect" name="study" formControlName="study">
+                                                <option value="">
+                                                    <span class="all">ALL STUDIES</span>
+                                                </option>
+                                                <option *ngFor="let study of studies" [value]="study.id">{{study.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Sample ID Range</label>
+                                    <span>From</span>
+                                    <input type="number" formControlName="from_id">
+                                    <span>To</span>
+                                    <input type="number" formControlName="to_id">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Collection Start Date Range</label>
+                                    <span>From</span>
+                                    <input type="date" formControlName="from_collection_start_date">
+                                    <span>To</span>
+                                    <input type="date" formControlName="to_collection_start_date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Collaborator Sample ID</label>
+                                    <input id="collabSampleIdInput" type="text"
+                                        formControlName="collaborator_sample_id">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Peg Neg (returns associated samples)</label>
+                                    <input type="number" formControlName="peg_neg">
+                                </div>
+                                <!-- <div class="form-group">
+                                    <label>Matrix</label>
+                                    <div class="select">
+                                        <select id="matrixSelect" name="matrix" formControlName="matrix">
+                                            <option value="">
+                                                <span class="all">ALL MATRICES</span>
+                                            </option>
+                                            <option *ngFor="let matrix of matrices" [value]="matrix.id">{{matrix.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+    
+                                <div class="form-group">
+                                    <label>Sample type</label>
+                                    <div class="select">
+                                        <select id="sampleTypeSelect" name="sample_type" formControlName="sample_type">
+                                            <option value="">
+                                                <span class="all">ALL SAMPLE TYPES</span>
+                                            </option>
+                                            <option *ngFor="let sampleType of sampleTypes" [value]="sampleType.id">{{sampleType.name}}</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+
+                            </section>
+
+                            <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleQuerySizeErrorFlag">
+                                <div class="alert-item">
+                                    <span class="alert-text">Your query results are too large (greater than
+                                        {{queryCountLimit}}). Please narrow your search.</span>
+                                </div>
+                            </clr-alert>
+
+                            <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">
+                                <clr-icon shape="filter"></clr-icon> Filter Samples
+                            </button>
+                        </form>
+                    </div>
+
+                    <div *ngIf="sampleQueryComplete">
+                        <h4>Query returned {{samplesCount}} sample records</h4>
+                    </div>
+                    <!-- End sample query form -->
+
+
+                    <div class="in-wizard-datagrid">
+                        <clr-datagrid [(clrDgSelected)]="selected" [clrDgLoading]="samplesLoading"
+                            [clDgRowSelection]="true" class="datagrid-compact">
+
+                            <clr-dg-action-bar>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
+                                        <clr-icon shape="window-close" size="16"></clr-icon> Deselect All
+                                    </button>
+                                </div>
+                            </clr-dg-action-bar>
+
+                            <clr-dg-column [clrDgField]="'id'">
+                                Sample ID
+                                <clr-dg-filter [clrDgFilter]="rangeFilter">
+                                    <range-filter #rangeFilter></range-filter>
+                                </clr-dg-filter>
+                            </clr-dg-column>
+
+                            <clr-dg-column [clrDgField]="'collaborator_sample_id'">
+                                <ng-container *clrDgHideableColumn="{hidden: false}">
+                                    Collaborator Sample ID
+                                </ng-container>
+                            </clr-dg-column>
+
+                            <clr-dg-column [clrDgField]="'study_string'">
+                                Study
+                                <clr-dg-filter [clrDgFilter]="studyFilter">
+                                    <study-filter #studyFilter></study-filter>
+                                </clr-dg-filter>
+                            </clr-dg-column>
+
+
+                            <clr-dg-column [clrDgField]="'collection_start_date'">
+                                Collect Start Date
+                                <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
+                                    <collection-start-date-filter [dateField]="'collection_start_date'"
+                                        #CollectionStartDateFilter></collection-start-date-filter>
+                                </clr-dg-filter>
+                            </clr-dg-column>
+
+                            <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
+                                <clr-dg-cell>{{sample.id}}</clr-dg-cell>
+                                <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
+                                <clr-dg-cell>{{sample.study_string}}</clr-dg-cell>
+                                <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
+                            </clr-dg-row>
+
+                            <clr-dg-footer>
+                                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}}
+                                samples
+                                <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+                            </clr-dg-footer>
+                        </clr-datagrid>
+
+                    </div>
+                    <p>
+                        <clr-alert [clrAlertType]="'alert-danger'" *ngIf="sampleSelectErrorFlag">
+                            <div clr-alert-item class="alert-item">
+                                <span class="alert-text">Please select at least one sample to continue.</span>
+                            </div>
+                        </clr-alert>
+
+                        <ng-template clrPageButtons>
+                            <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
+                            <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
+                            <clr-wizard-button [type]="'custom-next-sampleSelect'">Next</clr-wizard-button>
+                        </ng-template>
+                </clr-wizard-page>
+
+                <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
+                    <ng-template clrPageTitle>Select Targets</ng-template>
+                    <div class="in-wizard-datagrid">
+                        <clr-datagrid [(clrDgSelected)]="selected" [clDgRowSelection]="true" class="datagrid-compact">
+
+                            <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+                            <clr-dg-column [clrDgField]="'code'">Code</clr-dg-column>
+                            <clr-dg-column [clrDgField]="'type'">Type</clr-dg-column>
+
+                            <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
+                                <clr-dg-cell>{{target.name}}</clr-dg-cell>
+                                <clr-dg-cell>{{target.code}}</clr-dg-cell>
+                                <clr-dg-cell>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes }}
+                                </clr-dg-cell>
+                            </clr-dg-row>
+
+                            <clr-dg-footer>{{allTargets.length}} targets</clr-dg-footer>
+                        </clr-datagrid>
+                    </div>
+                    <clr-alert [clrAlertType]="'alert-danger'" *ngIf="targetSelectErrorFlag">
+                        <div clr-alert-item class="alert-item">
+                            <span class="alert-text">Please select at least one target to continue.</span>
+                        </div>
+                    </clr-alert>
+                    <ng-template clrPageButtons>
+                        <clr-wizard-button [type]="'custom-cancel'">Cancel</clr-wizard-button>
+                        <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
+                        <clr-wizard-button [type]="'custom-next-targetSelect'">Next</clr-wizard-button>
+                    </ng-template>
+                </clr-wizard-page>
+
+                <clr-wizard-page (clrWizardPageCustomButton)="doCustomClick($event)">
+                    <ng-template clrPageTitle>Query Summary</ng-template>
+                    <label>Samples:</label>
+                    <ul>
+                        <li *ngFor="let sample of reportsQuery.samples">{{sample}}</li>
+                    </ul>
+                    <p>
+                        <label>Targets:</label>
+                        <ul>
+                            <li *ngFor="let target of reportsQuery.targets">{{target | displayValue:'name': allTargets}}
+                            </li>
+                        </ul>
+
+                        <ng-template clrPageButtons>
+                            <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+                            <clr-wizard-button [type]="'custom-previous'">Back</clr-wizard-button>
+                            <clr-wizard-button [type]="'custom-finish'">Finish</clr-wizard-button>
+                        </ng-template>
+
+                </clr-wizard-page>
+            </clr-wizard>
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
+            <div class="card-header">Current Query</div>
             <div class="card-block">
-                <div class="card-title">
-                    Reports
+                <div class="card-title">Samples</div>
+                <div class="row list-section">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 list">
+                        <!-- <label class="text-larger">Samples:&nbsp;</label> -->
+                        <label></label><span *ngFor="let sample of reportsQuery.samples"
+                            class="label list-item">{{sample}}&nbsp;</span><br>
+                    </div>
                 </div>
-                <div class="card-text">
-                    Reports page does not exist yet.
-                    <br><br> (╯°□°)╯︵ ┻━┻  <clr-icon shape="display" dir="right"></clr-icon>
-                    <br> <br>For now, look at this bear.&nbsp;&nbsp;&nbsp;ʕ •ᴥ•ʔ
+                <div class="card-title">Targets</div>
+                <div class="row list-section">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 list">
+                        <!-- <label class="text-larger text-purple">Targets:&nbsp;</label> -->
+                        <label></label><span *ngFor="let target of reportsQuery.targets"
+                            class="label label-purple list-item">{{target | displayValue:'name': allTargets}}&nbsp;</span>
+                    </div>
                 </div>
+
             </div>
         </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="card-header">Report Selection</div>
+            <div class="card-block">
+
+                <form [formGroup]="reportSelectForm">
+                    <section class="form-block">
+                        <!-- <label>Choose Report(s)</label> -->
+                        <div class="form-group">
+                            <label>Choose Report(s)</label>
+                            <div class="checkbox">
+                                <input type="checkbox" id="resultsReportSummary"
+                                    formControlName="results_report_summary">
+                                <label for="resultsReportSummary">Results Report Summary</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="individualSampleReport"
+                                    formControlName="individual_sample_report">
+                                <label for="individualSampleReport">Individual Sample Report</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="qualityControlReport"
+                                    formControlName="quality_control_report">
+                                <label for="qualityControlReport">Quality Control Report</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="controlResultsReport"
+                                    formControlName="controls_result_report">
+                                <label for="controlResultsReport">Controls Results Report</label>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" (click)="generateReports(reportSelectForm.value)">Generate
+                            Reports</button>
+                    </section>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!---------- Loading spinner---------->
+    <span class="spinner spinner-lg" *ngIf="reportsLoading">
+        Generating reports...
+    </span>
+    <!---------- End Loading spinner---------->
+</div>
+
+<div class="row">
+
+    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="fsmcResultsLoaded">
+        There are no results for your query.
+    </div> -->
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+        *ngIf="controlsResultReportLoaded || individualSampleReportLoaded || qualityControlReportLoaded || resultsReportSummaryLoaded">
+
+        <clr-tabs>
+
+            <!--Results Report Summary tab -->
+            <clr-tab>
+                <button clrTabLink>Results Report Summary</button>
+                <clr-tab-content active>
+
+                    <!-- <clr-datagrid [clrDgLoading]="fsmcResultsLoading">
+    
+                            <clr-dg-action-bar>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-secondary" (click)="exportToCSV('fsmc')">
+                                        <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                    </button>
+                                </div>
+                            </clr-dg-action-bar>
+    
+                            <clr-dg-column [clrDgField]="'sample'">
+                                Sample ID
+                                <clr-dg-filter [clrDgFilter]="rangeFilter">
+                                    <range-filter #rangeFilter></range-filter>
+                                </clr-dg-filter>
+                            </clr-dg-column>
+    
+                            <clr-dg-column [clrDgField]="'collaborator_sample_id'">
+                                <ng-container *clrDgHideableColumn="{hidden: false}">
+                                    Collaborator Sample ID
+                                </ng-container>
+                            </clr-dg-column>
+    
+                            <clr-dg-column [clrDgField]="'collection_start_date'">
+                                Collect Start Date
+                                <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
+                                    <collection-start-date-filter [dateField]="'collection_start_date'"
+                                        #CollectionStartDateFilter>
+                                    </collection-start-date-filter>
+                                </clr-dg-filter>
+                            </clr-dg-column>
+    
+                            <clr-dg-column [clrDgField]="'target'">
+                                Target
+                                <clr-dg-filter [clrDgFilter]="targetFilter">
+                                    <target-filter #targetFilter></target-filter>
+                                </clr-dg-filter>
+                            </clr-dg-column>
+    
+                            <clr-dg-column [clrDgField]="'sample_mean_concentration'">
+                                <ng-container *clrDgHideableColumn="{hidden: false}">
+                                    Sample Mean Concentration
+                                </ng-container>
+                            </clr-dg-column>
+    
+                            <clr-dg-column>
+                                <ng-container *clrDgHideableColumn="{hidden: false}">
+                                    Complete Replicates
+                                </ng-container>
+                            </clr-dg-column>
+    
+                            <clr-dg-column>
+                                <ng-container *clrDgHideableColumn="{hidden: false}">
+                                    Incomplete Replicates
+                                </ng-container>
+                            </clr-dg-column>
+    
+                            <clr-dg-row *clrDgItems="let fsmc of fsmcResults" [clrDgItem]="fsmc">
+                                <clr-dg-cell>{{fsmc.sample}}</clr-dg-cell>
+                                <clr-dg-cell>{{fsmc.collaborator_sample_id}}</clr-dg-cell>
+                                <clr-dg-cell>{{fsmc.collection_start_date | date:'shortDate'}}</clr-dg-cell>
+                                <clr-dg-cell>{{fsmc.target | displayValue:'name': allTargets }}</clr-dg-cell>
+                                <clr-dg-cell>
+                                    {{fsmc.final_sample_mean_concentration_sci === "" ? "No Result" : fsmc.final_sample_mean_concentration_sci}}
+                                </clr-dg-cell>
+                                <clr-dg-cell>
+                                    <a class="label label-blue clickable"
+                                        *ngIf="fsmc.sample_target_replicates.positive_concentration_count > 0"
+                                        (click)="openReplicateDetails('positive_concentrations', fsmc)">Positive
+                                        Concentrations&nbsp;<span
+                                            class="badge">{{fsmc.sample_target_replicates.positive_concentration_count}}</span></a>
+                                    <br>
+                                    <a class="label label-blue clickable"
+                                        *ngIf="fsmc.sample_target_replicates.negative_concentration_count > 0"
+                                        (click)="openReplicateDetails('negative_concentrations', fsmc)">Negative
+                                        Concentrations&nbsp;<span
+                                            class="badge">{{fsmc.sample_target_replicates.negative_concentration_count}}</span></a>
+                                </clr-dg-cell>
+                                <clr-dg-cell>
+                                    <a class="label label-blue clickable"
+                                        *ngIf="fsmc.sample_target_replicates.qpcr_results_missing_count > 0"
+                                        (click)="openReplicateDetails('qpcr_results_missing', fsmc)">Missing qPCR
+                                        Values&nbsp;<span
+                                            class="badge">{{fsmc.sample_target_replicates.qpcr_results_missing_count}}</span></a>
+                                    <br>
+                                    <a class="label label-blue clickable"
+                                        *ngIf="fsmc.sample_target_replicates.concentration_calc_values_missing_count > 0"
+                                        (click)="openReplicateDetails('concentration_calc_values_missing', fsmc)">Calculation
+                                        Values
+                                        Missing&nbsp;<span
+                                            class="badge">{{fsmc.sample_target_replicates.concentration_calc_values_missing_count}}</span></a>
+                                    <br>
+                                    <a class="label label-blue clickable"
+                                        *ngIf="fsmc.sample_target_replicates.invalid_count > 0"
+                                        (click)="openReplicateDetails('invalids', fsmc)">Invalid per controls&nbsp;<span
+                                            class="badge">{{fsmc.sample_target_replicates.invalid_count}}</span></a>
+                                </clr-dg-cell>
+                            </clr-dg-row>
+    
+                            <clr-dg-footer>
+                                {{fsmcPagination.firstItem + 1}} - {{fsmcPagination.lastItem + 1}} of
+                                {{fsmcPagination.totalItems}}
+                                results
+                                <clr-dg-pagination #fsmcPagination [clrDgPageSize]="10"></clr-dg-pagination>
+                            </clr-dg-footer>
+                        </clr-datagrid> -->
+
+
+
+                </clr-tab-content>
+            </clr-tab>
+            <!-- End Results Report Summary tab -->
+
+            <!-- Individual Sample Report tab -->
+            <clr-tab>
+                <button clrTabLink (mouseout)="resizeTable()">Individual Sample Report</button>
+                <clr-tab-content class="sample-results-tab" (mouseover)="resizeTable()">
+
+                    <!-- <clr-datagrid #sampleRowDataGrid [clrDgLoading]="sampleResultsLoading">
+    
+                            <clr-dg-action-bar>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-secondary"
+                                        (click)="exportToCSV('sampleRows')">
+                                        <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                    </button>
+                                </div>
+                            </clr-dg-action-bar>
+    
+                            <clr-dg-column [clrDgField]="'id'">
+                                Sample ID
+                                <clr-dg-filter [clrDgFilter]="rangeFilter">
+                                    <range-filter #rangeFilter></range-filter>
+                                </clr-dg-filter>
+                            </clr-dg-column>
+    
+    
+                            <clr-dg-column [clrDgField]="'collaborator_sample_id'">
+                                <ng-container *clrDgHideableColumn="{hidden: false}">
+                                    Collaborator Sample ID
+                                </ng-container>
+                            </clr-dg-column>
+    
+                            <clr-dg-column [clrDgField]="'collection_start_date'">
+                                Collect Start Date
+                                <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
+                                    <collection-start-date-filter [dateField]="'collection_start_date'"
+                                        #CollectionStartDateFilter>
+                                    </collection-start-date-filter>
+                                </clr-dg-filter>
+                            </clr-dg-column>
+    
+                            <clr-dg-column *ngFor="let fsmc of sampleResults[0].final_sample_mean_concentrations"
+                                [clrDgField]="fsmc.target_string">{{fsmc.target_string}}</clr-dg-column>
+    
+                            <clr-dg-row *ngFor="let sample of sampleResults" [clrDgItem]="sample">
+                                <clr-dg-cell>{{sample.id}}</clr-dg-cell>
+                                <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
+                                <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
+                                <clr-dg-cell class="dynamic-column"
+                                    *ngFor="let fsmc of sample.final_sample_mean_concentrations">
+                                    {{fsmc.final_sample_mean_concentration}}</clr-dg-cell>
+                            </clr-dg-row>
+    
+                            <clr-dg-footer>
+                                {{sampleRowPagination.firstItem + 1}} - {{sampleRowPagination.lastItem + 1}} of
+                                {{sampleRowPagination.totalItems}}
+                                results
+                                <clr-dg-pagination #sampleRowPagination [clrDgPageSize]="10"></clr-dg-pagination>
+                            </clr-dg-footer>
+                        </clr-datagrid> -->
+
+
+                </clr-tab-content>
+            </clr-tab>
+            <!-- End Individual Sample Report tab -->
+
+            <!--Quality Control Report tab -->
+            <clr-tab>
+                <button clrTabLink (mouseout)="resizeTable()">Quality Control Report</button>
+                <clr-tab-content (mouseover)="resizeTable()">
+
+                </clr-tab-content>
+            </clr-tab>
+            <!-- End Quality Control Report tab -->
+
+            <!--Control Results tab -->
+            <clr-tab>
+                <button clrTabLink (mouseout)="resizeTable()">Controls Results Report</button>
+                <clr-tab-content (mouseover)="resizeTable()">
+
+                </clr-tab-content>
+            </clr-tab>
+            <!--End Control Results tab -->
+
+        </clr-tabs>
+
     </div>
 </div>

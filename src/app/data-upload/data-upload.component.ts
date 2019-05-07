@@ -549,6 +549,10 @@ export class DataUploadComponent implements OnInit {
         (results) => {
           this.inhibitionUpdateSuccessFlag = true;
           this.inhibitionUpdateErrorFlag = false;
+
+
+          // TODO: submit PATCH to extractionbatch record with inh_pos_cq_value and inh_pos_nucleic_acid_type
+
           this.submitLoading = false;
         },
         error => {
