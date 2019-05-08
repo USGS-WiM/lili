@@ -28,8 +28,6 @@ export class InhibitionService {
   }
 
   public create(formValue): Observable<IInhibition[]> {
-
-
     let options = new RequestOptions({
       headers: APP_SETTINGS.AUTH_JSON_HEADERS
     });
@@ -48,6 +46,25 @@ export class InhibitionService {
     return this._http.patch(APP_SETTINGS.INHIBITIONS_URL, inhibitionArray, options)
       .map((response: Response) => <any[]>response.json())
       .catch(this.handleError);
+  }
+
+  public getInhibitionReport(queryObject): Observable<any> {
+
+    let queryString = '';
+    queryString += '?sample=';
+    for (let sample of queryObject.samples) {
+      queryString += ((sample.toString()) + ',')
+    }
+    queryString = queryString.slice(0, -1);
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.EXTRACTIONS_URL + 'inhibition_report/' + queryString, options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError);
+
   }
 
   private handleError(error: Response) {

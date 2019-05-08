@@ -35,6 +35,31 @@ export class PcrReplicateService {
       .catch(this.handleError);
   }
 
+  getSummaryStatistics(queryObject): Observable<any> {
+    let queryString = '';
+    queryString += '?sample=';
+    for (let sample of queryObject.samples) {
+      queryString += ((sample.toString()) + ',')
+    }
+    queryString = queryString.slice(0, -1);
+    queryString += '&target=';
+    for (let target of queryObject.targets) {
+      queryString += ((target.toString()) + ',')
+    }
+    queryString = queryString.slice(0, -1);
+
+    // TODO: add the stats options to the query string
+
+    let options = new RequestOptions({
+      headers: APP_SETTINGS.AUTH_JSON_HEADERS
+    });
+
+    return this._http.get(APP_SETTINGS.REPLICATES_URL + 'summary_statistics/' + queryString, options)
+      .map((response: Response) => <any[]>response.json())
+      .catch(this.handleError);
+
+  }
+
 
   private handleError(error: Response) {
     console.error(error);

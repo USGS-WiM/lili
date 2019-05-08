@@ -250,12 +250,16 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="card-header">Current Query</div>
-            <div class="card-block">
+            <div class="card-block" *ngIf="reportsQuery.samples.length === 0 && reportsQuery.targets.length === 0">
+                No Samples or Targets Selected
+            </div>
+            <div class="card-block" *ngIf="reportsQuery.samples.length > 0 || reportsQuery.targets.length > 0">
                 <div class="card-title">Samples</div>
                 <div class="row list-section">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 list">
                         <!-- <label class="text-larger">Samples:&nbsp;</label> -->
-                        <label></label><span *ngFor="let sample of reportsQuery.samples"
+                        <label></label><span *ngIf="reportsQuery.samples.length === 0">No Samples Selected </span><span
+                            *ngFor="let sample of reportsQuery.samples"
                             class="label list-item">{{sample}}&nbsp;</span><br>
                     </div>
                 </div>
@@ -263,7 +267,8 @@
                 <div class="row list-section">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 list">
                         <!-- <label class="text-larger text-purple">Targets:&nbsp;</label> -->
-                        <label></label><span *ngFor="let target of reportsQuery.targets"
+                        <label></label><span *ngIf="reportsQuery.targets.length === 0">No Targets Selected </span><span
+                            *ngFor="let target of reportsQuery.targets"
                             class="label label-purple list-item">{{target | displayValue:'name': allTargets}}&nbsp;</span>
                     </div>
                 </div>
@@ -284,26 +289,118 @@
                         <!-- <label>Choose Report(s)</label> -->
                         <div class="form-group">
                             <label>Choose Report(s)</label>
+
+                            <!-- <div class="checkbox">
+                                <input type="checkbox" id="inhibitionReport" formControlName="inhibition_report">
+                                <label for="inhibitionReport">Inhibition Report</label><br><span
+                                    class="text-italic">Requires Sample
+                                    selection</span>
+                            </div>
                             <div class="checkbox">
                                 <input type="checkbox" id="resultsReportSummary"
                                     formControlName="results_report_summary">
-                                <label for="resultsReportSummary">Results Report Summary</label>
+                                <label for="resultsReportSummary">Results Report Summary</label><br><span
+                                    class="text-italic">Requires
+                                    Sample and Target selection</span>
                             </div>
                             <div class="checkbox">
                                 <input type="checkbox" id="individualSampleReport"
                                     formControlName="individual_sample_report">
-                                <label for="individualSampleReport">Individual Sample Report</label>
+                                <label for="individualSampleReport">Individual Sample Report</label><br><span
+                                    class="text-italic">Requires
+                                    Sample and Target selection</span>
                             </div>
                             <div class="checkbox">
                                 <input type="checkbox" id="qualityControlReport"
                                     formControlName="quality_control_report">
-                                <label for="qualityControlReport">Quality Control Report</label>
+                                <label for="qualityControlReport">Quality Control Report</label><br><span
+                                    class="text-italic">Requires
+                                    Sample selection</span>
                             </div>
                             <div class="checkbox">
                                 <input type="checkbox" id="controlResultsReport"
                                     formControlName="controls_result_report">
-                                <label for="controlResultsReport">Controls Results Report</label>
+                                <label for="controlResultsReport">Controls Results Report</label><br><span
+                                    class="text-italic">Requires
+                                    Sample and Target selection</span>
+                            </div> -->
+
+                            <clr-checkbox formControlName="inhibition_report"
+                                [clrDisabled]="reportsQuery.samples.length < 1">
+                                Inhibition Report
+                            </clr-checkbox><br><span class="text-italic">Requires
+                                Sample selection</span>
+
+                            <clr-checkbox formControlName="results_report_summary"
+                                [clrDisabled]="reportsQuery.samples.length < 1 || reportsQuery.targets.length < 1">
+                                Results Report Summary
+                            </clr-checkbox><br><span class="text-italic">Requires
+                                Sample and Target selection</span>
+
+                            <div class="card" *ngIf="reportSelectForm.value.results_report_summary"
+                                formGroupName="results_report_summary_options">
+                                <div class="card-block">
+                                    <div class="card-title">
+                                        <span class="text-smaller">Results Report Summary Statistics Options</span>
+                                    </div>
+                                    <div class="card-text">
+                                        <clr-checkbox [clrInline]="true" formControlName="replicate_count">
+                                            Rep Count
+                                        </clr-checkbox>
+                                        <clr-checkbox [clrInline]="true" formControlName="positive_count">
+                                            Positive Rep Count
+                                        </clr-checkbox>
+                                        <clr-checkbox [clrInline]="true" formControlName="percent_positive">
+                                            Percent Positive
+                                        </clr-checkbox>
+                                        <clr-checkbox [clrInline]="true" formControlName="max_concentration">
+                                            Max Concentration
+                                        </clr-checkbox>
+                                        <clr-checkbox [clrInline]="true" formControlName="min_concentration">
+                                            Min Concentration
+                                        </clr-checkbox>
+                                        <clr-checkbox [clrInline]="true" formControlName="median_concentration">
+                                            Median Concentration
+                                        </clr-checkbox>
+                                        <clr-checkbox [clrInline]="true" formControlName="average_concentration">
+                                            Average Concentration
+                                        </clr-checkbox>
+                                        <clr-checkbox [clrInline]="true" formControlName="min_concentration_positive">
+                                            Min concentration positive reps
+                                        </clr-checkbox>
+                                        <clr-checkbox [clrInline]="true"
+                                            formControlName="median_concentration_positive">
+                                            Median concentration positive reps
+                                        </clr-checkbox>
+                                        <clr-checkbox [clrInline]="true"
+                                            formControlName="average_concentration_positive">
+                                            Average concentration positive reps
+                                        </clr-checkbox>
+                                    </div>
+
+
+                                </div>
                             </div>
+
+                            <clr-checkbox formControlName="individual_sample_report"
+                                [clrDisabled]="reportsQuery.samples.length < 1 || reportsQuery.targets.length < 1">
+                                Individual Sample Report
+                            </clr-checkbox><br><span class="text-italic">Requires
+                                Sample and Target selection</span>
+
+                            <clr-checkbox formControlName="quality_control_report"
+                                [clrDisabled]="reportsQuery.samples.length < 1">
+                                Quality Control Report
+                            </clr-checkbox><br><span class="text-italic">Requires
+                                Sample selection</span>
+
+                            <clr-checkbox formControlName="controls_result_report"
+                                [clrDisabled]="reportsQuery.samples.length < 1 || reportsQuery.targets.length < 1">
+                                Controls Results Report
+                            </clr-checkbox><br><span class="text-italic">Requires
+                                Sample and Target selection</span>
+
+
                         </div>
 
                         <button class="btn btn-primary" (click)="generateReports(reportSelectForm.value)">Generate
@@ -331,9 +428,118 @@
     </div> -->
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
-        *ngIf="controlsResultReportLoaded || individualSampleReportLoaded || qualityControlReportLoaded || resultsReportSummaryLoaded">
+        *ngIf=" inhibitionReportLoaded || controlsResultReportLoaded || individualSampleReportLoaded || qualityControlReportLoaded || resultsReportSummaryLoaded">
 
         <clr-tabs>
+
+            <!--Inhibition Report tab -->
+            <clr-tab>
+                <button clrTabLink (mouseout)="resizeTable()">Inhibition Report</button>
+                <clr-tab-content (mouseover)="resizeTable()">
+
+                    <clr-datagrid [clrDgLoading]="inhibitionReportLoading" #inhibitionReportDataGrid>
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('inhibitionReport')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'sample'">
+                            Sample ID
+                            <clr-dg-filter [clrDgFilter]="rangeFilter">
+                                <range-filter #rangeFilter></range-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'collaborator_sample_id'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Collaborator Sample ID
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'study'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Study
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'analysis_batch'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Analysis Batch
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'extraction_number'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Extraction Number
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'inhibition_dna_cq_value'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                DNA Inhibtion Sample Cq
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'inhibition_dna_control_cq_value'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                DNA Inhibtion Control Cq
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'inhibition_dna_dilution_factor'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                DNA Inhibtion Dilution Factor
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'inhibition_rna_cq_value'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                RNA Inhibtion Sample Cq
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'inhibition_rna_control_cq_value'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                RNA Inhibtion Control Cq
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'inhibition_rna_dilution_factor'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                RNA Inhibtion Dilution Factor
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-row *clrDgItems="let item of inhibitionReportResults" [clrDgItem]="item">
+                            <clr-dg-cell>{{item.sample}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.collaborator_sample_id}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.study}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.analysis_batch}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.extraction_number}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.inhibition_dna_cq_value}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.inhibition_dna_control_value}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.inhibition_dna_dilution_factor}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.inhibition_rna_cq_value}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.inhibition_rna_control_value}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.inhibition_rna_dilution_factor}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{inhibitionPagination.firstItem + 1}} - {{inhibitionPagination.lastItem + 1}} of
+                            {{inhibitionPagination.totalItems}}
+                            results
+                            <clr-dg-pagination #inhibitionPagination [clrDgPageSize]="10"></clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid>
+
+                </clr-tab-content>
+            </clr-tab>
+            <!--End Inhibition Report tab -->
 
             <!--Results Report Summary tab -->
             <clr-tab>

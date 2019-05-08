@@ -72,7 +72,6 @@ export class SampleService {
   }
 
 
-
   public querySamplesCount(queryFormValue): Observable<any> {
 
     let queryString = '?';
