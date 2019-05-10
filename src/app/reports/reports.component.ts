@@ -98,6 +98,22 @@ export class ReportsComponent implements OnInit {
     { fieldName: 'inhibition_rna_dilution_factor', colName: "RNA Inhibtion Dilution Factor" },
   ]
 
+  controlsResultReport_extNeg_Columns = [
+
+  ]
+  controlsResultReport_extPos_Columns = [
+
+  ]
+  controlsResultReport_pcrNeg_Columns = [
+
+  ]
+  controlsResultReport_pcrPos_Columns = [
+
+  ]
+  controlsResultReport_pegNeg_Columns = [
+
+  ]
+
   resultsReportSummaryColumns = [
     { fieldName: 'target_string', colName: "Target" },
     { fieldName: 'replicate_count', colName: "Replicate Count" },
@@ -110,6 +126,13 @@ export class ReportsComponent implements OnInit {
     { fieldName: 'min_concentration_positive', colName: "Minimum concentration of positive replicates" },
     { fieldName: 'median_concentration_positive', colName: "Median concentration of positive replicates" },
     { fieldName: 'average_concentration_positive', colName: "Average concentration of positive replicates" },
+  ]
+
+  individualSampleReportColumns = [
+    { fieldName: 'sample', colName: "Sample" },
+    { fieldName: 'target_string', colName: "Target" },
+    { fieldName: 'result', colName: "Result" },
+    { fieldName: 'final_sample_mean_concentration', colName: "Final Sample Mean Concentration" },
   ]
 
 
@@ -341,7 +364,6 @@ export class ReportsComponent implements OnInit {
     // this.controlsResultReportLoaded = true;
     // this.individualSampleReportLoaded = true;
     // this.qualityControlReportLoaded = true;
-    // this.resultsReportSummaryLoaded = true;
 
     if (reportSelectFormValue.inhibition_report) {
       this.inhibitionReportLoading = true;
@@ -367,6 +389,8 @@ export class ReportsComponent implements OnInit {
     }
     if (reportSelectFormValue.individual_sample_report) {
       this.individualSampleReportLoading = true;
+
+
 
     }
     if (reportSelectFormValue.quality_control_report) {

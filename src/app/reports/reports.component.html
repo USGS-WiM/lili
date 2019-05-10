@@ -546,114 +546,104 @@
                 <button clrTabLink>Results Report Summary</button>
                 <clr-tab-content active>
 
-                    <!-- <clr-datagrid [clrDgLoading]="fsmcResultsLoading">
-    
-                            <clr-dg-action-bar>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-secondary" (click)="exportToCSV('fsmc')">
-                                        <clr-icon shape="export" size="16"></clr-icon> Export to CSV
-                                    </button>
-                                </div>
-                            </clr-dg-action-bar>
-    
-                            <clr-dg-column [clrDgField]="'sample'">
-                                Sample ID
-                                <clr-dg-filter [clrDgFilter]="rangeFilter">
-                                    <range-filter #rangeFilter></range-filter>
-                                </clr-dg-filter>
-                            </clr-dg-column>
-    
-                            <clr-dg-column [clrDgField]="'collaborator_sample_id'">
-                                <ng-container *clrDgHideableColumn="{hidden: false}">
-                                    Collaborator Sample ID
-                                </ng-container>
-                            </clr-dg-column>
-    
-                            <clr-dg-column [clrDgField]="'collection_start_date'">
-                                Collect Start Date
-                                <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
-                                    <collection-start-date-filter [dateField]="'collection_start_date'"
-                                        #CollectionStartDateFilter>
-                                    </collection-start-date-filter>
-                                </clr-dg-filter>
-                            </clr-dg-column>
-    
-                            <clr-dg-column [clrDgField]="'target'">
+                    <clr-datagrid [clrDgLoading]="resultsReportSummaryLoading">
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('resultsReportSummary')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'target_string'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Target
-                                <clr-dg-filter [clrDgFilter]="targetFilter">
-                                    <target-filter #targetFilter></target-filter>
-                                </clr-dg-filter>
-                            </clr-dg-column>
-    
-                            <clr-dg-column [clrDgField]="'sample_mean_concentration'">
-                                <ng-container *clrDgHideableColumn="{hidden: false}">
-                                    Sample Mean Concentration
-                                </ng-container>
-                            </clr-dg-column>
-    
-                            <clr-dg-column>
-                                <ng-container *clrDgHideableColumn="{hidden: false}">
-                                    Complete Replicates
-                                </ng-container>
-                            </clr-dg-column>
-    
-                            <clr-dg-column>
-                                <ng-container *clrDgHideableColumn="{hidden: false}">
-                                    Incomplete Replicates
-                                </ng-container>
-                            </clr-dg-column>
-    
-                            <clr-dg-row *clrDgItems="let fsmc of fsmcResults" [clrDgItem]="fsmc">
-                                <clr-dg-cell>{{fsmc.sample}}</clr-dg-cell>
-                                <clr-dg-cell>{{fsmc.collaborator_sample_id}}</clr-dg-cell>
-                                <clr-dg-cell>{{fsmc.collection_start_date | date:'shortDate'}}</clr-dg-cell>
-                                <clr-dg-cell>{{fsmc.target | displayValue:'name': allTargets }}</clr-dg-cell>
-                                <clr-dg-cell>
-                                    {{fsmc.final_sample_mean_concentration_sci === "" ? "No Result" : fsmc.final_sample_mean_concentration_sci}}
-                                </clr-dg-cell>
-                                <clr-dg-cell>
-                                    <a class="label label-blue clickable"
-                                        *ngIf="fsmc.sample_target_replicates.positive_concentration_count > 0"
-                                        (click)="openReplicateDetails('positive_concentrations', fsmc)">Positive
-                                        Concentrations&nbsp;<span
-                                            class="badge">{{fsmc.sample_target_replicates.positive_concentration_count}}</span></a>
-                                    <br>
-                                    <a class="label label-blue clickable"
-                                        *ngIf="fsmc.sample_target_replicates.negative_concentration_count > 0"
-                                        (click)="openReplicateDetails('negative_concentrations', fsmc)">Negative
-                                        Concentrations&nbsp;<span
-                                            class="badge">{{fsmc.sample_target_replicates.negative_concentration_count}}</span></a>
-                                </clr-dg-cell>
-                                <clr-dg-cell>
-                                    <a class="label label-blue clickable"
-                                        *ngIf="fsmc.sample_target_replicates.qpcr_results_missing_count > 0"
-                                        (click)="openReplicateDetails('qpcr_results_missing', fsmc)">Missing qPCR
-                                        Values&nbsp;<span
-                                            class="badge">{{fsmc.sample_target_replicates.qpcr_results_missing_count}}</span></a>
-                                    <br>
-                                    <a class="label label-blue clickable"
-                                        *ngIf="fsmc.sample_target_replicates.concentration_calc_values_missing_count > 0"
-                                        (click)="openReplicateDetails('concentration_calc_values_missing', fsmc)">Calculation
-                                        Values
-                                        Missing&nbsp;<span
-                                            class="badge">{{fsmc.sample_target_replicates.concentration_calc_values_missing_count}}</span></a>
-                                    <br>
-                                    <a class="label label-blue clickable"
-                                        *ngIf="fsmc.sample_target_replicates.invalid_count > 0"
-                                        (click)="openReplicateDetails('invalids', fsmc)">Invalid per controls&nbsp;<span
-                                            class="badge">{{fsmc.sample_target_replicates.invalid_count}}</span></a>
-                                </clr-dg-cell>
-                            </clr-dg-row>
-    
-                            <clr-dg-footer>
-                                {{fsmcPagination.firstItem + 1}} - {{fsmcPagination.lastItem + 1}} of
-                                {{fsmcPagination.totalItems}}
-                                results
-                                <clr-dg-pagination #fsmcPagination [clrDgPageSize]="10"></clr-dg-pagination>
-                            </clr-dg-footer>
-                        </clr-datagrid> -->
+                            </ng-container>
+                        </clr-dg-column>
 
+                        <clr-dg-column [clrDgField]="'replicate_count'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Replicate Count
+                            </ng-container>
+                        </clr-dg-column>
 
+                        <clr-dg-column [clrDgField]="'positive_count'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Positive Count
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'percent_positive'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Percent Positive
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'max_concentration'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Max Concentration
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'min_concentration'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Min Concentration
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'median_concentration'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Median Concentration
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'average_concentration'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Average Concentration
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'min_concentration_positive'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Minimum concentration of positive replicates
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'median_concentration_positive'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Median concentration of positive replicates
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'average_concentration_positive'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Average concentration of positive replicates
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-row *clrDgItems="let item of resultsReportSummaryResults" [clrDgItem]="fsmc">
+                            <clr-dg-cell>{{item.target_string}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.replicate_count}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.positive_count}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.percent_positive}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.max_concentration}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.min_concentration}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.median_concentration}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.average_concentration}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.min_concentration_positive}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.median_concentration_positive}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.average_concentration_positive}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{resultsReportPagination.firstItem + 1}} - {{resultsReportPagination.lastItem + 1}} of
+                            {{resultsReportPagination.totalItems}}
+                            results
+                            <clr-dg-pagination #resultsReportPagination [clrDgPageSize]="10"></clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid>
 
                 </clr-tab-content>
             </clr-tab>
@@ -664,60 +654,58 @@
                 <button clrTabLink (mouseout)="resizeTable()">Individual Sample Report</button>
                 <clr-tab-content class="sample-results-tab" (mouseover)="resizeTable()">
 
-                    <!-- <clr-datagrid #sampleRowDataGrid [clrDgLoading]="sampleResultsLoading">
-    
-                            <clr-dg-action-bar>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-secondary"
-                                        (click)="exportToCSV('sampleRows')">
-                                        <clr-icon shape="export" size="16"></clr-icon> Export to CSV
-                                    </button>
-                                </div>
-                            </clr-dg-action-bar>
-    
-                            <clr-dg-column [clrDgField]="'id'">
-                                Sample ID
-                                <clr-dg-filter [clrDgFilter]="rangeFilter">
-                                    <range-filter #rangeFilter></range-filter>
-                                </clr-dg-filter>
-                            </clr-dg-column>
-    
-    
-                            <clr-dg-column [clrDgField]="'collaborator_sample_id'">
-                                <ng-container *clrDgHideableColumn="{hidden: false}">
-                                    Collaborator Sample ID
-                                </ng-container>
-                            </clr-dg-column>
-    
-                            <clr-dg-column [clrDgField]="'collection_start_date'">
-                                Collect Start Date
-                                <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
-                                    <collection-start-date-filter [dateField]="'collection_start_date'"
-                                        #CollectionStartDateFilter>
-                                    </collection-start-date-filter>
-                                </clr-dg-filter>
-                            </clr-dg-column>
-    
-                            <clr-dg-column *ngFor="let fsmc of sampleResults[0].final_sample_mean_concentrations"
-                                [clrDgField]="fsmc.target_string">{{fsmc.target_string}}</clr-dg-column>
-    
-                            <clr-dg-row *ngFor="let sample of sampleResults" [clrDgItem]="sample">
-                                <clr-dg-cell>{{sample.id}}</clr-dg-cell>
-                                <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
-                                <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
-                                <clr-dg-cell class="dynamic-column"
-                                    *ngFor="let fsmc of sample.final_sample_mean_concentrations">
-                                    {{fsmc.final_sample_mean_concentration}}</clr-dg-cell>
-                            </clr-dg-row>
-    
-                            <clr-dg-footer>
-                                {{sampleRowPagination.firstItem + 1}} - {{sampleRowPagination.lastItem + 1}} of
-                                {{sampleRowPagination.totalItems}}
-                                results
-                                <clr-dg-pagination #sampleRowPagination [clrDgPageSize]="10"></clr-dg-pagination>
-                            </clr-dg-footer>
-                        </clr-datagrid> -->
+                    <clr-datagrid [clrDgLoading]="individualSampleReportLoading">
 
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('sampleRows')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'id'">
+                            Sample ID
+                            <clr-dg-filter [clrDgFilter]="rangeFilter">
+                                <range-filter #rangeFilter></range-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'target_string'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Target
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'result'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Result
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'final_sample_mean_concentration'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Final Sample Mean Concentration
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-row *ngFor="let item of individualSampleReportResults" [clrDgItem]="sample">
+                            <clr-dg-cell>{{item.sample}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.target_string}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.result}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.final_sample_mean_concentration}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{individualSampleReportPagination.firstItem + 1}} -
+                            {{individualSampleReportPagination.lastItem + 1}} of
+                            {{individualSampleReportPagination.totalItems}}
+                            results
+                            <clr-dg-pagination #individualSampleReportPagination [clrDgPageSize]="10">
+                            </clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid>
 
                 </clr-tab-content>
             </clr-tab>
