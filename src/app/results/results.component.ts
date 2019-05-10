@@ -96,7 +96,7 @@ export class ResultsComponent implements OnInit, AfterViewInit {
 
   targetRowColumns = [
     { fieldName: 'target_string', colName: "Target" },
-    // array.push the target columns to this array
+    // array.push the sample columns to this array
   ]
 
   buildSampleQueryForm() {

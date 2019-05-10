@@ -99,19 +99,46 @@ export class ReportsComponent implements OnInit {
   ]
 
   controlsResultReport_extNeg_Columns = [
-
+    { fieldName: 'analysisbatch', colName: "Analysis Batch" },
+    { fieldName: 'extraction_number', colName: "Extraction Number" }
+    // array.push the target columns to this array
   ]
   controlsResultReport_extPos_Columns = [
-
+    { fieldName: 'analysisbatch', colName: "Analysis Batch" },
+    { fieldName: 'extraction_number', colName: "Extraction Number" }
+    // array.push the target columns to this array
   ]
   controlsResultReport_pcrNeg_Columns = [
-
+    { fieldName: 'analysisbatch', colName: "Analysis Batch" },
+    { fieldName: 'extraction_number', colName: "Extraction Number" },
+    { fieldName: 'pcrreplicatebatch', colName: "PCR Replicate Batch" }
+    // array.push the target columns to this array
   ]
   controlsResultReport_pcrPos_Columns = [
-
+    { fieldName: 'analysisbatch', colName: "Analysis Batch" },
+    { fieldName: 'extraction_number', colName: "Extraction Number" },
+    { fieldName: 'pcrreplicatebatch', colName: "PCR Replicate Batch" }
+    // array.push the target columns to this array
   ]
   controlsResultReport_pegNeg_Columns = [
+    { fieldName: 'id', colName: "Sample (PegNeg) ID" },
+    { fieldName: 'collection_start_date', colName: "Collection Start Date" }
+    // array.push the target columns to this array
+  ]
 
+  individualSampleReportColumns = [
+    { fieldName: 'sample', colName: "Sample" },
+    { fieldName: 'target_string', colName: "Target" },
+    { fieldName: 'result', colName: "Result" },
+    { fieldName: 'final_sample_mean_concentration', colName: "Final Sample Mean Concentration" },
+  ]
+
+  qualityControlReport_sampleQC_Columns = [
+    { fieldName: 'metric', colName: "Metric" },
+    { fieldName: 'value', colName: "Value" },
+    { fieldName: 'count', colName: "Count" },
+    { fieldName: 'min', colName: "Min" },
+    { fieldName: 'max', colName: "Max" },
   ]
 
   resultsReportSummaryColumns = [
@@ -127,14 +154,6 @@ export class ReportsComponent implements OnInit {
     { fieldName: 'median_concentration_positive', colName: "Median concentration of positive replicates" },
     { fieldName: 'average_concentration_positive', colName: "Average concentration of positive replicates" },
   ]
-
-  individualSampleReportColumns = [
-    { fieldName: 'sample', colName: "Sample" },
-    { fieldName: 'target_string', colName: "Target" },
-    { fieldName: 'result', colName: "Result" },
-    { fieldName: 'final_sample_mean_concentration', colName: "Final Sample Mean Concentration" },
-  ]
-
 
   buildSampleQueryForm() {
     this.sampleQueryForm = this.formBuilder.group({
