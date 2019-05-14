@@ -31,6 +31,16 @@ import { InhibitionService } from 'app/inhibitions/inhibition.service';
 export class ReportsComponent implements OnInit {
   @ViewChild("reportsQueryWizard") reportsQueryWizard: Wizard;
   @ViewChild("inhibitionReportDataGrid") inhibitionReportDataGrid: Datagrid;
+  @ViewChild("resultsReportSummaryDataGrid") resultsReportSummaryDataGrid: Datagrid;
+  @ViewChild("individualSampleReportDataGrid") individualSampleReportDataGrid: Datagrid;
+  @ViewChild("qualityControlReport_sampleQC_DataGrid") qualityControlReport_sampleQC_DataGrid: Datagrid;
+  @ViewChild("qualityControlReport_EB_Raw_DataGrid") qualityControlReport_EB_Raw_DataGrid: Datagrid;
+  @ViewChild("qualityControlReport_EB_QC_DataGrid") qualityControlReport_EB_QC_DataGrid: Datagrid;
+  @ViewChild("controlsResultReport_extNeg_DataGrid") controlsResultReport_extNeg_DataGrid: Datagrid;
+  @ViewChild("controlsResultReport_extPos_DataGrid") controlsResultReport_extPos_DataGrid: Datagrid;
+  @ViewChild("controlsResultReport_pcrNeg_DataGrid") controlsResultReport_pcrNeg_DataGrid: Datagrid;
+  @ViewChild("controlsResultReport_pcrPos_DataGrid") controlsResultReport_pcrPos_DataGrid: Datagrid;
+  @ViewChild("controlsResultReport_pegneg_DataGrid") controlsResultReport_pegneg_DataGrid: Datagrid;
 
   allSamples: ISample[] = [];
   allTargets: ITarget[] = [];
@@ -98,6 +108,52 @@ export class ReportsComponent implements OnInit {
     { fieldName: 'inhibition_rna_dilution_factor', colName: "RNA Inhibtion Dilution Factor" },
   ]
 
+  resultsReportSummaryColumns = [
+    { fieldName: 'target_name', colName: "Target" },
+    { fieldName: 'replicate_count', colName: "Replicate Count" },
+    { fieldName: 'positive_count', colName: "Positive Replicate Count" },
+    { fieldName: 'percent_positive', colName: "Percent Positive" },
+    { fieldName: 'max_concentration', colName: "Maximum Concentration" },
+    { fieldName: 'min_concentration', colName: "Minimum Concentration" },
+    { fieldName: 'median_concentration', colName: "Median Concentration" },
+    { fieldName: 'average_concentration', colName: "Average Concentration" },
+    { fieldName: 'min_concentration_positive', colName: "Minimum concentration of positive replicates" },
+    { fieldName: 'median_concentration_positive', colName: "Median concentration of positive replicates" },
+    { fieldName: 'average_concentration_positive', colName: "Average concentration of positive replicates" },
+  ]
+
+  individualSampleReportColumns = [
+    { fieldName: 'sample', colName: "Sample" },
+    { fieldName: 'target_string', colName: "Target" },
+    { fieldName: 'result', colName: "Result" },
+    { fieldName: 'final_sample_mean_concentration_sci', colName: "Sample Mean Concentration (Sci)" },
+  ]
+
+  qualityControlReport_sampleQC_Columns = [
+    { fieldName: 'metric', colName: "Metric" },
+    { fieldName: 'value', colName: "Value" },
+    { fieldName: 'count', colName: "Count" },
+    { fieldName: 'min', colName: "Min" },
+    { fieldName: 'max', colName: "Max" },
+  ]
+
+  qualityControlReport_EB_Raw_Columns = [
+    { fieldName: 'analysisbatch', colName: "Analysis Batch" },
+    { fieldName: 'extraction_number', colName: "Extraction Number" },
+    { fieldName: 'extraction_volume', colName: "Extraction Volume" },
+    { fieldName: 'elution_volume', colName: "Elution Volume" },
+    { fieldName: 'rt_template_volume', colName: "RT Template Volume" },
+    { fieldName: 'rt_reaction_volume', colName: "RT Reaction Volume" },
+    { fieldName: 'qpcr_template_volume', colName: "qPCR Template Volume" },
+    { fieldName: 'qpcr_reaction_volume', colName: "qPCR Reaction Volume" },
+  ]
+
+  qualityControlReport_EB_QC_Columns = [
+    { fieldName: 'metric', colName: "Metric" },
+    { fieldName: 'value', colName: "Value" },
+    { fieldName: 'count', colName: "Count" }
+  ]
+
   controlsResultReport_extNeg_Columns = [
     { fieldName: 'analysisbatch', colName: "Analysis Batch" },
     { fieldName: 'extraction_number', colName: "Extraction Number" }
@@ -126,35 +182,6 @@ export class ReportsComponent implements OnInit {
     // array.push the target columns to this array
   ]
 
-  individualSampleReportColumns = [
-    { fieldName: 'sample', colName: "Sample" },
-    { fieldName: 'target_string', colName: "Target" },
-    { fieldName: 'result', colName: "Result" },
-    { fieldName: 'final_sample_mean_concentration', colName: "Final Sample Mean Concentration" },
-  ]
-
-  qualityControlReport_sampleQC_Columns = [
-    { fieldName: 'metric', colName: "Metric" },
-    { fieldName: 'value', colName: "Value" },
-    { fieldName: 'count', colName: "Count" },
-    { fieldName: 'min', colName: "Min" },
-    { fieldName: 'max', colName: "Max" },
-  ]
-
-  resultsReportSummaryColumns = [
-    { fieldName: 'target_string', colName: "Target" },
-    { fieldName: 'replicate_count', colName: "Replicate Count" },
-    { fieldName: 'positive_count', colName: "Positive Replicate Count" },
-    { fieldName: 'percent_positive', colName: "Percent Positive" },
-    { fieldName: 'max_concentration', colName: "Maximum Concentration" },
-    { fieldName: 'min_concentration', colName: "Minimum Concentration" },
-    { fieldName: 'median_concentration', colName: "Median Concentration" },
-    { fieldName: 'average_concentration', colName: "Average Concentration" },
-    { fieldName: 'min_concentration_positive', colName: "Minimum concentration of positive replicates" },
-    { fieldName: 'median_concentration_positive', colName: "Median concentration of positive replicates" },
-    { fieldName: 'average_concentration_positive', colName: "Average concentration of positive replicates" },
-  ]
-
   buildSampleQueryForm() {
     this.sampleQueryForm = this.formBuilder.group({
       study: null,
@@ -173,7 +200,9 @@ export class ReportsComponent implements OnInit {
   buildReportSelectForm() {
     this.reportSelectForm = this.formBuilder.group({
       inhibition_report: false,
+      inhibition_report_filename: 'LIDE_InhibitionReport' + APP_UTILITIES.TODAY + '.csv',
       results_report_summary: false,
+      results_report_summary_filename: 'LIDE_ResultsReportSummary' + APP_UTILITIES.TODAY + '.csv',
       results_report_summary_options: this.formBuilder.group({
         replicate_count: false,
         positive_count: false,
@@ -187,8 +216,17 @@ export class ReportsComponent implements OnInit {
         average_concentration_positive: false
       }),
       individual_sample_report: false,
+      individual_sample_report_filename: 'LIDE_IndividualSampleReport' + APP_UTILITIES.TODAY + '.csv',
       quality_control_report: false,
-      controls_result_report: false
+      quality_control_report_sampleQC_filename: 'LIDE_SampleQCReport' + APP_UTILITIES.TODAY + '.csv',
+      quality_control_report_EB_Raw_filename: 'LIDE_RawExtractionBatchReport' + APP_UTILITIES.TODAY + '.csv',
+      quality_control_report_EB_QC_filename: 'LIDE_ExtractionBatchQCReport' + APP_UTILITIES.TODAY + '.csv',
+      controls_result_report: false,
+      controls_result_report_extNeg_filename: 'LIDE_ControlsReport_ExtNeg' + APP_UTILITIES.TODAY + '.csv',
+      controls_result_report_extPos_filename: 'LIDE_ControlsReport_ExtPos' + APP_UTILITIES.TODAY + '.csv',
+      controls_result_report_pcrNeg_filename: 'LIDE_ControlsReport_PCRNeg' + APP_UTILITIES.TODAY + '.csv',
+      controls_result_report_pcrPos_filename: 'LIDE_ControlsReport_PCRPos' + APP_UTILITIES.TODAY + '.csv',
+      controls_result_report_pegneg_filename: 'LIDE_ControlsReport_PegNeg' + APP_UTILITIES.TODAY + '.csv'
     })
   }
 
@@ -245,8 +283,36 @@ export class ReportsComponent implements OnInit {
     this.errorMessage = '';
   }
 
-  resizeTable() {
-    this.inhibitionReportDataGrid.resize();
+  deselectAll() {
+    this.selected = [];
+  }
+
+  resizeTable(tab) {
+
+    switch (tab) {
+      case 'inhibitionReport':
+        this.inhibitionReportDataGrid.resize();
+        break;
+      case 'resultsReportSummary':
+        this.resultsReportSummaryDataGrid.resize();
+        break;
+      case 'individualSampleReport':
+        this.individualSampleReportDataGrid.resize();
+        break;
+      case 'qualityControlReport':
+        this.qualityControlReport_sampleQC_DataGrid.resize();
+        this.qualityControlReport_EB_Raw_DataGrid.resize();
+        this.qualityControlReport_EB_QC_DataGrid.resize();
+        break;
+      case 'controlsResultReport':
+        this.controlsResultReport_extNeg_DataGrid.resize();
+        this.controlsResultReport_extPos_DataGrid.resize();
+        this.controlsResultReport_pcrNeg_DataGrid.resize();
+        this.controlsResultReport_pcrPos_DataGrid.resize();
+        this.controlsResultReport_pegneg_DataGrid.resize();
+        break;
+      default:
+    }
   }
 
   public doCustomClick(buttonType: string): void {
@@ -310,20 +376,84 @@ export class ReportsComponent implements OnInit {
 
 
   exportToCSV(tableType) {
-    let filename;
 
     switch (tableType) {
       case 'inhibitionReport':
-        filename = 'LIDE_InhibitonReport' + APP_UTILITIES.TODAY + '.csv';
-        APP_UTILITIES.generateCSV({ filename: filename, data: this.inhibitionReportResults, headers: this.inhibitionColumns });
-        break;
-      case 'controlsResultReport':
-        break;
-      case 'individualSampleReport':
-        break;
-      case 'qualityControlReport':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('inhibition_report_filename').value,
+          data: this.inhibitionReportResults,
+          headers: this.inhibitionColumns
+        });
         break;
       case 'resultsReportSummary':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('results_report_summary_filename').value,
+          data: this.resultsReportSummaryResults,
+          headers: this.resultsReportSummaryColumns
+        });
+        break;
+      case 'individualSampleReport':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('individual_sample_report_filename').value,
+          data: this.individualSampleReportResults,
+          headers: this.individualSampleReportColumns
+        });
+        break;
+      case 'qualityControlReport_sampleQC':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('quality_control_report_sampleQC_filename').value,
+          data: this.qualityControlReportResults, // add dot notation for correct portion of results
+          headers: this.qualityControlReport_sampleQC_Columns
+        });
+        break;
+      case 'qualityControlReport_EB_Raw':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('quality_control_report_EB_Raw_filename').value,
+          data: this.qualityControlReportResults, // add dot notation for correct portion of results
+          headers: this.qualityControlReport_EB_Raw_Columns
+        });
+        break;
+      case 'qualityControlReport_EB_QC':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('quality_control_report_EB_QC_filename').value,
+          data: this.qualityControlReportResults, // add dot notation for correct portion of results
+          headers: this.qualityControlReport_EB_QC_Columns
+        });
+        break;
+      case 'controlsResultReport_extNeg':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('controls_result_report_extNeg_filename').value,
+          data: this.controlsResultReportResults, // add dot notation for correct portion of results
+          headers: this.controlsResultReport_extNeg_Columns
+        });
+        break;
+      case 'controlsResultReport_extPos':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('controls_result_report_extPos_filename').value,
+          data: this.controlsResultReportResults, // add dot notation for correct portion of results
+          headers: this.controlsResultReport_extPos_Columns
+        });
+        break;
+      case 'controlsResultReport_pcrNeg':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('controls_result_report_pcrNeg_filename').value,
+          data: this.controlsResultReportResults, // add dot notation for correct portion of results
+          headers: this.controlsResultReport_pcrNeg_Columns
+        });
+        break;
+      case 'controlsResultReport_pcrPos':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('controls_result_report_pcrPos_filename').value,
+          data: this.controlsResultReportResults, // add dot notation for correct portion of results
+          headers: this.controlsResultReport_pcrPos_Columns
+        });
+        break;
+      case 'controlsResultReport_pegneg':
+        APP_UTILITIES.generateCSV({
+          filename: this.reportSelectForm.get('controls_result_report_pegneg_filename').value,
+          data: this.controlsResultReportResults, // add dot notation for correct portion of results
+          headers: this.controlsResultReport_pegNeg_Columns
+        });
         break;
       default:
     }
@@ -377,6 +507,8 @@ export class ReportsComponent implements OnInit {
   generateReports(reportSelectFormValue) {
     // this.reportsLoading = true;
 
+    this.submitLoading = true;
+
     // here is where up to 4 reports are generated (which could be even more individual HTTP requests, depending on how we build them)
     // must do a check for which reports were selected, make request for each selected one. 4 independent 'if' blocks
     // put these into the success blocks of the report requests
@@ -393,11 +525,13 @@ export class ReportsComponent implements OnInit {
             this.inhibitionReportResults = results;
             this.inhibitionReportLoading = false;
             this.inhibitionReportLoaded = true;
+            this.submitLoading = false;
           },
           error => {
             this.errorMessage = error;
             this.inhibitionReportLoading = false;
             this.inhibitionReportLoaded = false;
+            this.submitLoading = false;
           }
         );
 
@@ -409,7 +543,20 @@ export class ReportsComponent implements OnInit {
     if (reportSelectFormValue.individual_sample_report) {
       this.individualSampleReportLoading = true;
 
-
+      this._finalSampleMeanConcentrationService.queryFinalSampleMeanConcentrationsResults(this.reportsQuery)
+        .subscribe(
+          (fsmcResults) => {
+            this.individualSampleReportResults = fsmcResults;
+            this.individualSampleReportLoading = false;
+            this.individualSampleReportLoaded = true;
+            this.submitLoading = false;
+          },
+          error => {
+            this.errorMessage = <any>error
+            this.individualSampleReportLoading = false;
+            this.submitLoading = false;
+          }
+        );
 
     }
     if (reportSelectFormValue.quality_control_report) {
@@ -419,7 +566,7 @@ export class ReportsComponent implements OnInit {
     if (reportSelectFormValue.results_report_summary) {
       this.resultsReportSummaryLoading = true;
 
-      // this.reportsQuery.summary_stats = [];
+      this.reportsQuery.summary_stats = [];
 
       let options = this.reportSelectForm.get('results_report_summary_options').value;
 
@@ -436,11 +583,13 @@ export class ReportsComponent implements OnInit {
             this.resultsReportSummaryResults = results;
             this.resultsReportSummaryLoading = false;
             this.resultsReportSummaryLoaded = true;
+            this.submitLoading = false;
           },
           error => {
             this.errorMessage = error;
             this.resultsReportSummaryLoading = false;
             this.resultsReportSummaryLoaded = false;
+            this.submitLoading = false;
           }
         );
 

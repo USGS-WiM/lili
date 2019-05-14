@@ -9,6 +9,7 @@ import { ITargetResult } from './target-result';
 
 import { TargetService } from '../targets/target.service';
 import { InhibitionService } from '../inhibitions/inhibition.service';
+import { ExtractionBatchService } from '../extraction-batches/extraction-batch.service';
 import { PcrReplicateBatchService } from '../pcr-replicates/pcr-replicate-batch.service';
 import { PcrReplicateService } from '../pcr-replicates/pcr-replicate.service';
 
@@ -102,6 +103,7 @@ export class DataUploadComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private _inhibitionService: InhibitionService,
+    private _extractionBatchService: ExtractionBatchService,
     private _targetService: TargetService,
     private _pcrReplicateBatchService: PcrReplicateBatchService,
     private _pcrReplicateService: PcrReplicateService
@@ -399,6 +401,12 @@ export class DataUploadComponent implements OnInit {
             })
             this.inhibitionsArray.push(formGroup);
           }
+
+          // capture the extractionbatch ID calculated by the inh calculation step response for use in the submitInhibitons func
+          // the ID is rpeated in each item in the array, so just capture from the first item in the array
+          // this.inhExtractionBatchID = calculatedDilutions[0].extraction_batch;
+          this.parsedRawInhResults.extraction_batch = calculatedDilutions[0].extraction_batch;
+
           this.inhLoadingFlag = false;
           this.dilutionFactorsCalculated = true;
         },
@@ -547,13 +555,28 @@ export class DataUploadComponent implements OnInit {
     this._inhibitionService.update(inhibitionsSubmission)
       .subscribe(
         (results) => {
-          this.inhibitionUpdateSuccessFlag = true;
-          this.inhibitionUpdateErrorFlag = false;
 
+          // build an object to update the EB record with the inh pso cq value (and nucleic acid type)
+          let extractionbatchObject = {
+            id: this.parsedRawInhResults.extraction_batch,
+            inh_pos_nucleic_acid_type: this.parsedRawInhResults.nucleic_acid_type,
+            inh_pos_cq_value: this.parsedRawInhResults.inh_pos_cq_value
+          };
 
-          // TODO: submit PATCH to extractionbatch record with inh_pos_cq_value and inh_pos_nucleic_acid_type
+          // submit PATCH to extractionbatch record with inh_pos_cq_value and inh_pos_nucleic_acid_type
+          this._extractionBatchService.update(extractionbatchObject)
+            .subscribe(
+              (extractionbatch) => {
+                this.inhibitionUpdateSuccessFlag = true;
+                this.inhibitionUpdateErrorFlag = false;
+                this.submitLoading = false;
+              },
+              error => {
+                this.errorMessage = error;
 
-          this.submitLoading = false;
+              }
+            )
+
         },
         error => {
           this.errorMessage = error;

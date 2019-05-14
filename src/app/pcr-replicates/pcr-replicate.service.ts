@@ -48,7 +48,13 @@ export class PcrReplicateService {
     }
     queryString = queryString.slice(0, -1);
 
-    // TODO: add the stats options to the query string
+    if (queryObject.summary_stats.length > 0) {
+      queryString += '&statistic=';
+      for (let stat of queryObject.summary_stats) {
+        queryString += ((stat.toString()) + ',')
+      }
+      queryString = queryString.slice(0, -1);
+    }
 
     let options = new RequestOptions({
       headers: APP_SETTINGS.AUTH_JSON_HEADERS

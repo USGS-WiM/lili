@@ -403,7 +403,8 @@
 
                         </div>
 
-                        <button class="btn btn-primary" (click)="generateReports(reportSelectForm.value)">Generate
+                        <button class="btn btn-primary" (click)="generateReports(reportSelectForm.value)"
+                            [clrLoading]="submitLoading">Generate
                             Reports</button>
                     </section>
                 </form>
@@ -434,8 +435,8 @@
 
             <!--Inhibition Report tab -->
             <clr-tab>
-                <button clrTabLink (mouseout)="resizeTable()">Inhibition Report</button>
-                <clr-tab-content (mouseover)="resizeTable()">
+                <button clrTabLink (mouseout)="resizeTable('inhibitionReport')">Inhibition Report</button>
+                <clr-tab-content (mouseover)="resizeTable('inhibitionReport')">
 
                     <clr-datagrid [clrDgLoading]="inhibitionReportLoading" #inhibitionReportDataGrid>
 
@@ -445,6 +446,13 @@
                                     (click)="exportToCSV('inhibitionReport')">
                                     <clr-icon shape="export" size="16"></clr-icon> Export to CSV
                                 </button>
+                            </div>
+                            <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input"
+                                        formControlName="inhibition_report_filename">
+                                </form>
                             </div>
                         </clr-dg-action-bar>
 
@@ -543,10 +551,10 @@
 
             <!--Results Report Summary tab -->
             <clr-tab>
-                <button clrTabLink>Results Report Summary</button>
-                <clr-tab-content active>
+                <button clrTabLink (mouseout)="resizeTable('resultsReportSummary')">Results Report Summary</button>
+                <clr-tab-content (mouseover)="resizeTable('resultsReportSummary')">
 
-                    <clr-datagrid [clrDgLoading]="resultsReportSummaryLoading">
+                    <clr-datagrid [clrDgLoading]="resultsReportSummaryLoading" #resultsReportSummaryDataGrid>
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
@@ -555,86 +563,123 @@
                                     <clr-icon shape="export" size="16"></clr-icon> Export to CSV
                                 </button>
                             </div>
+                            <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input"
+                                        formControlName="results_report_summary_filename">
+                                </form>
+                            </div>
                         </clr-dg-action-bar>
 
-                        <clr-dg-column [clrDgField]="'target_string'">
+                        <clr-dg-column [clrDgField]="'target_name'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Target
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'replicate_count'">
+                        <clr-dg-column [clrDgField]="'replicate_count'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('replicate_count').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Replicate Count
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'positive_count'">
+                        <clr-dg-column [clrDgField]="'positive_count'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('positive_count').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Positive Count
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'percent_positive'">
+                        <clr-dg-column [clrDgField]="'percent_positive'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('percent_positive').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Percent Positive
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'max_concentration'">
+                        <clr-dg-column [clrDgField]="'max_concentration'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('max_concentration').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Max Concentration
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'min_concentration'">
+                        <clr-dg-column [clrDgField]="'min_concentration'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('min_concentration').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Min Concentration
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'median_concentration'">
+                        <clr-dg-column [clrDgField]="'median_concentration'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('median_concentration').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Median Concentration
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'average_concentration'">
+                        <clr-dg-column [clrDgField]="'average_concentration'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('average_concentration').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Average Concentration
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'min_concentration_positive'">
+                        <clr-dg-column [clrDgField]="'min_concentration_positive'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('min_concentration_positive').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Minimum concentration of positive replicates
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'median_concentration_positive'">
+                        <clr-dg-column [clrDgField]="'median_concentration_positive'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('median_concentration_positive').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Median concentration of positive replicates
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'average_concentration_positive'">
+                        <clr-dg-column [clrDgField]="'average_concentration_positive'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('average_concentration_positive').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Average concentration of positive replicates
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-row *clrDgItems="let item of resultsReportSummaryResults" [clrDgItem]="fsmc">
-                            <clr-dg-cell>{{item.target_string}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.replicate_count}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.positive_count}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.percent_positive}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.max_concentration}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.min_concentration}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.median_concentration}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.average_concentration}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.min_concentration_positive}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.median_concentration_positive}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.average_concentration_positive}}</clr-dg-cell>
+                        <clr-dg-row *clrDgItems="let item of resultsReportSummaryResults" [clrDgItem]="item">
+                            <clr-dg-cell>{{item.target_name}}</clr-dg-cell>
+                            <clr-dg-cell
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('replicate_count').value">
+                                {{item.replicate_count}}</clr-dg-cell>
+                            <clr-dg-cell
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('positive_count').value">
+                                {{item.positive_count}}</clr-dg-cell>
+                            <clr-dg-cell
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('percent_positive').value">
+                                {{item.percent_positive}}</clr-dg-cell>
+                            <clr-dg-cell
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('max_concentration').value">
+                                {{item.max_concentration}}</clr-dg-cell>
+                            <clr-dg-cell
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('min_concentration').value">
+                                {{item.min_concentration}}</clr-dg-cell>
+                            <clr-dg-cell
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('median_concentration').value">
+                                {{item.median_concentration}}</clr-dg-cell>
+                            <clr-dg-cell
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('average_concentration').value">
+                                {{item.average_concentration}}</clr-dg-cell>
+                            <clr-dg-cell
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('min_concentration_positive').value">
+                                {{item.min_concentration_positive}}</clr-dg-cell>
+                            <clr-dg-cell
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('median_concentration_positive').value">
+                                {{item.median_concentration_positive}}</clr-dg-cell>
+                            <clr-dg-cell
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('average_concentration_positive').value">
+                                {{item.average_concentration_positive}}</clr-dg-cell>
                         </clr-dg-row>
 
                         <clr-dg-footer>
@@ -651,17 +696,24 @@
 
             <!-- Individual Sample Report tab -->
             <clr-tab>
-                <button clrTabLink (mouseout)="resizeTable()">Individual Sample Report</button>
-                <clr-tab-content class="sample-results-tab" (mouseover)="resizeTable()">
+                <button clrTabLink (mouseout)="resizeTable('individualSampleReport')">Individual Sample Report</button>
+                <clr-tab-content class="sample-results-tab" (mouseover)="resizeTable('individualSampleReport')">
 
-                    <clr-datagrid [clrDgLoading]="individualSampleReportLoading">
+                    <clr-datagrid [clrDgLoading]="individualSampleReportLoading" #individualSampleReportDataGrid>
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-secondary"
-                                    (click)="exportToCSV('sampleRows')">
+                                    (click)="exportToCSV('individualSampleReport')">
                                     <clr-icon shape="export" size="16"></clr-icon> Export to CSV
                                 </button>
+                            </div>
+                            <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input"
+                                        formControlName="individual_sample_report_filename">
+                                </form>
                             </div>
                         </clr-dg-action-bar>
 
@@ -686,24 +738,22 @@
 
                         <clr-dg-column [clrDgField]="'final_sample_mean_concentration'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Final Sample Mean Concentration
+                                Sample Mean Concentration (Sci)
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-row *ngFor="let item of individualSampleReportResults" [clrDgItem]="sample">
+                        <clr-dg-row *ngFor="let item of individualSampleReportResults" [clrDgItem]="item">
                             <clr-dg-cell>{{item.sample}}</clr-dg-cell>
                             <clr-dg-cell>{{item.target_string}}</clr-dg-cell>
                             <clr-dg-cell>{{item.result}}</clr-dg-cell>
-                            <clr-dg-cell>{{item.final_sample_mean_concentration}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.final_sample_mean_concentration_sci}}</clr-dg-cell>
                         </clr-dg-row>
 
                         <clr-dg-footer>
-                            {{individualSampleReportPagination.firstItem + 1}} -
-                            {{individualSampleReportPagination.lastItem + 1}} of
-                            {{individualSampleReportPagination.totalItems}}
+                            {{individualSamplePagination.firstItem + 1}} - {{individualSamplePagination.lastItem + 1}} of
+                            {{individualSamplePagination.totalItems}}
                             results
-                            <clr-dg-pagination #individualSampleReportPagination [clrDgPageSize]="10">
-                            </clr-dg-pagination>
+                            <clr-dg-pagination #individualSamplePagination [clrDgPageSize]="10"></clr-dg-pagination>
                         </clr-dg-footer>
                     </clr-datagrid>
 
@@ -713,16 +763,216 @@
 
             <!--Quality Control Report tab -->
             <clr-tab>
-                <button clrTabLink (mouseout)="resizeTable()">Quality Control Report</button>
-                <clr-tab-content (mouseover)="resizeTable()">
+                <button clrTabLink (mouseout)="resizeTable('qualityControlReport')">Quality Control Report</button>
+                <clr-tab-content (mouseover)="resizeTable('qualityControlReport')">
 
-                    <!--3 tables (DataGrids) -->
                     <h4>Sample-level summary statistics</h4>
-                    <!--Table here -->
+                    <clr-datagrid [clrDgLoading]="qualityControlReportLoading" #qualityControlReport_sampleQC>
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('qualityControlReport_sampleQC')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input"
+                                        formControlName="quality_control_report_sampleQC_filename">
+                                </form>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'metric'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Metric
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'value'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Value
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'count'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Count
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'min'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Min
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'max'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Max
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-row *ngFor="let item of qualityControlReportResults" [clrDgItem]="item">
+                            <clr-dg-cell>{{item.metric}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.value}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.count}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.min}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.max}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{qualityControlReport_sampleQCPagination.firstItem + 1}} -
+                            {{qualityControlReport_sampleQCPagination.lastItem + 1}} of
+                            {{qualityControlReport_sampleQCPagination.totalItems}}
+                            results
+                            <clr-dg-pagination #qualityControlReport_sampleQCPagination [clrDgPageSize]="10">
+                            </clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid>
+
                     <h4>Extraction-level raw values</h4>
-                    <!--Table here -->
+                    <clr-datagrid [clrDgLoading]="qualityControlReportLoading" #qualityControlReport_EB_Raw_DataGrid>
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('qualityControlReport_EB_Raw')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input"
+                                        formControlName="quality_control_report_EB_Raw_filename">
+                                </form>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'metric'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Analysis Batch
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'extraction_number'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Extraction Number
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'extraction_volume'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Extraction Volune
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'elution_volume'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Elution Volume
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'rt_template_volume'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                RT Template Volume
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'rt_reaction_volume'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                RT Reaction Volume
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'qpcr_template_volume'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                qPCR Template Volume
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'qpcr_reaction_volume'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                qPCR Reaction Volume
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-row *ngFor="let item of qualityControlReportResults" [clrDgItem]="item">
+                            <clr-dg-cell>{{item.analysisbatch}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.extraction_number}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.extraction_volume}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.elution_volume}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.rt_template_volume}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.rt_reaction_volume}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.qpcr_template_volume}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.qpcr_reaction_volume}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{qualityControlReport_EB_Raw_Pagination.firstItem + 1}} -
+                            {{qualityControlReport_EB_Raw_Pagination.lastItem + 1}} of
+                            {{qualityControlReport_EB_Raw_Pagination.totalItems}}
+                            results
+                            <clr-dg-pagination #qualityControlReport_EB_Raw_Pagination [clrDgPageSize]="10">
+                            </clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid>
+
                     <h4>Extraction-level summary statistics</h4>
-                    <!--Table here -->
+                    <clr-datagrid [clrDgLoading]="qualityControlReportLoading" #qualityControlReport_EB_QC_DataGrid>
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('qualityControlReport_EB_QC')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input"
+                                        formControlName="quality_control_report_EB_QC_filename">
+                                </form>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'metric'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Metric
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'value'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Value
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'count'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Count
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-row *ngFor="let item of qualityControlReportResults" [clrDgItem]="item">
+                            <clr-dg-cell>{{item.metric}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.value}}</clr-dg-cell>
+                            <clr-dg-cell>{{item.count}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{qualityControlReport_EB_QC_Pagination.firstItem + 1}} -
+                            {{qualityControlReport_EB_QC_Pagination.lastItem + 1}} of
+                            {{qualityControlReport_EB_QC_Pagination.totalItems}}
+                            results
+                            <clr-dg-pagination #qualityControlReport_EB_QC_Pagination [clrDgPageSize]="10">
+                            </clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid>
 
                 </clr-tab-content>
             </clr-tab>
@@ -730,21 +980,285 @@
 
             <!--Control Results tab -->
             <clr-tab>
-                <button clrTabLink (mouseout)="resizeTable()">Controls Results Report</button>
-                <clr-tab-content (mouseover)="resizeTable()">
+                <button clrTabLink (mouseout)="resizeTable('controlsResultReport')">Controls Results Report</button>
+                <clr-tab-content (mouseover)="resizeTable('controlsResultReport')">
 
                     <!--5 tables (DataGrids) -->
                     <h4>Extraction Negative</h4>
-                    <!--Table here -->
-                    <h4>Extraction Positive</h4>
-                    <!--Table here -->
-                    <h4>PCR Negative</h4>
-                    <!--Table here -->
-                    <h4>PCR Positive</h4>
-                    <!--Table here -->
-                    <h4>Pegnegs</h4>
-                    <!--Table here -->
 
+                    <!-- datagrid below built out on 5/13/19. ready to accept API output -->
+                    <!-- <clr-datagrid #controlsResultReport_extNeg_DataGrid [clrDgLoading]="controlsResultReportLoading">
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('controlsResultReport_extNeg')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                             <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input" formControlName="controls_result_report_extNeg_filename">
+                                </form>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'analysisbatch'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Analysis Batch
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'extraction_number'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Extraction Number
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column *ngFor="let result of controlsResultReportResults.ext_neg[0].results"
+                            [clrDgField]="result.target_string">{{result.target_string}}</clr-dg-column>
+
+                        <clr-dg-row *ngFor="let control of controlsResultReportResults.ext_neg" [clrDgItem]="control">
+                            <clr-dg-cell>{{control.analysisbatch}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.extraction_number}}</clr-dg-cell>
+                            <clr-dg-cell class="dynamic-column" *ngFor="let result of control.results">
+                                {{result.result}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{controlsResultReport_extneg_Pagination.firstItem + 1}} -
+                            {{controlsResultReport_extneg_Pagination.lastItem + 1}} of
+                            {{controlsResultReport_extneg_Pagination.totalItems}}
+                            results
+                            <clr-dg-pagination #controlsResultReport_extneg_Pagination [clrDgPageSize]="10">
+                            </clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid> -->
+
+                    <h4>Extraction Positive</h4>
+
+                    <!-- datagrid below built out on 5/13/19. ready to accept API output -->
+                    <!-- <clr-datagrid #controlsResultReport_extPos_DataGrid [clrDgLoading]="controlsResultReportLoading">
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('controlsResultReport_extPos')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input" formControlName="controls_result_report_extPos_filename">
+                                </form>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'analysisbatch'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Analysis Batch
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'extraction_number'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Extraction Number
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column *ngFor="let result of controlsResultReportResults.ext_pos[0].results"
+                            [clrDgField]="result.target_string">{{result.target_string}}</clr-dg-column>
+
+                        <clr-dg-row *ngFor="let control of controlsResultReportResults.ext_pos" [clrDgItem]="control">
+                            <clr-dg-cell>{{control.analysisbatch}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.extraction_number}}</clr-dg-cell>
+                            <clr-dg-cell class="dynamic-column" *ngFor="let result of control.results">
+                                {{result.result}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{controlsResultReport_extpos_Pagination.firstItem + 1}} -
+                            {{controlsResultReport_extpos_Pagination.lastItem + 1}} of
+                            {{controlsResultReport_extpos_Pagination.totalItems}}
+                            results
+                            <clr-dg-pagination #controlsResultReport_extpos_Pagination [clrDgPageSize]="10">
+                            </clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid> -->
+
+                    <h4>PCR Negative</h4>
+
+                    <!-- datagrid below built out on 5/13/19. ready to accept API output -->
+                    <!-- <clr-datagrid #controlsResultReport_pcrNeg_DataGrid [clrDgLoading]="controlsResultReportLoading">
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('controlsResultReport_pcrNeg')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input" formControlName="controls_result_report_pcrNeg_filename">
+                                </form>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'analysisbatch'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Analysis Batch
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'extraction_number'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Extraction Number
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'pcrreplicatebatch'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                PCR Replicate Batch
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column *ngFor="let result of controlsResultReportResults.pcr_neg[0].results"
+                            [clrDgField]="result.target_string">{{result.target_string}}</clr-dg-column>
+
+                        <clr-dg-row *ngFor="let control of controlsResultReportResults.pcr_neg" [clrDgItem]="control">
+                            <clr-dg-cell>{{control.analysisbatch}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.extraction_number}}</clr-dg-cell>
+                            <clr-dg-cell class="dynamic-column" *ngFor="let result of control.results">
+                                {{result.result}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{controlsResultReport_pcrneg_Pagination.firstItem + 1}} -
+                            {{controlsResultReport_pcrneg_Pagination.lastItem + 1}} of
+                            {{controlsResultReport_pcrneg_Pagination.totalItems}}
+                            results
+                            <clr-dg-pagination #controlsResultReport_pcrneg_Pagination [clrDgPageSize]="10">
+                            </clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid> -->
+
+                    <h4>PCR Positive</h4>
+
+                    <!-- datagrid below built out on 5/13/19. ready to accept API output -->
+                    <!-- <clr-datagrid #controlsResultReport_pcrPos_DataGrid [clrDgLoading]="controlsResultReportLoading">
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('controlsResultReport_pcrPos')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input" formControlName="controls_result_report_pcrPos_filename">
+                                </form>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'analysisbatch'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Analysis Batch
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'extraction_number'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                Extraction Number
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'pcrreplicatebatch'">
+                            <ng-container *clrDgHideableColumn="{hidden: false}">
+                                PCR Replicate Batch
+                            </ng-container>
+                        </clr-dg-column>
+
+                        <clr-dg-column *ngFor="let result of controlsResultReportResults.pcr_pos[0].results"
+                            [clrDgField]="result.target_string">{{result.target_string}}</clr-dg-column>
+
+                        <clr-dg-row *ngFor="let control of controlsResultReportResults.pcr_pos" [clrDgItem]="control">
+                            <clr-dg-cell>{{control.analysisbatch}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.extraction_number}}</clr-dg-cell>
+                            <clr-dg-cell class="dynamic-column" *ngFor="let result of control.results">
+                                {{result.result}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{controlsResultReport_pcrpos_Pagination.firstItem + 1}} -
+                            {{controlsResultReport_pcrpos_Pagination.lastItem + 1}} of
+                            {{controlsResultReport_pcrpos_Pagination.totalItems}}
+                            results
+                            <clr-dg-pagination #controlsResultReport_pcrpos_Pagination [clrDgPageSize]="10">
+                            </clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid> -->
+
+                    <h4>Pegnegs</h4>
+
+                    <!-- datagrid below built out on 5/13/19. ready to accept API output -->
+                    <!-- <clr-datagrid #controlsResultReport_pegneg_DataGrid [clrDgLoading]="controlsResultReportLoading">
+
+                        <clr-dg-action-bar>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    (click)="exportToCSV('controlsResultReport_pegneg')">
+                                    <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <form [formGroup]="reportSelectForm">
+                                    <label>Export File name (optional)</label>
+                                    <input type="text" class="filename-input" formControlName="controls_result_report_pegneg_filename">
+                                </form>
+                            </div>
+                        </clr-dg-action-bar>
+
+                        <clr-dg-column [clrDgField]="'id'">
+                            Sample/PegNeg ID
+                            <clr-dg-filter [clrDgFilter]="rangeFilter">
+                                <range-filter #rangeFilter></range-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column>
+
+                        <clr-dg-column [clrDgField]="'collection_start_date'">
+                            Collect Start Date
+                            <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
+                                <collection-start-date-filter [dateField]="'collection_start_date'"
+                                    #CollectionStartDateFilter>
+                                </collection-start-date-filter>
+                            </clr-dg-filter>
+                        </clr-dg-column>
+
+                        <clr-dg-column *ngFor="let result of controlsResultReportResults.peg_neg[0].results"
+                            [clrDgField]="result.target_string">{{result.target_string}}</clr-dg-column>
+
+                        <clr-dg-row *ngFor="let control of controlsResultReportResults.peg_neg" [clrDgItem]="control">
+                            <clr-dg-cell>{{control.id}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.collection_start_date | date:'shortDate'}}</clr-dg-cell>
+                            <clr-dg-cell class="dynamic-column" *ngFor="let result of control.results">
+                                {{result.result}}</clr-dg-cell>
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                            {{controlsResultReport_pegneg_Pagination.firstItem + 1}} -
+                            {{controlsResultReport_pegneg_Pagination.lastItem + 1}} of
+                            {{controlsResultReport_pegneg_Pagination.totalItems}}
+                            results
+                            <clr-dg-pagination #controlsResultReport_pegneg_Pagination [clrDgPageSize]="10">
+                            </clr-dg-pagination>
+                        </clr-dg-footer>
+                    </clr-datagrid>
+                     -->
                 </clr-tab-content>
             </clr-tab>
             <!--End Control Results tab -->
