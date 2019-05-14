@@ -20,8 +20,8 @@ import { APP_SETTINGS } from '../app.settings';
 import { APP_UTILITIES } from '../app.utilities';
 
 import { FinalSampleMeanConcentrationService } from './final-sample-mean-concentration.service';
-import { sample } from 'rxjs/operators';
-import { sampleTime } from 'rxjs/operator/sampleTime';
+// import { sample } from 'rxjs/operators';
+// import { sampleTime } from 'rxjs/operator/sampleTime';
 
 @Component({
   selector: 'app-results',
@@ -96,7 +96,7 @@ export class ResultsComponent implements OnInit, AfterViewInit {
 
   targetRowColumns = [
     { fieldName: 'target_string', colName: "Target" },
-    // array.push the target columns to this array
+    // array.push the sample columns to this array
   ]
 
   buildSampleQueryForm() {

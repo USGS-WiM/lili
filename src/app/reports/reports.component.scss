@@ -1,0 +1,38 @@
+.text-larger {
+    font-size: larger;
+}
+
+.text-purple {
+    color: purple;
+}
+
+.text-italic {
+    font-style: italic;
+}
+
+.text-smaller {
+    font-size: smaller;
+}
+
+.list {
+    width: 95%;
+    display: -webkit-flex;
+    /* Safari */
+    -webkit-flex-wrap: wrap;
+    /* Safari 6.1+ */
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2px;
+}
+
+.list-item {
+    margin: 0.25em
+}
+
+.list-section {
+    margin-bottom: 1em;
+}
+
+.filename-input{
+    width: 30em;
+}
