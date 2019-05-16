@@ -767,7 +767,7 @@
                 <clr-tab-content (mouseover)="resizeTable('qualityControlReport')">
 
                     <h4>Sample-level summary statistics</h4>
-                    <clr-datagrid [clrDgLoading]="qualityControlReportLoading" #qualityControlReport_sampleQC>
+                    <clr-datagrid [clrDgLoading]="qualityControlReportLoading" #qualityControlReport_sampleQC_DataGrid>
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
@@ -815,7 +815,7 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-row *ngFor="let item of qualityControlReportResults" [clrDgItem]="item">
+                        <clr-dg-row *ngFor="let item of qualityControlReportResults.sample_quality_control" [clrDgItem]="item">
                             <clr-dg-cell>{{item.metric}}</clr-dg-cell>
                             <clr-dg-cell>{{item.value}}</clr-dg-cell>
                             <clr-dg-cell>{{item.count}}</clr-dg-cell>
@@ -852,7 +852,7 @@
                             </div>
                         </clr-dg-action-bar>
 
-                        <clr-dg-column [clrDgField]="'metric'">
+                        <clr-dg-column [clrDgField]="'analysis_batch'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Analysis Batch
                             </ng-container>
@@ -866,7 +866,7 @@
 
                         <clr-dg-column [clrDgField]="'extraction_volume'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Extraction Volune
+                                Extraction Volume
                             </ng-container>
                         </clr-dg-column>
 
@@ -900,8 +900,8 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-row *ngFor="let item of qualityControlReportResults" [clrDgItem]="item">
-                            <clr-dg-cell>{{item.analysisbatch}}</clr-dg-cell>
+                        <clr-dg-row *ngFor="let item of qualityControlReportResults.extraction_raw_data" [clrDgItem]="item">
+                            <clr-dg-cell>{{item.analysis_batch}}</clr-dg-cell>
                             <clr-dg-cell>{{item.extraction_number}}</clr-dg-cell>
                             <clr-dg-cell>{{item.extraction_volume}}</clr-dg-cell>
                             <clr-dg-cell>{{item.elution_volume}}</clr-dg-cell>
@@ -958,7 +958,7 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-row *ngFor="let item of qualityControlReportResults" [clrDgItem]="item">
+                        <clr-dg-row *ngFor="let item of qualityControlReportResults.extraction_quality_control" [clrDgItem]="item">
                             <clr-dg-cell>{{item.metric}}</clr-dg-cell>
                             <clr-dg-cell>{{item.value}}</clr-dg-cell>
                             <clr-dg-cell>{{item.count}}</clr-dg-cell>

@@ -20,6 +20,7 @@ import { FinalSampleMeanConcentrationService } from '../results/final-sample-mea
 import { APP_SETTINGS } from '../app.settings';
 import { APP_UTILITIES } from '../app.utilities';
 import { InhibitionService } from 'app/inhibitions/inhibition.service';
+import { QualityControlReportService } from 'app/reports/quality-control-report.service';
 
 // import { FinalSampleMeanConcentrationService } from '../final-sample-mean-concentration.service';
 
@@ -91,7 +92,7 @@ export class ReportsComponent implements OnInit {
   inhibitionReportResults = [];
   controlsResultReportResults = [];
   individualSampleReportResults = [];
-  qualityControlReportResults = [];
+  qualityControlReportResults = { "sample_quality_control": [], "extraction_raw_data": [], "extraction_quality_control": [] };
   resultsReportSummaryResults = [];
 
   inhibitionColumns = [
@@ -138,7 +139,7 @@ export class ReportsComponent implements OnInit {
   ]
 
   qualityControlReport_EB_Raw_Columns = [
-    { fieldName: 'analysisbatch', colName: "Analysis Batch" },
+    { fieldName: 'analysis_batch', colName: "Analysis Batch" },
     { fieldName: 'extraction_number', colName: "Extraction Number" },
     { fieldName: 'extraction_volume', colName: "Extraction Volume" },
     { fieldName: 'elution_volume', colName: "Elution Volume" },
@@ -234,6 +235,7 @@ export class ReportsComponent implements OnInit {
     private _sampleService: SampleService,
     private _targetService: TargetService,
     private _finalSampleMeanConcentrationService: FinalSampleMeanConcentrationService,
+    private _qualityControlReportService: QualityControlReportService,
     private _studyService: StudyService,
     private _sampleTypeService: SampleTypeService,
     private _matrixService: MatrixService,
@@ -402,21 +404,21 @@ export class ReportsComponent implements OnInit {
       case 'qualityControlReport_sampleQC':
         APP_UTILITIES.generateCSV({
           filename: this.reportSelectForm.get('quality_control_report_sampleQC_filename').value,
-          data: this.qualityControlReportResults, // add dot notation for correct portion of results
+          data: this.qualityControlReportResults.sample_quality_control,
           headers: this.qualityControlReport_sampleQC_Columns
         });
         break;
       case 'qualityControlReport_EB_Raw':
         APP_UTILITIES.generateCSV({
           filename: this.reportSelectForm.get('quality_control_report_EB_Raw_filename').value,
-          data: this.qualityControlReportResults, // add dot notation for correct portion of results
+          data: this.qualityControlReportResults.extraction_raw_data,
           headers: this.qualityControlReport_EB_Raw_Columns
         });
         break;
       case 'qualityControlReport_EB_QC':
         APP_UTILITIES.generateCSV({
           filename: this.reportSelectForm.get('quality_control_report_EB_QC_filename').value,
-          data: this.qualityControlReportResults, // add dot notation for correct portion of results
+          data: this.qualityControlReportResults.extraction_quality_control,
           headers: this.qualityControlReport_EB_QC_Columns
         });
         break;
@@ -505,18 +507,9 @@ export class ReportsComponent implements OnInit {
   }
 
   generateReports(reportSelectFormValue) {
-    // this.reportsLoading = true;
-
-    this.submitLoading = true;
-
-    // here is where up to 4 reports are generated (which could be even more individual HTTP requests, depending on how we build them)
-    // must do a check for which reports were selected, make request for each selected one. 4 independent 'if' blocks
-    // put these into the success blocks of the report requests
-    // this.controlsResultReportLoaded = true;
-    // this.individualSampleReportLoaded = true;
-    // this.qualityControlReportLoaded = true;
 
     if (reportSelectFormValue.inhibition_report) {
+      this.submitLoading = true;
       this.inhibitionReportLoading = true;
       // begin call for inhibition report
       this._inhibitionService.getInhibitionReport(this.reportsQuery)
@@ -537,10 +530,12 @@ export class ReportsComponent implements OnInit {
 
     }
     if (reportSelectFormValue.controls_result_report) {
+      this.submitLoading = true;
       this.controlsResultReportLoading = true;
 
     }
     if (reportSelectFormValue.individual_sample_report) {
+      this.submitLoading = true;
       this.individualSampleReportLoading = true;
 
       this._finalSampleMeanConcentrationService.queryFinalSampleMeanConcentrationsResults(this.reportsQuery)
@@ -560,10 +555,31 @@ export class ReportsComponent implements OnInit {
 
     }
     if (reportSelectFormValue.quality_control_report) {
+      this.submitLoading = true;
       this.qualityControlReportLoading = true;
+
+      let sampleArray = {
+        "samples": this.reportsQuery.samples
+      }
+
+      this._qualityControlReportService.getQualityControlReport(sampleArray)
+        .subscribe(
+          (qcReport) => {
+            this.qualityControlReportResults = qcReport;
+            this.qualityControlReportLoading = false;
+            this.qualityControlReportLoaded = true;
+            this.submitLoading = false;
+          },
+          error => {
+            this.errorMessage = <any>error
+            this.qualityControlReportLoading = false;
+            this.submitLoading = false;
+          }
+        );
 
     }
     if (reportSelectFormValue.results_report_summary) {
+      this.submitLoading = true;
       this.resultsReportSummaryLoading = true;
 
       this.reportsQuery.summary_stats = [];
