@@ -21,6 +21,7 @@ import { APP_SETTINGS } from '../app.settings';
 import { APP_UTILITIES } from '../app.utilities';
 import { InhibitionService } from 'app/inhibitions/inhibition.service';
 import { QualityControlReportService } from 'app/reports/quality-control-report.service';
+import { ControlResultsReportService } from './control-results-report.service';
 
 // import { FinalSampleMeanConcentrationService } from '../final-sample-mean-concentration.service';
 
@@ -90,10 +91,10 @@ export class ReportsComponent implements OnInit {
 
   // arrays to contain each report's results
   inhibitionReportResults = [];
-  controlsResultReportResults = [];
+  resultsReportSummaryResults = [];
   individualSampleReportResults = [];
   qualityControlReportResults = { "sample_quality_control": [], "extraction_raw_data": [], "extraction_quality_control": [] };
-  resultsReportSummaryResults = [];
+  controlsResultReportResults = { "ext_neg": [], "ext_pos": [], "pcr_neg": [], "pcr_pos": [], "peg_neg": [], "targets": [] };
 
   inhibitionColumns = [
     { fieldName: 'sample', colName: "Sample" },
@@ -156,23 +157,23 @@ export class ReportsComponent implements OnInit {
   ]
 
   controlsResultReport_extNeg_Columns = [
-    { fieldName: 'analysisbatch', colName: "Analysis Batch" },
+    { fieldName: 'analysis_batch', colName: "Analysis Batch" },
     { fieldName: 'extraction_number', colName: "Extraction Number" }
     // array.push the target columns to this array
   ]
   controlsResultReport_extPos_Columns = [
-    { fieldName: 'analysisbatch', colName: "Analysis Batch" },
+    { fieldName: 'analysis_batch', colName: "Analysis Batch" },
     { fieldName: 'extraction_number', colName: "Extraction Number" }
     // array.push the target columns to this array
   ]
   controlsResultReport_pcrNeg_Columns = [
-    { fieldName: 'analysisbatch', colName: "Analysis Batch" },
+    { fieldName: 'analysis_batch', colName: "Analysis Batch" },
     { fieldName: 'extraction_number', colName: "Extraction Number" },
     { fieldName: 'pcrreplicatebatch', colName: "PCR Replicate Batch" }
     // array.push the target columns to this array
   ]
   controlsResultReport_pcrPos_Columns = [
-    { fieldName: 'analysisbatch', colName: "Analysis Batch" },
+    { fieldName: 'analysis_batch', colName: "Analysis Batch" },
     { fieldName: 'extraction_number', colName: "Extraction Number" },
     { fieldName: 'pcrreplicatebatch', colName: "PCR Replicate Batch" }
     // array.push the target columns to this array
@@ -236,6 +237,7 @@ export class ReportsComponent implements OnInit {
     private _targetService: TargetService,
     private _finalSampleMeanConcentrationService: FinalSampleMeanConcentrationService,
     private _qualityControlReportService: QualityControlReportService,
+    private _controlResultsReportService: ControlResultsReportService,
     private _studyService: StudyService,
     private _sampleTypeService: SampleTypeService,
     private _matrixService: MatrixService,
@@ -423,37 +425,57 @@ export class ReportsComponent implements OnInit {
         });
         break;
       case 'controlsResultReport_extNeg':
+        // add the target name rows to the controlsResultReport_extNeg_Columns array using the target array
+        for (let target of this.controlsResultReportResults.targets) {
+          this.controlsResultReport_extNeg_Columns.push({ fieldName: target, colName: target })
+        }
         APP_UTILITIES.generateCSV({
           filename: this.reportSelectForm.get('controls_result_report_extNeg_filename').value,
-          data: this.controlsResultReportResults, // add dot notation for correct portion of results
+          data: this.controlsResultReportResults.ext_neg,
           headers: this.controlsResultReport_extNeg_Columns
         });
         break;
       case 'controlsResultReport_extPos':
+        // add the target name rows to the controlsResultReport_extPos_Columns array using the target array
+        for (let target of this.controlsResultReportResults.targets) {
+          this.controlsResultReport_extPos_Columns.push({ fieldName: target, colName: target })
+        }
         APP_UTILITIES.generateCSV({
           filename: this.reportSelectForm.get('controls_result_report_extPos_filename').value,
-          data: this.controlsResultReportResults, // add dot notation for correct portion of results
+          data: this.controlsResultReportResults.ext_pos,
           headers: this.controlsResultReport_extPos_Columns
         });
         break;
       case 'controlsResultReport_pcrNeg':
+        // add the target name rows to the controlsResultReport_pcrNeg_Columns array using the target array
+        for (let target of this.controlsResultReportResults.targets) {
+          this.controlsResultReport_pcrNeg_Columns.push({ fieldName: target, colName: target })
+        }
         APP_UTILITIES.generateCSV({
           filename: this.reportSelectForm.get('controls_result_report_pcrNeg_filename').value,
-          data: this.controlsResultReportResults, // add dot notation for correct portion of results
+          data: this.controlsResultReportResults.pcr_neg,
           headers: this.controlsResultReport_pcrNeg_Columns
         });
         break;
       case 'controlsResultReport_pcrPos':
+        // add the target name rows to the controlsResultReport_pcrPos_Columns array using the target array
+        for (let target of this.controlsResultReportResults.targets) {
+          this.controlsResultReport_pcrPos_Columns.push({ fieldName: target, colName: target })
+        }
         APP_UTILITIES.generateCSV({
           filename: this.reportSelectForm.get('controls_result_report_pcrPos_filename').value,
-          data: this.controlsResultReportResults, // add dot notation for correct portion of results
+          data: this.controlsResultReportResults.pcr_pos,
           headers: this.controlsResultReport_pcrPos_Columns
         });
         break;
       case 'controlsResultReport_pegneg':
+        // add the target name rows to the controlsResultReport_pegNeg_Columns array using the target array
+        for (let target of this.controlsResultReportResults.targets) {
+          this.controlsResultReport_pegNeg_Columns.push({ fieldName: target, colName: target })
+        }
         APP_UTILITIES.generateCSV({
           filename: this.reportSelectForm.get('controls_result_report_pegneg_filename').value,
-          data: this.controlsResultReportResults, // add dot notation for correct portion of results
+          data: this.controlsResultReportResults.peg_neg,
           headers: this.controlsResultReport_pegNeg_Columns
         });
         break;
@@ -532,6 +554,22 @@ export class ReportsComponent implements OnInit {
     if (reportSelectFormValue.controls_result_report) {
       this.submitLoading = true;
       this.controlsResultReportLoading = true;
+
+      this._controlResultsReportService.getControlResultsReport(this.reportsQuery)
+        .subscribe(
+          (results) => {
+            this.controlsResultReportResults = results;
+            this.controlsResultReportLoading = false;
+            this.controlsResultReportLoaded = true;
+            this.submitLoading = false;
+          },
+          error => {
+            this.errorMessage = error;
+            this.controlsResultReportLoading = false;
+            this.controlsResultReportLoaded = false;
+            this.submitLoading = false;
+          }
+        );
 
     }
     if (reportSelectFormValue.individual_sample_report) {

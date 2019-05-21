@@ -750,7 +750,8 @@
                         </clr-dg-row>
 
                         <clr-dg-footer>
-                            {{individualSamplePagination.firstItem + 1}} - {{individualSamplePagination.lastItem + 1}} of
+                            {{individualSamplePagination.firstItem + 1}} - {{individualSamplePagination.lastItem + 1}}
+                            of
                             {{individualSamplePagination.totalItems}}
                             results
                             <clr-dg-pagination #individualSamplePagination [clrDgPageSize]="10"></clr-dg-pagination>
@@ -815,7 +816,8 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-row *ngFor="let item of qualityControlReportResults.sample_quality_control" [clrDgItem]="item">
+                        <clr-dg-row *ngFor="let item of qualityControlReportResults.sample_quality_control"
+                            [clrDgItem]="item">
                             <clr-dg-cell>{{item.metric}}</clr-dg-cell>
                             <clr-dg-cell>{{item.value}}</clr-dg-cell>
                             <clr-dg-cell>{{item.count}}</clr-dg-cell>
@@ -900,7 +902,8 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-row *ngFor="let item of qualityControlReportResults.extraction_raw_data" [clrDgItem]="item">
+                        <clr-dg-row *ngFor="let item of qualityControlReportResults.extraction_raw_data"
+                            [clrDgItem]="item">
                             <clr-dg-cell>{{item.analysis_batch}}</clr-dg-cell>
                             <clr-dg-cell>{{item.extraction_number}}</clr-dg-cell>
                             <clr-dg-cell>{{item.extraction_volume}}</clr-dg-cell>
@@ -958,7 +961,8 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-row *ngFor="let item of qualityControlReportResults.extraction_quality_control" [clrDgItem]="item">
+                        <clr-dg-row *ngFor="let item of qualityControlReportResults.extraction_quality_control"
+                            [clrDgItem]="item">
                             <clr-dg-cell>{{item.metric}}</clr-dg-cell>
                             <clr-dg-cell>{{item.value}}</clr-dg-cell>
                             <clr-dg-cell>{{item.count}}</clr-dg-cell>
@@ -986,8 +990,7 @@
                     <!--5 tables (DataGrids) -->
                     <h4>Extraction Negative</h4>
 
-                    <!-- datagrid below built out on 5/13/19. ready to accept API output -->
-                    <!-- <clr-datagrid #controlsResultReport_extNeg_DataGrid [clrDgLoading]="controlsResultReportLoading">
+                    <clr-datagrid #controlsResultReport_extNeg_DataGrid [clrDgLoading]="controlsResultReportLoading">
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
@@ -996,15 +999,16 @@
                                     <clr-icon shape="export" size="16"></clr-icon> Export to CSV
                                 </button>
                             </div>
-                             <div class="form-group">
+                            <div class="form-group">
                                 <form [formGroup]="reportSelectForm">
                                     <label>Export File name (optional)</label>
-                                    <input type="text" class="filename-input" formControlName="controls_result_report_extNeg_filename">
+                                    <input type="text" class="filename-input"
+                                        formControlName="controls_result_report_extNeg_filename">
                                 </form>
                             </div>
                         </clr-dg-action-bar>
 
-                        <clr-dg-column [clrDgField]="'analysisbatch'">
+                        <clr-dg-column [clrDgField]="'analysis_batch'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Analysis Batch
                             </ng-container>
@@ -1016,14 +1020,15 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column *ngFor="let result of controlsResultReportResults.ext_neg[0].results"
-                            [clrDgField]="result.target_string">{{result.target_string}}</clr-dg-column>
+                        <clr-dg-column *ngFor="let target of controlsResultReportResults.targets" [clrDgField]="target">
+                            {{target}}</clr-dg-column>
 
                         <clr-dg-row *ngFor="let control of controlsResultReportResults.ext_neg" [clrDgItem]="control">
-                            <clr-dg-cell>{{control.analysisbatch}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.analysis_batch}}</clr-dg-cell>
                             <clr-dg-cell>{{control.extraction_number}}</clr-dg-cell>
-                            <clr-dg-cell class="dynamic-column" *ngFor="let result of control.results">
-                                {{result.result}}</clr-dg-cell>
+                            <clr-dg-cell class="dynamic-column"
+                                *ngFor="let target of controlsResultReportResults.targets">
+                                {{control[target]}}</clr-dg-cell>
                         </clr-dg-row>
 
                         <clr-dg-footer>
@@ -1034,12 +1039,11 @@
                             <clr-dg-pagination #controlsResultReport_extneg_Pagination [clrDgPageSize]="10">
                             </clr-dg-pagination>
                         </clr-dg-footer>
-                    </clr-datagrid> -->
+                    </clr-datagrid>
 
                     <h4>Extraction Positive</h4>
 
-                    <!-- datagrid below built out on 5/13/19. ready to accept API output -->
-                    <!-- <clr-datagrid #controlsResultReport_extPos_DataGrid [clrDgLoading]="controlsResultReportLoading">
+                    <clr-datagrid #controlsResultReport_extPos_DataGrid [clrDgLoading]="controlsResultReportLoading">
                         <clr-dg-action-bar>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-secondary"
@@ -1050,12 +1054,13 @@
                             <div class="form-group">
                                 <form [formGroup]="reportSelectForm">
                                     <label>Export File name (optional)</label>
-                                    <input type="text" class="filename-input" formControlName="controls_result_report_extPos_filename">
+                                    <input type="text" class="filename-input"
+                                        formControlName="controls_result_report_extPos_filename">
                                 </form>
                             </div>
                         </clr-dg-action-bar>
 
-                        <clr-dg-column [clrDgField]="'analysisbatch'">
+                        <clr-dg-column [clrDgField]="'analysis_batch'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Analysis Batch
                             </ng-container>
@@ -1067,14 +1072,15 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column *ngFor="let result of controlsResultReportResults.ext_pos[0].results"
-                            [clrDgField]="result.target_string">{{result.target_string}}</clr-dg-column>
+                        <clr-dg-column *ngFor="let target of controlsResultReportResults.targets" [clrDgField]="target">
+                            {{target}}</clr-dg-column>
 
                         <clr-dg-row *ngFor="let control of controlsResultReportResults.ext_pos" [clrDgItem]="control">
-                            <clr-dg-cell>{{control.analysisbatch}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.analysis_batch}}</clr-dg-cell>
                             <clr-dg-cell>{{control.extraction_number}}</clr-dg-cell>
-                            <clr-dg-cell class="dynamic-column" *ngFor="let result of control.results">
-                                {{result.result}}</clr-dg-cell>
+                            <clr-dg-cell class="dynamic-column"
+                                *ngFor="let target of controlsResultReportResults.targets">
+                                {{control[target]}}</clr-dg-cell>
                         </clr-dg-row>
 
                         <clr-dg-footer>
@@ -1085,12 +1091,11 @@
                             <clr-dg-pagination #controlsResultReport_extpos_Pagination [clrDgPageSize]="10">
                             </clr-dg-pagination>
                         </clr-dg-footer>
-                    </clr-datagrid> -->
+                    </clr-datagrid>
 
                     <h4>PCR Negative</h4>
 
-                    <!-- datagrid below built out on 5/13/19. ready to accept API output -->
-                    <!-- <clr-datagrid #controlsResultReport_pcrNeg_DataGrid [clrDgLoading]="controlsResultReportLoading">
+                    <clr-datagrid #controlsResultReport_pcrNeg_DataGrid [clrDgLoading]="controlsResultReportLoading">
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
@@ -1102,12 +1107,13 @@
                             <div class="form-group">
                                 <form [formGroup]="reportSelectForm">
                                     <label>Export File name (optional)</label>
-                                    <input type="text" class="filename-input" formControlName="controls_result_report_pcrNeg_filename">
+                                    <input type="text" class="filename-input"
+                                        formControlName="controls_result_report_pcrNeg_filename">
                                 </form>
                             </div>
                         </clr-dg-action-bar>
 
-                        <clr-dg-column [clrDgField]="'analysisbatch'">
+                        <clr-dg-column [clrDgField]="'analysis_batch'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Analysis Batch
                             </ng-container>
@@ -1125,14 +1131,15 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column *ngFor="let result of controlsResultReportResults.pcr_neg[0].results"
-                            [clrDgField]="result.target_string">{{result.target_string}}</clr-dg-column>
+                        <clr-dg-column *ngFor="let target of controlsResultReportResults.targets" [clrDgField]="target">
+                            {{target}}</clr-dg-column>
 
                         <clr-dg-row *ngFor="let control of controlsResultReportResults.pcr_neg" [clrDgItem]="control">
-                            <clr-dg-cell>{{control.analysisbatch}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.analysis_batch}}</clr-dg-cell>
                             <clr-dg-cell>{{control.extraction_number}}</clr-dg-cell>
-                            <clr-dg-cell class="dynamic-column" *ngFor="let result of control.results">
-                                {{result.result}}</clr-dg-cell>
+                            <clr-dg-cell class="dynamic-column"
+                                *ngFor="let target of controlsResultReportResults.targets">
+                                {{control[target]}}</clr-dg-cell>
                         </clr-dg-row>
 
                         <clr-dg-footer>
@@ -1143,12 +1150,11 @@
                             <clr-dg-pagination #controlsResultReport_pcrneg_Pagination [clrDgPageSize]="10">
                             </clr-dg-pagination>
                         </clr-dg-footer>
-                    </clr-datagrid> -->
+                    </clr-datagrid>
 
                     <h4>PCR Positive</h4>
 
-                    <!-- datagrid below built out on 5/13/19. ready to accept API output -->
-                    <!-- <clr-datagrid #controlsResultReport_pcrPos_DataGrid [clrDgLoading]="controlsResultReportLoading">
+                    <clr-datagrid #controlsResultReport_pcrPos_DataGrid [clrDgLoading]="controlsResultReportLoading">
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
@@ -1160,12 +1166,13 @@
                             <div class="form-group">
                                 <form [formGroup]="reportSelectForm">
                                     <label>Export File name (optional)</label>
-                                    <input type="text" class="filename-input" formControlName="controls_result_report_pcrPos_filename">
+                                    <input type="text" class="filename-input"
+                                        formControlName="controls_result_report_pcrPos_filename">
                                 </form>
                             </div>
                         </clr-dg-action-bar>
 
-                        <clr-dg-column [clrDgField]="'analysisbatch'">
+                        <clr-dg-column [clrDgField]="'analysis_batch'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 Analysis Batch
                             </ng-container>
@@ -1183,14 +1190,15 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column *ngFor="let result of controlsResultReportResults.pcr_pos[0].results"
-                            [clrDgField]="result.target_string">{{result.target_string}}</clr-dg-column>
+                        <clr-dg-column *ngFor="let target of controlsResultReportResults.targets" [clrDgField]="target">
+                            {{target}}</clr-dg-column>
 
                         <clr-dg-row *ngFor="let control of controlsResultReportResults.pcr_pos" [clrDgItem]="control">
-                            <clr-dg-cell>{{control.analysisbatch}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.analysis_batch}}</clr-dg-cell>
                             <clr-dg-cell>{{control.extraction_number}}</clr-dg-cell>
-                            <clr-dg-cell class="dynamic-column" *ngFor="let result of control.results">
-                                {{result.result}}</clr-dg-cell>
+                            <clr-dg-cell class="dynamic-column"
+                                *ngFor="let target of controlsResultReportResults.targets">
+                                {{control[target]}}</clr-dg-cell>
                         </clr-dg-row>
 
                         <clr-dg-footer>
@@ -1201,12 +1209,11 @@
                             <clr-dg-pagination #controlsResultReport_pcrpos_Pagination [clrDgPageSize]="10">
                             </clr-dg-pagination>
                         </clr-dg-footer>
-                    </clr-datagrid> -->
+                    </clr-datagrid>
 
                     <h4>Pegnegs</h4>
-
-                    <!-- datagrid below built out on 5/13/19. ready to accept API output -->
-                    <!-- <clr-datagrid #controlsResultReport_pegneg_DataGrid [clrDgLoading]="controlsResultReportLoading">
+                 
+                    <clr-datagrid #controlsResultReport_pegneg_DataGrid [clrDgLoading]="controlsResultReportLoading">
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
@@ -1218,7 +1225,8 @@
                             <div class="form-group">
                                 <form [formGroup]="reportSelectForm">
                                     <label>Export File name (optional)</label>
-                                    <input type="text" class="filename-input" formControlName="controls_result_report_pegneg_filename">
+                                    <input type="text" class="filename-input"
+                                        formControlName="controls_result_report_pegneg_filename">
                                 </form>
                             </div>
                         </clr-dg-action-bar>
@@ -1239,14 +1247,15 @@
                             </clr-dg-filter>
                         </clr-dg-column>
 
-                        <clr-dg-column *ngFor="let result of controlsResultReportResults.peg_neg[0].results"
-                            [clrDgField]="result.target_string">{{result.target_string}}</clr-dg-column>
+                        <clr-dg-column *ngFor="let target of controlsResultReportResults.targets" [clrDgField]="target">
+                            {{target}}</clr-dg-column>
 
                         <clr-dg-row *ngFor="let control of controlsResultReportResults.peg_neg" [clrDgItem]="control">
                             <clr-dg-cell>{{control.id}}</clr-dg-cell>
                             <clr-dg-cell>{{control.collection_start_date | date:'shortDate'}}</clr-dg-cell>
-                            <clr-dg-cell class="dynamic-column" *ngFor="let result of control.results">
-                                {{result.result}}</clr-dg-cell>
+                            <clr-dg-cell class="dynamic-column"
+                                *ngFor="let target of controlsResultReportResults.targets">
+                                {{control[target]}}</clr-dg-cell>
                         </clr-dg-row>
 
                         <clr-dg-footer>
@@ -1258,7 +1267,7 @@
                             </clr-dg-pagination>
                         </clr-dg-footer>
                     </clr-datagrid>
-                     -->
+
                 </clr-tab-content>
             </clr-tab>
             <!--End Control Results tab -->
