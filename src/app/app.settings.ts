@@ -53,7 +53,7 @@ export class APP_SETTINGS {
     public static get USERS_URL(): string { return this._API_ENDPOINT + 'users/' };
     public static get FINALSAMPLEMEANCONCENTRATIONS_URL(): string { return this._API_ENDPOINT + 'finalsamplemeanconcentrations/' };
     public static get QUALITY_CONTROL_REPORT_URL(): string { return this._API_ENDPOINT + 'qualitycontrolreport/' };
-
+    public static get CONTROL_RESULTS_REPORT_URL(): string { return this._API_ENDPOINT + 'controlresultsreport/' };
 
     public static get VERSION() {
         // return require('../../package.json').version

@@ -76,6 +76,7 @@ import { CurrentUserService } from "./authentication/current-user.service";
 import { TargetFilter } from './FILTERS/target-filter/target-filter.component';
 import { ReverseTranscriptionService } from "./SHARED/reverse-transcription.service";
 import { QualityControlReportService } from "./reports/quality-control-report.service";
+import { ControlResultsReportService } from "./reports/control-results-report.service";
 
 @NgModule({
     declarations: [
@@ -155,6 +156,7 @@ import { QualityControlReportService } from "./reports/quality-control-report.se
         RecordTypeService,
         FinalSampleMeanConcentrationService,
         QualityControlReportService,
+        ControlResultsReportService,
         ReverseTranscriptionService,
         AuthenticationGuard,
         CurrentUserService
