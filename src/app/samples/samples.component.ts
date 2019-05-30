@@ -507,7 +507,15 @@ export class SamplesComponent implements OnInit {
 
     // on init, call getStudies function of the StudyService, set results to the studies var
     this._studyService.getStudies()
-      .subscribe(studies => this.studies = studies,
+      .subscribe(
+        studies => {
+          this.studies = studies
+          this.studies.sort(function (a, b) {
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
+            return 0;
+          });
+        },
         error => this.errorMessage = error);
 
     // on init, call getUnits function of the UnitService, set results to the units var
@@ -714,7 +722,7 @@ export class SamplesComponent implements OnInit {
 
     // check if any of the samples selected already have FCSV
     for (let sample of selectedSamples) {
-      if (sample.final_concentrated_sample_volume != null) {
+      if (sample.finalconcentratedsamplevolume != null) {
         this.showHideFCSVExistsErrorModal = true;
         return;
       }
@@ -743,9 +751,9 @@ export class SamplesComponent implements OnInit {
     this.editFCSVForm.setValue({
       id: null,
       sample: selectedSample.id,
-      concentration_type: selectedSample.final_concentrated_sample_volume.concentration_type,
-      final_concentrated_sample_volume: selectedSample.final_concentrated_sample_volume.final_concentrated_sample_volume,
-      notes: selectedSample.final_concentrated_sample_volume.notes
+      concentration_type: selectedSample.finalconcentratedsamplevolume.concentration_type,
+      final_concentrated_sample_volume: selectedSample.finalconcentratedsamplevolume.final_concentrated_sample_volume,
+      notes: selectedSample.finalconcentratedsamplevolume.notes
     })
 
     // show the edit FCSV modal modal if not showing already
@@ -1024,7 +1032,7 @@ export class SamplesComponent implements OnInit {
 
     // if any sample in the selection lacks an FCSV value AND has a matrix that requires one, show error
     for (let sample of selectedSampleArray) {
-      if (sample.final_concentrated_sample_volume === null &&
+      if (sample.finalconcentratedsamplevolume === null &&
         (sample.matrix === (this.lookupMatrixTypeID("W"))
           || sample.matrix === (this.lookupMatrixTypeID("WW"))
           || sample.matrix === (this.lookupMatrixTypeID("F")))) {
@@ -1260,7 +1268,7 @@ export class SamplesComponent implements OnInit {
       case 'edit':
 
         // get the FCSV ID of the currently selected sample
-        const fcsvID = this.selected[0].final_concentrated_sample_volume.id;
+        const fcsvID = this.selected[0].finalconcentratedsamplevolume.id;
         // update the FCSV
         this._finalConcentratedSampleVolumeService.update(fcsvID, formValue)
           .subscribe(
@@ -1469,10 +1477,10 @@ export class SamplesComponent implements OnInit {
                   this.sampleQueryComplete = true;
                   this.allSamples = samples
                   for (let sample of this.allSamples) {
-                    if (sample.final_concentrated_sample_volume) {
-                      sample.fcsv = sample.final_concentrated_sample_volume.final_concentrated_sample_volume;
-                      sample.fcsv_concentration_type_string = sample.final_concentrated_sample_volume.concentration_type_string;
-                      sample.fcsv_notes = sample.final_concentrated_sample_volume.notes;
+                    if (sample.finalconcentratedsamplevolume) {
+                      sample.fcsv = sample.finalconcentratedsamplevolume.final_concentrated_sample_volume;
+                      sample.fcsv_concentration_type_string = sample.finalconcentratedsamplevolume.concentration_type_string;
+                      sample.fcsv_notes = sample.finalconcentratedsamplevolume.notes;
                     }
                   }
                   this.samplesLoading = false;
@@ -1805,10 +1813,10 @@ export class SamplesComponent implements OnInit {
                   this.sampleQueryComplete = true;
                   this.allSamples = samples
                   for (let sample of this.allSamples) {
-                    if (sample.final_concentrated_sample_volume) {
-                      sample.fcsv = sample.final_concentrated_sample_volume.final_concentrated_sample_volume;
-                      sample.fcsv_concentration_type_string = sample.final_concentrated_sample_volume.concentration_type_string;
-                      sample.fcsv_notes = sample.final_concentrated_sample_volume.notes;
+                    if (sample.finalconcentratedsamplevolume) {
+                      sample.fcsv = sample.finalconcentratedsamplevolume.final_concentrated_sample_volume;
+                      sample.fcsv_concentration_type_string = sample.finalconcentratedsamplevolume.concentration_type_string;
+                      sample.fcsv_notes = sample.finalconcentratedsamplevolume.notes;
                     }
                   }
                   this.samplesLoading = false;

@@ -35,7 +35,7 @@ export interface ISample {
     samplegroups: number[];
     record_type: number;
     peg_neg: number;
-    final_concentrated_sample_volume: IFinalConcentratedSampleVolume;
+    finalconcentratedsamplevolume: IFinalConcentratedSampleVolume;
     aliquots: IAliquot[];
     created_date: string;
     created_by: string;

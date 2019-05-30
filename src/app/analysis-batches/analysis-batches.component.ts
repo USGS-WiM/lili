@@ -345,8 +345,16 @@ export class AnalysisBatchesComponent implements OnInit {
 
     // on init, call getStudies function of the StudyService, set results to the studies var
     this._studyService.getStudies()
-      .subscribe(studies => this.studies = studies,
-        error => this.errorMessage = <any>error);
+      .subscribe(
+        studies => {
+          this.studies = studies
+          this.studies.sort(function (a, b) {
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
+            return 0;
+          });
+        },
+        error => this.errorMessage = error);
 
     // on init, call getSamples function of the SampleService, set results to the allSamples var
     this._sampleService.getSamples()

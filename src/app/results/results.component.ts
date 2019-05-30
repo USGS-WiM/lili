@@ -148,7 +148,15 @@ export class ResultsComponent implements OnInit, AfterViewInit {
 
     // on init, call getStudies function of the StudyService, set results to the studies var
     this._studyService.getStudies()
-      .subscribe(studies => this.studies = studies,
+      .subscribe(
+        studies => {
+          this.studies = studies
+          this.studies.sort(function (a, b) {
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
+            return 0;
+          });
+        },
         error => this.errorMessage = error);
 
   }
