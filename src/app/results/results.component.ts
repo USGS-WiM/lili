@@ -262,13 +262,13 @@ export class ResultsComponent implements OnInit, AfterViewInit {
         this.replicateCategoryString = 'Replicates with Negative Concentrations'
         break;
       case 'qpcr_results_missing':
-        this.replicateCategoryString = 'Replicates with Missing qPCR Values'
+        this.replicateCategoryString = 'Missing qPCR Values'
         break;
       case 'concentration_calc_values_missing':
-        this.replicateCategoryString = 'Replicates with Concentration Calculation Values Missing'
+        this.replicateCategoryString = 'Concentration Calculation Values Missing'
         break;
-      case 'invalid':
-        this.replicateCategoryString = 'Replicates made invalid by non-compliant controls'
+      case 'controls_invalids':
+        this.replicateCategoryString = 'Made invalid by non-compliant controls'
         break;
       default:
         this.replicateCategoryString = 'Replicates'

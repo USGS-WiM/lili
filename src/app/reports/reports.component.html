@@ -344,8 +344,8 @@
                                         <span class="text-smaller">Results Report Summary Statistics Options</span>
                                     </div>
                                     <div class="card-text">
-                                        <clr-checkbox [clrInline]="true" formControlName="replicate_count">
-                                            Rep Count
+                                        <clr-checkbox [clrInline]="true" formControlName="sample_count">
+                                            Sample Count
                                         </clr-checkbox>
                                         <clr-checkbox [clrInline]="true" formControlName="positive_count">
                                             Positive Rep Count
@@ -434,9 +434,9 @@
         <clr-tabs>
 
             <!--Inhibition Report tab -->
-            <clr-tab>
+            <clr-tab *ngIf="inhibitionReportLoaded">
                 <button clrTabLink (mouseout)="resizeTable('inhibitionReport')">Inhibition Report</button>
-                <clr-tab-content (mouseover)="resizeTable('inhibitionReport')">
+                <clr-tab-content>
 
                     <clr-datagrid [clrDgLoading]="inhibitionReportLoading" #inhibitionReportDataGrid>
 
@@ -550,9 +550,9 @@
             <!--End Inhibition Report tab -->
 
             <!--Results Report Summary tab -->
-            <clr-tab>
+            <clr-tab *ngIf="resultsReportSummaryLoaded">
                 <button clrTabLink (mouseout)="resizeTable('resultsReportSummary')">Results Report Summary</button>
-                <clr-tab-content (mouseover)="resizeTable('resultsReportSummary')">
+                <clr-tab-content>
 
                     <clr-datagrid [clrDgLoading]="resultsReportSummaryLoading" #resultsReportSummaryDataGrid>
 
@@ -578,10 +578,10 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'replicate_count'"
-                            *ngIf="reportSelectForm.get('results_report_summary_options').get('replicate_count').value">
+                        <clr-dg-column [clrDgField]="'sample_count'"
+                            *ngIf="reportSelectForm.get('results_report_summary_options').get('sample_count').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Replicate Count
+                                Sample Count
                             </ng-container>
                         </clr-dg-column>
 
@@ -630,29 +630,29 @@
                         <clr-dg-column [clrDgField]="'min_concentration_positive'"
                             *ngIf="reportSelectForm.get('results_report_summary_options').get('min_concentration_positive').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Minimum concentration of positive replicates
+                                Minimum concentration of positive samples
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'median_concentration_positive'"
                             *ngIf="reportSelectForm.get('results_report_summary_options').get('median_concentration_positive').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Median concentration of positive replicates
+                                Median concentration of positive samples
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column [clrDgField]="'average_concentration_positive'"
                             *ngIf="reportSelectForm.get('results_report_summary_options').get('average_concentration_positive').value">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Average concentration of positive replicates
+                                Average concentration of positive samples
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-row *clrDgItems="let item of resultsReportSummaryResults" [clrDgItem]="item">
                             <clr-dg-cell>{{item.target_name}}</clr-dg-cell>
                             <clr-dg-cell
-                                *ngIf="reportSelectForm.get('results_report_summary_options').get('replicate_count').value">
-                                {{item.replicate_count}}</clr-dg-cell>
+                                *ngIf="reportSelectForm.get('results_report_summary_options').get('sample_count').value">
+                                {{item.sample_count}}</clr-dg-cell>
                             <clr-dg-cell
                                 *ngIf="reportSelectForm.get('results_report_summary_options').get('positive_count').value">
                                 {{item.positive_count}}</clr-dg-cell>
@@ -695,9 +695,9 @@
             <!-- End Results Report Summary tab -->
 
             <!-- Individual Sample Report tab -->
-            <clr-tab>
+            <clr-tab *ngIf="individualSampleReportLoaded">
                 <button clrTabLink (mouseout)="resizeTable('individualSampleReport')">Individual Sample Report</button>
-                <clr-tab-content class="sample-results-tab" (mouseover)="resizeTable('individualSampleReport')">
+                <clr-tab-content class="sample-results-tab">
 
                     <clr-datagrid [clrDgLoading]="individualSampleReportLoading" #individualSampleReportDataGrid>
 
@@ -763,9 +763,9 @@
             <!-- End Individual Sample Report tab -->
 
             <!--Quality Control Report tab -->
-            <clr-tab>
+            <clr-tab *ngIf="qualityControlReportLoaded">
                 <button clrTabLink (mouseout)="resizeTable('qualityControlReport')">Quality Control Report</button>
-                <clr-tab-content (mouseover)="resizeTable('qualityControlReport')">
+                <clr-tab-content>
 
                     <h4>Sample-level summary statistics</h4>
                     <clr-datagrid [clrDgLoading]="qualityControlReportLoading" #qualityControlReport_sampleQC_DataGrid>
@@ -983,9 +983,9 @@
             <!-- End Quality Control Report tab -->
 
             <!--Control Results tab -->
-            <clr-tab>
+            <clr-tab *ngIf="controlsResultReportLoaded">
                 <button clrTabLink (mouseout)="resizeTable('controlsResultReport')">Controls Results Report</button>
-                <clr-tab-content (mouseover)="resizeTable('controlsResultReport')">
+                <clr-tab-content>
 
                     <!--5 tables (DataGrids) -->
                     <h4>Extraction Negative</h4>
@@ -1125,7 +1125,7 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'pcrreplicatebatch'">
+                        <clr-dg-column [clrDgField]="'pcrreplicate_batch'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 PCR Replicate Batch
                             </ng-container>
@@ -1137,6 +1137,7 @@
                         <clr-dg-row *ngFor="let control of controlsResultReportResults.pcr_neg" [clrDgItem]="control">
                             <clr-dg-cell>{{control.analysis_batch}}</clr-dg-cell>
                             <clr-dg-cell>{{control.extraction_number}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.pcrreplicate_batch}}</clr-dg-cell>
                             <clr-dg-cell class="dynamic-column"
                                 *ngFor="let target of controlsResultReportResults.targets">
                                 {{control[target]}}</clr-dg-cell>
@@ -1184,7 +1185,7 @@
                             </ng-container>
                         </clr-dg-column>
 
-                        <clr-dg-column [clrDgField]="'pcrreplicatebatch'">
+                        <clr-dg-column [clrDgField]="'pcrreplicate_batch'">
                             <ng-container *clrDgHideableColumn="{hidden: false}">
                                 PCR Replicate Batch
                             </ng-container>
@@ -1196,6 +1197,7 @@
                         <clr-dg-row *ngFor="let control of controlsResultReportResults.pcr_pos" [clrDgItem]="control">
                             <clr-dg-cell>{{control.analysis_batch}}</clr-dg-cell>
                             <clr-dg-cell>{{control.extraction_number}}</clr-dg-cell>
+                            <clr-dg-cell>{{control.pcrreplicate_batch}}</clr-dg-cell>
                             <clr-dg-cell class="dynamic-column"
                                 *ngFor="let target of controlsResultReportResults.targets">
                                 {{control[target]}}</clr-dg-cell>
@@ -1212,7 +1214,7 @@
                     </clr-datagrid>
 
                     <h4>Pegnegs</h4>
-                 
+
                     <clr-datagrid #controlsResultReport_pegneg_DataGrid [clrDgLoading]="controlsResultReportLoading">
 
                         <clr-dg-action-bar>
