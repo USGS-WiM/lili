@@ -328,13 +328,13 @@
 
                         <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Complete Replicates
+                                Valid Replicates
                             </ng-container>
                         </clr-dg-column>
 
                         <clr-dg-column>
                             <ng-container *clrDgHideableColumn="{hidden: false}">
-                                Incomplete Replicates
+                                Invalid by reason
                             </ng-container>
                         </clr-dg-column>
 
@@ -375,9 +375,9 @@
                                         class="badge">{{fsmc.sample_target_replicates.concentration_calc_values_missing_count}}</span></a>
                                 <br>
                                 <a class="label label-blue clickable"
-                                    *ngIf="fsmc.sample_target_replicates.invalid_count > 0"
-                                    (click)="openReplicateDetails('invalids', fsmc)">Invalid per controls&nbsp;<span
-                                        class="badge">{{fsmc.sample_target_replicates.invalid_count}}</span></a>
+                                    *ngIf="fsmc.sample_target_replicates.controls_invalid_count > 0"
+                                    (click)="openReplicateDetails('controls_invalids', fsmc)">Invalid per controls&nbsp;<span
+                                        class="badge">{{fsmc.sample_target_replicates.controls_invalid_count}}</span></a>
                             </clr-dg-cell>
                         </clr-dg-row>
 
@@ -689,6 +689,10 @@
                                         </ul>
                                         <hr>
                                         <ul>
+                                            <li *ngIf="replicate.invalid_reasons.cq_value_missing">Cq value is missing
+                                            </li>
+                                            <li *ngIf="replicate.invalid_reasons.gc_reaction_missing">GC/reaction value is missing
+                                            </li>
                                             <li *ngIf="replicate.invalid_reasons.peg_neg_invalid">PEG NEG is invalid
                                             </li>
                                             <li *ngIf="replicate.invalid_reasons.peg_neg_missing">PEG NEG is missing
@@ -720,6 +724,15 @@
                                                 missing</li>
                                             <li *ngIf="replicate.invalid_reasons.pcr_neg_positive">PCR Negative is
                                                 invalid</li>
+                                            <li *ngIf="replicate.invalid_reasons.ext_pos_rna_rt_negative">Extraction
+                                                Positive is
+                                                invalid</li>
+                                            <li *ngIf="replicate.invalid_reasons.ext_pos_rna_rt_missing">Extraction
+                                                Positive RNA/RT is missing</li>
+                                            <li *ngIf="replicate.invalid_reasons.ext_pos_dna_missing">Extraction
+                                                Positive DNA is missing</li>
+                                            <li *ngIf="replicate.invalid_reasons.ext_pos_dna_negative">Extraction
+                                                Positive DNA is invalid</li>
                                         </ul>
 
                                     </div>

@@ -112,16 +112,16 @@ export class ReportsComponent implements OnInit {
 
   resultsReportSummaryColumns = [
     { fieldName: 'target_name', colName: "Target" },
-    { fieldName: 'replicate_count', colName: "Replicate Count" },
-    { fieldName: 'positive_count', colName: "Positive Replicate Count" },
+    { fieldName: 'sample_count', colName: "Sample Count" },
+    { fieldName: 'positive_count', colName: "Positive Sample Count" },
     { fieldName: 'percent_positive', colName: "Percent Positive" },
     { fieldName: 'max_concentration', colName: "Maximum Concentration" },
     { fieldName: 'min_concentration', colName: "Minimum Concentration" },
     { fieldName: 'median_concentration', colName: "Median Concentration" },
     { fieldName: 'average_concentration', colName: "Average Concentration" },
-    { fieldName: 'min_concentration_positive', colName: "Minimum concentration of positive replicates" },
-    { fieldName: 'median_concentration_positive', colName: "Median concentration of positive replicates" },
-    { fieldName: 'average_concentration_positive', colName: "Average concentration of positive replicates" },
+    { fieldName: 'min_concentration_positive', colName: "Minimum concentration of positive samples" },
+    { fieldName: 'median_concentration_positive', colName: "Median concentration of positive samples" },
+    { fieldName: 'average_concentration_positive', colName: "Average concentration of positive samples" },
   ]
 
   individualSampleReportColumns = [
@@ -169,13 +169,13 @@ export class ReportsComponent implements OnInit {
   controlsResultReport_pcrNeg_Columns = [
     { fieldName: 'analysis_batch', colName: "Analysis Batch" },
     { fieldName: 'extraction_number', colName: "Extraction Number" },
-    { fieldName: 'pcrreplicatebatch', colName: "PCR Replicate Batch" }
+    { fieldName: 'pcrreplicate_batch', colName: "PCR Replicate Batch" }
     // array.push the target columns to this array
   ]
   controlsResultReport_pcrPos_Columns = [
     { fieldName: 'analysis_batch', colName: "Analysis Batch" },
     { fieldName: 'extraction_number', colName: "Extraction Number" },
-    { fieldName: 'pcrreplicatebatch', colName: "PCR Replicate Batch" }
+    { fieldName: 'pcrreplicate_batch', colName: "PCR Replicate Batch" }
     // array.push the target columns to this array
   ]
   controlsResultReport_pegNeg_Columns = [
@@ -206,7 +206,7 @@ export class ReportsComponent implements OnInit {
       results_report_summary: false,
       results_report_summary_filename: 'LIDE_ResultsReportSummary' + APP_UTILITIES.TODAY + '.csv',
       results_report_summary_options: this.formBuilder.group({
-        replicate_count: false,
+        sample_count: false,
         positive_count: false,
         percent_positive: false,
         max_concentration: false,
@@ -639,7 +639,8 @@ export class ReportsComponent implements OnInit {
         }
       });
 
-      this._pcrReplicateService.getSummaryStatistics(this.reportsQuery)
+      // just updated 6/11/19 - not yet available on backend
+      this._finalSampleMeanConcentrationService.getSummaryStatistics(this.reportsQuery)
         .subscribe(
           (results) => {
             this.resultsReportSummaryResults = results;
