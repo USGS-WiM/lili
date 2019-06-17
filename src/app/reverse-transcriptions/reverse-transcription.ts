@@ -6,6 +6,7 @@ export interface IReverseTranscription {
     reaction_volume?: number;
     rt_cq?: number;
     rt_date?: string;
+    ext_pos_rna_rt_cq_value?: number;
     // re_rt: number;
     // re_rt_notes: string;
     created_date?: string;

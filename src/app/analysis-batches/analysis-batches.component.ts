@@ -1237,6 +1237,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
     this.batchExtPosLoading = true
 
+    let ext_pos_rna_rt_cq_value;
+
     // reset the extraction form array controls to a blank array
     this.EB_array.controls = [];
     // call to retrieve AB detail data
@@ -1245,11 +1247,17 @@ export class AnalysisBatchesComponent implements OnInit {
         (analysisBatchDetail) => {
 
           for (let extractionBatch of analysisBatchDetail.extractionbatches) {
+
+            if (extractionBatch.reverse_transcriptions.length > 0 ) {
+              ext_pos_rna_rt_cq_value = extractionBatch.reverse_transcriptions[0].ext_pos_rna_rt_cq_value;
+            } else {
+              ext_pos_rna_rt_cq_value = null;
+            }
             let ebFormGroup: FormGroup = this.formBuilder.group({
               id: this.formBuilder.control(extractionBatch.id),
               number: this.formBuilder.control(extractionBatch.extraction_number),
-              ext_pos_dna_cq_value: this.formBuilder.control(null),
-              ext_pos_rna_rt_cq_value: this.formBuilder.control(null),
+              ext_pos_dna_cq_value: this.formBuilder.control(extractionBatch.ext_pos_dna_cq_value),
+              ext_pos_rna_rt_cq_value: this.formBuilder.control(ext_pos_rna_rt_cq_value),
             });
             this.EB_array.push(ebFormGroup);
           }

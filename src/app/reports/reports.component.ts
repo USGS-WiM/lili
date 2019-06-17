@@ -299,6 +299,10 @@ export class ReportsComponent implements OnInit {
     this.selected = [];
   }
 
+  selectAll() {
+    this.selected = this.allSamples;
+  }
+
   resizeTable(tab) {
 
     switch (tab) {

@@ -57,6 +57,8 @@ export class ResultsComponent implements OnInit, AfterViewInit {
 
   selected = [];
   fsmcResults = [];
+  //sampleResults:ISample[] = [];
+
   sampleResults = [];
 
   nucleicAcidTypes = [];
@@ -169,6 +171,10 @@ export class ResultsComponent implements OnInit, AfterViewInit {
 
   deselectAll() {
     this.selected = [];
+  }
+
+  selectAll() {
+    this.selected = this.allSamples;
   }
 
   openResultsQueryWizard() {
