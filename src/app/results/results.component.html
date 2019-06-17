@@ -126,6 +126,11 @@
 
                         <clr-dg-action-bar>
                             <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-secondary" (click)="selectAll()">
+                                    <clr-icon shape="check" size="16"></clr-icon> Select All
+                                </button>
+                            </div>
+                            <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
                                     <clr-icon shape="window-close" size="16"></clr-icon> Deselect All
                                 </button>
@@ -376,7 +381,8 @@
                                 <br>
                                 <a class="label label-blue clickable"
                                     *ngIf="fsmc.sample_target_replicates.controls_invalid_count > 0"
-                                    (click)="openReplicateDetails('controls_invalids', fsmc)">Invalid per controls&nbsp;<span
+                                    (click)="openReplicateDetails('controls_invalids', fsmc)">Invalid per
+                                    controls&nbsp;<span
                                         class="badge">{{fsmc.sample_target_replicates.controls_invalid_count}}</span></a>
                             </clr-dg-cell>
                         </clr-dg-row>
@@ -691,7 +697,8 @@
                                         <ul>
                                             <li *ngIf="replicate.invalid_reasons.cq_value_missing">Cq value is missing
                                             </li>
-                                            <li *ngIf="replicate.invalid_reasons.gc_reaction_missing">GC/reaction value is missing
+                                            <li *ngIf="replicate.invalid_reasons.gc_reaction_missing">GC/reaction value
+                                                is missing
                                             </li>
                                             <li *ngIf="replicate.invalid_reasons.peg_neg_invalid">PEG NEG is invalid
                                             </li>
