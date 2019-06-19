@@ -22,7 +22,6 @@ export class AuthenticationComponent {
   }
 
   onSubmit(formValue: any) {
-    console.log(formValue);
     if (sessionStorage.getItem('username')) {
       this.authenticationService.logout();
     }
