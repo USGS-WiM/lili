@@ -702,13 +702,15 @@
                                             </li>
                                             <li *ngIf="replicate.invalid_reasons.peg_neg_invalid">PEG NEG is invalid
                                             </li>
-                                            <li *ngIf="replicate.invalid_reasons.peg_neg_missing">PEG NEG is missing
+                                            <li *ngIf="replicate.invalid_reasons.peg_neg_not_extracted">PEG NEG not extracted
+                                            </li>
+                                            <li *ngIf="replicate.invalid_reasons.peg_neg_replicates_missing">PEG NEG is missing
                                                 <clr-tree-node><span>Missing PEG NEGs</span>
                                                     <ng-template [clrIfExpanded]="false">
                                                         <clr-tree-node>
                                                             <ul>
                                                                 <li
-                                                                    *ngFor="let item of replicate.invalid_reasons.peg_neg_missing_replicates">
+                                                                    *ngFor="let item of replicate.invalid_reasons.peg_neg_replicates_missing_list">
                                                                     AB {{item.analysis_batch}}, Extraction
                                                                     {{item.extraction_number}}, Replicate
                                                                     {{item.replicate_number}}, Sample {{item.sample}},
@@ -719,27 +721,26 @@
                                                     </ng-template>
                                                 </clr-tree-node>
                                             </li>
-                                            <li *ngIf="replicate.invalid_reasons.ext_neg_missing">Extraction Negative is
+                                            <li *ngIf="replicate.invalid_reasons.ext_neg_missing">Ext Negative is
                                                 missing</li>
-                                            <li *ngIf="replicate.invalid_reasons.ext_neg_positive">Extraction Negative
+                                            <li *ngIf="replicate.invalid_reasons.ext_neg_invalid">Ext Negative
                                                 is invalid</li>
                                             <li *ngIf="replicate.invalid_reasons.rt_neg_missing">RT Negative is missing
                                             </li>
-                                            <li *ngIf="replicate.invalid_reasons.rt_neg_positive">RT Negative is invalid
+                                            <li *ngIf="replicate.invalid_reasons.rt_neg_invalid">RT Negative is invalid
                                             </li>
                                             <li *ngIf="replicate.invalid_reasons.pcr_neg_missing">PCR Negative is
                                                 missing</li>
-                                            <li *ngIf="replicate.invalid_reasons.pcr_neg_positive">PCR Negative is
+                                            <li *ngIf="replicate.invalid_reasons.pcr_neg_invalid">PCR Negative is
                                                 invalid</li>
-                                            <li *ngIf="replicate.invalid_reasons.ext_pos_rna_rt_negative">Extraction
-                                                Positive is
+                                            <li *ngIf="replicate.invalid_reasons.ext_rt_pos_rna_invalid">Ext/RT Pos RNA is
                                                 invalid</li>
-                                            <li *ngIf="replicate.invalid_reasons.ext_pos_rna_rt_missing">Extraction
-                                                Positive RNA/RT is missing</li>
-                                            <li *ngIf="replicate.invalid_reasons.ext_pos_dna_missing">Extraction
-                                                Positive DNA is missing</li>
-                                            <li *ngIf="replicate.invalid_reasons.ext_pos_dna_negative">Extraction
-                                                Positive DNA is invalid</li>
+                                            <li *ngIf="replicate.invalid_reasons.ext_rt_pos_rna_missing">Ext
+                                                Pos RNA/RT is missing</li>
+                                            <li *ngIf="replicate.invalid_reasons.ext_pos_dna_missing">Ext
+                                                Pos DNA is missing</li>
+                                            <li *ngIf="replicate.invalid_reasons.ext_pos_dna_invalid">Ext
+                                                Pos DNA is invalid</li>
                                         </ul>
 
                                     </div>
