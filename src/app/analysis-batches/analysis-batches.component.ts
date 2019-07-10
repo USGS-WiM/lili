@@ -922,7 +922,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
             }
             console.log("extractionArray.controls: ", this.extractionArray.controls)
-            console.log("Aliquots for first extraction: ", (<FormGroup>this.extractionArray.controls[0]).controls['aliquots'])
+            // console.log("Aliquots for first extraction: ", (<FormGroup>this.extractionArray.controls[0]).controls['aliquots'])
             // build the abInhbition array: all inhibitions in the current analysis batch
             // used for the batch level apply select dropdowns
             // TEMPORARILY COMMENTED OUT: may not need this because batch level application not in use. Revisit.
