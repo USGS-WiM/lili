@@ -4,7 +4,8 @@
     </div>
 </div>
 <!-- Extract wizard -->
-<clr-wizard #wizardExtract [(clrWizardOpen)]="extractWizardOpen" (clrWizardOnFinish)="finishExtractWizard(selectedAnalysisBatchID, extractForm.value, createInhibitionForm.value)"
+<clr-wizard #wizardExtract [(clrWizardOpen)]="extractWizardOpen"
+    (clrWizardOnFinish)="finishExtractWizard(selectedAnalysisBatchID, extractForm.value, createInhibitionForm.value)"
     (clrWizardOnCancel)="resetExtractWizard()" clrWizardSize="xl">
     <clr-wizard-title>Extract Samples in Analysis Batch {{selectedAnalysisBatchID}}</clr-wizard-title>
 
@@ -28,9 +29,11 @@
 
                                 <span *ngIf="sample.aliquots.length === 0">No aliquots recorded</span>
                                 <div class="select" *ngIf="sample.aliquots.length > 0">
-                                    <select name="aliquot_select" (change)="onAliquotSelect(sample.id, $event.target.value)">
+                                    <select name="aliquot_select"
+                                        (change)="onAliquotSelect(sample.id, $event.target.value)">
                                         <option [value]="">Select</option>
-                                        <option *ngFor="let aliquot of sample.aliquots" [value]="aliquot.id">{{aliquot.aliquot_string}}</option>
+                                        <option *ngFor="let aliquot of sample.aliquots" [value]="aliquot.id">
+                                            {{aliquot.aliquot_string}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -62,7 +65,8 @@
 
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="aliquotSelectErrorFlag">
             <div clr-alert-item class="alert-item">
-                <span class="alert-text">Missing aliquot selection for one or more samples. Please ensure that all samples have aliquots recorded
+                <span class="alert-text">Missing aliquot selection for one or more samples. Please ensure that all
+                    samples have aliquots recorded
                     and that one is selected for this Extraction.</span>
             </div>
         </clr-alert>
@@ -94,7 +98,8 @@
                     <clr-dg-row *clrDgItems="let target of allTargets" [clrDgItem]="target">
                         <clr-dg-cell>{{target.name}}</clr-dg-cell>
                         <clr-dg-cell>{{target.code}}</clr-dg-cell>
-                        <clr-dg-cell>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes }}</clr-dg-cell>
+                        <clr-dg-cell>{{target.nucleic_acid_type | displayValue:'name':this.nucleicAcidTypes }}
+                        </clr-dg-cell>
                     </clr-dg-row>
 
                     <clr-dg-footer>{{allTargets.length}} targets</clr-dg-footer>
@@ -128,7 +133,8 @@
 
                         <div class="form-group">
                             <label class="required">qPCR Template Volume (µL)</label>
-                            <label for="qpcrTemplateVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                            <label for="qpcrTemplateVol" aria-haspopup="true" role="tooltip"
+                                class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                                 [class.invalid]="extractForm.get('qpcr_template_volume').invalid && (extractForm.get('qpcr_template_volume').dirty || extractForm.get('qpcr_template_volume').touched)">
                                 <input id="qpcrTemplateVol" type="text" size="5" formControlName="qpcr_template_volume">
                                 <span class="tooltip-content">
@@ -139,7 +145,8 @@
 
                         <div class="form-group">
                             <label class="required">qPCR Reaction Volume(µL)</label>
-                            <label for="qpcrReactionVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                            <label for="qpcrReactionVol" aria-haspopup="true" role="tooltip"
+                                class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                                 [class.invalid]="extractForm.get('qpcr_reaction_volume').invalid && (extractForm.get('qpcr_reaction_volume').dirty || extractForm.get('qpcr_reaction_volume').touched)">
                                 <input id="qpcrReactionVol" type="text" size="5" formControlName="qpcr_reaction_volume">
                                 <span class="tooltip-content">
@@ -150,7 +157,8 @@
 
                         <div class="form-group">
                             <label class="required">qPCR Date</label>
-                            <label for="qpcrDateInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                            <label for="qpcrDateInput" aria-haspopup="true" role="tooltip"
+                                class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                                 [class.invalid]="extractForm.get('qpcr_reaction_volume').invalid && (extractForm.get('qpcr_reaction_volume').dirty || extractForm.get('qpcr_reaction_volume').touched)">
                                 <input type="date" id="qpcrDateInput" formControlName="qpcr_date">
                                 <span class="tooltip-content">
@@ -163,13 +171,16 @@
                     </section>
 
                     <section class="form-block" *ngIf="x">
-                        <p>Select desired number of PCR replicates for each selected target. To update the targets list, return
+                        <p>Select desired number of PCR replicates for each selected target. To update the targets list,
+                            return
                             to Target Selection page. Minimum value of 1.
                             <div formArrayName="new_replicates">
 
-                                <div class="form-group" *ngFor="let target of replicateArray.controls; let i = index" [formGroupName]="i">
+                                <div class="form-group" *ngFor="let target of replicateArray.controls; let i = index"
+                                    [formGroupName]="i">
 
-                                    <label class="required">{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
+                                    <label
+                                        class="required">{{target.controls.target.value | displayValue:'name':this.allTargets}}</label>
                                     <input formControlName="count" type="number" min="1" class="target-count-input">
 
                                     <!-- count input with validation feedback. does not seem to work for number inputs. -->
@@ -199,7 +210,8 @@
 
                 <div class="form-group">
                     <label class="required">Extraction Volume (µL)</label>
-                    <label for="extractVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                    <label for="extractVol" aria-haspopup="true" role="tooltip"
+                        class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                         [class.invalid]="extractForm.get('extraction_volume').invalid && (extractForm.get('extraction_volume').dirty || extractForm.get('extraction_volume').touched)">
                         <input id="extractVol" type="text" size="10" formControlName="extraction_volume">
                         <span class="tooltip-content">
@@ -211,7 +223,8 @@
 
                 <div class="form-group">
                     <label class="required">Elution Volume (µL)</label>
-                    <label for="elutionVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                    <label for="elutionVol" aria-haspopup="true" role="tooltip"
+                        class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                         [class.invalid]="extractForm.get('elution_volume').invalid && (extractForm.get('elution_volume').dirty || extractForm.get('elution_volume').touched)">
                         <input id="elutionVol" type="text" size="10" formControlName="elution_volume">
                         <span class="tooltip-content">
@@ -223,11 +236,14 @@
 
                 <div class="form-group">
                     <label class="required">Extraction Method</label>
-                    <label for="extractionMethodSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                    <label for="extractionMethodSelect" aria-haspopup="true" role="tooltip"
+                        class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                         [class.invalid]="extractForm.get('extraction_method').invalid && (extractForm.get('extraction_method').dirty || extractForm.get('extraction_method').touched)">
                         <div class="select">
-                            <select id="extractionMethodSelect" name="extraction_method" formControlName="extraction_method">
-                                <option *ngFor="let method of allExtractionMethods" [value]="method.id">{{method.name}}</option>
+                            <select id="extractionMethodSelect" name="extraction_method"
+                                formControlName="extraction_method">
+                                <option *ngFor="let method of allExtractionMethods" [value]="method.id">{{method.name}}
+                                </option>
                             </select>
                         </div>
                         <span class="tooltip-content">
@@ -238,9 +254,11 @@
 
                 <div class="form-group">
                     <label class="required">Dilution factor of Sample</label>
-                    <label for="sampleDilution" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                    <label for="sampleDilution" aria-haspopup="true" role="tooltip"
+                        class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                         [class.invalid]="extractForm.get('sample_dilution_factor').invalid && (extractForm.get('sample_dilution_factor').dirty || extractForm.get('sample_dilution_factor').touched)">
-                        <input id="sampleDilution" type="number" size="10" min="1" formControlName="sample_dilution_factor">
+                        <input id="sampleDilution" type="number" size="10" min="1"
+                            formControlName="sample_dilution_factor">
                         <span class="tooltip-content">
                             This field cannot be empty!
                         </span>
@@ -249,7 +267,8 @@
 
                 <div class="form-group">
                     <label class="required">Extraction Date</label>
-                    <label for="extractionDateInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                    <label for="extractionDateInput" aria-haspopup="true" role="tooltip"
+                        class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                         [class.invalid]="extractForm.get('extraction_date').invalid && (extractForm.get('extraction_date').dirty || extractForm.get('extraction_date').touched)">
                         <input type="date" id="extractionDateInput" formControlName="extraction_date">
                         <span class="tooltip-content">
@@ -276,7 +295,8 @@
         <clr-alert [clrAlertClosable]="false" *ngIf="!rnaTargetsSelected">
             <div clr-alert-item class="alert-item">
                 <span class="alert-text">
-                    You have not selected any RNA targets for this extraction. No RT record will be created. Please click Next to skip to the
+                    You have not selected any RNA targets for this extraction. No RT record will be created. Please
+                    click Next to skip to the
                     next step.
                 </span>
             </div>
@@ -288,7 +308,8 @@
                 <div formGroupName="new_rt">
                     <div class="form-group">
                         <label class="required">Template Volume (µL)</label>
-                        <label for="rtTemplateVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                        <label for="rtTemplateVol" aria-haspopup="true" role="tooltip"
+                            class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                             [class.invalid]="extractForm.get('new_rt').get('template_volume').invalid && (extractForm.get('new_rt').get('template_volume').dirty || extractForm.get('new_rt').get('template_volume').touched)">
                             <input id="rTtemplateVol" type="text" size="10" formControlName="template_volume">
                             <span class="tooltip-content">
@@ -299,7 +320,8 @@
 
                     <div class="form-group">
                         <label class="required">Reaction Volume (µL)</label>
-                        <label for="rtReactionVol" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                        <label for="rtReactionVol" aria-haspopup="true" role="tooltip"
+                            class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                             [class.invalid]="extractForm.get('new_rt').get('reaction_volume').invalid && (extractForm.get('new_rt').get('reaction_volume').dirty || extractForm.get('new_rt').get('reaction_volume').touched)">
                             <input id="rtReactionVol" type="text" size="10" formControlName="reaction_volume">
                             <span class="tooltip-content">
@@ -310,7 +332,8 @@
 
                     <div class="form-group">
                         <label class="required">RT Date</label>
-                        <label for="rtDateInput" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                        <label for="rtDateInput" aria-haspopup="true" role="tooltip"
+                            class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                             [class.invalid]="extractForm.get('new_rt').get('rt_date').invalid && (extractForm.get('new_rt').get('rt_date').dirty || extractForm.get('new_rt').get('rt_date').touched)">
                             <input type="date" id="rtDateInput" formControlName="rt_date">
                             <span class="tooltip-content">
@@ -356,14 +379,16 @@
                                 Create New Inhibitions
                                 <clr-signpost>
                                     <clr-signpost-content *clrIfOpen>
-                                        <p>This option allows you to create new inhibitions for all DNA targets in the batch,
+                                        <p>This option allows you to create new inhibitions for all DNA targets in the
+                                            batch,
                                             all RNA targets in the batch, or both.
                                         </p>
                                     </clr-signpost-content>
                                 </clr-signpost>
                             </div>
                             <div class="card-text">
-                                <form id="createInhibitionForm" class="compact" [formGroup]="createInhibitionForm" (ngSubmit)="onSubmit('add', createInhibitionForm.value)">
+                                <form id="createInhibitionForm" class="compact" [formGroup]="createInhibitionForm"
+                                    (ngSubmit)="onSubmit('add', createInhibitionForm.value)">
                                     <section class="form-block">
                                         <label>Create new for all samples in this Analysis Batch</label>
                                         <div class="form-group">
@@ -388,11 +413,13 @@
                                         <label>Inhibition date for new inhibitions</label>
                                         <div class="form-group">
                                             <label>New DNA Inhibitions Date</label>
-                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date_dna">
+                                            <input type="date" id="inhibitionDateInput"
+                                                formControlName="inhibition_date_dna">
                                         </div>
                                         <div class="form-group" *ngIf="rnaTargetsSelected">
                                             <label>New RNA Inhibitions Date</label>
-                                            <input type="date" id="inhibitionDateInput" formControlName="inhibition_date_rna">
+                                            <input type="date" id="inhibitionDateInput"
+                                                formControlName="inhibition_date_rna">
                                         </div>
                                     </section>
                                 </form>
@@ -401,12 +428,14 @@
                         </div>
 
                         <div class="card-block" *ngIf="inhibitionsExist">
-                            <div *ngIf="createInhibitionForm.value.dna === false || createInhibitionForm.value.rna === false">
+                            <div
+                                *ngIf="createInhibitionForm.value.dna === false || createInhibitionForm.value.rna === false">
                                 <div class="card-title">
                                     Apply Existing Inhibitions
                                     <clr-signpost>
                                         <clr-signpost-content *clrIfOpen>
-                                            <p>Select existing inhibitions to apply to DNA targets and RNA targets for each
+                                            <p>Select existing inhibitions to apply to DNA targets and RNA targets for
+                                                each
                                                 sample individually.
                                                 <p>'DF' = Dilution Factor
                                         </clr-signpost-content>
@@ -422,35 +451,51 @@
                                                         <thead>
                                                             <tr>
                                                                 <th class="left">Sample</th>
-                                                                <th class="left" *ngIf="createInhibitionForm.value.dna === false">Inhibition for DNA Targets</th>
-                                                                <th class="left" *ngIf="createInhibitionForm.value.rna === false && rnaTargetsSelected">Inhibition for RNA Targets</th>
+                                                                <th class="left"
+                                                                    *ngIf="createInhibitionForm.value.dna === false">
+                                                                    Inhibition for DNA Targets</th>
+                                                                <th class="left"
+                                                                    *ngIf="createInhibitionForm.value.rna === false && rnaTargetsSelected">
+                                                                    Inhibition for RNA Targets</th>
                                                             </tr>
                                                         </thead>
 
                                                         <tbody>
-                                                            <tr *ngFor="let sample of abSampleInhibitions; let i = index" [formGroupName]="i">
+                                                            <tr *ngFor="let sample of abSampleInhibitions; let i = index"
+                                                                [formGroupName]="i">
                                                                 <td class="left">
                                                                     <label class="required">Sample {{sample.id}}</label>
                                                                 </td>
                                                                 <td *ngIf="createInhibitionForm.value.dna === false">
                                                                     <div class="select">
-                                                                        <select name="dnaInhibition" formControlName="inhibition_dna">
+                                                                        <select name="dnaInhibition"
+                                                                            formControlName="inhibition_dna">
                                                                             <option [value]="'new'">Create New</option>
-                                                                            <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id"> DF: {{inhibition.dilution_factor == null ? "None"
+                                                                            <option
+                                                                                *ngFor="let inhibition of sample.inhibitions"
+                                                                                [value]="inhibition.id"> DF:
+                                                                                {{inhibition.dilution_factor == null ? "None"
                                                                                 : inhibition.dilution_factor}}&nbsp;|&nbsp;{{inhibition.nucleic_acid_type
                                                                                 | displayValue:'name':this.nucleicAcidTypes}}&nbsp;|&nbsp;
-                                                                                {{inhibition.inhibition_date | date:'shortDate'}}</option>
+                                                                                {{inhibition.inhibition_date | date:'shortDate'}}
+                                                                            </option>
                                                                         </select>
                                                                     </div>
                                                                 </td>
-                                                                <td *ngIf="createInhibitionForm.value.rna === false && rnaTargetsSelected">
+                                                                <td
+                                                                    *ngIf="createInhibitionForm.value.rna === false && rnaTargetsSelected">
                                                                     <div class="select">
-                                                                        <select name="rnaInhibition" formControlName="inhibition_rna">
+                                                                        <select name="rnaInhibition"
+                                                                            formControlName="inhibition_rna">
                                                                             <option [value]="'new'">Create New</option>
-                                                                            <option *ngFor="let inhibition of sample.inhibitions" [value]="inhibition.id"> DF: {{inhibition.dilution_factor == null ? "None"
+                                                                            <option
+                                                                                *ngFor="let inhibition of sample.inhibitions"
+                                                                                [value]="inhibition.id"> DF:
+                                                                                {{inhibition.dilution_factor == null ? "None"
                                                                                 : inhibition.dilution_factor}}&nbsp;|&nbsp;{{inhibition.nucleic_acid_type
                                                                                 | displayValue:'name':this.nucleicAcidTypes}}&nbsp;|&nbsp;
-                                                                                {{inhibition.inhibition_date | date:'shortDate'}}</option>
+                                                                                {{inhibition.inhibition_date | date:'shortDate'}}
+                                                                            </option>
                                                                         </select>
                                                                     </div>
                                                                 </td>
@@ -578,7 +623,8 @@
                             </tr>
                             <tr>
                                 <th>Extraction Method</th>
-                                <td>{{extractForm.value.extraction_method | displayValue:'name':this.allExtractionMethods}}</td>
+                                <td>{{extractForm.value.extraction_method | displayValue:'name':this.allExtractionMethods}}
+                                </td>
                             </tr>
                             <tr>
                                 <th>Extraction Date</th>
@@ -644,19 +690,23 @@
             <label>
                 <h4>Inhibitions</h4>
             </label>
-            <div *ngIf="createInhibitionForm.value.dna">Creating new inhibitions for all DNA targets, with inhibition date {{createInhibitionForm.value.inhibition_date_dna
+            <div *ngIf="createInhibitionForm.value.dna">Creating new inhibitions for all DNA targets, with inhibition
+                date {{createInhibitionForm.value.inhibition_date_dna
                 | date:'shortDate'}}</div>
 
-            <div *ngIf="createInhibitionForm.value.rna">Creating new inhibitions for all RNA targets, with inhibition date {{createInhibitionForm.value.inhibition_date_rna
+            <div *ngIf="createInhibitionForm.value.rna">Creating new inhibitions for all RNA targets, with inhibition
+                date {{createInhibitionForm.value.inhibition_date_rna
                 | date:'shortDate'}}</div>
 
-            <div *ngIf="!createInhibitionForm.value.dna">Applying existing inhibitions for DNA targets for the following samples:
+            <div *ngIf="!createInhibitionForm.value.dna">Applying existing inhibitions for DNA targets for the following
+                samples:
                 <ul>
                     <li *ngFor="let sample of dnaApplyList">{{sample}}</li>
                 </ul>
             </div>
 
-            <div *ngIf="!createInhibitionForm.value.rna">Applying existing inhibitions for RNA targets for the following samples:
+            <div *ngIf="!createInhibitionForm.value.rna">Applying existing inhibitions for RNA targets for the following
+                samples:
                 <ul>
                     <li *ngFor="let sample of rnaApplyList">{{sample}}</li>
                 </ul>
@@ -668,7 +718,8 @@
                 </label>
                 <label>This Analysis Batch is being analyzed for the following targets:</label>
                 <ul>
-                    <li *ngFor="let replicate of extractForm.value.new_replicates">{{replicate.count}} replicates {{replicate.target | displayValue:'name':this.allTargets}}</li>
+                    <li *ngFor="let replicate of extractForm.value.new_replicates">{{replicate.count}} replicates
+                        {{replicate.target | displayValue:'name':this.allTargets}}</li>
                 </ul>
             </div>
         </div>
@@ -676,7 +727,8 @@
         <ng-template clrPageButtons>
             <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
             <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
-            <clr-wizard-button [type]="'custom-finish-confirmPage'"> {{ extractionFinished ? "Finish" : "Submit Extraction" }}</clr-wizard-button>
+            <clr-wizard-button [type]="'custom-finish-confirmPage'">
+                {{ extractionFinished ? "Finish" : "Submit Extraction" }}</clr-wizard-button>
         </ng-template>
     </clr-wizard-page>
     <!-- end Confirmation page -->
@@ -696,20 +748,26 @@
 
                 <div *ngIf="oneExtractionFlag">
                     There is one extraction for this analysis batch.
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="createWorksheet(true, false)" [clrLoading]="printSubmitLoading">
-                        <clr-icon shape="clipboard"></clr-icon> Create Extraction Worksheet</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB"
+                        (click)="createWorksheet(true, false)" [clrLoading]="printSubmitLoading">
+                        <clr-icon shape="clipboard"></clr-icon> Create Extraction Worksheet
+                    </button>
                 </div>
 
                 <div *ngIf="multipleExtractionsFlag">
-                    There are multiple Extractions of this Analysis Batch. Please select the extraction data you would like to print.
+                    There are multiple Extractions of this Analysis Batch. Please select the extraction data you would
+                    like to print.
                     <form class="compact" [formGroup]="extractionBatchSelectForm">
                         <div class="form-group">
                             <label class="required">Selection</label>
-                            <label for="extractionBatchSelect" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
+                            <label for="extractionBatchSelect" aria-haspopup="true" role="tooltip"
+                                class="tooltip tooltip-validation tooltip-sm tooltip-bottom-right"
                                 [class.invalid]="extractionBatchSelectForm.get('extraction_batch').invalid && (extractionBatchSelectForm.get('extraction_batch').dirty || extractionBatchSelectForm.get('extraction_batch').touched)">
                                 <div class="select">
-                                    <select id="extractionBatchSelect" name="extraction_batch" formControlName="extraction_batch">
-                                        <option *ngFor="let eb of extractionBatchArray" [value]="eb.id">Extraction {{eb.extraction_number}}</option>
+                                    <select id="extractionBatchSelect" name="extraction_batch"
+                                        formControlName="extraction_batch">
+                                        <option *ngFor="let eb of extractionBatchArray" [value]="eb.id">Extraction
+                                            {{eb.extraction_number}}</option>
                                     </select>
                                 </div>
                                 <span class="tooltip-content">
@@ -719,7 +777,8 @@
                         </div>
                     </form>
                     <div>
-                        <button class="btn btn-primary" (click)="createWorksheet(true, true)" [disabled]="extractionBatchSelectForm.invalid">Create Extraction Worksheet</button>
+                        <button class="btn btn-primary" (click)="createWorksheet(true, true)"
+                            [disabled]="extractionBatchSelectForm.invalid">Create Extraction Worksheet</button>
                     </div>
                 </div>
             </div>
@@ -754,7 +813,8 @@
                         <button clrTabLink>Details</button>
                         <ng-template [(clrIfActive)]="detailsActive">
                             <clr-tab-content>
-                                <form id="editABForm" class="compact" [formGroup]="editABForm" (ngSubmit)="onSubmit('editAB', editABForm.value)">
+                                <form id="editABForm" class="compact" [formGroup]="editABForm"
+                                    (ngSubmit)="onSubmit('editAB', editABForm.value)">
                                     <section class="form-block">
                                         <div class="form-group">
                                             <label for="studyId">Analysis Batch ID</label>
@@ -768,19 +828,25 @@
 
                                         <div class="form-group">
                                             <label for="abDescInput">Analysis Batch Description</label>
-                                            <textarea id="abDescInput" rows="2" formControlName="analysis_batch_description" style="max-width:25em"></textarea>
+                                            <textarea id="abDescInput" rows="2"
+                                                formControlName="analysis_batch_description"
+                                                style="max-width:25em"></textarea>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="abNotesInput">Analysis Batch Notes</label>
-                                            <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes" style="max-width:25em"></textarea>
+                                            <textarea id="abNotesInput" rows="2" formControlName="analysis_batch_notes"
+                                                style="max-width:25em"></textarea>
                                         </div>
 
                                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABEditError">
                                             <div clr-alert-item class="alert-item">
-                                                <span class="alert-text">Submission error. Analysis Batch not updated.</span>
+                                                <span class="alert-text">Submission error. Analysis Batch not
+                                                    updated.</span>
                                                 <div class="alert-actions">
-                                                    <a class="alert-action" (click)="onSubmitSample('add', editSampleForm.value)">Try again</a>
+                                                    <a class="alert-action"
+                                                        (click)="onSubmitSample('add', editSampleForm.value)">Try
+                                                        again</a>
                                                 </div>
                                             </div>
                                         </clr-alert>
@@ -789,13 +855,16 @@
                                             <div clr-alert-item class="alert-item">
                                                 <span class="alert-text">Analysis Batch successfully updated</span>
                                                 <div class="alert-actions">
-                                                    <a class="alert-action" (click)="showHideEdit = false; showABEditSuccess = false">Close</a>
+                                                    <a class="alert-action"
+                                                        (click)="showHideEdit = false; showABEditSuccess = false">Close</a>
                                                 </div>
                                             </div>
                                         </clr-alert>
 
-                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
-                                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Close</button>
+                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid"
+                                            [clrLoading]="submitLoading">Save Edits</button>
+                                        <button class="btn btn-info"
+                                            (click)="showHideEdit = !showHideEdit">Close</button>
 
                                     </section>
                                 </form>
@@ -809,7 +878,7 @@
                         <ng-template [(clrIfActive)]="sampleListActive">
                             <clr-tab-content>
                                 <div class="row">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-4" *ngIf="abSampleListPopulated">
                                         <!-- form tags used here strictly for formatting convenience. no actual form contained within. -->
                                         <form>
                                             <section class="form-block">
@@ -817,7 +886,8 @@
                                                     <span class="badge badge-light-blue">{{abSampleList.length}}</span>
                                                 </label>
                                                 <ul class="list">
-                                                    <li *ngFor="let sample of abSampleList">{{sample.id}} ({{sample.study_string}})</li>
+                                                    <li *ngFor="let sample of abSampleList">{{sample.id}}
+                                                        ({{sample.study_string}})</li>
                                                 </ul>
                                             </section>
                                         </form>
@@ -828,25 +898,42 @@
                                         <clr-alert [clrAlertClosable]="false" *ngIf="sampleListEditLocked">
                                             <div clr-alert-item class="alert-item">
                                                 <span class="alert-text">
-                                                    This Analysis Batch has been extracted. Editing of the sample list is locked.
+                                                    This Analysis Batch has been extracted. Editing of the sample list
+                                                    is locked.
                                                 </span>
 
                                             </div>
                                         </clr-alert>
 
+                                        <!-- <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> -->
+                                        <!-- <span *ngIf="samplesLoading" class="text-italic text-small">Samples
+                                            loading.</span> <br> -->
+                                        <!-- </div>
+                                        </div> -->
+
                                         <form *ngIf="!sampleListEditLocked">
                                             <section class="form-block">
                                                 <label>All Samples
-                                                    <a href="" role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">
+                                                    <a href="" role="tooltip" aria-haspopup="true"
+                                                        class="tooltip tooltip-lg">
                                                         <clr-icon shape="info-circle" size="24"></clr-icon>
-                                                        <span class="tooltip-content">Check/uncheck to add/remove Sample from Analysis Batch</span>
+                                                        <span class="tooltip-content">Check/uncheck to add/remove Sample
+                                                            from Analysis Batch</span>
+                                                        <span *ngIf="samplesLoading"
+                                                            class="text-italic text-small">Samples loading.</span> <br>
+
                                                     </a>
                                                 </label>
-                                                <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
+                                                <clr-datagrid class="target-select-datagrid"
+                                                    [(clrDgSelected)]="selected">
                                                     <clr-dg-action-bar>
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-sm btn-secondary" (click)="deselectAll()">
-                                                                <clr-icon shape="window-close" size="16"></clr-icon> Deselect All</button>
+                                                            <button type="button" class="btn btn-sm btn-secondary"
+                                                                (click)="deselectAll()">
+                                                                <clr-icon shape="window-close" size="16"></clr-icon>
+                                                                Deselect All
+                                                            </button>
                                                         </div>
                                                     </clr-dg-action-bar>
 
@@ -885,16 +972,21 @@
                                                     <clr-dg-column [clrDgField]="'collection_start_date'">
                                                         Collect Start Date
                                                         <clr-dg-filter [clrDgFilter]="CollectionStartDateFilter">
-                                                            <collection-start-date-filter [dateField]="'collection_start_date'" #CollectionStartDateFilter></collection-start-date-filter>
+                                                            <collection-start-date-filter
+                                                                [dateField]="'collection_start_date'"
+                                                                #CollectionStartDateFilter>
+                                                            </collection-start-date-filter>
                                                         </clr-dg-filter>
                                                     </clr-dg-column>
 
-                                                    <clr-dg-row *clrDgItems="let sample of allSamples" [clrDgItem]="sample">
+                                                    <clr-dg-row *clrDgItems="let sample of allSamples"
+                                                        [clrDgItem]="sample">
                                                         <clr-dg-cell>{{sample.id}}</clr-dg-cell>
                                                         <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
                                                         <clr-dg-cell>{{sample.study_string}}</clr-dg-cell>
                                                         <clr-dg-cell>{{sample.sample_type_string}}</clr-dg-cell>
-                                                        <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}</clr-dg-cell>
+                                                        <clr-dg-cell>{{sample.collection_start_date | date:'shortDate'}}
+                                                        </clr-dg-cell>
                                                     </clr-dg-row>
 
                                                     <clr-dg-footer>{{allSamples.length}} samples</clr-dg-footer>
@@ -907,9 +999,12 @@
                                     <div class="col-lg-6">
                                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABEditError">
                                             <div clr-alert-item class="alert-item">
-                                                <span class="alert-text">Submission error. Analysis Batch not updated.</span>
+                                                <span class="alert-text">Submission error. Analysis Batch not
+                                                    updated.</span>
                                                 <div class="alert-actions">
-                                                    <a class="alert-action" (click)="updateABSampleList(editABForm.value,selected)">Try again</a>
+                                                    <a class="alert-action"
+                                                        (click)="updateABSampleList(editABForm.value,selected)">Try
+                                                        again</a>
                                                 </div>
                                             </div>
                                         </clr-alert>
@@ -918,14 +1013,18 @@
                                             <div clr-alert-item class="alert-item">
                                                 <span class="alert-text">Analysis Batch successfully updated</span>
                                                 <div class="alert-actions">
-                                                    <a class="alert-action" (click)="showHideEdit = false; showABEditSuccess = false">Close</a>
+                                                    <a class="alert-action"
+                                                        (click)="showHideEdit = false; showABEditSuccess = false">Close</a>
                                                 </div>
                                             </div>
                                         </clr-alert>
 
-                                        <button class="btn btn-primary" type="submit" [disabled]="editABForm.invalid || sampleListEditLocked" (click)="updateABSampleList(editABForm.value,selected)"
+                                        <button class="btn btn-primary" type="submit"
+                                            [disabled]="editABForm.invalid || sampleListEditLocked"
+                                            (click)="updateABSampleList(editABForm.value,selected)"
                                             [clrLoading]="submitLoading">Save Edits</button>
-                                        <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Close</button>
+                                        <button class="btn btn-info"
+                                            (click)="showHideEdit = !showHideEdit">Close</button>
                                     </div>
                                 </div>
                             </clr-tab-content>
@@ -952,7 +1051,8 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form class="compact" [formGroup]="batchExtPosForm" (ngSubmit)="onSubmitBatchExtPos(batchExtPosForm.value)">
+                        <form class="compact" [formGroup]="batchExtPosForm"
+                            (ngSubmit)="onSubmitBatchExtPos(batchExtPosForm.value)">
                             <section class="form-block">
 
                                 <div formArrayName="extraction_batches">
@@ -970,15 +1070,18 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row" *ngFor="let EB of EB_array.controls, let i = index" [formGroupName]="i">
+                                    <div class="form-group row" *ngFor="let EB of EB_array.controls, let i = index"
+                                        [formGroupName]="i">
                                         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                             <label>Extraction {{EB.controls.number.value}}</label>
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                            <input class="form-control" type="number" placeholder="Ext Pos DNA" size="10" class="fcsv-input" formControlName="ext_pos_dna_cq_value">
+                                            <input class="form-control" type="number" placeholder="Ext Pos DNA"
+                                                size="10" class="fcsv-input" formControlName="ext_pos_dna_cq_value">
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                            <input class="form-control" type="number" placeholder="Ext/RT Pos RNA" size="35" formControlName="ext_pos_rna_rt_cq_value">
+                                            <input class="form-control" type="number" placeholder="Ext/RT Pos RNA"
+                                                size="35" formControlName="ext_pos_rna_rt_cq_value">
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                         </div>
@@ -989,7 +1092,8 @@
                                     <div clr-alert-item class="alert-item">
                                         <span class="alert-text">Submission error. Ext Pos values not submitted.</span>
                                         <div class="alert-actions">
-                                            <a class="alert-action" (click)="onSubmitBatchExtPos(batchExtPosForm.value)">Try again</a>
+                                            <a class="alert-action"
+                                                (click)="onSubmitBatchExtPos(batchExtPosForm.value)">Try again</a>
                                         </div>
                                     </div>
                                 </clr-alert>
@@ -998,13 +1102,16 @@
                                     <div clr-alert-item class="alert-item">
                                         <span class="alert-text">Ext Pos values successfully submitted.</span>
                                         <div class="alert-actions">
-                                            <a class="alert-action" (click)="batchExtPosModalActive = false; showBatchExtPosSuccess = false; resetFlags();">Close</a>
+                                            <a class="alert-action"
+                                                (click)="batchExtPosModalActive = false; showBatchExtPosSuccess = false; resetFlags();">Close</a>
                                         </div>
                                     </div>
                                 </clr-alert>
 
-                                <button class="btn btn-primary" type="submit" [disabled]="batchExtPosForm.invalid" [clrLoading]="submitLoading">Submit</button>
-                                <button class="btn btn-info" (click)="batchExtPosModalActive = !batchExtPosModalActive; resetFlags();">Close</button>
+                                <button class="btn btn-primary" type="submit" [disabled]="batchExtPosForm.invalid"
+                                    [clrLoading]="submitLoading">Submit</button>
+                                <button class="btn btn-info"
+                                    (click)="batchExtPosModalActive = !batchExtPosModalActive; resetFlags();">Close</button>
 
                             </section>
 
@@ -1051,7 +1158,8 @@
 <!-- begin no targets error modal -->
 <clr-modal [(clrModalOpen)]="showHideNoTargetErrorModal" [clrModalSize]="'md'">
     <h3 class="modal-title">
-        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> No targets error</h3>
+        <clr-icon shape="warning-standard" class="is-error" size="36"></clr-icon> No targets error
+    </h3>
     <div class="modal-body">
         <div class="row">
             <div class="col-sm-12">
@@ -1096,11 +1204,14 @@
 
         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="abQuerySizeErrorFlag">
             <div class="alert-item">
-                <span class="alert-text">Your query results are too large (greater than {{queryCountLimit}}). Please narrow your search.</span>
+                <span class="alert-text">Your query results are too large (greater than {{queryCountLimit}}). Please
+                    narrow your search.</span>
             </div>
         </clr-alert>
 
-        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading"><clr-icon shape="filter"></clr-icon> Filter Analysis Batches</button>
+        <button class="btn btn-primary" type="submit" [clrLoading]="submitLoading">
+            <clr-icon shape="filter"></clr-icon> Filter Analysis Batches
+        </button>
     </form>
 </div>
 
@@ -1108,25 +1219,32 @@
     <h4>Query returned {{abCount}} Analysis Batch records</h4>
 </div>
 
-
 <!-- begin Analysis batches table -->
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
         <clr-datagrid [(clrDgSingleSelected)]="selectedAB" [clrDgLoading]="analysisBatchesLoading">
 
             <clr-dg-action-bar>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="extractAB(selectedAB)" [clrLoading]="submitLoading">
-                        <clr-icon shape="upload"></clr-icon>&nbsp;Extract</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="editAB(selectedAB)">
-                        <clr-icon shape="note-edit" size="16"></clr-icon>&nbsp;Edit Analysis Batch</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="reprintWorksheet(selectedAB)" [clrLoading]="printSubmitLoading">
-                        <clr-icon shape="clipboard"></clr-icon>&nbsp;Re-Print Worksheet</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB" (click)="openBatchExtPos(selectedAB)" [clrLoading]="batchExtPosLoading">
-                        <clr-icon shape="view-list"></clr-icon>&nbsp;Batch Submit Ext Pos Controls</button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB"
+                        (click)="extractAB(selectedAB)" [clrLoading]="submitLoading">
+                        <clr-icon shape="upload"></clr-icon>&nbsp;Extract
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB"
+                        (click)="editAB(selectedAB)" [clrLoading]="editABLoading">
+                        <clr-icon shape="note-edit" size="16"></clr-icon>&nbsp;Edit Analysis Batch
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB"
+                        (click)="reprintWorksheet(selectedAB)" [clrLoading]="printSubmitLoading">
+                        <clr-icon shape="clipboard"></clr-icon>&nbsp;Re-Print Worksheet
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB"
+                        (click)="openBatchExtPos(selectedAB)" [clrLoading]="batchExtPosLoading">
+                        <clr-icon shape="view-list"></clr-icon>&nbsp;Batch Submit Ext Pos Controls
+                    </button>
                 </div>
             </clr-dg-action-bar>
+
 
             <clr-dg-column [clrDgField]="'id'">
                 Analysis Batch ID
@@ -1224,7 +1342,8 @@
                 <clr-dg-cell>{{ab.summary.inhibition_count}}</clr-dg-cell>
                 <clr-dg-cell>{{ab.summary.reverse_transcription_count}}</clr-dg-cell>
                 <clr-dg-cell>
-                    <a class="label label-blue clickable" (click)="openTargetDetails(ab.id)">{{ab.summary.target_count}}</a>
+                    <a class="label label-blue clickable"
+                        (click)="openTargetDetails(ab.id)">{{ab.summary.target_count}}</a>
                 </clr-dg-cell>
                 <clr-dg-cell>{{ab.analysis_batch_notes}}</clr-dg-cell>
                 <clr-dg-cell>{{ab.created_by}}</clr-dg-cell>
@@ -1232,7 +1351,8 @@
                 <clr-dg-cell>{{ab.modified_by }}</clr-dg-cell>
                 <clr-dg-cell>{{ab.modified_date | date:'shortDate'}}</clr-dg-cell>
 
-                <analysis-batch-detail *clrIfExpanded [selectedABSummary]="ab" ngProjectAs="clr-dg-row-detail"></analysis-batch-detail>
+                <analysis-batch-detail *clrIfExpanded [selectedABSummary]="ab" ngProjectAs="clr-dg-row-detail">
+                </analysis-batch-detail>
 
             </clr-dg-row>
 
