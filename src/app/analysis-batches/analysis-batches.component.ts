@@ -55,6 +55,7 @@ export class AnalysisBatchesComponent implements OnInit {
   // testing
 
   analysisBatchesLoading: boolean = false;
+  samplesLoading: boolean = false;
 
   public showWarning = false;
   public nativeWindow: any;
@@ -94,6 +95,8 @@ export class AnalysisBatchesComponent implements OnInit {
   abSampleList: ISample[] = [];
   abSampleIDList: number[] = [];
 
+  abSampleListPopulated: boolean = false;
+
   showABEditError: boolean = false;
   showABEditSuccess: boolean = false;
 
@@ -110,7 +113,7 @@ export class AnalysisBatchesComponent implements OnInit {
   targetSelectErrorFlag: boolean = false;
   showHideNoTargetErrorModal: boolean = false;
 
-
+  editABLoading = false;
 
   // aliquotSelectionArray: IAliquotSelection[] = [];
 
@@ -357,9 +360,16 @@ export class AnalysisBatchesComponent implements OnInit {
         error => this.errorMessage = error);
 
     // on init, call getSamples function of the SampleService, set results to the allSamples var
+    this.samplesLoading = true;
     this._sampleService.getSamples()
-      .subscribe(samples => this.allSamples = samples,
-        error => this.errorMessage = <any>error);
+      .subscribe(
+        samples => {
+          this.allSamples = samples
+          this.samplesLoading = false;
+        },
+        error => {
+          this.errorMessage = <any>error
+        });
 
     // on init, call getUnits function of the UnitService, set results to the units var
     this._unitService.getUnits()
@@ -551,7 +561,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
             this.analysisBatchesLoading = true;
 
-            // if AB query count does not exceed functional limit, query for actual results, and set results to the allSamples var
+            // if AB query count does not exceed limit, query for actual results, set results to the allAnalysisBatchSummaries var
             this._analysisBatchService.queryAnalysisBatches(this.abQueryForm.value)
               .subscribe(
                 (analysisBatches) => {
@@ -624,6 +634,7 @@ export class AnalysisBatchesComponent implements OnInit {
   resetAB() {
     this.selected = [];
     this.abSampleList = [];
+    this.abSampleListPopulated = false;
     this.abInhibitionCount = 0;
     this.abInhibitions = [];
     this.sampleInhibitions = [];
@@ -871,23 +882,86 @@ export class AnalysisBatchesComponent implements OnInit {
     this._analysisBatchService.getAnalysisBatchDetail(selectedAB.id)
       .subscribe(
         (analysisBatchDetail) => {
-          console.log("Selected Analysis Batch detail data: ", analysisBatchDetail);
-
           this.selectedAnalysisBatchData = analysisBatchDetail;
+
+          // reset the extraction form array controls to a blank array
+          // this.extractionArray.controls = [];
 
           // get sample id for each sample in the AB, add those to abSampleList array and abSampleIDList
           if (analysisBatchDetail.samples.length > 0) {
-            for (let sampleSummary of analysisBatchDetail.samples) {
-              for (let sample of this.allSamples) {
-                if (sampleSummary.id === sample.id) {
-                  this.abSampleList.push(sample);
-                  this.abSampleIDList.push(sample.id);
-                }
-              }
+
+            // populate the abSampleIDList from a simple loop of the samples array of the AB details
+            for (let sampleSummary of this.selectedAnalysisBatchData.samples) {
+              this.abSampleIDList.push(sampleSummary.id);
             }
 
-            // reset the extraction form array controls to a blank array
-            this.extractionArray.controls = [];
+            // query the needed samples to populate the abSampleList array, needed for the extract step
+            const formValue = { "id": this.abSampleIDList }
+
+            this._sampleService.querySamples(formValue)
+              .subscribe(
+                (samples) => {
+                  this.abSampleList = samples;
+
+                  this.abSampleListPopulated = true;
+
+                  // the abSampleList must be populated before this is called
+                  for (let i = 0; i < this.abSampleList.length; i++) {
+
+                    let extractionFormGroup: FormGroup = this.formBuilder.group({
+                      sample: this.formBuilder.control(this.abSampleList[i].id),
+                      inhibition_dna: this.formBuilder.control(null),
+                      inhibition_rna: this.formBuilder.control(null),
+                      aliquot_string: this.formBuilder.control(null),
+                      rack: this.formBuilder.control(null),
+                      box: this.formBuilder.control(null),
+                      row: this.formBuilder.control(null),
+                      spot: this.formBuilder.control(null),
+                      aliquots: this.buildAliquotArray(i, this.abSampleList[i].id, this.abSampleList[i].aliquots)
+                    });
+
+                    this.extractionArray.push(extractionFormGroup);
+
+                  }
+
+
+                  // call to services to retrieve a list of all inhibitions for each sample in this AB
+                  // this must be called AFTER abSampleIDLIst is populated
+                  this._analysisBatchService.getSampleInhibitions(this.abSampleIDList)
+                    .subscribe(
+                      (abSampleInhibitions) => {
+
+                        for (let sample of abSampleInhibitions) {
+
+                          this.abSampleInhibitions = abSampleInhibitions;
+
+                          // populate sampleInhibitions var with all the inhibitions associated with any sample in this AB
+                          // used for the sample level inhibition apply select dropdowns
+                          for (let inhibition of sample.inhibitions) {
+                            this.sampleInhibitions.push(inhibition)
+                          }
+
+                          // check if any of the samples in the list have inhibitions, for inhibitions exist alert
+                          // if so set inhibitionsExists var to true
+                          if (sample.inhibitions.length > 0) {
+                            this.inhibitionsExist = true;
+                          }
+                        }
+
+                        this.submitLoading = false;
+                        this.extractWizardOpen = true;
+                      },
+                      error => {
+                        this.errorMessage = <any>error
+                      }
+                    )
+
+
+                },
+                error => {
+                  this.errorMessage = <any>error
+                }
+              );
 
             // for (let sample of this.abSampleList) {
 
@@ -904,25 +978,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
             // }
 
-            for (let i = 0; i < this.abSampleList.length; i++) {
+            // console.log("extractionArray.controls: ", this.extractionArray.controls)
 
-              let extractionFormGroup: FormGroup = this.formBuilder.group({
-                sample: this.formBuilder.control(this.abSampleList[i].id),
-                inhibition_dna: this.formBuilder.control(null),
-                inhibition_rna: this.formBuilder.control(null),
-                aliquot_string: this.formBuilder.control(null),
-                rack: this.formBuilder.control(null),
-                box: this.formBuilder.control(null),
-                row: this.formBuilder.control(null),
-                spot: this.formBuilder.control(null),
-                aliquots: this.buildAliquotArray(i, this.abSampleList[i].id, this.abSampleList[i].aliquots)
-              });
-
-              this.extractionArray.push(extractionFormGroup);
-
-            }
-            console.log("extractionArray.controls: ", this.extractionArray.controls)
-            // console.log("Aliquots for first extraction: ", (<FormGroup>this.extractionArray.controls[0]).controls['aliquots'])
             // build the abInhbition array: all inhibitions in the current analysis batch
             // used for the batch level apply select dropdowns
             // TEMPORARILY COMMENTED OUT: may not need this because batch level application not in use. Revisit.
@@ -937,35 +994,6 @@ export class AnalysisBatchesComponent implements OnInit {
             //   }
             // }
 
-            // call to services to retrieve a list of all inhibitions for each sample in this AB
-            this._analysisBatchService.getSampleInhibitions(this.abSampleIDList)
-              .subscribe(
-                (abSampleInhibitions) => {
-
-                  for (let sample of abSampleInhibitions) {
-
-                    this.abSampleInhibitions = abSampleInhibitions;
-
-                    // populate sampleInhibitions var with all the inhibitions associated with any sample in this AB
-                    // used for the sample level inhibition apply select dropdowns
-                    for (let inhibition of sample.inhibitions) {
-                      this.sampleInhibitions.push(inhibition)
-                    }
-
-                    // check if any of the samples in the list have inhibitions, for inhibitions exist alert
-                    // if so set inhibitionsExists var to true
-                    if (sample.inhibitions.length > 0) {
-                      this.inhibitionsExist = true;
-                    }
-                  }
-
-                  this.submitLoading = false;
-                  this.extractWizardOpen = true;
-                },
-                error => {
-                  this.errorMessage = <any>error
-                }
-              )
 
           } else {
             this.submitLoading = false;
@@ -1186,6 +1214,8 @@ export class AnalysisBatchesComponent implements OnInit {
 
   editAB(selectedAB) {
 
+    this.editABLoading = true;
+
     this.resetAB();
     if (selectedAB.summary.sample_extraction_count > 0) {
       this.sampleListEditLocked = true;
@@ -1199,33 +1229,50 @@ export class AnalysisBatchesComponent implements OnInit {
           this.selectedAnalysisBatchData = analysisBatchDetail;
 
           if (this.selectedAnalysisBatchData.samples.length > 0) {
-            // get sample id for each sample in the AB
-            // add those to selected array
+
+            // populate the abSampleIDList from a simple loop of the samples array of the AB details
             for (let sampleSummary of this.selectedAnalysisBatchData.samples) {
-              for (let sample of this.allSamples) {
-                if (sampleSummary.id === sample.id) {
-                  this.abSampleList.push(sample);
-                  this.abSampleIDList.push(sample.id);
-                }
-              }
+              this.abSampleIDList.push(sampleSummary.id);
             }
-          } else {
 
-          }
-          this.selected = this.abSampleList;
+            // query the needed samples to populate the abSampleList array
+            const formValue = { "id": this.abSampleIDList }
 
-          this.editABForm.setValue({
-            id: selectedAB.id,
-            name: this.selectedAB.name,
-            analysis_batch_description: selectedAB.analysis_batch_description,
-            analysis_batch_notes: selectedAB.analysis_batch_notes,
-            new_samples: this.abSampleIDList
-          });
+            this._sampleService.querySamples(formValue)
+              .subscribe(
+                (samples) => {
+                  this.abSampleList = samples;
 
-          // show the edit analysis batch modal if not showing already
-          if (this.showHideEdit === false) {
-            this.showHideEdit = true;
-          }
+                  this.abSampleListPopulated = true;
+
+                  // unclear about next line
+                  this.selected = this.abSampleList;
+
+
+                  this.editABForm.setValue({
+                    id: selectedAB.id,
+                    name: this.selectedAB.name,
+                    analysis_batch_description: selectedAB.analysis_batch_description,
+                    analysis_batch_notes: selectedAB.analysis_batch_notes,
+                    new_samples: this.abSampleIDList
+                  });
+
+                  this.editABLoading = false;
+                  // show the edit analysis batch modal if not showing already
+                  if (this.showHideEdit === false) {
+                    this.showHideEdit = true;
+                  }
+
+                },
+                error => {
+                  this.errorMessage = <any>error
+                  this.editABLoading = false;
+                }
+              );
+
+          } else { }
+
+
         },
         error => {
           this.errorMessage = <any>error
@@ -1248,7 +1295,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
           for (let extractionBatch of analysisBatchDetail.extractionbatches) {
 
-            if (extractionBatch.reverse_transcriptions.length > 0 ) {
+            if (extractionBatch.reverse_transcriptions.length > 0) {
               ext_pos_rna_rt_cq_value = extractionBatch.reverse_transcriptions[0].ext_pos_rna_rt_cq_value;
             } else {
               ext_pos_rna_rt_cq_value = null;
@@ -1330,7 +1377,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
             this.analysisBatchesLoading = true;
 
-            // if AB query count does not exceed functional limit, query for actual results, and set results to the allSamples var
+            // if AB query count does not exceed limit, query for actual results, set results to the allAnalysisBatchSummaries var
             this._analysisBatchService.queryAnalysisBatches(formValue)
               .subscribe(
                 (analysisBatches) => {
