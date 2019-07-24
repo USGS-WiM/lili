@@ -76,12 +76,12 @@ export class APP_SETTINGS {
 
     public static get PEGNEG_FIELD_VALUES() {
         return {
-            "study": 34,
+            "study": 1,
             "matrix": 1,
-            "filter_type": 8,
+            // "filter_type": 8,
             "sample_type": 4,
-            "collection_start_time": '00:00',
-            "collection_end_time": '00:00'
+            // "collection_start_time": '00:00',
+            // "collection_end_time": '00:00'
         }
     }
 

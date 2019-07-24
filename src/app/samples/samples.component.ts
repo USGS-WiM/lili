@@ -1741,14 +1741,14 @@ export class SamplesComponent implements OnInit {
         let currentTime = now.toTimeString().split(" ")[0];
 
         formValue.matrix = APP_SETTINGS.PEGNEG_FIELD_VALUES.matrix;
-        formValue.filter_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.filter_type;
+        // formValue.filter_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.filter_type;
         formValue.sample_type = APP_SETTINGS.PEGNEG_FIELD_VALUES.sample_type;
         formValue.collaborator_sample_id = 'pegneg_' + formValue.collection_start_date;
         formValue.study = APP_SETTINGS.PEGNEG_FIELD_VALUES.study;
         // formValue.collection_start_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_start_time;
         // formValue.collection_end_time = APP_SETTINGS.PEGNEG_FIELD_VALUES.collection_end_time;
-        formValue.collection_end_date = formValue.collection_start_date;
-        formValue.arrival_date = formValue.collection_start_date;
+        // formValue.collection_end_date = formValue.collection_start_date;
+        // formValue.arrival_date = formValue.collection_start_date;
 
         if (meterVolumesPresent === false && directTVSPresent === false) {
           this.submitLoading = false;
