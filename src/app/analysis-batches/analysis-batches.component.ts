@@ -259,22 +259,20 @@ export class AnalysisBatchesComponent implements OnInit {
         this.formBuilder.group({
           target: '',
           count: ['2', [Validators.required, Validators.min(1)]]
-          //count: ['2', [Validators.required, Validators.pattern('^[1-9][0-9]*$')]],
-          // count: '2'
         })
       ]),
       new_sample_extractions: this.formBuilder.array([
-        this.formBuilder.group({
-          sample: ['', Validators.required],
-          inhibition_dna: [null, Validators.required],
-          inhibition_rna: [{ value: null, disabled: true }, Validators.required],
-          aliquot_string: '',
-          rack: '',
-          box: '',
-          row: '',
-          spot: '',
-          aliquots: this.formBuilder.array([])
-        })
+        // this.formBuilder.group({
+        //   sample: ['', Validators.required],
+        //   inhibition_dna: [null, Validators.required],
+        //   inhibition_rna: [{ value: null, disabled: true }, Validators.required],
+        //   aliquot_string: '',
+        //   rack: '',
+        //   box: '',
+        //   row: '',
+        //   spot: '',
+        //   aliquots: this.formBuilder.array([])
+        // })
       ])
     });
     this.replicateArray = this.extractForm.get('new_replicates') as FormArray;
@@ -589,6 +587,33 @@ export class AnalysisBatchesComponent implements OnInit {
   resetExtractWizard() {
     // reset extract form, specifying default values for neccesary fields
     this.extractForm.reset({ qpcr_template_volume: 6, qpcr_reaction_volume: 20, new_rt: { template_volume: 6, reaction_volume: 20 } });
+
+    // TODO: work out the below
+    // let newReplicateControls = this.extractForm.get('new_replicates')['controls']
+    // while (newReplicateControls.length) {
+    //   newReplicateControls.removeAt(0);
+    // }
+
+    // let newSampleExtractionControls = this.extractForm.get('new_sample_extractions')['controls']
+    // while (newSampleExtractionControls.length) {
+    //   newSampleExtractionControls.removeAt(0);
+    // }
+
+    // let newReplicateControls = <FormArray>this.extractForm.get('new_replicates')['controls']
+    // for (let index = newReplicateControls.length - 1; index > 0; index--) {
+    //   // Remove all but one occurrence and then add back only what the model dictates.
+    //   newReplicateControls.removeAt(index);
+    // }
+
+
+    // let newSampleExtractionControls = <FormArray>this.extractForm.get('new_sample_extractions')['controls']
+    // for (let index = newSampleExtractionControls.length - 1; index > 0; index--) {
+    //   // Remove all but one occurrence and then add back only what the model dictates.
+    //   newSampleExtractionControls.removeAt(index);
+    // }
+
+
+
     // reset createInhibition form
     this.createInhibitionForm.reset({ dna: false, rna: false });
     // set the extractionFinished var back to false
