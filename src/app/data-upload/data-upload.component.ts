@@ -433,6 +433,10 @@ export class DataUploadComponent implements OnInit {
         (results) => {
           this.pcrResultsObject = results;
           this.pcrResultsReplicates = results.pcrreplicates;
+
+          this.pcrResultsReplicates.sort(function (a, b) {
+            return a.sample - b.sample
+          })
           this.resultsSubmissionSuccessFlag = true;
           this.replicatesLoading = false;
           // this.finishResultsSubmission();
@@ -478,6 +482,9 @@ export class DataUploadComponent implements OnInit {
 
           this.pcrResultsValidationObject = results;
           this.pcrResultsValidationReplicates = results.updated_pcrreplicates;
+          this.pcrResultsValidationReplicates.sort(function (a, b) {
+            return a.sample - b.sample
+          })
           this.validationLoading = false;
           this.validationResponseReady = true;
         },
