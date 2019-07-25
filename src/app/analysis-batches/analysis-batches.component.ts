@@ -586,7 +586,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
   resetExtractWizard() {
     // reset extract form, specifying default values for neccesary fields
-    this.extractForm.reset({ qpcr_template_volume: 6, qpcr_reaction_volume: 20, new_rt: { template_volume: 6, reaction_volume: 20 } });
+    this.extractForm.reset({ qpcr_template_volume: 6, qpcr_reaction_volume: 20, new_rt: { template_volume: 8.6, reaction_volume: 50 } });
 
     // clear out the new_replicates formArray
     let newReplicateControls = <FormArray>this.extractForm.get('new_replicates')
@@ -1156,6 +1156,14 @@ export class AnalysisBatchesComponent implements OnInit {
   //   return newItem.id === this;
   // }
 
+  searchInArray(array, field: string, value) {
+    for (const item of array) {
+      if (item[field] === value) {
+        // console.log('Duplicate detected. Already existing ID: ' + value);
+        return true;
+      }
+    }
+  }
 
   openTargetDetails(abID) {
 
@@ -1192,9 +1200,18 @@ export class AnalysisBatchesComponent implements OnInit {
               this.extractionBatchArray = this.focusAnalysisBatchData.extractionbatches;
               // build target list by looping through the targets array of the first extractionBatch and adding all targets to a local array
               // all extraction batches of the same analysis batch have identical target list so only first one is needed
-              for (let target of this.extractionBatchArray[0].targets) {
-                this.targetDetailArray.push(target);
+
+              for (let extractionbatch of this.focusAnalysisBatchData.extractionbatches) {
+                for (let target of extractionbatch.targets) {
+                  // add only if does not exist yet
+                  if (this.searchInArray(this.targetDetailArray, 'id', target.id)) {
+                    break;
+                  } else {
+                    this.targetDetailArray.push(target);
+                  }
+                }
               }
+
               // show the target details modal if not showing already
               if (this.showHideTargetDetailModal === false) {
                 this.showHideTargetDetailModal = true;

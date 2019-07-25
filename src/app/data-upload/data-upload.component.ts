@@ -563,7 +563,7 @@ export class DataUploadComponent implements OnInit {
       .subscribe(
         (results) => {
 
-          // build an object to update the EB record with the inh pso cq value (and nucleic acid type)
+          // build an object to update the EB record with the inh pos cq value (and nucleic acid type)
           let extractionbatchObject = {
             id: this.parsedRawInhResults.extraction_batch,
             inh_pos_nucleic_acid_type: this.parsedRawInhResults.nucleic_acid_type,
