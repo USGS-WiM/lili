@@ -105,7 +105,7 @@ export class APP_UTILITIES {
                 "technician_initials": true,
                 "sample_volume_initial": true
             },
-            "3": { //Solid Manure
+            "3": { // Solid Manure
                 "matrix": false,
                 "study": false,
                 "sample_type": false,
@@ -135,7 +135,7 @@ export class APP_UTILITIES {
                 "technician_initials": true,
                 "sample_volume_initial": true
             },
-            "2": { //wastewater
+            "2": { // wastewater
                 "matrix": false,
                 "study": false,
                 "sample_type": false,
@@ -165,7 +165,7 @@ export class APP_UTILITIES {
                 "technician_initials": true,
                 "sample_volume_initial": true
             },
-            "1": { //water
+            "1": { // water
                 "matrix": false,
                 "study": false,
                 "sample_type": false,

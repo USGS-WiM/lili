@@ -135,8 +135,17 @@ export class ResultsComponent implements OnInit, AfterViewInit {
 
     // on init, call getTargets function of the TargetService, set results to allTargets var
     this._targetService.getTargets()
-      .subscribe(targets => this.allTargets = targets,
-        error => this.errorMessage = <any>error);
+      .subscribe(
+        (targets) => {
+          this.allTargets = targets;
+          this.allTargets.sort(function (a, b) {
+            if (a.name < b.name) { return -1 };
+            if (a.name > b.name) { return 1 };
+            return 0;
+          });
+        },
+        error => { this.errorMessage = <any>error });
+
 
     // on init, call getSampleTypes function of the SampleTypeService, set results to the sampleTypes var
     this._sampleTypeService.getSampleTypes()

@@ -221,9 +221,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="volPostDiluteInput">Volume After Dilution</label>
+                                <label for="volPostDiluteInput">Volume After Dilution </label>
                                 <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
                                 <span>µL</span>
+                                <span>(req. for Solid Manure and Forage, Sediment, Soil)</span>
                             </div>
 
                             <div class="form-group">
@@ -250,6 +251,7 @@
                                 <label for="dissVolInput">Dissolution Volume</label>
                                 <input id="dissVolInput" type="text" formControlName="dissolution_volume">
                                 <span>mL</span>
+                                <span>(req. for air)</span>
                             </div>
 
                             <div class="form-group">
@@ -467,6 +469,7 @@
                                 <label for="dissVolInput">Dissolution Volume</label>
                                 <input id="dissVolInput" type="text" formControlName="dissolution_volume">
                                 <span>mL</span>
+                                <span>(req. for air)</span>
                             </div>
 
                             <div class="form-group">
@@ -706,7 +709,8 @@
                         <div class="form-group">
                             <label for="tvsInput">Total Volume (or mass) Sampled</label>
                             <input type="text" id="tvsInput" formControlName="total_volume_or_mass_sampled">
-                            <span>L</span>
+                            <!-- <span>L</span> -->
+                            <span *ngIf="selectedSample">{{selectedSample.total_volume_sampled_unit_initial | displayValue:'symbol':this.units}}</span>
                             <!-- <div class="select">
                                 <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial" readonly>
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
@@ -715,9 +719,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="volPostDiluteInput">Volume After Dilution</label>
+                            <label for="volPostDiluteInput">Volume After Dilution </label>
                             <input id="volPostDiluteInput" type="text" formControlName="post_dilution_volume">
                             <span>µL</span>
+                            <span>(req. for Solid Manure and Forage, Sediment, Soil)</span>
                         </div>
 
                         <div class="form-group">
@@ -743,6 +748,7 @@
                             <label for="dissVolInput">Dissolution Volume</label>
                             <input id="dissVolInput" type="text" formControlName="dissolution_volume">
                             <span>mL</span>
+                            <span>(req. for air)</span>
                         </div>
 
                         <div class="form-group">
@@ -1989,7 +1995,8 @@
                         *ngIf="sample.finalconcentratedsamplevolume">{{sample.finalconcentratedsamplevolume.concentration_type_string}}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>
-                    <span *ngIf="sample.finalconcentratedsamplevolume">{{sample.finalconcentratedsamplevolume.notes}}</span>
+                    <span
+                        *ngIf="sample.finalconcentratedsamplevolume">{{sample.finalconcentratedsamplevolume.notes}}</span>
                 </clr-dg-cell>
                 <clr-dg-cell>{{sample.total_volume_or_mass_sampled | number : '1.2-6' }}</clr-dg-cell>
                 <clr-dg-cell *ngIf="this.units">{{sample.meter_reading_initial | number : '1.2-6' }} {{sample.meter_reading_unit

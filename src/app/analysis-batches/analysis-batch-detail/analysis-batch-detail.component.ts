@@ -177,8 +177,16 @@ export class AnalysisBatchDetailComponent implements OnInit {
 
     // on init, call getTargets function of the TargetService, set results to allTargets var
     this._targetService.getTargets()
-      .subscribe(targets => this.allTargets = targets,
-        error => this.errorMessage = <any>error);
+      .subscribe(
+        (targets) => {
+          this.allTargets = targets;
+          this.allTargets.sort(function (a, b) {
+            if (a.name < b.name) { return -1 };
+            if (a.name > b.name) { return 1 };
+            return 0;
+          });
+        },
+        error => { this.errorMessage = <any>error });
 
     // on init, call getUnits function of the UnitService, set results to the units var
     this._unitService.getUnits()

@@ -702,9 +702,11 @@
                                             </li>
                                             <li *ngIf="replicate.invalid_reasons.peg_neg_invalid">PEG NEG is invalid
                                             </li>
-                                            <li *ngIf="replicate.invalid_reasons.peg_neg_not_extracted">PEG NEG not extracted
+                                            <li *ngIf="replicate.invalid_reasons.peg_neg_not_extracted">PEG NEG not
+                                                extracted
                                             </li>
-                                            <li *ngIf="replicate.invalid_reasons.peg_neg_replicates_missing">PEG NEG is missing
+                                            <li *ngIf="replicate.invalid_reasons.peg_neg_replicates_missing">PEG NEG is
+                                                missing
                                                 <clr-tree-node><span>Missing PEG NEGs</span>
                                                     <ng-template [clrIfExpanded]="false">
                                                         <clr-tree-node>
@@ -733,7 +735,8 @@
                                                 missing</li>
                                             <li *ngIf="replicate.invalid_reasons.pcr_neg_invalid">PCR Negative is
                                                 invalid</li>
-                                            <li *ngIf="replicate.invalid_reasons.ext_rt_pos_rna_invalid">Ext/RT Pos RNA is
+                                            <li *ngIf="replicate.invalid_reasons.ext_rt_pos_rna_invalid">Ext/RT Pos RNA
+                                                is
                                                 invalid</li>
                                             <li *ngIf="replicate.invalid_reasons.ext_rt_pos_rna_missing">Ext
                                                 Pos RNA/RT is missing</li>
@@ -741,6 +744,16 @@
                                                 Pos DNA is missing</li>
                                             <li *ngIf="replicate.invalid_reasons.ext_pos_dna_invalid">Ext
                                                 Pos DNA is invalid</li>
+
+                                            <li *ngIf="replicate.invalid_reasons.sibling_pcr_rep_controls_missing">
+                                                Controls
+                                                for sibling PCR Replicates in Extraction are missing</li>
+                                            <li *ngIf="replicate.invalid_reasons.sibling_pcr_rep_controls_invalid">
+                                                Controls
+                                                for sibling PCR Replicates in Extraction are invalid</li>
+
+
+
                                         </ul>
 
                                     </div>

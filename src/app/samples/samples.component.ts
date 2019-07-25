@@ -873,6 +873,7 @@ export class SamplesComponent implements OnInit {
   editSample(selectedSample) {
 
     this.selectedSamplePegneg = null;
+    this.selectedSample = selectedSample;
 
     if (selectedSample.peg_neg) {
 
