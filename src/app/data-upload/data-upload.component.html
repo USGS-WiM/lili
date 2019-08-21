@@ -488,11 +488,79 @@
                           <li *ngIf="rep.invalid_reasons.peg_neg_invalid">PEG NEG is invalid</li>
                           <li *ngIf="rep.invalid_reasons.gc_reaction_missing">GC/reaction value is missing</li>
                           <li *ngIf="rep.invalid_reasons.peg_neg_not_extracted">PEG NEG not extracted </li>
+
+                          <li *ngIf="rep.invalid_reasons.peg_neg_reps_invalid">PEG NEG Replicates Invalid
+                            <clr-tree-node><span>Invalid PEG NEG Replicates</span>
+                              <ng-template [clrIfExpanded]="false">
+                                <clr-tree-node>
+                                  <ul>
+                                    <li *ngFor="let item of rep.invalid_reasons.peg_neg_reps_invalid_list">
+                                      AB {{item.analysis_batch}}, Extraction
+                                      {{item.extraction_number}}, Replicate
+                                      {{item.replicate_number}}, Sample {{item.sample}},
+                                      {{item.target | displayValue:'name': allTargets}}
+                                    </li>
+                                  </ul>
+                                </clr-tree-node>
+                              </ng-template>
+                            </clr-tree-node>
+                          </li>
+
+                          <li *ngIf="rep.invalid_reasons.peg_neg_reps_missing">PEG NEG Replicates Missing
+                            <clr-tree-node><span>Missing PEG NEG Replicates</span>
+                              <ng-template [clrIfExpanded]="false">
+                                <clr-tree-node>
+                                  <ul>
+                                    <li *ngFor="let item of rep.invalid_reasons.peg_neg_reps_missing_list">
+                                      AB {{item.analysis_batch}}, Extraction
+                                      {{item.extraction_number}}, Replicate
+                                      {{item.replicate_number}}, Sample {{item.sample}},
+                                      {{item.target | displayValue:'name': allTargets}}
+                                    </li>
+                                  </ul>
+                                </clr-tree-node>
+                              </ng-template>
+                            </clr-tree-node>
+                          </li>
+
                           <li *ngIf="rep.invalid_reasons.ext_rt_pos_rna_invalid">Ext/RT Pos RNA is invalid</li>
                           <li *ngIf="rep.invalid_reasons.rt_neg_missing">RT Negative is missing</li>
 
-                          <li *ngIf="rep.invalid_reasons.sibling_pcr_rep_controls_missing">Controls for sibling PCR Replicates in Extraction are missing</li>
-                          <li *ngIf="rep.invalid_reasons.sibling_pcr_rep_controls_invalid">Controls for sibling PCR Replicates in Extraction are invalid</li>
+                          <li *ngIf="rep.invalid_reasons.sibling_pcr_rep_controls_missing">Controls for sibling PCR
+                            Replicates in Extraction are missing
+                            <clr-tree-node><span>Missing Replicates</span>
+                              <ng-template [clrIfExpanded]="false">
+                                <clr-tree-node>
+                                  <ul>
+                                    <li *ngFor="let item of rep.invalid_reasons.sibling_pcr_rep_controls_missing_list">
+                                      AB {{item.analysis_batch}}, Extraction
+                                      {{item.extraction_number}}, Replicate
+                                      {{item.replicate_number}},
+                                      {{item.target | displayValue:'name': allTargets}}
+                                    </li>
+                                  </ul>
+                                </clr-tree-node>
+                              </ng-template>
+                            </clr-tree-node>
+                          </li>
+
+                          <li *ngIf="rep.invalid_reasons.sibling_pcr_rep_controls_invalid">Controls for sibling PCR
+                            Replicates in Extraction are invalid
+                            <clr-tree-node><span>Invalid Replicates</span>
+                              <ng-template [clrIfExpanded]="false">
+                                <clr-tree-node>
+                                  <ul>
+                                    <li *ngFor="let item of rep.invalid_reasons.sibling_pcr_rep_controls_invalid_list">
+                                      AB {{item.analysis_batch}}, Extraction
+                                      {{item.extraction_number}}, Replicate
+                                      {{item.replicate_number}},
+                                      {{item.target | displayValue:'name': allTargets}}
+                                    </li>
+                                  </ul>
+                                </clr-tree-node>
+                              </ng-template>
+                            </clr-tree-node>
+                          </li>
 
                           <li *ngIf="rep.invalid_reasons.peg_neg_replicates_missing">PEG NEG is missing
                             <clr-tree-node><span>Missing PEG NEGs</span>
@@ -540,7 +608,8 @@
             </div>
             <p>
               <div class="card-text">
-                <span>File name convention: [Analysis Batch ID]-[Extraction Number]-<b>I</b>[First letter of nucleic acid
+                <span>File name convention: [Analysis Batch ID]-[Extraction Number]-<b>I</b>[First letter of nucleic
+                  acid
                   type] (the letter "I" precedes nucleic acid type letter)</span>
                 <p>
                   <input id="inhibitionFileInput" type="file" (change)="loadInhFile($event)" placeholder="Upload file"
