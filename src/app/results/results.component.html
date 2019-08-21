@@ -264,9 +264,11 @@
 
 <div class="row">
     <!---------- Loading spinner---------->
-    <span class="spinner spinner-lg" *ngIf="fsmcResultsLoading">
+    <span class="spinner spinner-lg" *ngIf="sampleResultsLoading">
         Loading...
     </span>
+    <br>
+    <span *ngIf="sampleResultsLoading">Calculating and loading of results may take a while. </span>
     <!---------- End Loading spinner---------->
 </div>
 
@@ -705,6 +707,47 @@
                                             <li *ngIf="replicate.invalid_reasons.peg_neg_not_extracted">PEG NEG not
                                                 extracted
                                             </li>
+
+                                            <li *ngIf="replicate.invalid_reasons.peg_neg_reps_invalid">PEG NEG
+                                                Replicates
+                                                Invalid
+                                                <clr-tree-node><span>Invalid PEG NEG Replicates</span>
+                                                    <ng-template [clrIfExpanded]="false">
+                                                        <clr-tree-node>
+                                                            <ul>
+                                                                <li
+                                                                    *ngFor="let item of replicate.invalid_reasons.peg_neg_reps_invalid_list">
+                                                                    AB {{item.analysis_batch}}, Extraction
+                                                                    {{item.extraction_number}}, Replicate
+                                                                    {{item.replicate_number}}, Sample {{item.sample}},
+                                                                    {{item.target | displayValue:'name': allTargets}}
+                                                                </li>
+                                                            </ul>
+                                                        </clr-tree-node>
+                                                    </ng-template>
+                                                </clr-tree-node>
+                                            </li>
+
+                                            <li *ngIf="replicate.invalid_reasons.peg_neg_reps_missing">PEG NEG
+                                                Replicates
+                                                Missing
+                                                <clr-tree-node><span>Missing PEG NEG Replicates</span>
+                                                    <ng-template [clrIfExpanded]="false">
+                                                        <clr-tree-node>
+                                                            <ul>
+                                                                <li
+                                                                    *ngFor="let item of replicate.invalid_reasons.peg_neg_reps_missing_list">
+                                                                    AB {{item.analysis_batch}}, Extraction
+                                                                    {{item.extraction_number}}, Replicate
+                                                                    {{item.replicate_number}}, Sample {{item.sample}},
+                                                                    {{item.target | displayValue:'name': allTargets}}
+                                                                </li>
+                                                            </ul>
+                                                        </clr-tree-node>
+                                                    </ng-template>
+                                                </clr-tree-node>
+                                            </li>
+
                                             <li *ngIf="replicate.invalid_reasons.peg_neg_replicates_missing">PEG NEG is
                                                 missing
                                                 <clr-tree-node><span>Missing PEG NEGs</span>
@@ -747,12 +790,44 @@
 
                                             <li *ngIf="replicate.invalid_reasons.sibling_pcr_rep_controls_missing">
                                                 Controls
-                                                for sibling PCR Replicates in Extraction are missing</li>
-                                            <li *ngIf="replicate.invalid_reasons.sibling_pcr_rep_controls_invalid">
-                                                Controls
-                                                for sibling PCR Replicates in Extraction are invalid</li>
+                                                for sibling PCR
+                                                Replicates in Extraction are missing
+                                                <clr-tree-node><span>Missing Replicates</span>
+                                                    <ng-template [clrIfExpanded]="false">
+                                                        <clr-tree-node>
+                                                            <ul>
+                                                                <li
+                                                                    *ngFor="let item of replicate.invalid_reasons.sibling_pcr_rep_controls_missing_list">
+                                                                    AB {{item.analysis_batch}}, Extraction
+                                                                    {{item.extraction_number}}, Replicate
+                                                                    {{item.replicate_number}},
+                                                                    {{item.target | displayValue:'name': allTargets}}
+                                                                </li>
+                                                            </ul>
+                                                        </clr-tree-node>
+                                                    </ng-template>
+                                                </clr-tree-node>
+                                            </li>
 
-
+                                            <li *ngIf="replicate.invalid_reasons.sibling_pcr_rep_controls_invalid">Controls
+                                                for sibling PCR
+                                                Replicates in Extraction are invalid
+                                                <clr-tree-node><span>Invalid Replicates</span>
+                                                    <ng-template [clrIfExpanded]="false">
+                                                        <clr-tree-node>
+                                                            <ul>
+                                                                <li
+                                                                    *ngFor="let item of replicate.invalid_reasons.sibling_pcr_rep_controls_invalid_list">
+                                                                    AB {{item.analysis_batch}}, Extraction
+                                                                    {{item.extraction_number}}, Replicate
+                                                                    {{item.replicate_number}},
+                                                                    {{item.target | displayValue:'name': allTargets}}
+                                                                </li>
+                                                            </ul>
+                                                        </clr-tree-node>
+                                                    </ng-template>
+                                                </clr-tree-node>
+                                            </li>
 
                                         </ul>
 

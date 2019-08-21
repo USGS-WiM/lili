@@ -373,6 +373,8 @@ export class ResultsComponent implements OnInit, AfterViewInit {
       this.sampleResultsLoaded = false;
       this.sampleResultsLoading = true;
 
+      this.resultsQueryWizard.cancel();
+
       this._finalSampleMeanConcentrationService.queryFinalSampleMeanConcentrations(this.resultsQuery)
         .subscribe(
           (fsmcResults) => {
@@ -401,7 +403,7 @@ export class ResultsComponent implements OnInit, AfterViewInit {
                 }
               );
 
-            this.resultsQueryWizard.cancel();
+           
             this.selected = [];
             this.resultsQuery.samples = [];
             this.resultsQuery.targets = [];
