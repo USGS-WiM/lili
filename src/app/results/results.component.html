@@ -386,6 +386,12 @@
                                     (click)="openReplicateDetails('controls_invalids', fsmc)">Invalid per
                                     controls&nbsp;<span
                                         class="badge">{{fsmc.sample_target_replicates.controls_invalid_count}}</span></a>
+                                <br>
+                                <a class="label label-blue clickable"
+                                    *ngIf="fsmc.sample_target_replicates.invalid_override_invalid_count > 0"
+                                    (click)="openReplicateDetails('invalid_override_invalids', fsmc)">Invalid due to manual
+                                    override&nbsp;<span
+                                        class="badge">{{fsmc.sample_target_replicates.invalid_override_invalid_count}}</span></a>
                             </clr-dg-cell>
                         </clr-dg-row>
 
@@ -809,7 +815,8 @@
                                                 </clr-tree-node>
                                             </li>
 
-                                            <li *ngIf="replicate.invalid_reasons.sibling_pcr_rep_controls_invalid">Controls
+                                            <li *ngIf="replicate.invalid_reasons.sibling_pcr_rep_controls_invalid">
+                                                Controls
                                                 for sibling PCR
                                                 Replicates in Extraction are invalid
                                                 <clr-tree-node><span>Invalid Replicates</span>
