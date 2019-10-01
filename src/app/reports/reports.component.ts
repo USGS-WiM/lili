@@ -522,6 +522,8 @@ export class ReportsComponent implements OnInit {
 
             this.samplesLoading = true;
 
+            formValue.slim = null;
+
             // if sample query count does not exceed functional limit, query for actual results, and set results to the allSamples var
             this._sampleService.querySamples(formValue)
               .subscribe(

@@ -285,6 +285,9 @@ export class ResultsComponent implements OnInit, AfterViewInit {
       case 'controls_invalids':
         this.replicateCategoryString = 'Made invalid by non-compliant controls'
         break;
+      case 'invalid_override_invalids':
+        this.replicateCategoryString = 'Made invalid by manual override'
+        break;
       default:
         this.replicateCategoryString = 'Replicates'
     }
@@ -403,7 +406,7 @@ export class ResultsComponent implements OnInit, AfterViewInit {
                 }
               );
 
-           
+
             this.selected = [];
             this.resultsQuery.samples = [];
             this.resultsQuery.targets = [];
@@ -440,6 +443,8 @@ export class ResultsComponent implements OnInit, AfterViewInit {
           } else if (count.count < countLimit) {
 
             this.samplesLoading = true;
+
+            formValue.slim = null;
 
             // if sample query count does not exceed functional limit, query for actual results, and set results to the allSamples var
             this._sampleService.querySamples(formValue)

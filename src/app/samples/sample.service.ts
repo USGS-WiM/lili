@@ -126,6 +126,9 @@ export class SampleService {
 
     let queryString = '?';
 
+    if (queryFormValue.hasOwnProperty('slim')) {
+      queryString = queryString + '&slim'
+    }
     if (queryFormValue.id !== null && queryFormValue.id !== '' && queryFormValue.id !== undefined) {
       queryString = queryString + '&id=' + queryFormValue.id.toString();
     }
