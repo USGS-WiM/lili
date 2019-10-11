@@ -54,6 +54,9 @@ export class APP_SETTINGS {
     public static get FINALSAMPLEMEANCONCENTRATIONS_URL(): string { return this._API_ENDPOINT + 'finalsamplemeanconcentrations/' };
     public static get QUALITY_CONTROL_REPORT_URL(): string { return this._API_ENDPOINT + 'qualitycontrolreport/' };
     public static get CONTROL_RESULTS_REPORT_URL(): string { return this._API_ENDPOINT + 'controlresultsreport/' };
+    public static get REPORT_FILES_URL(): string { return this._API_ENDPOINT + 'reportfiles/' };
+    public static get REPORT_TYPES_URL(): string { return this._API_ENDPOINT + 'reporttypes/' };
+    public static get REPORT_STATUSES_URL(): string { return this._API_ENDPOINT + 'statuses/' };
 
     public static get VERSION() {
         // return require('../../package.json').version

@@ -77,6 +77,9 @@ import { TargetFilter } from './FILTERS/target-filter/target-filter.component';
 import { ReverseTranscriptionService } from "./SHARED/reverse-transcription.service";
 import { QualityControlReportService } from "./reports/quality-control-report.service";
 import { ControlResultsReportService } from "./reports/control-results-report.service";
+import { ReportFileService } from "./reports/report-file.service";
+import { ReportTypesService } from "./reports/report-types.service";
+import { ReportStatusService } from "./reports/report-status.service";
 
 @NgModule({
     declarations: [
@@ -159,7 +162,10 @@ import { ControlResultsReportService } from "./reports/control-results-report.se
         ControlResultsReportService,
         ReverseTranscriptionService,
         AuthenticationGuard,
-        CurrentUserService
+        CurrentUserService,
+        ReportFileService,
+        ReportTypesService,
+        ReportStatusService
     ],
     bootstrap: [AppComponent]
 })

@@ -22,6 +22,9 @@ import { APP_UTILITIES } from '../app.utilities';
 import { InhibitionService } from 'app/inhibitions/inhibition.service';
 import { QualityControlReportService } from 'app/reports/quality-control-report.service';
 import { ControlResultsReportService } from './control-results-report.service';
+import { ReportFileService } from './report-file.service';
+import { ReportTypesService } from './report-types.service';
+import { ReportStatusService } from './report-status.service';
 
 // import { FinalSampleMeanConcentrationService } from '../final-sample-mean-concentration.service';
 
@@ -63,6 +66,9 @@ export class ReportsComponent implements OnInit {
     summary_stats: []
   }
 
+  reportTypes = [];
+  reportStatuses = [];
+
   submitLoading: boolean = false;
 
   sampleSelectErrorFlag: boolean = false;
@@ -88,6 +94,22 @@ export class ReportsComponent implements OnInit {
   individualSampleReportLoaded = false;
   qualityControlReportLoaded = false;
   resultsReportSummaryLoaded = false;
+
+  // arrays to contain each report list
+  inhibitionReportsList = [];
+  resultsReportSummaryReportsList = [];
+  individualSampleReportsList = [];
+  qualityControlReportsList = [];
+  controlsResultReportsList = [];
+
+  // columns list for report lists
+  reportListColumns = [
+    { fieldName: 'created_date', colName: "Created Date" },
+    { fieldName: 'created_by', colName: "Created By" },
+    { fieldName: 'status', colName: "Status" },
+    { fieldName: 'name', colName: "Name" },
+    { fieldName: 'link', colName: "Link" },
+  ]
 
   // arrays to contain each report's results
   inhibitionReportResults = [];
@@ -184,6 +206,34 @@ export class ReportsComponent implements OnInit {
     // array.push the target columns to this array
   ]
 
+
+  resultsReportSummary_options = [
+    'sample_count',
+    'positive_count',
+    'percent_positive',
+    'max_concentration',
+    'min_concentration',
+    'median_concentration',
+    'average_concentration',
+    'min_concentration_positive',
+    'median_concentration_positive',
+    'average_concentration_positive'
+  ]
+
+  resultsReportSummary_columns = {
+    sample_count: false,
+    positive_count: false,
+    percent_positive: false,
+    max_concentration: false,
+    min_concentration: false,
+    median_concentration: false,
+    average_concentration: false,
+    min_concentration_positive: false,
+    median_concentration_positive: false,
+    average_concentration_positive: false
+  }
+
+
   buildSampleQueryForm() {
     this.sampleQueryForm = this.formBuilder.group({
       study: null,
@@ -238,6 +288,9 @@ export class ReportsComponent implements OnInit {
     private _finalSampleMeanConcentrationService: FinalSampleMeanConcentrationService,
     private _qualityControlReportService: QualityControlReportService,
     private _controlResultsReportService: ControlResultsReportService,
+    private _reportFileService: ReportFileService,
+    private _reportTypesService: ReportTypesService,
+    private _reportStatusService: ReportStatusService,
     private _studyService: StudyService,
     private _sampleTypeService: SampleTypeService,
     private _matrixService: MatrixService,
@@ -282,6 +335,16 @@ export class ReportsComponent implements OnInit {
       .subscribe(matrices => this.matrices = matrices,
         error => this.errorMessage = error);
 
+    // on init, call getReportTypes function of the ReportTypesService, set results to the reportTypes var
+    this._reportTypesService.getReportTypes()
+      .subscribe(reportTypes => this.reportTypes = reportTypes,
+        error => this.errorMessage = error);
+
+    // on init, call getReportStatuses function of the ReportStatusService, set results to the reportStatuses var
+    this._reportStatusService.getReportStatuses()
+      .subscribe(reportStatuses => this.reportStatuses = reportStatuses,
+        error => this.errorMessage = error);
+
     // on init, call getStudies function of the StudyService, set results to the studies var
     this._studyService.getStudies()
       .subscribe(
@@ -294,7 +357,38 @@ export class ReportsComponent implements OnInit {
           });
         },
         error => this.errorMessage = error);
+
+
+    // retrieve all the currently available reports from the report files endpoint
+    this._reportFileService.getReportFiles()
+      .subscribe(
+        reportfiles => {
+          // split the reponse into the respective report lists
+          for (let reportfile of reportfiles) {
+            switch (reportfile.report_type) {
+              case 1:
+                this.inhibitionReportsList.push(reportfile);
+                break;
+              case 2:
+                this.resultsReportSummaryReportsList.push(reportfile);
+                break;
+              case 3:
+                this.individualSampleReportsList.push(reportfile);
+                break;
+              case 4:
+                this.qualityControlReportsList.push(reportfile);
+                break;
+              case 5:
+                this.controlsResultReportsList.push(reportfile);
+                break;
+              default:
+            }
+
+          }
+        },
+        error => this.errorMessage = error);
   }
+
 
   resetFlags() {
     this.sampleQuerySizeErrorFlag = false;
@@ -502,6 +596,63 @@ export class ReportsComponent implements OnInit {
     }
   }
 
+  loadReport(fileURL, report_type) {
+
+    this._reportFileService.retrieveReport(fileURL)
+      .subscribe(
+        (reportResults) => {
+
+          switch (report_type) {
+            case 1:
+              this.inhibitionReportResults = reportResults;
+              this.inhibitionReportLoading = false;
+              this.inhibitionReportLoaded = true;
+              break;
+            case 2:
+
+              for (let option of this.resultsReportSummary_options) {
+                this.resultsReportSummary_columns[option] = false;
+              }
+
+              // special treatment for the resultsReportSummary: determine which columns to show on table
+              // based on the structure of the first item in the response array
+              for (let option of this.resultsReportSummary_options) {
+                if (reportResults[1][option]) {
+                  this.resultsReportSummary_columns[option] = true;
+                }
+              }
+              this.resultsReportSummaryResults = reportResults;
+              this.resultsReportSummaryLoading = false;
+              this.resultsReportSummaryLoaded = true;
+              break;
+            case 3:
+              this.individualSampleReportResults = reportResults;
+              this.individualSampleReportLoading = false;
+              this.individualSampleReportLoaded = true;
+              break;
+            case 4:
+              this.qualityControlReportResults = reportResults;
+              this.qualityControlReportLoading = false;
+              this.qualityControlReportLoaded = true;
+              break;
+            case 5:
+              this.controlsResultReportResults = reportResults;
+              this.controlsResultReportLoading = false;
+              this.controlsResultReportLoaded = true;
+
+              break;
+            default:
+          }
+
+          this.submitLoading = false;
+        },
+        error => {
+          this.errorMessage = error;
+          this.submitLoading = false;
+        }
+      );
+  }
+
   onSubmitSampleQuery(formValue) {
 
     this.resetFlags();
@@ -558,9 +709,9 @@ export class ReportsComponent implements OnInit {
       this._inhibitionService.getInhibitionReport(this.reportsQuery)
         .subscribe(
           (results) => {
-            this.inhibitionReportResults = results;
-            this.inhibitionReportLoading = false;
-            this.inhibitionReportLoaded = true;
+            // this.inhibitionReportResults = results;
+            // this.inhibitionReportLoading = false;
+            // this.inhibitionReportLoaded = true;
             this.submitLoading = false;
           },
           error => {
@@ -579,9 +730,9 @@ export class ReportsComponent implements OnInit {
       this._controlResultsReportService.getControlResultsReport(this.reportsQuery)
         .subscribe(
           (results) => {
-            this.controlsResultReportResults = results;
-            this.controlsResultReportLoading = false;
-            this.controlsResultReportLoaded = true;
+            // this.controlsResultReportResults = results;
+            // this.controlsResultReportLoading = false;
+            // this.controlsResultReportLoaded = true;
             this.submitLoading = false;
           },
           error => {
@@ -600,9 +751,9 @@ export class ReportsComponent implements OnInit {
       this._finalSampleMeanConcentrationService.queryFinalSampleMeanConcentrationsResults(this.reportsQuery)
         .subscribe(
           (fsmcResults) => {
-            this.individualSampleReportResults = fsmcResults;
-            this.individualSampleReportLoading = false;
-            this.individualSampleReportLoaded = true;
+            // this.individualSampleReportResults = fsmcResults;
+            // this.individualSampleReportLoading = false;
+            // this.individualSampleReportLoaded = true;
             this.submitLoading = false;
           },
           error => {
@@ -624,9 +775,9 @@ export class ReportsComponent implements OnInit {
       this._qualityControlReportService.getQualityControlReport(sampleArray)
         .subscribe(
           (qcReport) => {
-            this.qualityControlReportResults = qcReport;
-            this.qualityControlReportLoading = false;
-            this.qualityControlReportLoaded = true;
+            // this.qualityControlReportResults = qcReport;
+            // this.qualityControlReportLoading = false;
+            // this.qualityControlReportLoaded = true;
             this.submitLoading = false;
           },
           error => {
@@ -656,9 +807,9 @@ export class ReportsComponent implements OnInit {
       this._finalSampleMeanConcentrationService.getSummaryStatistics(this.reportsQuery)
         .subscribe(
           (results) => {
-            this.resultsReportSummaryResults = results;
-            this.resultsReportSummaryLoading = false;
-            this.resultsReportSummaryLoaded = true;
+            // this.resultsReportSummaryResults = results;
+            // this.resultsReportSummaryLoading = false;
+            // this.resultsReportSummaryLoaded = true;
             this.submitLoading = false;
           },
           error => {
