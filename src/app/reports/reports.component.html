@@ -469,9 +469,11 @@
                                         </div>
                                     </clr-alert>
 
-                                    <clr-alert [clrAlertType]="'alert-success'" *ngIf="individualSampleReportSuccessFlag">
+                                    <clr-alert [clrAlertType]="'alert-success'"
+                                        *ngIf="individualSampleReportSuccessFlag">
                                         <div clr-alert-item class="alert-item">
-                                            <span class="alert-text">Request for Individual Sample Report received.</span>
+                                            <span class="alert-text">Request for Individual Sample Report
+                                                received.</span>
                                         </div>
                                     </clr-alert>
 
@@ -486,6 +488,10 @@
                                             <span class="alert-text">Request for Control Results Report received.</span>
                                         </div>
                                     </clr-alert>
+
+                                    <button class="btn btn-primary" (click)="clearAlerts()"
+                                        *ngIf="inhibitionReportSuccessFlag || resultsReportSummarySuccessFlag || individualSampleReportSuccessFlag || qualityControlReportSuccessFlag || controlsResultReportSuccessFlag">Clear
+                                        All Alerts</button>
 
                                 </div>
                             </div>
@@ -527,7 +533,12 @@
                                         Reports</button>
                                     <clr-tab-content>
 
-                                        <h3>Available Inhibition Reports</h3>
+
+                                        <h3>Available Inhibition Reports <button class="btn btn-sm btn-secondary"
+                                                (click)="retrieveAllReports()">
+                                                <clr-icon shape="refresh"></clr-icon> Refresh
+                                                List
+                                            </button></h3>
 
                                         <clr-datagrid [clrDgLoading]="inhibitionReportFilesLoading"
                                             #inhibitionReportFilesDataGrid>
@@ -710,9 +721,11 @@
                                         Summary Reports</button>
                                     <clr-tab-content>
 
-
-
-                                        <h3>Available Results Report Summary Reports</h3>
+                                        <h3>Available Results Report Summary Reports <button
+                                                class="btn btn-sm btn-secondary" (click)="retrieveAllReports()">
+                                                <clr-icon shape="refresh"></clr-icon> Refresh
+                                                List
+                                            </button></h3>
 
                                         <clr-datagrid [clrDgLoading]="resultsReportSummaryReportFilesLoading"
                                             #resultsSummaryReportFilesDataGrid
@@ -769,10 +782,7 @@
                                             </clr-dg-footer>
                                         </clr-datagrid>
 
-
-
                                         <div>
-
                                             <h4>Results Report Summary Report</h4>
 
                                             <!-- <clr-datagrid [clrDgLoading]="resultsReportSummaryLoading"
@@ -1061,7 +1071,11 @@
                                         Sample Reports</button>
                                     <clr-tab-content class="sample-results-tab">
 
-                                        <h3>Available Individual Sample Reports</h3>
+                                        <h3>Available Individual Sample Reports <button class="btn btn-sm btn-secondary"
+                                                (click)="retrieveAllReports()">
+                                                <clr-icon shape="refresh"></clr-icon> Refresh
+                                                List
+                                            </button></h3>
 
                                         <clr-datagrid [clrDgLoading]="individualSampleReportFilesLoading"
                                             #individualSampleReportFilesDataGrid>
@@ -1196,7 +1210,11 @@
                                         Reports</button>
                                     <clr-tab-content>
 
-                                        <h3>Available Quality Control Reports</h3>
+                                        <h3>Available Quality Control Reports <button class="btn btn-sm btn-secondary"
+                                                (click)="retrieveAllReports()">
+                                                <clr-icon shape="refresh"></clr-icon> Refresh
+                                                List
+                                            </button></h3>
 
                                         <clr-datagrid [clrDgLoading]="qualityControlReportFilesLoading"
                                             #individualSampleReportFilesDataGrid>
@@ -1488,7 +1506,11 @@
                                         Reports</button>
                                     <clr-tab-content>
 
-                                        <h3>Available Controls Results Reports</h3>
+                                        <h3>Available Controls Results Reports <button class="btn btn-sm btn-secondary"
+                                                (click)="retrieveAllReports()">
+                                                <clr-icon shape="refresh"></clr-icon> Refresh
+                                                List
+                                            </button></h3>
 
                                         <clr-datagrid [clrDgLoading]="controlsResultsReportFilesLoading"
                                             #individualSampleReportFilesDataGrid>
