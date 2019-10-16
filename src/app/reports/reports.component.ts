@@ -22,6 +22,9 @@ import { APP_UTILITIES } from '../app.utilities';
 import { InhibitionService } from 'app/inhibitions/inhibition.service';
 import { QualityControlReportService } from 'app/reports/quality-control-report.service';
 import { ControlResultsReportService } from './control-results-report.service';
+import { ReportFileService } from './report-file.service';
+import { ReportTypesService } from './report-types.service';
+import { ReportStatusService } from './report-status.service';
 
 // import { FinalSampleMeanConcentrationService } from '../final-sample-mean-concentration.service';
 
@@ -63,6 +66,9 @@ export class ReportsComponent implements OnInit {
     summary_stats: []
   }
 
+  reportTypes = [];
+  reportStatuses = [];
+
   submitLoading: boolean = false;
 
   sampleSelectErrorFlag: boolean = false;
@@ -76,6 +82,20 @@ export class ReportsComponent implements OnInit {
   sampleQuerySizeErrorFlag = false;
   reportsLoading = false;
 
+  // request success flag each report type
+  inhibitionReportSuccessFlag = false;
+  resultsReportSummarySuccessFlag = false;
+  individualSampleReportSuccessFlag = false;
+  qualityControlReportSuccessFlag = false;
+  controlsResultReportSuccessFlag = false;
+
+  // loading variables for each report list
+  inhibitionReportFilesLoading = false;
+  resultsReportSummaryReportFilesLoading = false;
+  individualSampleReportFilesLoading = false;
+  qualityControlReportFilesLoading = false;
+  controlsResultsReportFilesLoading = false;
+
   // loading variables for each report type
   inhibitionReportLoading = false;
   controlsResultReportLoading = false;
@@ -88,6 +108,22 @@ export class ReportsComponent implements OnInit {
   individualSampleReportLoaded = false;
   qualityControlReportLoaded = false;
   resultsReportSummaryLoaded = false;
+
+  // arrays to contain each report list
+  inhibitionReportsList = [];
+  resultsReportSummaryReportsList = [];
+  individualSampleReportsList = [];
+  qualityControlReportsList = [];
+  controlsResultReportsList = [];
+
+  // columns list for report lists
+  reportListColumns = [
+    { fieldName: 'created_date', colName: "Created Date" },
+    { fieldName: 'created_by', colName: "Created By" },
+    { fieldName: 'status', colName: "Status" },
+    { fieldName: 'name', colName: "Name" },
+    { fieldName: 'link', colName: "Link" },
+  ]
 
   // arrays to contain each report's results
   inhibitionReportResults = [];
@@ -184,6 +220,34 @@ export class ReportsComponent implements OnInit {
     // array.push the target columns to this array
   ]
 
+
+  resultsReportSummary_options = [
+    'sample_count',
+    'positive_count',
+    'percent_positive',
+    'max_concentration',
+    'min_concentration',
+    'median_concentration',
+    'average_concentration',
+    'min_concentration_positive',
+    'median_concentration_positive',
+    'average_concentration_positive'
+  ]
+
+  resultsReportSummary_columns = {
+    sample_count: false,
+    positive_count: false,
+    percent_positive: false,
+    max_concentration: false,
+    min_concentration: false,
+    median_concentration: false,
+    average_concentration: false,
+    min_concentration_positive: false,
+    median_concentration_positive: false,
+    average_concentration_positive: false
+  }
+
+
   buildSampleQueryForm() {
     this.sampleQueryForm = this.formBuilder.group({
       study: null,
@@ -221,7 +285,7 @@ export class ReportsComponent implements OnInit {
       individual_sample_report_filename: 'LIDE_IndividualSampleReport' + APP_UTILITIES.TODAY + '.csv',
       quality_control_report: false,
       quality_control_report_sampleQC_filename: 'LIDE_SampleQCReport' + APP_UTILITIES.TODAY + '.csv',
-      quality_control_report_EB_Raw_filename: 'LIDE_RawExtractionBatchReport' + APP_UTILITIES.TODAY + '.csv',
+      quality_control_report_EB_Raw_filename: 'LIDE_RawExtractionBatchQCReport' + APP_UTILITIES.TODAY + '.csv',
       quality_control_report_EB_QC_filename: 'LIDE_ExtractionBatchQCReport' + APP_UTILITIES.TODAY + '.csv',
       controls_result_report: false,
       controls_result_report_extNeg_filename: 'LIDE_ControlsReport_ExtNeg' + APP_UTILITIES.TODAY + '.csv',
@@ -238,6 +302,9 @@ export class ReportsComponent implements OnInit {
     private _finalSampleMeanConcentrationService: FinalSampleMeanConcentrationService,
     private _qualityControlReportService: QualityControlReportService,
     private _controlResultsReportService: ControlResultsReportService,
+    private _reportFileService: ReportFileService,
+    private _reportTypesService: ReportTypesService,
+    private _reportStatusService: ReportStatusService,
     private _studyService: StudyService,
     private _sampleTypeService: SampleTypeService,
     private _matrixService: MatrixService,
@@ -282,6 +349,16 @@ export class ReportsComponent implements OnInit {
       .subscribe(matrices => this.matrices = matrices,
         error => this.errorMessage = error);
 
+    // on init, call getReportTypes function of the ReportTypesService, set results to the reportTypes var
+    this._reportTypesService.getReportTypes()
+      .subscribe(reportTypes => this.reportTypes = reportTypes,
+        error => this.errorMessage = error);
+
+    // on init, call getReportStatuses function of the ReportStatusService, set results to the reportStatuses var
+    this._reportStatusService.getReportStatuses()
+      .subscribe(reportStatuses => this.reportStatuses = reportStatuses,
+        error => this.errorMessage = error);
+
     // on init, call getStudies function of the StudyService, set results to the studies var
     this._studyService.getStudies()
       .subscribe(
@@ -292,6 +369,70 @@ export class ReportsComponent implements OnInit {
             if (a.name > b.name) { return 1; }
             return 0;
           });
+        },
+        error => this.errorMessage = error);
+
+    this.retrieveAllReports();
+
+    // auto-retrieve report lists every 60 seconds
+    // setInterval(() => {
+    //   this.retrieveAllReports();
+    // }, 60000);
+
+  }
+
+  retrieveAllReports() {
+
+    // set loadig variables to true
+    this.inhibitionReportFilesLoading = true;
+    this.resultsReportSummaryReportFilesLoading = true;
+    this.individualSampleReportFilesLoading = true;
+    this.qualityControlReportFilesLoading = true;
+    this.controlsResultsReportFilesLoading = true;
+
+    //clear out the lists
+    this.inhibitionReportsList = [];
+    this.resultsReportSummaryReportsList = [];
+    this.individualSampleReportsList = [];
+    this.qualityControlReportsList = [];
+    this.controlsResultReportsList = [];
+
+    // retrieve all the currently available reports from the report files endpoint
+    this._reportFileService.getReportFiles()
+      .subscribe(
+        reportfiles => {
+          // split the reponse into the respective report lists
+          for (let reportfile of reportfiles) {
+            switch (reportfile.report_type) {
+              case 1:
+                this.inhibitionReportsList.push(reportfile);
+
+                break;
+              case 2:
+                this.resultsReportSummaryReportsList.push(reportfile);
+
+                break;
+              case 3:
+                this.individualSampleReportsList.push(reportfile);
+
+                break;
+              case 4:
+                this.qualityControlReportsList.push(reportfile);
+
+                break;
+              case 5:
+                this.controlsResultReportsList.push(reportfile);
+
+                break;
+              default:
+            }
+          }
+          this.inhibitionReportFilesLoading = false;
+          this.resultsReportSummaryReportFilesLoading = false;
+          this.individualSampleReportFilesLoading = false;
+          this.qualityControlReportFilesLoading = false;
+          this.controlsResultsReportFilesLoading = false;
+          console.log("Reports Retrieved");
         },
         error => this.errorMessage = error);
   }
@@ -328,6 +469,34 @@ export class ReportsComponent implements OnInit {
         this.qualityControlReport_EB_QC_DataGrid.resize();
         break;
       case 'controlsResultReport':
+        this.controlsResultReport_extNeg_DataGrid.resize();
+        this.controlsResultReport_extPos_DataGrid.resize();
+        this.controlsResultReport_pcrNeg_DataGrid.resize();
+        this.controlsResultReport_pcrPos_DataGrid.resize();
+        this.controlsResultReport_pegneg_DataGrid.resize();
+        break;
+      default:
+    }
+  }
+
+  resizeTableByID(tab) {
+
+    switch (tab) {
+      case 1:
+        this.inhibitionReportDataGrid.resize();
+        break;
+      case 2:
+        this.resultsReportSummaryDataGrid.resize();
+        break;
+      case 3:
+        this.individualSampleReportDataGrid.resize();
+        break;
+      case 4:
+        this.qualityControlReport_sampleQC_DataGrid.resize();
+        this.qualityControlReport_EB_Raw_DataGrid.resize();
+        this.qualityControlReport_EB_QC_DataGrid.resize();
+        break;
+      case 5:
         this.controlsResultReport_extNeg_DataGrid.resize();
         this.controlsResultReport_extPos_DataGrid.resize();
         this.controlsResultReport_pcrNeg_DataGrid.resize();
@@ -502,6 +671,100 @@ export class ReportsComponent implements OnInit {
     }
   }
 
+  loadReport(fileURL, fileName, report_type) {
+
+    let trimmedFileName = fileName.replace(".json", "");
+
+    switch (report_type) {
+      case 1:
+        this.inhibitionReportLoading = true;
+        this.reportSelectForm.get('inhibition_report_filename').setValue(trimmedFileName);
+        break;
+      case 2:
+        this.resultsReportSummaryLoading = true;
+        this.reportSelectForm.get('results_report_summary_filename').setValue(trimmedFileName);
+        break;
+      case 3:
+        this.individualSampleReportLoading = true;
+        this.reportSelectForm.get('individual_sample_report_filename').setValue(trimmedFileName);
+        break;
+      case 4:
+        this.qualityControlReportLoading = true;
+        this.reportSelectForm.get('quality_control_report_sampleQC_filename').setValue(trimmedFileName + '(Sample)');
+        this.reportSelectForm.get('quality_control_report_EB_Raw_filename').setValue(trimmedFileName + '(RawExtractionBatch)');
+        this.reportSelectForm.get('quality_control_report_EB_QC_filename').setValue(trimmedFileName + '(ExtractionBatch)');
+        break;
+      case 5:
+        this.controlsResultReportLoading = true;
+        this.reportSelectForm.get('controls_result_report_extNeg_filename').setValue(trimmedFileName + '(ExtNeg)');
+        this.reportSelectForm.get('controls_result_report_extPos_filename').setValue(trimmedFileName + '(ExtPos)');
+        this.reportSelectForm.get('controls_result_report_pcrNeg_filename').setValue(trimmedFileName + '(PCRNeg)');
+        this.reportSelectForm.get('controls_result_report_pcrPos_filename').setValue(trimmedFileName + '(PCRPos)');
+        this.reportSelectForm.get('controls_result_report_pegneg_filename').setValue(trimmedFileName + '(PegNeg)');
+        break;
+      default:
+    }
+
+    this._reportFileService.retrieveReport(fileURL)
+      .subscribe(
+        (reportResults) => {
+
+          switch (report_type) {
+            case 1:
+              this.inhibitionReportResults = reportResults;
+              this.inhibitionReportLoading = false;
+              this.inhibitionReportLoaded = true;
+              break;
+            case 2:
+
+              for (let option of this.resultsReportSummary_options) {
+                this.resultsReportSummary_columns[option] = false;
+              }
+              // special treatment for the resultsReportSummary: determine which columns to show on table
+              // based on the structure of the first item in the response array
+              for (let option of this.resultsReportSummary_options) {
+                if (reportResults[0].hasOwnProperty(option)) {
+                  this.resultsReportSummary_columns[option] = true;
+                }
+              }
+              // alternative method for detecting presence/non-presence of the field (less safe)
+              // for (let option of this.resultsReportSummary_options) {
+              //   if (reportResults[0][option] !== undefined) {
+              //     this.resultsReportSummary_columns[option] = true;
+              //   }
+              // }
+
+              this.resultsReportSummaryResults = reportResults;
+              this.resultsReportSummaryLoading = false;
+              this.resultsReportSummaryLoaded = true;
+              break;
+            case 3:
+              this.individualSampleReportResults = reportResults;
+              this.individualSampleReportLoading = false;
+              this.individualSampleReportLoaded = true;
+              break;
+            case 4:
+              this.qualityControlReportResults = reportResults;
+              this.qualityControlReportLoading = false;
+              this.qualityControlReportLoaded = true;
+              break;
+            case 5:
+              this.controlsResultReportResults = reportResults;
+              this.controlsResultReportLoading = false;
+              this.controlsResultReportLoaded = true;
+              break;
+            default:
+          }
+          this.submitLoading = false;
+          this.resizeTableByID(report_type);
+        },
+        error => {
+          this.errorMessage = error;
+          this.submitLoading = false;
+        }
+      );
+  }
+
   onSubmitSampleQuery(formValue) {
 
     this.resetFlags();
@@ -549,19 +812,24 @@ export class ReportsComponent implements OnInit {
       );
   }
 
+  clearAlerts() {
+    this.inhibitionReportSuccessFlag = false;
+    this.resultsReportSummarySuccessFlag = false;
+    this.individualSampleReportSuccessFlag = false;
+    this.qualityControlReportSuccessFlag = false;
+    this.controlsResultReportSuccessFlag = false;
+  }
+
   generateReports(reportSelectFormValue) {
 
     if (reportSelectFormValue.inhibition_report) {
       this.submitLoading = true;
-      this.inhibitionReportLoading = true;
       // begin call for inhibition report
       this._inhibitionService.getInhibitionReport(this.reportsQuery)
         .subscribe(
-          (results) => {
-            this.inhibitionReportResults = results;
-            this.inhibitionReportLoading = false;
-            this.inhibitionReportLoaded = true;
+          (success) => {
             this.submitLoading = false;
+            this.inhibitionReportSuccessFlag = true;
           },
           error => {
             this.errorMessage = error;
@@ -570,18 +838,13 @@ export class ReportsComponent implements OnInit {
             this.submitLoading = false;
           }
         );
-
     }
     if (reportSelectFormValue.controls_result_report) {
       this.submitLoading = true;
-      this.controlsResultReportLoading = true;
-
       this._controlResultsReportService.getControlResultsReport(this.reportsQuery)
         .subscribe(
-          (results) => {
-            this.controlsResultReportResults = results;
-            this.controlsResultReportLoading = false;
-            this.controlsResultReportLoaded = true;
+          (success) => {
+            this.controlsResultReportSuccessFlag = true;
             this.submitLoading = false;
           },
           error => {
@@ -591,18 +854,13 @@ export class ReportsComponent implements OnInit {
             this.submitLoading = false;
           }
         );
-
     }
     if (reportSelectFormValue.individual_sample_report) {
       this.submitLoading = true;
-      this.individualSampleReportLoading = true;
-
       this._finalSampleMeanConcentrationService.queryFinalSampleMeanConcentrationsResults(this.reportsQuery)
         .subscribe(
-          (fsmcResults) => {
-            this.individualSampleReportResults = fsmcResults;
-            this.individualSampleReportLoading = false;
-            this.individualSampleReportLoaded = true;
+          (success) => {
+            this.individualSampleReportSuccessFlag = true;
             this.submitLoading = false;
           },
           error => {
@@ -611,22 +869,17 @@ export class ReportsComponent implements OnInit {
             this.submitLoading = false;
           }
         );
-
     }
     if (reportSelectFormValue.quality_control_report) {
       this.submitLoading = true;
-      this.qualityControlReportLoading = true;
-
       let sampleArray = {
         "samples": this.reportsQuery.samples
       }
 
       this._qualityControlReportService.getQualityControlReport(sampleArray)
         .subscribe(
-          (qcReport) => {
-            this.qualityControlReportResults = qcReport;
-            this.qualityControlReportLoading = false;
-            this.qualityControlReportLoaded = true;
+          (success) => {
+            this.qualityControlReportSuccessFlag = true;
             this.submitLoading = false;
           },
           error => {
@@ -635,12 +888,9 @@ export class ReportsComponent implements OnInit {
             this.submitLoading = false;
           }
         );
-
     }
     if (reportSelectFormValue.results_report_summary) {
       this.submitLoading = true;
-      this.resultsReportSummaryLoading = true;
-
       this.reportsQuery.summary_stats = [];
 
       let options = this.reportSelectForm.get('results_report_summary_options').value;
@@ -655,10 +905,8 @@ export class ReportsComponent implements OnInit {
       // just updated 6/11/19 - not yet available on backend
       this._finalSampleMeanConcentrationService.getSummaryStatistics(this.reportsQuery)
         .subscribe(
-          (results) => {
-            this.resultsReportSummaryResults = results;
-            this.resultsReportSummaryLoading = false;
-            this.resultsReportSummaryLoaded = true;
+          (success) => {
+            this.resultsReportSummarySuccessFlag = true;
             this.submitLoading = false;
           },
           error => {
@@ -668,8 +916,17 @@ export class ReportsComponent implements OnInit {
             this.submitLoading = false;
           }
         );
-
     }
+
+    // disappear all the success flags and alerts after 30 seconds
+    setTimeout(() => {
+      this.inhibitionReportSuccessFlag = false;
+      this.resultsReportSummarySuccessFlag = false;
+      this.individualSampleReportSuccessFlag = false;
+      this.qualityControlReportSuccessFlag = false;
+      this.controlsResultReportSuccessFlag = false;
+    }, 30000);
+
   }
 
 }
