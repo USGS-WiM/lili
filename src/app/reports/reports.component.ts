@@ -406,23 +406,18 @@ export class ReportsComponent implements OnInit {
             switch (reportfile.report_type) {
               case 1:
                 this.inhibitionReportsList.push(reportfile);
-
                 break;
               case 2:
                 this.resultsReportSummaryReportsList.push(reportfile);
-
                 break;
               case 3:
                 this.individualSampleReportsList.push(reportfile);
-
                 break;
               case 4:
                 this.qualityControlReportsList.push(reportfile);
-
                 break;
               case 5:
                 this.controlsResultReportsList.push(reportfile);
-
                 break;
               default:
             }
