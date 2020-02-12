@@ -710,7 +710,8 @@
                             <label for="tvsInput">Total Volume (or mass) Sampled</label>
                             <input type="text" id="tvsInput" formControlName="total_volume_or_mass_sampled">
                             <!-- <span>L</span> -->
-                            <span *ngIf="selectedSample">{{selectedSample.total_volume_sampled_unit_initial | displayValue:'symbol':this.units}}</span>
+                            <span
+                                *ngIf="selectedSample">{{selectedSample.total_volume_sampled_unit_initial | displayValue:'symbol':this.units}}</span>
                             <!-- <div class="select">
                                 <select id="tvsUnitSelect" formControlName="total_volume_sampled_unit_initial" readonly>
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
@@ -1227,7 +1228,17 @@
                         <label class="required">Share of Total</label>
                     </div>
                     <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                        <input type="number" formControlName="aliquot_count_share" class="input-small-number">
+                        <!-- <input type="number" formControlName="aliquot_count_share" class="input-small-number" min="0"
+                            max="{{this.freezeForm.get('available_spots_in_box').value}}">
+                        <span class="max-size-indicator">Max {{currentBoxShareMax}}</span> -->
+
+                        <label for="name" aria-haspopup="true" role="tooltip"
+                            class="tooltip tooltip-validation tooltip-sm"
+                            [class.invalid]="freezeForm.get('aliquot_count_share').value > currentBoxShareMax ">
+                            <input id="name" type="number" class="form-control" formControlName="aliquot_count_share"
+                                min="0" max="{{this.freezeForm.get('available_spots_in_box').value}}">
+                            <span class="tooltip-content">Must be less than max. </span>
+                        </label>
                         <span class="max-size-indicator">Max {{currentBoxShareMax}}</span>
                     </div>
 
@@ -1272,8 +1283,20 @@
                         <label class="required">Share of Total</label>
                     </div>
                     <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                        <input type="number" formControlName="aliquot_count_share" class="input-small-number">
+                        <!-- <input type="number" formControlName="aliquot_count_share" class="input-small-number">
+                        <span class="max-size-indicator">Max {{nextBoxShareMax}}</span> -->
+
+                        <label for="name" aria-haspopup="true" role="tooltip"
+                            class="tooltip tooltip-validation tooltip-sm"
+                            [class.invalid]="this.freezeForm.get('next_empty_box').get('aliquot_count_share').value > nextBoxShareMax">
+                            <input id="name" type="number" class="form-control" formControlName="aliquot_count_share"
+                                min="0" max="{{nextBoxShareMax}}">
+                            <span class="tooltip-content">Must be less than max. </span>
+                        </label>
+                        <span class="max-size-indicator">Max {{nextBoxShareMax}}</span>
+                        <!-- </div> -->
                     </div>
+
                 </div>
                 <div class="form-group row">
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
@@ -1314,7 +1337,7 @@
                     </div>
                 </clr-alert>
 
-                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="aliquotCountErrorFlag ">
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="aliquotCountErrorFlag">
                     <div clr-alert-item class="alert-item">
                         <span class="alert-text">The aliquot share count exceeds total number of aliquots expected.
                             Please
@@ -1359,11 +1382,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div *ngIf="selected.length > 0">
-                    <h4>Showing first aliquot for each selected sample</h4>
-                    <table class="table table-compact" style="width: 15em">
+                    <!-- <h4>Showing first aliquot for each selected sample</h4> -->
+                    <table class="table table-compact" style="width: 15em" *ngFor="let sample of selected">
                         <thead>
                             <tr>
-                                <th class="left">Sample</th>
+                                <th class="left">Aliquot</th>
                                 <th class="left">Freezer</th>
                                 <th class="left">Rack</th>
                                 <th class="left">Box</th>
@@ -1372,8 +1395,32 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let sample of selected">
-                                <td class="left">{{sample.id}}</td>
+                            <tr *ngFor="let aliquot of sample.aliquots">
+                                <td class="left">{{aliquot.aliquot_string}}</td>
+
+                                <td class="left">
+                                    <span *ngIf="aliquot.freezer_location">{{aliquot.freezer_location.freezer}}</span>
+                                </td>
+                                <td class="left">
+                                    <span *ngIf="aliquot.freezer_location">{{aliquot.freezer_location.rack}}</span>
+                                </td>
+                                <td class="left">
+                                    <span *ngIf="aliquot.freezer_location">{{aliquot.freezer_location.box}}</span>
+                                </td>
+                                <td class="left">
+                                    <span *ngIf="aliquot.freezer_location">{{aliquot.freezer_location.row}}</span>
+                                </td>
+                                <td class="left">
+                                    <span *ngIf="aliquot.freezer_location">{{aliquot.freezer_location.spot}}</span>
+                                </td>
+
+                            </tr>
+                        </tbody>
+
+                        <!-- <tbody>
+                            <tr *ngFor="let aliquot of sample.aliquots">
+                                <td class="left">{{aliquot.aliquot_string}}</td>
+
                                 <td class="left">
                                     <span
                                         *ngIf="sample.aliquots[0]">{{sample.aliquots[0].freezer_location.freezer}}</span>
@@ -1390,8 +1437,9 @@
                                 <td class="left">
                                     <span *ngIf="sample.aliquots[0]">{{sample.aliquots[0].freezer_location.spot}}</span>
                                 </td>
+
                             </tr>
-                        </tbody>
+                        </tbody> -->
                     </table>
                 </div>
 
