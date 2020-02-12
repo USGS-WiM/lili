@@ -143,6 +143,7 @@ export class SamplesComponent implements OnInit {
 
   freezeForm: FormGroup;
   currentBoxShareMax;
+  nextBoxShareMax;
 
   initialMeterReading = 2;
 
@@ -305,13 +306,13 @@ export class SamplesComponent implements OnInit {
       aliquots_per_sample: 3,
       total_aliquots: null,
       available_spots_in_box: null,
-      aliquot_count_share: [{ value: 0 }, [Validators.required, Validators.min(0)]],
+      aliquot_count_share: [{ value: 0 }, [Validators.required, Validators.min(0), Validators.max(this.currentBoxShareMax)]],
       rack: [{ value: null }, [Validators.required, Validators.min(1)]],
       box: [{ value: null }, [Validators.required, Validators.min(1)]],
       row: [{ value: null }, [Validators.required, Validators.min(1)]],
       spot: [{ value: null }, [Validators.required, Validators.min(1)]],
       next_empty_box: this.formBuilder.group({
-        aliquot_count_share: [{ value: 0 }, [Validators.required, Validators.min(0)]],
+        aliquot_count_share: [{ value: 0 }, [Validators.min(0), Validators.max(this.nextBoxShareMax)]],
         available_spots_in_box: null,
         rack: [{ value: null }, [Validators.required, Validators.min(1)]],
         box: [{ value: null }, [Validators.required, Validators.min(1)]],
@@ -551,6 +552,12 @@ export class SamplesComponent implements OnInit {
       const aliquotsPerSample = this.freezeForm.get('aliquots_per_sample').value;
       const availableSpotsInBox = this.freezeForm.get('available_spots_in_box').value;
       this.currentBoxShareMax = (Math.trunc(availableSpotsInBox / aliquotsPerSample)) * aliquotsPerSample;
+      this.nextBoxShareMax = (totalAliquots - this.currentBoxShareMax);
+
+      // tslint:disable-next-line:max-line-length
+      this.freezeForm.get('aliquot_count_share').setValidators([Validators.required, Validators.min(0), Validators.max(this.currentBoxShareMax)]);
+      // tslint:disable-next-line:max-line-length
+      this.freezeForm.get('next_empty_box').get('aliquot_count_share').setValidators([Validators.min(0), Validators.max(this.nextBoxShareMax)]);
 
     });
 
@@ -1085,6 +1092,13 @@ export class SamplesComponent implements OnInit {
             const totalAliquots = sampleCount * aliquotsPerSample;
 
             this.currentBoxShareMax = (Math.trunc(nextAvailable.available_spots_in_box / aliquotsPerSample) * aliquotsPerSample);
+            this.nextBoxShareMax = (totalAliquots - this.currentBoxShareMax);
+
+  
+            // tslint:disable-next-line:max-line-length
+            this.freezeForm.get('aliquot_count_share').setValidators([Validators.required, Validators.min(0), Validators.max(this.currentBoxShareMax)]);
+            // tslint:disable-next-line:max-line-length
+            this.freezeForm.get('next_empty_box').get('aliquot_count_share').setValidators([Validators.min(0), Validators.max(this.nextBoxShareMax)]);
 
             this.freezeForm.patchValue({
               total_aliquots: totalAliquots,
@@ -1132,23 +1146,6 @@ export class SamplesComponent implements OnInit {
             // this.showLastOccupiedSpotError = true;
           }
         )
-
-      // this.freezeSampleForm.patchValue({ sample: this.selected[0].id });
-      // request last occupied spot
-      // this._freezerLocationsService.getLastOccupiedSpot()
-      //   .subscribe(
-      //     (lastOccupiedSpot) => {
-      //       this.lastOccupiedSpot = lastOccupiedSpot[0];
-      //       this.lastOccupiedSpotLoading = false;
-      //       this.showLastOccupiedSpot = true;
-      //       this.showLastOccupiedSpotError = false;
-      //     },
-      //     error => {
-      //       this.lastOccupiedSpotLoading = false;
-      //       this.showLastOccupiedSpot = false;
-      //       this.showLastOccupiedSpotError = true;
-      //     }
-      //   )
     }
     this.selectedStudy = this.selected[0].study;
   }
@@ -1231,15 +1228,6 @@ export class SamplesComponent implements OnInit {
       }
       submissionArray.push(nextBoxObject);
     }
-    console.log("whatever");
-
-    // DEPRECATED
-    // formValue.samples = sampleIDArray;
-    // formValue.freezer = Number(formValue.freezer);
-    // formValue.rack = Number(formValue.rack);
-    // formValue.box = Number(formValue.box);
-    // formValue.row = Number(formValue.row);
-    // formValue.spot = Number(formValue.spot);
 
     this._aliquotService.create(submissionArray)
       .subscribe(
@@ -1247,11 +1235,13 @@ export class SamplesComponent implements OnInit {
           this.submitLoading = false;
           this.freezeSuccessFlag = true;
           this.freezeErrorFlag = false;
+          this.reloadSamplesTable();
         },
         error => {
           this.submitLoading = false;
           this.freezeSuccessFlag = false;
           this.freezeErrorFlag = true;
+          this.errorMessage = error.toString();
         }
       )
   }
