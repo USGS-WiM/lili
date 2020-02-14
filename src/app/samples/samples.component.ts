@@ -142,8 +142,16 @@ export class SamplesComponent implements OnInit {
   aliquotCountErrorFlag: boolean = false;
 
   freezeForm: FormGroup;
+
+  currentBoxSetMax;
+  currentBoxSetCount;
   currentBoxShareMax;
+  nextBoxSetMax;
+  nextBoxSetCount;
   nextBoxShareMax;
+
+
+  maxAliquots;
 
   initialMeterReading = 2;
 
@@ -550,14 +558,28 @@ export class SamplesComponent implements OnInit {
 
       // get aliquots per sample and available spots in box; calculate and update currentBoxShareMax
       const aliquotsPerSample = this.freezeForm.get('aliquots_per_sample').value;
-      const availableSpotsInBox = this.freezeForm.get('available_spots_in_box').value;
-      this.currentBoxShareMax = (Math.trunc(availableSpotsInBox / aliquotsPerSample)) * aliquotsPerSample;
-      this.nextBoxShareMax = (totalAliquots - this.currentBoxShareMax);
+
+      const availableSpotsInCurrentBox = this.freezeForm.get('available_spots_in_box').value;
+      this.currentBoxSetMax = (Math.trunc(availableSpotsInCurrentBox / aliquotsPerSample));
+      this.currentBoxShareMax = (Math.trunc(availableSpotsInCurrentBox / aliquotsPerSample)) * aliquotsPerSample;
+
+      this.currentBoxSetCount = (Math.trunc(totalAliquots / aliquotsPerSample));
+
+      const availableSpotsInNextBox = this.freezeForm.get('next_empty_box').get('available_spots_in_box').value;
+      this.nextBoxSetMax = (Math.trunc(availableSpotsInNextBox / aliquotsPerSample));
+      this.nextBoxShareMax = this.nextBoxSetMax * aliquotsPerSample;
+
+      this.maxAliquots = this.currentBoxShareMax + this.nextBoxShareMax;
 
       // tslint:disable-next-line:max-line-length
       this.freezeForm.get('aliquot_count_share').setValidators([Validators.required, Validators.min(0), Validators.max(this.currentBoxShareMax)]);
       // tslint:disable-next-line:max-line-length
       this.freezeForm.get('next_empty_box').get('aliquot_count_share').setValidators([Validators.min(0), Validators.max(this.nextBoxShareMax)]);
+
+      this.freezeForm.get('total_aliquots').setValidators([Validators.min(0), Validators.max(this.maxAliquots)]);
+
+      this.freezeForm.get('aliquot_count_share').setValue(Math.min(this.currentBoxShareMax, totalAliquots));
+      this.freezeForm.get('next_empty_box').get('aliquot_count_share').setValue(Math.max(0, (totalAliquots - this.currentBoxShareMax)));
 
     });
 
@@ -1091,20 +1113,50 @@ export class SamplesComponent implements OnInit {
             // calculate a totalAliquots number to patch into freezeForm control
             const totalAliquots = sampleCount * aliquotsPerSample;
 
-            this.currentBoxShareMax = (Math.trunc(nextAvailable.available_spots_in_box / aliquotsPerSample) * aliquotsPerSample);
-            this.nextBoxShareMax = (totalAliquots - this.currentBoxShareMax);
+            // if there is no current box for the study
+            if (nextAvailable.not_found) {
+              // show no current box message
+              this.noCurrentBoxMessage = nextAvailable.not_found;
+              this.noCurrentBoxFlag = true;
+              this.currentBoxShareMax = null;
+              this.freezeForm.patchValue({
+                total_aliquots: totalAliquots,
+                available_spots_in_box: 0
+              });
+            }
 
-  
-            // tslint:disable-next-line:max-line-length
-            this.freezeForm.get('aliquot_count_share').setValidators([Validators.required, Validators.min(0), Validators.max(this.currentBoxShareMax)]);
-            // tslint:disable-next-line:max-line-length
-            this.freezeForm.get('next_empty_box').get('aliquot_count_share').setValidators([Validators.min(0), Validators.max(this.nextBoxShareMax)]);
+            // if there is a box with aliquots for the study ('box' field will exist in this case)
+            if (nextAvailable.box) {
+              const availableSpotsInCurrentBox = nextAvailable.available_spots_in_box;
+              this.currentBoxSetMax = (Math.trunc(availableSpotsInCurrentBox / aliquotsPerSample));
+              this.currentBoxShareMax = (Math.trunc(availableSpotsInCurrentBox / aliquotsPerSample)) * aliquotsPerSample;
+
+              // show both current box loc and next loc box
+              this.noCurrentBoxFlag = false;
+              this.freezeForm.patchValue({
+                available_spots_in_box: nextAvailable.available_spots_in_box,
+                aliquot_count_share: this.currentBoxShareMax,
+                rack: nextAvailable.rack,
+                box: nextAvailable.box,
+                row: nextAvailable.row,
+                spot: nextAvailable.spot
+              });
+              // this.currentBoxShareMax = (Math.trunc(nextAvailable.available_spots_in_box / aliquotsPerSample) * aliquotsPerSample);
+
+            }
+
+            // show the freeze modal if not showing already
+            if (this.freezerLocationAssignModalActive === false) {
+              this.freezerLocationAssignModalActive = true;
+            }
+
+            ///////////////////////////
 
             this.freezeForm.patchValue({
               total_aliquots: totalAliquots,
-              available_spots_in_box: nextAvailable.available_spots_in_box,
+              // available_spots_in_box: nextAvailable.available_spots_in_box,
               next_empty_box: {
-                aliquot_count_share: 0,
+                aliquot_count_share: (Math.max(0, (totalAliquots - this.currentBoxShareMax))),
                 available_spots_in_box: nextAvailable.next_empty_box.available_spots_in_box,
                 rack: nextAvailable.next_empty_box.rack,
                 box: nextAvailable.next_empty_box.box,
@@ -1113,30 +1165,21 @@ export class SamplesComponent implements OnInit {
               }
             });
 
-            // if there is no current box for the study
-            if (nextAvailable.not_found) {
-              // show no current box message
-              this.noCurrentBoxMessage = nextAvailable.not_found;
-              this.noCurrentBoxFlag = true;
-            }
+            // tslint:disable-next-line:max-line-length
+            this.freezeForm.get('aliquot_count_share').setValidators([Validators.required, Validators.min(0), Validators.max(this.currentBoxShareMax)]);
+            // tslint:disable-next-line:max-line-length
+            this.freezeForm.get('next_empty_box').get('aliquot_count_share').setValidators([Validators.min(0), Validators.max(this.nextBoxShareMax)]);
 
-            // if there is a box with aliquots for the study ('box' field will exist in this case)
-            if (nextAvailable.box) {
-              // show both current box loc and next loc box
-              this.noCurrentBoxFlag = false;
-              this.freezeForm.patchValue({
-                aliquot_count_share: 0,
-                rack: nextAvailable.rack,
-                box: nextAvailable.box,
-                row: nextAvailable.row,
-                spot: nextAvailable.spot
-              });
-            }
+            const availableSpotsInNextBox = this.freezeForm.get('next_empty_box').get('available_spots_in_box').value;
+            this.nextBoxSetMax = (Math.trunc(availableSpotsInNextBox / aliquotsPerSample));
+            this.nextBoxShareMax = this.nextBoxSetMax * aliquotsPerSample;
+            this.maxAliquots = this.currentBoxShareMax + this.nextBoxShareMax;
 
-            // show the freeze modal if not showing already
-            if (this.freezerLocationAssignModalActive === false) {
-              this.freezerLocationAssignModalActive = true;
-            }
+            this.freezeForm.get('total_aliquots').setValidators([Validators.min(0), Validators.max(this.maxAliquots)]);
+
+            this.freezeForm.get('aliquot_count_share').setValue(Math.min(this.currentBoxShareMax, totalAliquots));
+            // tslint:disable-next-line:max-line-length
+            this.freezeForm.get('next_empty_box').get('aliquot_count_share').setValue(Math.max(0, (totalAliquots - this.currentBoxShareMax)));
 
           },
           error => {
