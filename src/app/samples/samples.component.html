@@ -1180,11 +1180,30 @@
                         <clr-tooltip>
                             <clr-icon clrTooltipTrigger shape="info-circle" size="24"></clr-icon>
                             <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
-                                <span>Sample count * Aliquots per sample count</span>
+                                <span>Sample count multiplied by Aliquots per sample</span>
                             </clr-tooltip-content>
                         </clr-tooltip>
                     </label>
-                    <input id="totalAliquots" type="number" formControlName="total_aliquots" readonly>
+                    <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm"
+                        [class.invalid]="this.freezeForm.get('total_aliquots').value > maxAliquots">
+                        <input id="name" type="number" class="form-control" formControlName="total_aliquots" readonly
+                            min="0" max="{{maxAliquots}}">
+                        <span class="tooltip-content">Must be less than max aliquots. Adjust aliquots per sample or
+                            number of samples. </span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="totalAliquots">Max Aliquots for this action
+                        <clr-tooltip>
+                            <clr-icon clrTooltipTrigger shape="info-circle" size="24"></clr-icon>
+                            <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                                <span>The maximum number of aliquots you can assign in this single action</span>
+                            </clr-tooltip-content>
+                        </clr-tooltip>
+                    </label>
+                    <span>{{maxAliquots}}</span>
+                    <!-- <input id="totalAliquots" type="number" formControlName="total_aliquots" readonly> -->
                 </div>
 
             </section>
@@ -1197,7 +1216,7 @@
                     <ng-template clrIfExpanded>
                         <ng-container>
                             <clr-tree-node>
-                                <label>Choose starting location for aliquots. Maximum value is displayed to the right of
+                                <!-- <label>Choose starting location for aliquots. Maximum value is displayed to the right of
                                     each input. Next available box is always shown. If the study of the current sample
                                     selection
                                     has any aliquots already stored, current box for the study is shown. Select share of
@@ -1205,7 +1224,15 @@
                                     status)
                                     are provided but can be changed. Note that sample-aliquot sets are not split across
                                     boxes.
-                                    In order to enforce this, the maximum share of total for the current box may be less
+                                    In order to enforce this, the maximum share of total for the box may be less
+                                    than spots available in that box.
+                                </label> -->
+                                <label>If the study of the current sample
+                                    selection
+                                    has any aliquots already stored, current box for the study is shown first. Share of
+                                    total aliquots for each box ia automated. Note that sample-aliquot sets are not
+                                    split across
+                                    boxes. In order to enforce this, the maximum share of total for the box may be less
                                     than spots available in that box.
                                 </label>
                             </clr-tree-node>
@@ -1236,10 +1263,13 @@
                             class="tooltip tooltip-validation tooltip-sm"
                             [class.invalid]="freezeForm.get('aliquot_count_share').value > currentBoxShareMax ">
                             <input id="name" type="number" class="form-control" formControlName="aliquot_count_share"
-                                min="0" max="{{this.freezeForm.get('available_spots_in_box').value}}">
+                                min="0" max="{{this.freezeForm.get('available_spots_in_box').value}}" readonly>
                             <span class="tooltip-content">Must be less than max. </span>
                         </label>
-                        <span class="max-size-indicator">Max {{currentBoxShareMax}}</span>
+                        <!-- <span class="max-size-indicator">Max {{currentBoxShareMax}} ({{currentBoxSetMax}} sets of
+                            {{this.freezeForm.get('aliquots_per_sample').value}})</span> -->
+                        <!-- <span class="max-size-indicator">({{currentBoxSetCount}} sets of
+                                {{this.freezeForm.get('aliquots_per_sample').value}})</span> -->
                     </div>
 
                 </div>
@@ -1247,26 +1277,26 @@
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="rack" class="required">Rack</label>
                         <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}"
-                            formControlName="rack">
-                        <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span>
+                            formControlName="rack" readonly>
+                        <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span> -->
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="box" class="required">Box</label>
                         <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}"
-                            formControlName="box">
-                        <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span>
+                            formControlName="box" readonly>
+                        <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span> -->
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="row" class="required">Row</label>
                         <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}"
-                            formControlName="row">
-                        <span class="max-size-indicator">Max {{currentFreezerDimensions.rows}}</span>
+                            formControlName="row" readonly>
+                        <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.rows}}</span> -->
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="spot" class="required">Spot</label>
                         <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}"
-                            formControlName="spot">
-                        <span class="max-size-indicator">Max {{currentFreezerDimensions.spots}}</span>
+                            formControlName="spot" readonly>
+                        <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.spots}}</span> -->
                     </div>
                 </div>
             </section>
@@ -1290,11 +1320,14 @@
                             class="tooltip tooltip-validation tooltip-sm"
                             [class.invalid]="this.freezeForm.get('next_empty_box').get('aliquot_count_share').value > nextBoxShareMax">
                             <input id="name" type="number" class="form-control" formControlName="aliquot_count_share"
-                                min="0" max="{{nextBoxShareMax}}">
+                                min="0" max="{{nextBoxShareMax}}" readonly>
                             <span class="tooltip-content">Must be less than max. </span>
                         </label>
-                        <span class="max-size-indicator">Max {{nextBoxShareMax}}</span>
-                        <!-- </div> -->
+                        <!-- <span class="max-size-indicator">Max {{nextBoxShareMax}} ({{nextBoxSetMax}} sets of
+                            {{this.freezeForm.get('aliquots_per_sample').value}})</span> -->
+                        <!-- <span class="max-size-indicator">({{nextBoxSetMax}} sets of
+                            {{this.freezeForm.get('aliquots_per_sample').value}})</span> -->
+
                     </div>
 
                 </div>
@@ -1302,26 +1335,26 @@
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="rack" class="required">Rack</label>
                         <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}"
-                            formControlName="rack">
-                        <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span>
+                            formControlName="rack" readonly>
+                        <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span> -->
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="box" class="required">Box</label>
                         <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}"
-                            formControlName="box">
-                        <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span>
+                            formControlName="box" readonly>
+                        <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span> -->
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="row" class="required">Row</label>
                         <input id="row" type="number" min="1" max="{{currentFreezerDimensions.rows}}"
-                            formControlName="row">
-                        <span class="max-size-indicator">Max {{currentFreezerDimensions.rows}}</span>
+                            formControlName="row" readonly>
+                        <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.rows}}</span> -->
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="spot" class="required">Spot</label>
                         <input id="spot" type="number" min="1" max="{{currentFreezerDimensions.spots}}"
-                            formControlName="spot">
-                        <span class="max-size-indicator">Max {{currentFreezerDimensions.spots}}</span>
+                            formControlName="spot" readonly>
+                        <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.spots}}</span> -->
                     </div>
                 </div>
             </section>
@@ -1380,10 +1413,10 @@
     </h3>
     <div class="modal-body">
         <div class="row">
-            <div class="col-lg-12">
-                <div *ngIf="selected.length > 0">
-                    <!-- <h4>Showing first aliquot for each selected sample</h4> -->
-                    <table class="table table-compact" style="width: 15em" *ngFor="let sample of selected">
+            <div class="col-lg-12" *ngIf="selected.length > 0">
+                <div *ngFor="let sample of selected">
+                    <h4 *ngIf="sample.aliquots.length === 0">No aliquots recorded for Sample {{sample.id}}</h4>
+                    <table class="table table-compact" style="width: 15em" *ngIf="sample.aliquots.length > 0">
                         <thead>
                             <tr>
                                 <th class="left">Aliquot</th>
