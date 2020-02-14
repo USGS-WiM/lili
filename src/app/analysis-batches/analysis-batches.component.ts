@@ -138,6 +138,8 @@ export class AnalysisBatchesComponent implements OnInit {
   selectedAB: IAnalysisBatchSummary;
   errorMessage: string;
 
+  samplesSelected = [];
+
   abQueryComplete: boolean = false;
   abQuerySizeErrorFlag: boolean = false;
   abCount;
@@ -1136,7 +1138,7 @@ export class AnalysisBatchesComponent implements OnInit {
               this.reloadAnalysisBatchesTable();
             },
             error => {
-              this.errorMessage = <any>error;
+              this.errorMessage = error.toString();
               this.submitLoading = false;
               this.showABEditError = true;
             }
@@ -1236,18 +1238,35 @@ export class AnalysisBatchesComponent implements OnInit {
     for (let sample of selected) {
       samples.push(sample.id);
     }
+    for (let sample of this.abSampleList) {
+      samples.push(sample.id)
+    }
     this.editABForm.patchValue({
       new_samples: samples
     });
     this.onSubmit('editAB', this.editABForm.value);
   }
 
+  removeSample(sample) {
+    // remove from abSampleList
+    // get index of object with id:37
+    let removeIndex = this.abSampleList.map(function (item) { return item.id; }).indexOf(sample.id);
+
+    // remove object
+    this.abSampleList.splice(removeIndex, 1);
+
+    // add to allSamples
+    this.allSamples.push(sample);
+  }
+
   editAB(selectedAB) {
 
     this.editABLoading = true;
+    this.showABEditError = false;
+    this.showABEditSuccess = false;
 
     this.resetAB();
-    if (selectedAB.summary.sample_extraction_count > 0) {
+    if (selectedAB.summary.extraction_batch_count > 0) {
       this.sampleListEditLocked = true;
     }
 
@@ -1275,10 +1294,14 @@ export class AnalysisBatchesComponent implements OnInit {
 
                   this.abSampleListPopulated = true;
 
-                  // unclear about next line
-                  this.selected = this.abSampleList;
-
-
+                  // remove the current samples form the allSample list for the table
+                  for (let i = this.allSamples.length - 1; i >= 0; i--) {
+                    for (let j = 0; j < this.abSampleList.length; j++) {
+                      if (this.allSamples[i] && (this.allSamples[i].id === this.abSampleList[j].id)) {
+                        this.allSamples.splice(i, 1);
+                      }
+                    }
+                  }
                   this.editABForm.setValue({
                     id: selectedAB.id,
                     name: this.selectedAB.name,
