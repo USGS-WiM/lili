@@ -111,9 +111,9 @@
             <span class="spinner spinner-lg" *ngIf="ABDetailsLoading">
               Loading...
             </span>
-            <span *ngIf="noExtractionsFlag">
-              <clr-icon shape="neutral-face"></clr-icon> There are no Extractions from this Analysis Batch.
-            </span>
+            <!-- <span *ngIf="noSamplesFlag">
+              <clr-icon shape="neutral-face"></clr-icon> There are no Samples in this Analysis Batch.
+            </span> -->
 
             <clr-tree-node *ngFor="let sample of samplesArray">
               Sample {{sample.id}}

@@ -842,10 +842,10 @@
                                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABEditError">
                                             <div clr-alert-item class="alert-item">
                                                 <span class="alert-text">Submission error. Analysis Batch not
-                                                    updated.</span>
+                                                    updated. Error: {{errorMessage}}</span>
                                                 <div class="alert-actions">
                                                     <a class="alert-action"
-                                                        (click)="onSubmitSample('add', editSampleForm.value)">Try
+                                                        (click)="onSubmitSample('add', editABForm.value)">Try
                                                         again</a>
                                                 </div>
                                             </div>
@@ -887,13 +887,20 @@
                                                 </label>
                                                 <ul class="list">
                                                     <li *ngFor="let sample of abSampleList">{{sample.id}}
-                                                        ({{sample.study_string}})</li>
+                                                        ({{sample.study_string}})
+                                                        <!-- <button class="btn btn-sm" (click)="removeSample(sample)">
+                                                            <clr-icon shape="trash" size="16"></clr-icon>
+                                                        </button> -->
+
+                                                        <button type="button" class="btn btn-icon btn-danger" (click)="removeSample(sample)">
+                                                            <clr-icon shape="times-circle"></clr-icon>
+                                                        </button>
+                                                    </li>
                                                 </ul>
                                             </section>
                                         </form>
                                     </div>
                                     <div class="col-lg-8">
-
 
                                         <clr-alert [clrAlertClosable]="false" *ngIf="sampleListEditLocked">
                                             <div clr-alert-item class="alert-item">
@@ -914,7 +921,8 @@
 
                                         <form *ngIf="!sampleListEditLocked">
                                             <section class="form-block">
-                                                <label>All Samples
+
+                                                <label>Samples
                                                     <a href="" role="tooltip" aria-haspopup="true"
                                                         class="tooltip tooltip-lg">
                                                         <clr-icon shape="info-circle" size="24"></clr-icon>
@@ -922,11 +930,14 @@
                                                             from Analysis Batch</span>
                                                         <span *ngIf="samplesLoading"
                                                             class="text-italic text-small">Samples loading.</span> <br>
-
                                                     </a>
                                                 </label>
+                                                <br>
+                                                <span>Remove samples from AB or add new from list below. </span>
+
                                                 <clr-datagrid class="target-select-datagrid"
-                                                    [(clrDgSelected)]="selected">
+                                                    [(clrDgSelected)]="samplesSelected">
+
                                                     <clr-dg-action-bar>
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-sm btn-secondary"
@@ -938,7 +949,7 @@
                                                     </clr-dg-action-bar>
 
                                                     <!-- filter column header for Sample ID -->
-                                                    <clr-dg-column [clrDgField]="'sample_id'">
+                                                    <clr-dg-column [clrDgField]="'id'">
                                                         Sample ID
                                                         <clr-dg-filter [clrDgFilter]="rangeFilter">
 
@@ -989,7 +1000,12 @@
                                                         </clr-dg-cell>
                                                     </clr-dg-row>
 
-                                                    <clr-dg-footer>{{allSamples.length}} samples</clr-dg-footer>
+                                                    <clr-dg-footer>{{allSamples.length}} samples
+                                                        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of
+                                                        {{pagination.totalItems}} samples
+                                                        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                                                        </clr-dg-pagination>
+                                                    </clr-dg-footer>
                                                 </clr-datagrid>
                                             </section>
                                         </form>
@@ -1000,10 +1016,10 @@
                                         <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABEditError">
                                             <div clr-alert-item class="alert-item">
                                                 <span class="alert-text">Submission error. Analysis Batch not
-                                                    updated.</span>
+                                                    updated. Error: {{errorMessage}}</span>
                                                 <div class="alert-actions">
                                                     <a class="alert-action"
-                                                        (click)="updateABSampleList(editABForm.value,selected)">Try
+                                                        (click)="updateABSampleList(editABForm.value,samplesSelected)">Try
                                                         again</a>
                                                 </div>
                                             </div>
@@ -1021,7 +1037,7 @@
 
                                         <button class="btn btn-primary" type="submit"
                                             [disabled]="editABForm.invalid || sampleListEditLocked"
-                                            (click)="updateABSampleList(editABForm.value,selected)"
+                                            (click)="updateABSampleList(editABForm.value,samplesSelected)"
                                             [clrLoading]="submitLoading">Save Edits</button>
                                         <button class="btn btn-info"
                                             (click)="showHideEdit = !showHideEdit">Close</button>
