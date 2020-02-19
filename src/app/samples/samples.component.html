@@ -1229,11 +1229,14 @@
                                 </label> -->
                                 <label>If the study of the current sample
                                     selection
-                                    has any aliquots already stored, current box for the study is shown first. Share of
-                                    total aliquots for each box ia automated. Note that sample-aliquot sets are not
-                                    split across
-                                    boxes. In order to enforce this, the maximum share of total for the box may be less
-                                    than spots available in that box.
+                                    has any aliquots already stored, current box for the study is shown first and the
+                                    next aliquots for that study will be placed in the next available space. Share of
+                                    total aliquots for each box is automated. Sample-aliquot sets are prevented from
+                                    being split across boxes. In order to enforce this, the maximum share of total for
+                                    the box may be less
+                                    than spots available in that box. For Next Available Box, suggested starting
+                                    locations (based on current freezer
+                                    status) for rack and box are provided but can be changed.
                                 </label>
                             </clr-tree-node>
                         </ng-container>
@@ -1335,14 +1338,14 @@
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="rack" class="required">Rack</label>
                         <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}"
-                            formControlName="rack" readonly>
-                        <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span> -->
+                            formControlName="rack">
+                        <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="box" class="required">Box</label>
                         <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}"
-                            formControlName="box" readonly>
-                        <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span> -->
+                            formControlName="box">
+                        <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="row" class="required">Row</label>

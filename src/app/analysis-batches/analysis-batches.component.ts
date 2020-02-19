@@ -82,7 +82,7 @@ export class AnalysisBatchesComponent implements OnInit {
   studies: IStudy[];
   units: IUnit[];
 
-  allSamples: ISample[] = [];
+  filteredSamples: ISample[] = [];
 
   abSampleInhibitions;
 
@@ -171,6 +171,9 @@ export class AnalysisBatchesComponent implements OnInit {
   showBatchExtPosError: boolean = false;
   showBatchExtPosSuccess: boolean = false;
   batchExtPosLoading: boolean = false;
+  sampleQuerySizeErrorFlag = false;
+
+  sampleQueryForm: FormGroup;
 
   inhibitionErrors = {
     "dnaInhibitionSelection": "Missing one or more inhibition selections. Please make a DNA inhibition selection for each sample.",
@@ -213,6 +216,21 @@ export class AnalysisBatchesComponent implements OnInit {
     } else {
       return null;
     }
+  }
+
+  buildSampleQueryForm() {
+    this.sampleQueryForm = this.formBuilder.group({
+      study: null,
+      from_id: null,
+      to_id: null,
+      from_collection_start_date: null,
+      to_collection_start_date: null,
+      collaborator_sample_id: null,
+      sample_type: null,
+      matrix: null,
+      record_type: null,
+      peg_neg: null
+    })
   }
 
   buildABQueryForm() {
@@ -312,6 +330,7 @@ export class AnalysisBatchesComponent implements OnInit {
     private _extractionBatchService: ExtractionBatchService,
     private _unitService: UnitService
   ) {
+    this.buildSampleQueryForm();
     this.buildABQueryForm();
     this.buildExtractForm();
     this.buildBatchExtPosForm();
@@ -359,17 +378,18 @@ export class AnalysisBatchesComponent implements OnInit {
         },
         error => this.errorMessage = error);
 
+    // DEPRECATED
     // on init, call getSamples function of the SampleService, set results to the allSamples var
-    this.samplesLoading = true;
-    this._sampleService.getSamples()
-      .subscribe(
-        samples => {
-          this.allSamples = samples
-          this.samplesLoading = false;
-        },
-        error => {
-          this.errorMessage = <any>error
-        });
+    // this.samplesLoading = true;
+    // this._sampleService.getSamples()
+    //   .subscribe(
+    //     samples => {
+    //       this.allSamples = samples
+    //       this.samplesLoading = false;
+    //     },
+    //     error => {
+    //       this.errorMessage = <any>error
+    //     });
 
     // on init, call getUnits function of the UnitService, set results to the units var
     this._unitService.getUnits()
@@ -624,6 +644,7 @@ export class AnalysisBatchesComponent implements OnInit {
     this.showBatchExtPosSuccess = false;
     this.abQuerySizeErrorFlag = false;
     this.abQueryComplete = false;
+    this.sampleQuerySizeErrorFlag = false;
   }
 
   retrieveABData(abID) {
@@ -913,6 +934,7 @@ export class AnalysisBatchesComponent implements OnInit {
             // query the needed samples to populate the abSampleList array, needed for the extract step
             const formValue = { "id": this.abSampleIDList }
 
+
             this._sampleService.querySamples(formValue)
               .subscribe(
                 (samples) => {
@@ -977,37 +999,6 @@ export class AnalysisBatchesComponent implements OnInit {
                   this.errorMessage = <any>error
                 }
               );
-
-            // for (let sample of this.abSampleList) {
-
-            // NEED TO PASS THE INDEX TO THE buildAliquotArray function
-
-            // populate extractionArray with sample IDs for the selected AB and null inhibition ID value (TBD by user)
-            // let extractionFormGroup: FormGroup = this.formBuilder.group({
-            //   sample: this.formBuilder.control(sample.id),
-            //   inhibition_dna: this.formBuilder.control(null),
-            //   inhibition_rna: this.formBuilder.control(null),
-            //   aliquots: this.buildAliquotArray(sample.id, sample.aliquots)
-            // });
-            // this.extractionArray.push(extractionFormGroup);
-
-            // }
-
-            // console.log("extractionArray.controls: ", this.extractionArray.controls)
-
-            // build the abInhbition array: all inhibitions in the current analysis batch
-            // used for the batch level apply select dropdowns
-            // TEMPORARILY COMMENTED OUT: may not need this because batch level application not in use. Revisit.
-            // if (analysisBatchDetail.extractionbatches.length > 0) {
-            //   for (let extractionBatch of analysisBatchDetail.extractionbatches) {
-            //     if (extractionBatch.inhibitions.length > 0) {
-            //       for (let inhibition of extractionBatch.inhibitions) {
-            //         this.abInhibitions.push(inhibition)
-            //       }
-
-            //     }
-            //   }
-            // }
 
 
           } else {
@@ -1114,6 +1105,7 @@ export class AnalysisBatchesComponent implements OnInit {
           console.log(extractionBatch);
           this.loadingFlag = false;
           this.extractionFinished = true;
+          // this.reloadAnalysisBatchesTable();
         },
         error => {
           this.errorMessage = <any>error
@@ -1130,7 +1122,6 @@ export class AnalysisBatchesComponent implements OnInit {
         this._analysisBatchService.update(formValue)
           .subscribe(
             (ab) => {
-              // TODO: make this work so all AB table updates
               // this.updateSamplesArray(formValue);
               this.editABForm.reset();
               this.submitLoading = false;
@@ -1255,8 +1246,8 @@ export class AnalysisBatchesComponent implements OnInit {
     // remove object
     this.abSampleList.splice(removeIndex, 1);
 
-    // add to allSamples
-    this.allSamples.push(sample);
+    // add to filteredSamples
+    this.filteredSamples.push(sample);
   }
 
   editAB(selectedAB) {
@@ -1294,14 +1285,7 @@ export class AnalysisBatchesComponent implements OnInit {
 
                   this.abSampleListPopulated = true;
 
-                  // remove the current samples form the allSample list for the table
-                  for (let i = this.allSamples.length - 1; i >= 0; i--) {
-                    for (let j = 0; j < this.abSampleList.length; j++) {
-                      if (this.allSamples[i] && (this.allSamples[i].id === this.abSampleList[j].id)) {
-                        this.allSamples.splice(i, 1);
-                      }
-                    }
-                  }
+
                   this.editABForm.setValue({
                     id: selectedAB.id,
                     name: this.selectedAB.name,
@@ -1443,6 +1427,58 @@ export class AnalysisBatchesComponent implements OnInit {
                   this.errorMessage = error;
                   this.submitLoading = false;
                   this.analysisBatchesLoading = false;
+                }
+              );
+          }
+        },
+        error => {
+          this.errorMessage = error;
+          this.submitLoading = false;
+        }
+      );
+
+  }
+
+  onSubmitSampleQuery(formValue) {
+
+    this.resetFlags();
+
+    this.submitLoading = true;
+    this.samplesLoading = true;
+
+    // set functional limit for amount of samples to display in the table at once
+    const countLimit = 2000;
+
+    this._sampleService.querySamplesCount(formValue)
+      .subscribe(
+        (count) => {
+
+          this.submitLoading = false;
+          // if count exceeds limit, show error message
+          if (count.count >= countLimit) {
+            this.sampleQuerySizeErrorFlag = true;
+          } else if (count.count < countLimit) {
+
+            this.samplesLoading = true;
+
+            this._sampleService.querySamples(formValue)
+              .subscribe(
+                (samples) => {
+                  this.filteredSamples = samples;
+                  this.samplesLoading = false;
+                  // remove the current samples form the filteredSamples list for the table
+                  for (let i = this.filteredSamples.length - 1; i >= 0; i--) {
+                    for (let j = 0; j < this.abSampleList.length; j++) {
+                      if (this.filteredSamples[i] && (this.filteredSamples[i].id === this.abSampleList[j].id)) {
+                        this.filteredSamples.splice(i, 1);
+                      }
+                    }
+                  }
+
+                },
+                error => {
+                  this.errorMessage = <any>error
+                  this.samplesLoading = false;
                 }
               );
           }

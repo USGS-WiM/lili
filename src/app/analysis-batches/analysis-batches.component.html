@@ -89,9 +89,10 @@
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
+
                 <clr-datagrid class="target-select-datagrid" [(clrDgSelected)]="selected">
 
-                    <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+                    <clr-dg-column [clrDgField]="'name'" class="name-column">Name</clr-dg-column>
                     <clr-dg-column [clrDgField]="'code'">Code</clr-dg-column>
                     <clr-dg-column [clrDgField]="'type'">Type</clr-dg-column>
 
@@ -892,7 +893,8 @@
                                                             <clr-icon shape="trash" size="16"></clr-icon>
                                                         </button> -->
 
-                                                        <button type="button" class="btn btn-icon btn-danger" (click)="removeSample(sample)">
+                                                        <button type="button" class="btn btn-icon btn-danger"
+                                                            (click)="removeSample(sample)">
                                                             <clr-icon shape="times-circle"></clr-icon>
                                                         </button>
                                                     </li>
@@ -933,6 +935,108 @@
                                                     </a>
                                                 </label>
                                                 <br>
+
+                                                <!-- Begin Sample query form -->
+                                                <div class="card-text">
+                                                    <form class="form compact" [formGroup]="sampleQueryForm"
+                                                        (ngSubmit)="onSubmitSampleQuery(sampleQueryForm.value)">
+                                                        <section class="form-block">
+
+                                                            <div class="form-group">
+                                                                <label>Study</label>
+                                                                <label for="studySelect" aria-haspopup="true"
+                                                                    role="tooltip"
+                                                                    class="tooltip tooltip-validation tooltip-sm">
+                                                                    <div class="select">
+                                                                        <select id="studySelect" name="study"
+                                                                            formControlName="study">
+                                                                            <option value="">
+                                                                                <span class="all">ALL STUDIES</span>
+                                                                            </option>
+                                                                            <option *ngFor="let study of studies"
+                                                                                [value]="study.id">{{study.name}}
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Sample ID Range</label>
+                                                                <span>From</span>
+                                                                <input type="number" formControlName="from_id">
+                                                                <span>To</span>
+                                                                <input type="number" formControlName="to_id">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Collection Start Date Range</label>
+                                                                <span>From</span>
+                                                                <input type="date"
+                                                                    formControlName="from_collection_start_date">
+                                                                <span>To</span>
+                                                                <input type="date"
+                                                                    formControlName="to_collection_start_date">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Collaborator Sample ID</label>
+                                                                <input id="collabSampleIdInput" type="text"
+                                                                    formControlName="collaborator_sample_id">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Matrix</label>
+                                                                <div class="select">
+                                                                    <select id="matrixSelect" name="matrix"
+                                                                        formControlName="matrix">
+                                                                        <option value="">
+                                                                            <span class="all">ALL MATRICES</span>
+                                                                        </option>
+                                                                        <option *ngFor="let matrix of matrices"
+                                                                            [value]="matrix.id">{{matrix.name}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Sample type</label>
+                                                                <div class="select">
+                                                                    <select id="sampleTypeSelect" name="sample_type"
+                                                                        formControlName="sample_type">
+                                                                        <option value="">
+                                                                            <span class="all">ALL SAMPLE TYPES</span>
+                                                                        </option>
+                                                                        <option *ngFor="let sampleType of sampleTypes"
+                                                                            [value]="sampleType.id">{{sampleType.name}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Peg Neg (returns associated samples)</label>
+                                                                <input type="number" formControlName="peg_neg">
+                                                            </div>
+
+                                                        </section>
+
+                                                        <clr-alert [clrAlertType]="'alert-danger'"
+                                                            *ngIf="sampleQuerySizeErrorFlag">
+                                                            <div class="alert-item">
+                                                                <span class="alert-text">Your query results are too
+                                                                    large (greater than {{queryCountLimit}}). Please
+                                                                    narrow
+                                                                    your search.</span>
+                                                            </div>
+                                                        </clr-alert>
+
+                                                        <button class="btn btn-primary" type="submit"
+                                                            [clrLoading]="submitLoading">Filter Samples</button>
+                                                    </form>
+                                                </div>
+                                                <!-- End Sample query form -->
+
                                                 <span>Remove samples from AB or add new from list below. </span>
 
                                                 <clr-datagrid class="target-select-datagrid"
@@ -990,7 +1094,7 @@
                                                         </clr-dg-filter>
                                                     </clr-dg-column>
 
-                                                    <clr-dg-row *clrDgItems="let sample of allSamples"
+                                                    <clr-dg-row *clrDgItems="let sample of filteredSamples"
                                                         [clrDgItem]="sample">
                                                         <clr-dg-cell>{{sample.id}}</clr-dg-cell>
                                                         <clr-dg-cell>{{sample.collaborator_sample_id}}</clr-dg-cell>
@@ -1000,7 +1104,7 @@
                                                         </clr-dg-cell>
                                                     </clr-dg-row>
 
-                                                    <clr-dg-footer>{{allSamples.length}} samples
+                                                    <clr-dg-footer>{{filteredSamples.length}} samples
                                                         {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of
                                                         {{pagination.totalItems}} samples
                                                         <clr-dg-pagination #pagination [clrDgPageSize]="10">
