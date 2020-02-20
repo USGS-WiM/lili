@@ -388,7 +388,7 @@
 
         <div>
           <p>Are you sure you want to delete the Extraction Batch
-            <b>{{editExtractionBatchForm.get('id').value}}</b> ?</p>
+            <b>{{editExtractionBatchForm.get('analysis_batch').value}} - {{editExtractionBatchForm.get('extraction_number').value}}</b> ?</p>
 
           <button class="btn btn-primary" type="button"
             (click)="deleteExtractionBatch(editExtractionBatchForm.get('id').value)"

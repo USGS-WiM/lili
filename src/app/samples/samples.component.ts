@@ -150,7 +150,6 @@ export class SamplesComponent implements OnInit {
   nextBoxSetCount;
   nextBoxShareMax;
 
-
   maxAliquots;
 
   initialMeterReading = 2;
