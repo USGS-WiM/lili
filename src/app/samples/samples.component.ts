@@ -1225,6 +1225,9 @@ export class SamplesComponent implements OnInit {
       sampleIDArray.push(sample.id)
     }
 
+    // sort sampleID list numerically
+    sampleIDArray.sort((a, b) => a - b)
+
     // if the aliquot_count_share is greater than 0, current box is being used
     if (formValue.aliquot_count_share > 0) {
       // calculate the amount of sample-aliquot sets that can go into the current box
