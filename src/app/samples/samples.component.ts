@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormArray, Validators, PatternValidator } from '@angular/forms';
 
 import { ISample } from './sample';
@@ -77,6 +77,10 @@ export class SamplesComponent implements OnInit {
   // var to hold the currently selected matrix; used to determine which inputs to show
   matrixSelected: IMatrix;
   //unitValue;
+
+  public showHideDelete: boolean;
+  public showSampleDeleteError: boolean;
+  public showSampleDeleteSuccess: boolean;
 
   pegnegFromDate: FormControl;
   pegnegToDate: FormControl;
@@ -457,6 +461,7 @@ export class SamplesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.showHideDelete = false;
 
     this.queryCountLimit = APP_SETTINGS.QUERY_COUNT_LIMIT;
 
@@ -897,6 +902,37 @@ export class SamplesComponent implements OnInit {
       this.showHideAdd = true;
     }
   }
+
+
+  // show delete Sample type modal
+  public deleteSample(selectedSample){
+    console.log(selectedSample);
+    this.showSampleDeleteSuccess = false; //reset this
+    this.showSampleDeleteError = false; //reset this too
+    this.selectedSampleId = selectedSample.id;
+    // show the delete Filter form if not showing already
+    if (this.showHideDelete === false) {
+      this.showHideDelete = true;
+    }    
+  }
+
+  
+  public submitDelete(){
+    this._sampleService.delete(this.selectedSampleId)
+    .subscribe(
+      () => {
+      this.selectedSample = undefined;
+      this.submitLoading = false;
+      this.showSampleDeleteSuccess = true;
+    },
+    error => {
+      this.errorMessage = <any>error;
+      this.submitLoading = false;
+      this.showSampleDeleteError = true;
+    }
+    );
+  }
+
 
   editSample(selectedSample) {
 

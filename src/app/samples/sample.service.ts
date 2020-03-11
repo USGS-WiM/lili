@@ -224,6 +224,13 @@ export class SampleService {
 
   }
 
+  public delete(id: number): Observable<ISample> {
+    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
+
+    return this._http.delete(APP_SETTINGS.SAMPLES_URL + id, options)
+      .catch(this.handleError);
+  }
+
   public update(formValue: ISample): Observable<ISample> {
 
     let options = new RequestOptions({
