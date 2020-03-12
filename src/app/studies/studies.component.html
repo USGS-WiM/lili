@@ -27,26 +27,32 @@
 
 
                             <div class="alert-actions">
-                                <a class="alert-action" (click)="showHideAdd = false; showStudyCreateSuccess = false">Close</a>
+                                <a class="alert-action"
+                                    (click)="showHideAdd = false; showStudyCreateSuccess = false">Close</a>
                             </div>
                         </div>
                     </clr-alert>
 
-                    <form id="addStudyForm" class="compact" [formGroup]="addStudyForm" (ngSubmit)="onSubmitStudy('add', addStudyForm.value)">
+                    <form id="addStudyForm" class="compact" [formGroup]="addStudyForm"
+                        (ngSubmit)="onSubmitStudy('add', addStudyForm.value)">
                         <section class="form-block">
                             <!--<label>Add Study</label>-->
                             <div class="form-group">
                                 <label class="required">Name</label>
-                                <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="addStudyForm.get('name').invalid && (addStudyForm.get('name').dirty || addStudyForm.get('name').touched)">
+                                <label for="name" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="addStudyForm.get('name').invalid && (addStudyForm.get('name').dirty || addStudyForm.get('name').touched)">
                                     <input id="name" type="text" formControlName="name" size="40">
                                     <span class="tooltip-content">Name is required.</span>
                                 </label>
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea id="description" type="text" formControlName="description" rows="2" style="max-width:25em"></textarea>
+                                <textarea id="description" type="text" formControlName="description" rows="2"
+                                    style="max-width:25em"></textarea>
                             </div>
-                            <button class="btn btn-primary" type="submit" [disabled]="addStudyForm.invalid" [clrLoading]="submitLoading">Submit</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="addStudyForm.invalid"
+                                [clrLoading]="submitLoading">Submit</button>
                             <button class="btn btn-info" (click)="showHideAdd = !showHideAdd">Close</button>
                         </section>
                         <!-- <p>Form value: {{ addStudyForm.value | json }}</p>
@@ -58,6 +64,42 @@
     </div>
 </div>
 
+<!-- delete Study Modal -->
+<clr-modal [(clrModalOpen)]="showHideDelete">
+    <h3 class="modal-title">
+        <clr-icon shape="trash" size="16"></clr-icon> Delete Study
+    </h3>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showStudyDeleteError">
+                    <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Submission error. Study not deleted.  It may be because there are already samples associated with this study.</span>
+                        <div class="alert-actions">
+                            <a class="alert-action" (click)="submitDelete()">Try again</a>
+                        </div>
+                    </div>
+                </clr-alert>
+
+                <clr-alert [clrAlertType]="'alert-success'" *ngIf="showStudyDeleteSuccess">
+                    <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Study successfully deleted.</span>
+                    </div>
+                </clr-alert>
+
+                <div *ngIf="!showStudyDeleteSuccess">
+                    <p>Are you sure you want to delete the Study <b>{{selectedStudyName}}</b> ?</p>
+
+                    <button class="btn btn-primary" type="button" (click)="submitDelete()"
+                        [clrLoading]="submitLoading">Delete</button>
+                    <button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</clr-modal>
+<!-- end delete study modal -->
+
 <div class="row">
 
     <clr-modal [(clrModalOpen)]="showHideEdit">
@@ -67,7 +109,8 @@
             <div class="row">
                 <div class="col-lg-12">
 
-                    <form id="editStudyForm" class="compact" [formGroup]="editStudyForm" (ngSubmit)="onSubmitStudy('edit', editStudyForm.value)">
+                    <form id="editStudyForm" class="compact" [formGroup]="editStudyForm"
+                        (ngSubmit)="onSubmitStudy('edit', editStudyForm.value)">
                         <section class="form-block">
 
                             <label>Selected Study: {{selectedStudyName}}</label>
@@ -79,21 +122,25 @@
 
                             <div class="form-group">
                                 <label class="required">Name</label>
-                                <label for="name" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm" [class.invalid]="editStudyForm.get('name').invalid && (editStudyForm.get('name').dirty || editStudyForm.get('name').touched)">
+                                <label for="name" aria-haspopup="true" role="tooltip"
+                                    class="tooltip tooltip-validation tooltip-sm"
+                                    [class.invalid]="editStudyForm.get('name').invalid && (editStudyForm.get('name').dirty || editStudyForm.get('name').touched)">
                                     <input id="name" type="text" formControlName="name" size="40">
                                     <span class="tooltip-content">Name is required.</span>
                                 </label>
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea id="description" type="text" formControlName="description" rows="2" style="max-width:25em"></textarea>
+                                <textarea id="description" type="text" formControlName="description" rows="2"
+                                    style="max-width:25em"></textarea>
                             </div>
 
                             <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showStudyEditError">
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Submission error. Study not edited.</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="onSubmitStudy('edit', editStudyForm.value)">Try again</a>
+                                        <a class="alert-action" (click)="onSubmitStudy('edit', editStudyForm.value)">Try
+                                            again</a>
                                     </div>
                                 </div>
                             </clr-alert>
@@ -102,12 +149,14 @@
                                 <div clr-alert-item class="alert-item">
                                     <span class="alert-text">Study successfully edited</span>
                                     <div class="alert-actions">
-                                        <a class="alert-action" (click)="showHideEdit = false; showStudyEditSuccess = false">Close</a>
+                                        <a class="alert-action"
+                                            (click)="showHideEdit = false; showStudyEditSuccess = false">Close</a>
                                     </div>
                                 </div>
                             </clr-alert>
 
-                            <button class="btn btn-primary" type="submit" [disabled]="editStudyForm.invalid" [clrLoading]="submitLoading">Save Edits</button>
+                            <button class="btn btn-primary" type="submit" [disabled]="editStudyForm.invalid"
+                                [clrLoading]="submitLoading">Save Edits</button>
                             <button class="btn btn-info" (click)="showHideEdit = !showHideEdit">Close</button>
                         </section>
                         <!-- <p>Form value: {{ editStudyForm.value | json }}</p>
@@ -129,9 +178,16 @@
             <clr-dg-action-bar>
                 <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-secondary" (click)="showHideAdd = !showHideAdd">
-                        <clr-icon shape="plus"></clr-icon> Add Study</button>
-                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedStudy" (click)="editStudy(selectedStudy)">
-                        <clr-icon shape="note-edit" size="16"></clr-icon> Edit Study</button>
+                        <clr-icon shape="plus"></clr-icon> Add Study
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedStudy"
+                        (click)="editStudy(selectedStudy)">
+                        <clr-icon shape="note-edit" size="16"></clr-icon> Edit Study
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedStudy"
+                        (click)="deleteStudy(selectedStudy)">
+                        <clr-icon shape="trash" size="16"></clr-icon> Delete Study
+                    </button>
 
                 </div>
             </clr-dg-action-bar>

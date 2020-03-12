@@ -52,7 +52,12 @@ export class AnalysisBatchesComponent implements OnInit {
   checked = false;
   inhibitionFinished = false;
   extractionFinished = false;
-  // testing
+
+  selectedABID;
+
+  showABDeleteError = false;
+  showABDeleteSuccess = false;
+  public showHideDelete: boolean;
 
   analysisBatchesLoading: boolean = false;
   samplesLoading: boolean = false;
@@ -337,6 +342,7 @@ export class AnalysisBatchesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showHideDelete = false;
 
     // this.analysisBatchesLoading = true;
 
@@ -1391,6 +1397,45 @@ export class AnalysisBatchesComponent implements OnInit {
         }
       );
   }
+
+  // show delete Analysis Batch modal
+  public deleteAnalysisBatch(selectedAB) {
+
+    this.selectedABID = selectedAB.id;
+
+    if (selectedAB.summary.extraction_batch_count) {
+      alert("The Analysis Batch has an associated extraction and cannot be deleted.");
+      return;
+    }
+
+    console.log(selectedAB);
+    this.showABDeleteSuccess = false; //reset this
+    this.showABDeleteError = false; //reset this too
+    //showABDeleteErrorthis.selectedSampleId = selectedSample.id;
+    // show the delete Filter form if not showing already
+    if (this.showHideDelete === false) {
+      this.showHideDelete = true;
+    }
+  }
+
+
+  public submitABDelete() {
+    this._analysisBatchService.delete(this.selectedAB.id)
+      .subscribe(
+        () => {
+          //this.selectedSample = undefined;
+          this.submitLoading = false;
+          this.showABDeleteSuccess = true;
+          this.reloadAnalysisBatchesTable();
+        },
+        error => {
+          this.errorMessage = <any>error;
+          this.submitLoading = false;
+          this.showABDeleteError = true;
+        }
+      );
+  }
+
 
   onSubmitABQuery(formValue) {
 

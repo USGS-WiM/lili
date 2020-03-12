@@ -905,7 +905,7 @@ export class SamplesComponent implements OnInit {
 
 
   // show delete Sample type modal
-  public deleteSample(selectedSample){
+  public deleteSample(selectedSample) {
     console.log(selectedSample);
     this.showSampleDeleteSuccess = false; //reset this
     this.showSampleDeleteError = false; //reset this too
@@ -913,24 +913,25 @@ export class SamplesComponent implements OnInit {
     // show the delete Filter form if not showing already
     if (this.showHideDelete === false) {
       this.showHideDelete = true;
-    }    
+    }
   }
 
-  
-  public submitDelete(){
+
+  public submitDelete() {
     this._sampleService.delete(this.selectedSampleId)
-    .subscribe(
-      () => {
-      this.selectedSample = undefined;
-      this.submitLoading = false;
-      this.showSampleDeleteSuccess = true;
-    },
-    error => {
-      this.errorMessage = <any>error;
-      this.submitLoading = false;
-      this.showSampleDeleteError = true;
-    }
-    );
+      .subscribe(
+        () => {
+          this.selectedSample = undefined;
+          this.submitLoading = false;
+          this.showSampleDeleteSuccess = true;
+          this.reloadSamplesTable();
+        },
+        error => {
+          this.errorMessage = <any>error;
+          this.submitLoading = false;
+          this.showSampleDeleteError = true;
+        }
+      );
   }
 
 

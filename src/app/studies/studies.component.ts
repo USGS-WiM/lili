@@ -22,6 +22,11 @@ export class StudiesComponent implements OnInit {
     showStudyCreateSuccess: boolean = false;
     showStudyEditSuccess: boolean = false;
 
+    showStudyDeleteSuccess: boolean = false;
+    showStudyDeleteError: boolean = false;
+
+    showHideDelete: boolean = false;
+
     studiesLoading: boolean = false;
 
     selectedStudyName;
@@ -80,6 +85,36 @@ export class StudiesComponent implements OnInit {
         }
 
     }
+
+    deleteStudy(selectedStudy) {
+
+        this.selectedStudyName = selectedStudy.name;
+        this.showStudyDeleteSuccess = false; //reset this
+        this.showStudyDeleteError = false; //reset this too
+        // this.selectedSampleId = selectedSample.id;
+        // show the delete Filter form if not showing already
+        if (this.showHideDelete === false) {
+            this.showHideDelete = true;
+        }
+
+    }
+
+    submitDelete() {
+        this._studyService.delete(this.selectedStudy.id)
+            .subscribe(
+                () => {
+                    this.selectedStudy = undefined;
+                    this.submitLoading = false;
+                    this.showStudyDeleteSuccess = true;
+                },
+                error => {
+                    this.errorMessage = <any>error;
+                    this.submitLoading = false;
+                    this.showStudyDeleteError = true;
+                }
+            );
+    }
+
 
     private updateStudiesArray(newItem) {
         let updateItem = this.allStudies.find(this.findIndexToUpdate, newItem.id);
