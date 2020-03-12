@@ -14,7 +14,7 @@ import { IStudy } from './study';
 @Injectable()
 export class StudyService {
 
-    constructor(private _http: Http) {}
+    constructor(private _http: Http) { }
 
     private extractData(res: Response) {
         let body = res.json();
@@ -22,39 +22,47 @@ export class StudyService {
     }
 
     //check return from server - may need to adjust response.json below with further dot notation
-    public getStudies(): Observable < IStudy[] > {
+    public getStudies(): Observable<IStudy[]> {
 
         let options = new RequestOptions({
             headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
         });
 
         return this._http.get(APP_SETTINGS.STUDIES_URL, options)
-            .map((response: Response) => < IStudy[] > response.json())
+            .map((response: Response) => <IStudy[]>response.json())
             .catch(this.handleError);
     }
 
-    public create(formValue: IStudy): Observable < IStudy > {
+    public create(formValue: IStudy): Observable<IStudy> {
 
         let options = new RequestOptions({
             headers: APP_SETTINGS.AUTH_JSON_HEADERS
         });
 
         return this._http.post(APP_SETTINGS.STUDIES_URL, formValue, options)
-            .map((response: Response) => < IStudy[] > response.json())
+            .map((response: Response) => <IStudy[]>response.json())
             .catch(this.handleError);
 
     }
 
-    public update(formValue: IStudy): Observable < IStudy > {
+    public update(formValue: IStudy): Observable<IStudy> {
 
         let options = new RequestOptions({
             headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS
         });
 
         return this._http.put(APP_SETTINGS.STUDIES_URL + formValue.id + '/', formValue, options)
-            .map((response: Response) => < IStudy[] > response.json())
+            .map((response: Response) => <IStudy[]>response.json())
             .catch(this.handleError);
     }
+
+    public delete(id: number): Observable<IStudy> {
+        let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
+
+        return this._http.delete(APP_SETTINGS.STUDIES_URL + id, options)
+            .catch(this.handleError);
+    }
+
 
     private handleError(error: Response) {
         console.error(error);

@@ -140,6 +140,13 @@ export class AnalysisBatchService {
 
   }
 
+  public delete(id: number): Observable<any> {
+    let options = new RequestOptions({ headers: APP_SETTINGS.MIN_AUTH_JSON_HEADERS });
+
+    return this._http.delete(APP_SETTINGS.ANALYSIS_BATCH_URL + id, options)
+      .catch(this.handleError);
+  }
+
 
   private handleError(error: Response) {
     console.error(error);

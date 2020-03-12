@@ -1159,6 +1159,39 @@
 </clr-modal>
 <!-- end edit analysis batch modal -->
 
+<!-- begin delete AB Modal -->
+<clr-modal [(clrModalOpen)]="showHideDelete">
+    <h3 class="modal-title"><clr-icon shape="trash" size="16"></clr-icon> Delete Analysis Batch</h3>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showABDeleteError">
+            <div clr-alert-item class="alert-item">
+              <span class="alert-text">Submission error. Analysis Batch not deleted.</span>
+              <div class="alert-actions">
+                <a class="alert-action" (click)="submitABDelete()">Try again</a>
+              </div>
+            </div>
+          </clr-alert>
+
+          <clr-alert [clrAlertType]="'alert-success'" *ngIf="showABDeleteSuccess">
+            <div clr-alert-item class="alert-item">
+              <span class="alert-text">Analysis Batch successfully deleted.</span>
+            </div>
+          </clr-alert>
+
+          <div *ngIf="!showABDeleteSuccess">
+            <p>Are you sure you want to delete Analysis Batch&nbsp;<b>{{selectedABID}}</b>&nbsp;?</p>
+
+            <button class="btn btn-primary" type="button" (click)="submitABDelete()" [clrLoading]="submitLoading">Delete</button>
+            <button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </clr-modal>
+<!-- end delete AB modal -->
+
 <!-- begin batch submit ext pos modal -->
 <clr-modal [(clrModalOpen)]="batchExtPosModalActive" [clrModalSize]="'lg'">
     <h3 class="modal-title">
@@ -1353,6 +1386,10 @@
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB"
                         (click)="editAB(selectedAB)" [clrLoading]="editABLoading">
                         <clr-icon shape="note-edit" size="16"></clr-icon>&nbsp;Edit Analysis Batch
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB || selectedAB.summary.extraction_batch_count > 0"
+                        (click)="deleteAnalysisBatch(selectedAB)">
+                        <clr-icon shape="trash" size="16"></clr-icon> Delete Analysis Batch
                     </button>
                     <button type="button" class="btn btn-sm btn-secondary" [disabled]="!selectedAB"
                         (click)="reprintWorksheet(selectedAB)" [clrLoading]="printSubmitLoading">

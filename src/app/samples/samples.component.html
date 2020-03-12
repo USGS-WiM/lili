@@ -850,6 +850,39 @@
 </clr-modal>
 <!-- end edit sample modal -->
 
+<!-- delete Sample Modal -->
+<clr-modal [(clrModalOpen)]="showHideDelete">
+    <h3 class="modal-title"><clr-icon shape="trash" size="16"></clr-icon> Delete Sample</h3>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleDeleteError">
+            <div clr-alert-item class="alert-item">
+              <span class="alert-text">Submission error. Sample not deleted.</span>
+              <div class="alert-actions">
+                <a class="alert-action" (click)="submitDelete()">Try again</a>
+              </div>
+            </div>
+          </clr-alert>
+
+          <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleDeleteSuccess">
+            <div clr-alert-item class="alert-item">
+              <span class="alert-text">Sample successfully deleted.</span>
+            </div>
+          </clr-alert>
+
+          <div *ngIf="!showSampleDeleteSuccess">
+            <p>Are you sure you want to delete the sample <b>{{selectedSampleId}}</b> ?</p>
+
+            <button class="btn btn-primary" type="button" (click)="submitDelete()" [clrLoading]="submitLoading">Delete</button>
+            <button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </clr-modal>
+<!-- end delete sample modal -->
+
 <!-- begin analysis batch modal -->
 <clr-modal [(clrModalOpen)]="showHideABModal">
     <h3 class="modal-title">Create Analysis Batch</h3>
@@ -1802,6 +1835,10 @@
                     <button type="button" class="btn btn-sm btn-secondary"
                         [disabled]="selected.length == 0 || selected.length > 1" (click)="editSample(selected[0])">
                         <clr-icon shape="note-edit" size="16"></clr-icon> Edit Sample
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary"
+                        [disabled]="selected.length == 0 || selected.length > 1" (click)="deleteSample(selected[0])">
+                        <clr-icon shape="trash" size="16"></clr-icon> Delete Sample
                     </button>
                     <button class="btn btn-sm btn-secondary" (click)="showHideAddPegNeg = !showHideAddPegNeg">
                         <clr-icon shape="plus"></clr-icon> Add Peg Neg
