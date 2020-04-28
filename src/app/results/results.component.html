@@ -389,7 +389,8 @@
                                 <br>
                                 <a class="label label-blue clickable"
                                     *ngIf="fsmc.sample_target_replicates.invalid_override_invalid_count > 0"
-                                    (click)="openReplicateDetails('invalid_override_invalids', fsmc)">Invalid due to manual
+                                    (click)="openReplicateDetails('invalid_override_invalids', fsmc)">Invalid due to
+                                    manual
                                     override&nbsp;<span
                                         class="badge">{{fsmc.sample_target_replicates.invalid_override_invalid_count}}</span></a>
                             </clr-dg-cell>
@@ -412,7 +413,7 @@
             <!--View 2 results tab -->
             <clr-tab>
                 <button clrTabLink (mouseout)="resizeTable()">Sample Rows FSMC</button>
-                <clr-tab-content class="sample-results-tab" (mouseover)="resizeTable()">
+                <clr-tab-content class="sample-results-tab">
 
                     <clr-datagrid #sampleRowDataGrid [clrDgLoading]="sampleResultsLoading">
 
@@ -422,9 +423,9 @@
                                     (click)="exportToCSV('sampleRows')">
                                     <clr-icon shape="export" size="16"></clr-icon> Export to CSV
                                 </button>
-                                <!-- <button type="button" class="btn btn-sm btn-secondary" (click)="resizeTable()">
-                                    <clr-icon shape="export" size="16"></clr-icon> Resize
-                                </button> -->
+                                <button type="button" class="btn btn-sm btn-secondary" (click)="resizeTable()">
+                                    <clr-icon shape="export" size="16"></clr-icon> Column auto-width
+                                </button>
                             </div>
                         </clr-dg-action-bar>
 
@@ -477,7 +478,7 @@
             <!--View 3 results tab -->
             <clr-tab>
                 <button clrTabLink (mouseout)="resizeTable()">Target Rows FSMC</button>
-                <clr-tab-content (mouseover)="resizeTable()">
+                <clr-tab-content>
                     <clr-datagrid #targetRowDataGrid [clrDgLoading]="sampleResultsLoading">
 
                         <clr-dg-action-bar>
@@ -485,6 +486,9 @@
                                 <button type="button" class="btn btn-sm btn-secondary"
                                     (click)="exportToCSV('targetRows')">
                                     <clr-icon shape="export" size="16"></clr-icon> Export to CSV
+                                </button>
+                                <button type="button" class="btn btn-sm btn-secondary" (click)="resizeTable()">
+                                    <clr-icon shape="export" size="16"></clr-icon> Column auto-width
                                 </button>
                             </div>
                         </clr-dg-action-bar>
