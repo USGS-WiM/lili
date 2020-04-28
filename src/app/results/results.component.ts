@@ -399,6 +399,7 @@ export class ResultsComponent implements OnInit, AfterViewInit {
                   }
                   this.sampleResultsLoaded = true;
                   this.sampleResultsLoading = false;
+                  this.resizeTable();
                 },
                 error => {
                   this.errorMessage = <any>error
