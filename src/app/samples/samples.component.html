@@ -852,35 +852,38 @@
 
 <!-- delete Sample Modal -->
 <clr-modal [(clrModalOpen)]="showHideDelete">
-    <h3 class="modal-title"><clr-icon shape="trash" size="16"></clr-icon> Delete Sample</h3>
+    <h3 class="modal-title">
+        <clr-icon shape="trash" size="16"></clr-icon> Delete Sample
+    </h3>
     <div class="modal-body">
-      <div class="row">
-        <div class="col-lg-12">
-          <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleDeleteError">
-            <div clr-alert-item class="alert-item">
-              <span class="alert-text">Submission error. Sample not deleted.</span>
-              <div class="alert-actions">
-                <a class="alert-action" (click)="submitDelete()">Try again</a>
-              </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <clr-alert [clrAlertType]="'alert-danger'" *ngIf="showSampleDeleteError">
+                    <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Submission error. Sample not deleted.</span>
+                        <div class="alert-actions">
+                            <a class="alert-action" (click)="submitDelete()">Try again</a>
+                        </div>
+                    </div>
+                </clr-alert>
+
+                <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleDeleteSuccess">
+                    <div clr-alert-item class="alert-item">
+                        <span class="alert-text">Sample successfully deleted.</span>
+                    </div>
+                </clr-alert>
+
+                <div *ngIf="!showSampleDeleteSuccess">
+                    <p>Are you sure you want to delete the sample <b>{{selectedSampleId}}</b> ?</p>
+
+                    <button class="btn btn-primary" type="button" (click)="submitDelete()"
+                        [clrLoading]="submitLoading">Delete</button>
+                    <button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Close</button>
+                </div>
             </div>
-          </clr-alert>
-
-          <clr-alert [clrAlertType]="'alert-success'" *ngIf="showSampleDeleteSuccess">
-            <div clr-alert-item class="alert-item">
-              <span class="alert-text">Sample successfully deleted.</span>
-            </div>
-          </clr-alert>
-
-          <div *ngIf="!showSampleDeleteSuccess">
-            <p>Are you sure you want to delete the sample <b>{{selectedSampleId}}</b> ?</p>
-
-            <button class="btn btn-primary" type="button" (click)="submitDelete()" [clrLoading]="submitLoading">Delete</button>
-            <button class="btn btn-info" (click)="showHideDelete = !showHideDelete">Close</button>
-          </div>
         </div>
-      </div>
     </div>
-  </clr-modal>
+</clr-modal>
 <!-- end delete sample modal -->
 
 <!-- begin analysis batch modal -->
@@ -1269,7 +1272,9 @@
                                     the box may be less
                                     than spots available in that box. For Next Available Box, suggested starting
                                     locations (based on current freezer
-                                    status) for rack and box are provided but can be changed.
+                                    status) for rack and box are provided but can be changed. If a study has samples
+                                    frozen but no partial box, 'Current Box' will be the next empty box, but Rack and
+                                    Box can be edited from suggestion.
                                 </label>
                             </clr-tree-node>
                         </ng-container>
@@ -1313,13 +1318,15 @@
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="rack" class="required">Rack</label>
                         <input id="rack" type="number" min="1" max="{{currentFreezerDimensions.racks}}"
-                            formControlName="rack" readonly>
+                            formControlName="rack"
+                            [readonly]="this.freezeForm.get('available_spots_in_box').value !== 81">
                         <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.racks}}</span> -->
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                         <label for="box" class="required">Box</label>
                         <input id="box" type="number" min="1" max="{{currentFreezerDimensions.boxes}}"
-                            formControlName="box" readonly>
+                            formControlName="box"
+                            [readonly]="this.freezeForm.get('available_spots_in_box').value !== 81">
                         <!-- <span class="max-size-indicator">Max {{currentFreezerDimensions.boxes}}</span> -->
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
