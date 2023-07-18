@@ -3,7 +3,8 @@
 ![WiM logo](wimlogo.png)
 
   
-
+# THIS REPO IS ARCHIVED
+## Please visit https://code.usgs.gov/WiM/lili for the active repo of this project.
   
 
 # lili
